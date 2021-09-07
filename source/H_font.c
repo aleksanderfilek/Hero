@@ -1,10 +1,10 @@
 #include<SDL2/SDL_ttf.h>
 
-typedef TTF_Font H_Font;
+typedef TTF_Font HeroFont;
 
-H_Font* H_Font_Load(const char* path, int size)
+HeroFont* heroFontLoad(const char* path, int size)
 {
-    H_Font* font = TTF_OpenFont(path, size);
+    HeroFont* font = TTF_OpenFont(path, size);
 
     if(!font)
     {
@@ -15,7 +15,7 @@ H_Font* H_Font_Load(const char* path, int size)
     return font;
 }
 
-void H_Font_Unload(H_Font* font)
+void heroFontUnload(HeroFont* font)
 {
     TTF_CloseFont(font);
 }

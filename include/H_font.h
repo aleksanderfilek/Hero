@@ -3,14 +3,14 @@
 
 #include<SDL2/SDL_ttf.h>
 
-typedef TTF_Font H_Font;
+typedef TTF_Font HeroFont;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern H_Font* H_Font_Load(const char* path, int size);
-extern void H_Font_Unload(H_Font* font);
+extern HeroFont* heroFontLoad(const char* path, int size);
+extern void heroFontUnload(HeroFont* font);
 
 #ifdef __cplusplus
 }

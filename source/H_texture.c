@@ -16,11 +16,11 @@
 typedef struct
 {
     uint32_t glId;
-    H_int2 size;
+    HeroInt2 size;
     const char *name;
-} H_Texture;
+} HeroTexture;
 
-H_Texture* H_LoadTexture(const char* path, uint8_t textureFlags)
+HeroTexture* heroLoadTexture(const char* path, uint8_t textureFlags)
 {
     // load texture from file
     int width, height;
@@ -60,23 +60,23 @@ H_Texture* H_LoadTexture(const char* path, uint8_t textureFlags)
     glBindTexture(GL_TEXTURE_2D, 0);
     DEBUG_CODE( glCheckError(); )
 
-    H_Texture* texture = (H_Texture*)malloc(sizeof(H_Texture));
+    HeroTexture* texture = (HeroTexture*)malloc(sizeof(HeroTexture));
 
     texture->glId = gl_id;
-    texture->size = (H_int2){ width, height };
+    texture->size = (HeroInt2){ width, height };
     texture->name = path;
 
     return texture;
 }
 
-void H_UnloadTexture(H_Texture* texture)
+void heroUnloadTexture(HeroTexture* texture)
 {
     glDeleteTextures(1, &texture->glId);
     DEBUG_CODE( glCheckError(); )
     free(texture);
 }
 
-void H_BindTexture(const H_Texture* texture)
+void heroBindTexture(const HeroTexture* texture)
 {
     glActiveTexture(GL_TEXTURE0);
     DEBUG_CODE( glCheckError(); )
@@ -84,13 +84,13 @@ void H_BindTexture(const H_Texture* texture)
     DEBUG_CODE( glCheckError(); )
 }
 
-void H_UnbindTexture()
+void heroUnbindTexture()
 {
     glDisable(GL_TEXTURE_2D);
     DEBUG_CODE( glCheckError(); )
 }
 
-H_Texture* H_TextureFromText(const char* text, H_Color* color, H_Font* font, uint8_t textureFlags)
+HeroTexture* heroTextureFromText(const char* text, HeroColor* color, HeroFont* font, uint8_t textureFlags)
 {
     SDL_Surface* surface = TTF_RenderText_Blended( font, text, *color );
     if( !surface)
@@ -123,10 +123,10 @@ H_Texture* H_TextureFromText(const char* text, H_Color* color, H_Font* font, uin
     glBindTexture(GL_TEXTURE_2D, 0);
     DEBUG_CODE(glCheckError();)
 
-    H_Texture* texture = (H_Texture*)malloc(sizeof(H_Texture));
+    HeroTexture* texture = (HeroTexture*)malloc(sizeof(HeroTexture));
 
     texture->glId = gl_id;
-    texture->size = (H_int2){ surface->w, surface->h };
+    texture->size = (HeroInt2){ surface->w, surface->h };
     texture->name = text;
 
     SDL_FreeSurface(surface);

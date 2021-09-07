@@ -1,7 +1,7 @@
 #ifndef HERO_SHADER_H_
 #define HERO_SHADER_H_
 
-typedef void* H_Shader;
+typedef void* HeroShader;
 
 #ifdef __cplusplus
 extern "C" {

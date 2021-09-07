@@ -30,11 +30,11 @@ typedef struct
     double time_deleta;
 
     ModuleSet modules;
-} H_Core;
+} HeroCore;
 
-static void DeleteModule(H_Core* core, Module* module, uint32_t index);
+static void DeleteModule(HeroCore* core, Module* module, uint32_t index);
 
-H_Core* H_Core_init()
+HeroCore* heroCoreInit()
 {
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){
@@ -42,14 +42,14 @@ H_Core* H_Core_init()
         return NULL;
     }
 
-    H_Core* core = (H_Core*)malloc(sizeof(H_Core));
-    memset(core, 0, sizeof(H_Core));
+    HeroCore* core = (HeroCore*)malloc(sizeof(HeroCore));
+    memset(core, 0, sizeof(HeroCore));
     core->quit = false;
 
     return core;
 }
 
-void H_Core_start(H_Core* core)
+void heroCoreStart(HeroCore* core)
 {
     uint32_t timer;
 
@@ -71,7 +71,7 @@ void H_Core_start(H_Core* core)
     }
 }
 
-void H_Core_close(H_Core* core)
+void heroCoreClose(HeroCore* core)
 {
     core->quit = true;
 
@@ -89,12 +89,12 @@ void H_Core_close(H_Core* core)
     SDL_Quit();
 }
 
-double H_Core_delta_time(const H_Core* core)
+double heroCoreGetDeltaTime(const HeroCore* core)
 {
     return core->time_deleta;
 }
 
-void H_Core_Module_set_capacity(H_Core* core, uint32_t new_capacity)
+void heroCoreModuleSetCapacity(HeroCore* core, uint32_t new_capacity)
 {
     ModuleSet* modules = &core->modules;
 
@@ -103,7 +103,7 @@ void H_Core_Module_set_capacity(H_Core* core, uint32_t new_capacity)
     modules->names = (char**)realloc(modules->names, new_capacity * sizeof(char*));
 }
 
-void H_Core_Module_add(H_Core* core, char* name, void* data, 
+void heroCoreModuleAdd(HeroCore* core, char* name, void* data, 
                         void (*update)(void* data), void (*destroy)(void* ptr))
 {
     ModuleSet* modules = &core->modules;
@@ -128,7 +128,7 @@ void H_Core_Module_add(H_Core* core, char* name, void* data,
 
     if(modules->length == modules->capacity)
     {
-        H_Core_Module_set_capacity(core, modules->capacity + 1);
+        heroCoreModuleSetCapacity(core, modules->capacity + 1);
     }
 
     module = &modules->module[modules->length];
@@ -139,7 +139,7 @@ void H_Core_Module_add(H_Core* core, char* name, void* data,
     modules->length++;
 }
 
-void* H_Core_Module_get(H_Core* core, const char* name)
+void* heroCoreModuleGet(HeroCore* core, const char* name)
 {
     ModuleSet* modules = &core->modules;
 
@@ -156,7 +156,7 @@ void* H_Core_Module_get(H_Core* core, const char* name)
     return NULL;
 }
 
-void H_Core_Module_delete(H_Core* core, const char* name)
+void heroCoreModuleRemove(HeroCore* core, const char* name)
 {
     ModuleSet* modules = &core->modules;
 
@@ -177,7 +177,7 @@ void H_Core_Module_delete(H_Core* core, const char* name)
     }
 }
 
-static void DeleteModule(H_Core* core, Module* module, uint32_t index)
+static void DeleteModule(HeroCore* core, Module* module, uint32_t index)
 {
     if(module->data == NULL)
     {

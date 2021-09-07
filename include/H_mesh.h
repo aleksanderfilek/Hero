@@ -5,9 +5,9 @@ typedef void* H_Mesh;
 
 typedef enum
 {
-    HEROBUFFERTYPE_SINGLE = 1,
-    HEROBUFFERTYPE_VEC2 = 2,
-    HEROBUFFERTYPE_VEC3 = 3
+    HERO_BUFFERTYPE_SINGLE = 1,
+    HERO_BUFFERTYPE_VEC2 = 2,
+    HERO_BUFFERTYPE_VEC3 = 3
 } HeroBufferType;
 
 typedef struct

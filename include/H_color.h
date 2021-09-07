@@ -3,6 +3,6 @@
 
 #include<SDL2/SDL.h>
 
-typedef SDL_Color H_Color;
+typedef SDL_Color HeroColor;
 
 #endif
