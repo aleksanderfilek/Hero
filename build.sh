@@ -1,0 +1,9 @@
+#!/bin/sh
+gcc -std=c99 -c -Iinc/ src/*.c -fPIC
+gcc -std=c99 -o libhero.so *.o -shared
+gcc -std=c99 -L. -Iinc/ main.c -lhero -lSDL2main -lSDL2 -lSDL2_ttf -lSOIL -lGLEW -lGL -lGLU
+
+unset LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/username/Dokumenty/projekty/HeroCore:$LD_LIBRARY_PATH
+
+rm *.o
