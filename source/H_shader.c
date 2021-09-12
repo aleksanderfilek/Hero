@@ -99,7 +99,6 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
 
     HeroShader* shader = (HeroShader*)malloc(sizeof(HeroShader));
     *shader = (HeroShader){ vertexShader, fragmentShader, program };
-
     return shader;
 }
 
@@ -113,4 +112,9 @@ void heroShaderBind(const HeroShader* shader)
 {
     glUseProgram(shader->glID);
     glCheckError();
+}
+
+uint32_t heroShaderGetUniformLocation(const HeroShader* shader, const char* name)
+{
+    return glGetUniformLocation(shader->glID, name);
 }

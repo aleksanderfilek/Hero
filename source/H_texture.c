@@ -20,7 +20,7 @@ typedef struct
     const char *name;
 } HeroTexture;
 
-HeroTexture* heroLoadTexture(const char* path, uint8_t textureFlags)
+HeroTexture* heroTextureLoad(const char* path, uint8_t textureFlags)
 {
     // load texture from file
     int width, height;
@@ -69,14 +69,14 @@ HeroTexture* heroLoadTexture(const char* path, uint8_t textureFlags)
     return texture;
 }
 
-void heroUnloadTexture(HeroTexture* texture)
+void heroTextureUnload(HeroTexture* texture)
 {
     glDeleteTextures(1, &texture->glId);
     DEBUG_CODE( glCheckError(); )
     free(texture);
 }
 
-void heroBindTexture(const HeroTexture* texture)
+void heroTextureBind(const HeroTexture* texture)
 {
     glActiveTexture(GL_TEXTURE0);
     DEBUG_CODE( glCheckError(); )
@@ -84,7 +84,7 @@ void heroBindTexture(const HeroTexture* texture)
     DEBUG_CODE( glCheckError(); )
 }
 
-void heroUnbindTexture()
+void heroTextureUnbind()
 {
     glDisable(GL_TEXTURE_2D);
     DEBUG_CODE( glCheckError(); )
@@ -132,4 +132,19 @@ HeroTexture* heroTextureFromText(const char* text, HeroColor* color, HeroFont* f
     SDL_FreeSurface(surface);
 
     return texture;
+}
+
+HeroTexture* heroTextureConstruct(const char* name, HeroInt2 size, uint32_t glID)
+{
+    HeroTexture* texture = (HeroTexture*)malloc(sizeof(HeroTexture));
+    texture->glId = glID;
+    texture->size = size;
+    texture->name = name;
+
+    return texture;
+}
+
+uint32_t heroTextureGetGlID(const HeroTexture* texture)
+{
+    return texture->glId;
 }

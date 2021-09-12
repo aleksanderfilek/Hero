@@ -21,11 +21,13 @@ typedef void* HeroTexture;
 extern "C" {
 #endif
 
-extern HeroTexture* heroLoadTexture(const char* path, uint8_t textureFlags);
-extern void heroUnloadTexture(HeroTexture* texture);
-extern void heroBindTexture(const HeroTexture* texture);
-extern void heroUnbindTexture();
+extern HeroTexture* heroTextureLoad(const char* path, uint8_t textureFlags);
+extern void heroTextureUnload(HeroTexture* texture);
+extern void heroTextureBind(const HeroTexture* texture);
+extern void heroTextureUnbind();
 extern HeroTexture* heroTextureFromText(const char* text, HeroColor* color, HeroFont* font, uint8_t textureFlags);
+extern HeroTexture* heroTextureConstruct(const char* name, HeroInt2 size, uint32_t glID);
+extern uint32_t heroTextureGetGlID(const HeroTexture* texture);
 
 #ifdef __cplusplus
 }
