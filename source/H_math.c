@@ -1,5 +1,17 @@
 #include"H_math.h"
 
+#define PI 3.141596f
+
+float deg2rad(float degree)
+{
+    return (degree * PI)/180.0f;
+}
+
+float rad2deg(float radians)
+{
+    return (180.0f * radians)/PI;
+}
+
 HeroMat4x4 heroMathOrthographicMatrix(int width, int height, float near, float far)
 {
     HeroMat4x4 matrix = heroMat4x4Identity;

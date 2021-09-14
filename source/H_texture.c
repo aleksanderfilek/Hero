@@ -148,3 +148,8 @@ uint32_t heroTextureGetGlID(const HeroTexture* texture)
 {
     return texture->glId;
 }
+
+HeroInt2 heroTextureGetSize(const HeroTexture* texture)
+{
+    return texture->size;
+}

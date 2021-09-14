@@ -17,6 +17,7 @@ extern void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchEnd(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size);
+extern void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle);
 
 #ifdef __cplusplus
 }

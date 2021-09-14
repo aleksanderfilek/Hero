@@ -1,6 +1,8 @@
 #ifndef HERO_MATH_H_
 #define HERO_MATH_H_
 
+#define PI 3.141596f
+
 typedef struct
 {
     int x, y;
@@ -13,7 +15,7 @@ typedef struct
 
 typedef struct
 {
-    int x, y, w, h;
+    int x, y, z, w;
 } HeroInt4;
 
 typedef struct
@@ -41,6 +43,8 @@ typedef struct
 extern "C" {
 #endif
 
+extern float deg2rad(float degree);
+extern float rad2deg(float radians);
 extern HeroMat4x4 heroMathOrthographicMatrix(int width, int height, float near, float far);
 
 

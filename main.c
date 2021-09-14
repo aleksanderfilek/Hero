@@ -12,7 +12,7 @@ void closeGame(void* data)
     heroCoreClose(core);
 }
 
-#define Num 100
+#define Num 100000
 
 HeroInput* input;
 HeroShader* shader;
@@ -21,13 +21,17 @@ HeroTexture* texture[2];
 SDL_Window* window;
 HeroInt2 *pos;
 float speed = 100.0f;
-HeroInt2 size = {10, 10};
+HeroInt2 size = {64, 64};
+float angle = 0.0f;
+float rotSpeed = 30.0f;
 
 void update(void* ptr)
 {
     double deltaTime = heroCoreGetDeltaTime(core);
     int fps = (int)(1.0/deltaTime);
     printf("%d\n", fps);
+
+    angle += rotSpeed * deltaTime;
 
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -37,7 +41,8 @@ void update(void* ptr)
     for(int i =0 ; i < Num; i++)
     {
         int img = i%2;
-        heroSpriteBatchDrawTexture(spriteBatch, texture[img], pos[i], size);
+        HeroInt4 rect = {0, 0, 32, 256};
+        heroSpriteBatchDrawTextureEx(spriteBatch, texture[img], pos[i], size, rect, deg2rad(angle));
     }
 
     heroSpriteBatchEnd(spriteBatch);
@@ -59,7 +64,7 @@ int main(int argc, char *argv[])
     pos = (HeroInt2*)malloc(Num*sizeof(HeroInt2));
     for(int i =0 ; i < Num; i++)
     {
-        pos[i] = (HeroInt2){random(630, 0), random(470,0)};
+        pos[i] = (HeroInt2){random(640 - size.x, 0), random(480 - size.y,0)};
     }
 
     {
@@ -80,7 +85,7 @@ int main(int argc, char *argv[])
         texture[0] = heroTextureLoad("assets/image.png", HERO_TEXTUREFLAG_NEAREST | HERO_TEXTUREFLAG_MIPMAP);
         texture[1] = heroTextureLoad("assets/red.png", HERO_TEXTUREFLAG_NEAREST | HERO_TEXTUREFLAG_MIPMAP);
         shader = heroShaderLoad("assets/shader.vert", "assets/shader.frag");
-        spriteBatch = heroSpriteBatchInit(100000, 10, shader);
+        spriteBatch = heroSpriteBatchInit(10000, 10, shader);
     }
 
     heroCoreStart(core);

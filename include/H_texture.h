@@ -28,6 +28,7 @@ extern void heroTextureUnbind();
 extern HeroTexture* heroTextureFromText(const char* text, HeroColor* color, HeroFont* font, uint8_t textureFlags);
 extern HeroTexture* heroTextureConstruct(const char* name, HeroInt2 size, uint32_t glID);
 extern uint32_t heroTextureGetGlID(const HeroTexture* texture);
+extern HeroInt2 heroTextureGetSize(const HeroTexture* texture);
 
 #ifdef __cplusplus
 }

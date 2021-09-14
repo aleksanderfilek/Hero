@@ -2,6 +2,7 @@
 #include<GL/glew.h>
 #include<GL/gl.h>
 #include<GL/glu.h>
+#include<math.h>
 
 #include"H_texture.h"
 #include"H_shader.h"
@@ -183,6 +184,78 @@ void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture*
 
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ (float)position.x, (float)(position.y + size.y), 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ 0.0f, 1.0f };
+    spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr++;
+
+    spriteBatch->indexCount += 6;
+}
+
+void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle)
+{
+    if(spriteBatch->indexCount >= spriteBatch->maxIndexCount || 
+        spriteBatch->textureSlotIndex > spriteBatch->maxTextureSlots)
+    {
+        heroSpriteBatchEnd(spriteBatch);
+        heroSpriteBatchBegin(spriteBatch);
+    }
+
+    float textureIndex = 0.0f;
+    // check registred texture
+    for(int i = 1; i < spriteBatch->maxTextureSlots; i++)
+    {
+        if(spriteBatch->textureSlots[i] == texture)
+        {
+            textureIndex = (float)i;
+            break;
+        }
+    }
+
+    // // add texture if not registered
+    if(textureIndex == 0.0f)
+    {
+        textureIndex = spriteBatch->textureSlotIndex;
+        spriteBatch->textureSlots[spriteBatch->textureSlotIndex] = (HeroTexture*)texture;
+        spriteBatch->textureSlotIndex++;
+    }
+
+    HeroInt2 textureSize = heroTextureGetSize(texture);
+    float rx0 = (float)rect.x / (float)textureSize.x;
+    float rx1 = (float)rect.z / (float)textureSize.x;
+    float ry0 = (float)rect.y / (float)textureSize.y;
+    float ry1 = (float)rect.w / (float)textureSize.y;
+
+    int middleX = position.x + (int)(size.x/2);
+    int middleY = position.y + (int)(size.y/2);
+
+    float rotx = (float)(position.x - middleX)*cos(angle) - (position.y - middleY)*sin(angle) + middleX;
+    float roty = (float)(position.x - middleX)*sin(angle) + (position.y - middleY)*cos(angle) + middleY;
+
+    spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
+    spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx0, ry0 };
+    spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr++;
+
+    rotx = (float)(position.x + size.x - middleX)*cos(angle) - (position.y - middleY)*sin(angle) + middleX;
+    roty = (float)(position.x + size.x - middleX)*sin(angle) + (position.y - middleY)*cos(angle) + middleY;
+
+    spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
+    spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx1, ry0 };
+    spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr++;
+    
+    rotx = (float)(position.x + size.x - middleX)*cos(angle) - (position.y + size.y - middleY)*sin(angle) + middleX;
+    roty = (float)(position.x + size.x - middleX)*sin(angle) + (position.y + size.y - middleY)*cos(angle) + middleY;
+
+    spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
+    spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx1, ry1};
+    spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr++;
+
+    rotx = (float)(position.x - middleX)*cos(angle) - (position.y + size.y - middleY)*sin(angle) + middleX;
+    roty = (float)(position.x - middleX)*sin(angle) + (position.y + size.y - middleY)*cos(angle) + middleY;
+
+    spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
+    spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx0, ry1 };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
     spriteBatch->quadBufferPtr++;
 
