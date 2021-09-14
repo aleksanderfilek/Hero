@@ -61,7 +61,7 @@ HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, co
     glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(_HeroVertex), (const void*)(sizeof(HeroFloat3) + sizeof(HeroFloat2)));
 
     spriteBatch->indexCount = 0;
-    spriteBatch->maxIndexCount = 4 * 6 * capacity;
+    spriteBatch->maxIndexCount = 6 * capacity;
     uint32_t indices[spriteBatch->maxIndexCount];
     uint32_t offset = 0;
     for(int i = 0; i < spriteBatch->maxIndexCount; i+=6)
