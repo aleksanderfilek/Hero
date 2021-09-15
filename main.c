@@ -42,7 +42,7 @@ void update(void* ptr)
     {
         int img = i%2;
         HeroInt4 rect = {0, 0, 32, 256};
-        heroSpriteBatchDrawTextureEx(spriteBatch, texture[img], pos[i], size, rect, deg2rad(angle));
+        heroSpriteBatchDrawTextureEx(spriteBatch, texture[img], pos[i], size, rect, heroMathDeg2rad(angle));
     }
 
     heroSpriteBatchEnd(spriteBatch);
