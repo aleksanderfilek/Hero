@@ -12,3 +12,4 @@
 #include"H_shader.h"
 #include"H_mesh.h"
 #include"H_spritebatch.h"
+#include"H_actor.h"
