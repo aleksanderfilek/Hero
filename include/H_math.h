@@ -53,10 +53,24 @@ typedef struct
 
 typedef struct
 {
-    HeroFloat4 col[4];
-} HeroMat4x4;
+    HeroFloat2 col[2];
+} HeroMatrix2x2;
 
-#define heroMat4x4Identity (HeroMat4x4){(HeroFloat4){1.0f,0.0f,0.0f,0.0f},(HeroFloat4){0.0f,1.0f,0.0f,0.0f},(HeroFloat4){0.0f,0.0f,1.0f,0.0f},(HeroFloat4){0.0f,0.0f,0.0f,1.0f}}
+#define matrix2x2identity (HeroMatrix2x2){(HeroFloat2){1.0f,0.0f},(HeroFloat2){0.0f,1.0f}}
+
+typedef struct
+{
+    HeroFloat3 col[3];
+} HeroMatrix3x3;
+
+#define matrix3x3identity (HeroMatrix3x3){(HeroFloat3){1.0f,0.0f,0.0f},(HeroFloat3){0.0f,1.0f,0.0f},(HeroFloat3){0.0f,0.0f,1.0f}}
+
+typedef struct
+{
+    HeroFloat4 col[4];
+} HeroMatrix4x4;
+
+#define heroMat4x4Identity (HeroMatrix4x4){(HeroFloat4){1.0f,0.0f,0.0f,0.0f},(HeroFloat4){0.0f,1.0f,0.0f,0.0f},(HeroFloat4){0.0f,0.0f,1.0f,0.0f},(HeroFloat4){0.0f,0.0f,0.0f,1.0f}}
 
 #ifdef __cplusplus
 extern "C" {
@@ -106,8 +120,38 @@ extern HeroFloat4 heroMathMultiplyF4(HeroFloat4 A, float k);
 extern HeroFloat4 heroMathNormalizeF4(HeroFloat4 A);
 extern float heroMathLengthF4(HeroFloat4 A);
 
-extern HeroMat4x4 heroMathOrthographicMatrix(int width, int height, float near, float far);
+extern HeroMatrix2x2 heroMathMultiplyM2x2(HeroMatrix2x2 A, HeroMatrix2x2 B);
+extern float heroMathDeterminentM2x2(HeroMatrix2x2 A);
+extern HeroMatrix2x2 heroMathTansponeM2x2(HeroMatrix2x2 A);
+extern HeroMatrix2x2 heroMathInvertM2x2(HeroMatrix2x2 A);
+extern HeroFloat2 heroMathMultiplyM2x2F2(HeroMatrix2x2 matrix, HeroFloat2 vector);
 
+extern HeroMatrix3x3 heroMathMultiplyM3x3(HeroMatrix3x3 A, HeroMatrix3x3 B);
+extern float heroMathDeterminentM3x3(HeroMatrix3x3 A);
+extern HeroMatrix3x3 heroMathTansponeM3x3(HeroMatrix3x3 A);
+extern HeroMatrix3x3 heroMathInvertM3x3(HeroMatrix3x3 A);
+extern HeroFloat3 heroMathMultiplyM3x3F3(HeroMatrix3x3 matrix, HeroFloat3 vector);
+
+extern HeroMatrix4x4 heroMathMultiplyM4x4(HeroMatrix4x4 A, HeroMatrix4x4 B);
+extern float heroMathDeterminentM4x4(HeroMatrix4x4 A);
+extern HeroMatrix4x4 heroMathTansponeM4x4(HeroMatrix4x4 A);
+extern HeroMatrix4x4 heroMathInvertM4x4(HeroMatrix4x4 A);
+extern HeroFloat4 heroMathMultiplyM4x4F4(HeroMatrix4x4 matrix, HeroFloat4 vector);
+extern float* heroMathM4x4ToArray(HeroMatrix4x4 A);
+extern HeroMatrix4x4 heroMathArrayToM4x4(float* array);
+
+extern void heroMathTranslateM4x4(HeroMatrix4x4* matrix, HeroFloat4 translation);
+extern void heroMathScaleM4x4(HeroMatrix4x4* matrix, HeroFloat4 scale);
+extern void heroMathRotateXM4x4(HeroMatrix4x4* matrix, float radians);
+extern void heroMathRotateYM4x4(HeroMatrix4x4* matrix, float radians);
+extern void heroMathRotateZM4x4(HeroMatrix4x4* matrix, float radians);
+extern void heroMathRotateXYZM4x4(HeroMatrix4x4* matrix, HeroFloat4 rotation);
+
+extern HeroMatrix4x4 heroMathPixelScreenMatrix(int width, int height, float near, float far);
+
+extern HeroMatrix4x4 heroMathProjectionMatrix(int width, int height, float FOV, float near, float far);
+extern HeroMatrix4x4 heroMathLookAtMatrix(HeroFloat3 eye, HeroFloat3 target, HeroFloat3 up);
+extern HeroMatrix4x4 heroMathOrthographicMatrix(int width, int height, float near, float far);
 
 #ifdef __cplusplus
 }
