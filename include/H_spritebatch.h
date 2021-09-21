@@ -5,6 +5,7 @@
 
 #include"H_texture.h"
 #include"H_math.h"
+#include"H_color.h"
 
 typedef void* HeroSpriteBatch;
 
@@ -17,7 +18,7 @@ extern void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchEnd(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size);
-extern void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle);
+extern void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle, HeroColor color);
 
 #ifdef __cplusplus
 }

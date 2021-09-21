@@ -7,12 +7,14 @@
 #include"H_texture.h"
 #include"H_shader.h"
 #include"H_math.h"
+#include"H_color.h"
 
 typedef struct
 {
     HeroFloat3 position;
     HeroFloat2 texCoords;
     float texIndex;
+    HeroFloat4 color;
 } _HeroVertex;
 
 typedef struct
@@ -61,6 +63,9 @@ HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, co
     glEnableVertexArrayAttrib(spriteBatch->VAO, 2);
     glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(_HeroVertex), (const void*)(sizeof(HeroFloat3) + sizeof(HeroFloat2)));
 
+    glEnableVertexArrayAttrib(spriteBatch->VAO, 3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(_HeroVertex), (const void*)(sizeof(HeroFloat3) + sizeof(HeroFloat2) + sizeof(float)));
+
     spriteBatch->indexCount = 0;
     spriteBatch->maxIndexCount = 6 * capacity;
     uint32_t indices[spriteBatch->maxIndexCount];
@@ -100,6 +105,8 @@ HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, co
         sampler[i] = i;
     }
     glUniform1iv(spriteBatch->shaderTexturesLocation, maxTextures, sampler);
+
+
 
     return spriteBatch;
 }
@@ -170,27 +177,31 @@ void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture*
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ (float)position.x, (float)position.y, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ 0.0f, 0.0f };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = (HeroFloat4){ 1.0f, 1.0f, 1.0f, 1.0f };
     spriteBatch->quadBufferPtr++;
 
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ (float)(position.x + size.x), (float)position.y, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ 1.0f, 0.0f };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = (HeroFloat4){ 1.0f, 1.0f, 1.0f, 1.0f };
     spriteBatch->quadBufferPtr++;
 
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ (float)(position.x + size.x), (float)(position.y + size.y), 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ 1.0f, 1.0f };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = (HeroFloat4){ 1.0f, 1.0f, 1.0f, 1.0f };
     spriteBatch->quadBufferPtr++;
 
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ (float)position.x, (float)(position.y + size.y), 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ 0.0f, 1.0f };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = (HeroFloat4){ 1.0f, 1.0f, 1.0f, 1.0f };
     spriteBatch->quadBufferPtr++;
 
     spriteBatch->indexCount += 6;
 }
 
-void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle)
+void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTexture* texture, const HeroInt2 position, const HeroInt2 size, const HeroInt4 rect, float angle, HeroColor color)
 {
     if(spriteBatch->indexCount >= spriteBatch->maxIndexCount || 
         spriteBatch->textureSlotIndex > spriteBatch->maxTextureSlots)
@@ -230,9 +241,12 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
     float rotx = (float)(position.x - middleX)*cos(angle) - (position.y - middleY)*sin(angle) + middleX;
     float roty = (float)(position.x - middleX)*sin(angle) + (position.y - middleY)*cos(angle) + middleY;
 
+    HeroFloat4 newColor = (HeroFloat4){ (float)color.r/255.0f, (float)color.g/255.0f, (float)color.b/255.0f, (float)color.a/255.0f };
+
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx0, ry0 };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = newColor;
     spriteBatch->quadBufferPtr++;
 
     rotx = (float)(position.x + size.x - middleX)*cos(angle) - (position.y - middleY)*sin(angle) + middleX;
@@ -241,6 +255,7 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx1, ry0 };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = newColor;
     spriteBatch->quadBufferPtr++;
     
     rotx = (float)(position.x + size.x - middleX)*cos(angle) - (position.y + size.y - middleY)*sin(angle) + middleX;
@@ -249,6 +264,7 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx1, ry1};
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = newColor;
     spriteBatch->quadBufferPtr++;
 
     rotx = (float)(position.x - middleX)*cos(angle) - (position.y + size.y - middleY)*sin(angle) + middleX;
@@ -257,6 +273,7 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
     spriteBatch->quadBufferPtr->position = (HeroFloat3){ rotx, roty, 0.0f };
     spriteBatch->quadBufferPtr->texCoords = (HeroFloat2){ rx0, ry1 };
     spriteBatch->quadBufferPtr->texIndex = textureIndex;
+    spriteBatch->quadBufferPtr->color = newColor;
     spriteBatch->quadBufferPtr++;
 
     spriteBatch->indexCount += 6;

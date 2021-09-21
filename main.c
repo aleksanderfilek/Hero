@@ -19,11 +19,6 @@ HeroShader* shader;
 HeroSpriteBatch* spriteBatch;
 HeroTexture* texture[2];
 SDL_Window* window;
-HeroInt2 *pos;
-float speed = 100.0f;
-HeroInt2 size = {64, 64};
-float angle = 0.0f;
-float rotSpeed = 30.0f;
 
 void update(void* ptr)
 {
@@ -31,19 +26,10 @@ void update(void* ptr)
     int fps = (int)(1.0/deltaTime);
     printf("%d\n", fps);
 
-    angle += rotSpeed * deltaTime;
-
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     heroSpriteBatchBegin(spriteBatch);
-
-    for(int i =0 ; i < Num; i++)
-    {
-        int img = i%2;
-        HeroInt4 rect = {0, 0, 32, 256};
-        heroSpriteBatchDrawTextureEx(spriteBatch, texture[img], pos[i], size, rect, heroMathDeg2rad(angle));
-    }
 
     heroSpriteBatchEnd(spriteBatch);
 
@@ -60,12 +46,6 @@ int main(int argc, char *argv[])
     srand(time(NULL));
 
     core = heroCoreInit();
-
-    pos = (HeroInt2*)malloc(Num*sizeof(HeroInt2));
-    for(int i =0 ; i < Num; i++)
-    {
-        pos[i] = (HeroInt2){random(640 - size.x, 0), random(480 - size.y,0)};
-    }
 
     {
         void* win1 = heroWindowInit("window 1", 640, 480, 0);
