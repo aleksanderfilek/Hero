@@ -124,6 +124,13 @@ float heroMathDistanceF2(HeroFloat2 A, HeroFloat2 B)
     return sqrtf(x2 + y2);
 }
 
+HeroFloat2 heroMathRotateM2x2F2(HeroFloat2 vector, float angle)
+{
+    float x = vector.x * cos(angle) - vector.y * sin(angle);
+    float y = vector.x * sin(angle) + vector.y * cos(angle);
+    return (HeroFloat2){x, y};
+}
+
 HeroFloat3 heroMathAddF3(HeroFloat3 A, HeroFloat3 B)
 {
     return (HeroFloat3){A.x + B.x, A.y + B.y, A.z + B.z};

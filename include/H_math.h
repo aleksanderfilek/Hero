@@ -103,6 +103,7 @@ extern HeroFloat2 heroMathMultiplyF2(HeroFloat2 A, float k);
 extern HeroFloat2 heroMathNormalizeF2(HeroFloat2 A);
 extern float heroMathLengthF2(HeroFloat2 A);
 extern float heroMathDistanceF2(HeroFloat2 A, HeroFloat2 B);
+extern HeroFloat2 heroMathRotateF2(HeroFloat2 vector, float angle);
 
 extern HeroFloat3 heroMathAddF3(HeroFloat3 A, HeroFloat3 B);
 extern HeroFloat3 heroMathSubstractF3(HeroFloat3 A, HeroFloat3 B);
