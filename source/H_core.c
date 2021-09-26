@@ -1,6 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<stdbool.h>
+#include<time.h>
 #include<SDL2/SDL.h>
 
 typedef void (*func)(void* data);
@@ -36,6 +37,8 @@ static void DeleteModule(HeroCore* core, Module* module, uint32_t index);
 
 HeroCore* heroCoreInit()
 {
+    srand(time(NULL));
+
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){
         printf("SDL could not initialize! SDL Error: %s\n",SDL_GetError());

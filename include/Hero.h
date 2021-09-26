@@ -13,3 +13,4 @@
 #include"H_mesh.h"
 #include"H_spritebatch.h"
 #include"H_actor.h"
+#include"H_random.h"
