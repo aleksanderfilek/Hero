@@ -6,6 +6,7 @@
 #include"H_texture.h"
 #include"H_math.h"
 #include"H_color.h"
+#include"H_shader.h"
 
 typedef void* HeroSpriteBatch;
 

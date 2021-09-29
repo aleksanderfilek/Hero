@@ -27,6 +27,12 @@ void heroWindowDestroy(void* ptr);
 HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
 {
     // init window
+    if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
+    {
+        printf("Window: SDL_Init %s\n", SDL_GetError());
+        exit(-1);
+    }
+
     HeroWindow* window = (HeroWindow*)malloc(sizeof(HeroWindow));
     memset(window, 0, sizeof(HeroWindow));
     
@@ -37,7 +43,7 @@ HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
     if(window->sdlWindow == NULL){
         printf("Window could not be created! SDL Error: %s\n",SDL_GetError());
         heroWindowDestroy(window);
-        return NULL;
+        exit(-1);
     }
 
     // Set window info data
