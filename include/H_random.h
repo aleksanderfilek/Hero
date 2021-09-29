@@ -9,6 +9,7 @@ extern "C" {
 
 extern void heroRandomSetSeed(uint32_t seed);
 extern int heroRandomGetInt(int min, int max);
+extern int heroRandomGetFloat(float min, float max);
 
 #ifdef __cplusplus
 }
