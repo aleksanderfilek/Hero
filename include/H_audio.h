@@ -2,7 +2,6 @@
 #define HERO_AUDIO_H_
 
 #include<stdbool.h>
-#include<SDL2/SDL_mixer.h>
 
 #include"H_audiotypes.h"
 

@@ -1,7 +1,7 @@
 #ifndef HERO_FONT_H_
 #define HERO_FONT_H_
 
-#include<SDL2/SDL_ttf.h>
+#include"H_headers.h"
 
 typedef TTF_Font HeroFont;
 

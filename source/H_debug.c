@@ -1,8 +1,7 @@
-#include<GL/glew.h>
-#include<GL/gl.h>
-#include<GL/glu.h>
 #include<stdlib.h>
 #include<stdio.h>
+
+#include"H_headers.h"
 
 GLenum glCheckError_(const char *file, int line)
 {

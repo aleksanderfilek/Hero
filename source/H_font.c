@@ -1,4 +1,6 @@
-#include<SDL2/SDL_ttf.h>
+#include<stdio.h>
+
+#include"H_headers.h"
 
 typedef TTF_Font HeroFont;
 

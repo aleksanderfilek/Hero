@@ -1,10 +1,8 @@
 #include<stdint.h>
 #include<stdio.h>
 #include<stdlib.h>
-#include<GL/glew.h>
-#include<GL/gl.h>
-#include<GL/glu.h>
 
+#include"H_headers.h"
 #include"H_debug.h"
 
 typedef struct 

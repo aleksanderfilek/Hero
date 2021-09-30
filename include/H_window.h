@@ -1,10 +1,10 @@
 #ifndef HERO_WINDOW_H_
 #define HERO_WINDOW_H_
 
-#include<SDL2/SDL.h>
 #include<stdbool.h>
 #include<stdint.h>
 
+#include"H_headers.h"
 #include"H_math.h"
 
 typedef enum

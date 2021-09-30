@@ -1,9 +1,10 @@
-#include<SDL2/SDL.h>
-#include<GL/glew.h>
 #include<stdint.h>
-
 #include<stdbool.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
 
+#include"H_headers.h"
 #include"H_math.h"
 
 typedef enum

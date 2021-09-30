@@ -1,13 +1,8 @@
 #include<stdint.h>
 #include<stdlib.h>
+#include<stdio.h>
 
-#include<GL/glew.h>
-#include<GL/gl.h>
-#include<GL/glu.h>
-#include<SDL2/SDL.h>
-#include<SDL2/SDL_ttf.h>
-#include<SOIL/SOIL.h>
-
+#include"H_headers.h"
 #include"H_math.h"
 #include"H_color.h"
 #include"H_font.h"

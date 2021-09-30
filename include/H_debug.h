@@ -1,7 +1,7 @@
 #ifndef HERO_DEBUG_H_
 #define HERO_DEBUG_H_
 
-#include<GL/gl.h>
+#include"H_headers.h"
 
 #ifdef DEBUG
     #define IF_DEBUG_CODE(...) __VA_ARGS__

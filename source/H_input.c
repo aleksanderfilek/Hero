@@ -1,9 +1,9 @@
 #include<stdint.h>
 #include<stdbool.h>
 #include<stdlib.h>
+#include<string.h>
 
-#include<SDL2/SDL.h>
-
+#include"H_headers.h"
 #include"H_mouse.h"
 #include"H_keycode.h"
 

@@ -1,7 +1,8 @@
-#include<SDL2/SDL.h>
 #include<stdlib.h>
 #include<stdint.h>
+#include<string.h>
 
+#include"H_headers.h"
 #include"H_window.h"
 
 typedef struct

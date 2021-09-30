@@ -1,9 +1,9 @@
 #include<stdint.h>
-#include<GL/glew.h>
-#include<GL/gl.h>
-#include<GL/glu.h>
 #include<math.h>
+#include<string.h>
+#include<stdlib.h>
 
+#include"H_headers.h"
 #include"H_texture.h"
 #include"H_shader.h"
 #include"H_math.h"

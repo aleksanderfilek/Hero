@@ -1,6 +1,8 @@
 #ifndef HERO_AUDIOTYPES_H_
 #define HERO_AUDIOTYPES_H_
 
+#include"H_headers.h"
+
 typedef Mix_Music HeroMusic;
 typedef Mix_Chunk HeroSound;
 
