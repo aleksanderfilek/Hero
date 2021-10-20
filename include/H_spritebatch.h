@@ -7,6 +7,7 @@
 #include"H_math.h"
 #include"H_color.h"
 #include"H_shader.h"
+#include"H_window.h"
 
 typedef void* HeroSpriteBatch;
 
@@ -14,7 +15,7 @@ typedef void* HeroSpriteBatch;
 extern "C" {
 #endif
 
-extern HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, const HeroShader* shader);
+extern HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint32_t maxTextures, const HeroShader* shader);
 extern void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch);
 extern void heroSpriteBatchEnd(HeroSpriteBatch* spriteBatch);

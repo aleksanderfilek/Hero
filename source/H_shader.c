@@ -1,7 +1,7 @@
 #include<stdint.h>
 #include<stdio.h>
 #include<stdlib.h>
-
+#include<string.h>
 #include"H_headers.h"
 #include"H_debug.h"
 
@@ -66,8 +66,8 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
         length = ftell(file);
         fseek (file, 0, SEEK_SET);
         buffer = (char*)malloc(length);
+        memset(buffer,0,length);
         fread(buffer, 1, length, file);
-
         fclose(file);
 
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -90,6 +90,14 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
         return NULL;
     }
 
+    glValidateProgram(program);
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
+    if(success == GL_FALSE)
+    {
+        printf("Program is not valid!\n");
+        return NULL;
+    }
+
     glDeleteShader(vertex);
     DEBUG_CODE( glShaderCheckError(vertex, GL_DELETE_STATUS); )
     glDeleteShader(fragment);
@@ -97,6 +105,7 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
 
     HeroShader* shader = (HeroShader*)malloc(sizeof(HeroShader));
     *shader = (HeroShader){ vertexShader, fragmentShader, program };
+
     return shader;
 }
 

@@ -6,6 +6,7 @@
 
 #include"H_headers.h"
 #include"H_math.h"
+#include"H_debug.h"
 
 typedef enum
 {
@@ -47,6 +48,12 @@ HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
         exit(-1);
     }
 
+    if(TTF_Init() < 0)
+    {
+        printf("SDL_ttf could not be initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        exit(-1);
+    }
+
     // Set window info data
     window->size = (HeroInt2){ width, height };
     window->fullscreen = false;
@@ -66,6 +73,7 @@ HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
     glewInit();
     // Create viewport
     glViewport(0,0,width, height);
+
     // Set background color
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 

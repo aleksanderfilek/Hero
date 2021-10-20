@@ -74,15 +74,10 @@ void heroCoreStart(HeroCore* core)
 
         core->time_deleta = (double)(SDL_GetTicks() - timer )/1000.0f;
     }
-}
-
-void heroCoreClose(HeroCore* core)
-{
-    core->quit = true;
 
     ModuleSet* modules = &core->modules;
 
-    for(int i = 0; i < modules->length; i++)
+    for(int i = modules->length-1; i >= 0; i--)
     {
         Module* module = &modules->module[i];
         DeleteModule(core, module, i);
@@ -92,6 +87,11 @@ void heroCoreClose(HeroCore* core)
     free(modules->names);
 
     SDL_Quit();
+}
+
+void heroCoreClose(HeroCore* core)
+{
+    core->quit = true;
 }
 
 double heroCoreGetDeltaTime(const HeroCore* core)
@@ -150,7 +150,7 @@ void* heroCoreModuleGet(HeroCore* core, const char* name)
 
     for(int i = 0; i < modules->length; i++)
     {
-        if(name != modules->names[i])
+        if(strcmp(name,modules->names[i]) != 0)
         {
             continue;
         }
@@ -169,7 +169,7 @@ void heroCoreModuleRemove(HeroCore* core, const char* name)
     {
 
 
-        if(name != modules->names[i])
+        if(strcmp(name,modules->names[i]) != 0)
         {
             continue;
         }

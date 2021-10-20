@@ -8,6 +8,7 @@
 #include"H_shader.h"
 #include"H_math.h"
 #include"H_color.h"
+#include"H_window.h"
 
 typedef struct
 {
@@ -40,7 +41,7 @@ typedef struct
 } HeroSpriteBatch;
 
 
-HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, const HeroShader* shader)
+HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint32_t maxTextures, const HeroShader* shader)
 {
     HeroSpriteBatch* spriteBatch = (HeroSpriteBatch*)malloc(sizeof(HeroSpriteBatch));
     spriteBatch->spriteCapacity = capacity;
@@ -96,7 +97,10 @@ HeroSpriteBatch* heroSpriteBatchInit(uint32_t capacity, uint32_t maxTextures, co
     heroShaderBind(shader);
     spriteBatch->shaderTexturesLocation = heroShaderGetUniformLocation(shader, "sb_textures");
     uint32_t viewLoc = heroShaderGetUniformLocation(shader, "view");
-    HeroMatrix4x4 view = heroMathPixelScreenMatrix(640, 480, 0.00f, 100.0f);
+
+    HeroInt2 windowSize = heroWindowGetSize(window);
+
+    HeroMatrix4x4 view = heroMathPixelScreenMatrix(windowSize.x, windowSize.y, 0.00f, 100.0f);
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float*)(&(view.col[0])));
 
     int sampler[maxTextures];

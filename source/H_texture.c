@@ -19,7 +19,7 @@ HeroTexture* heroTextureLoad(const char* path, uint8_t textureFlags)
 {
     // load texture from file
     int width, height;
-    unsigned char *image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
+    unsigned char *image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
 
     if(!image)
     {
@@ -42,8 +42,8 @@ HeroTexture* heroTextureLoad(const char* path, uint8_t textureFlags)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     DEBUG_CODE( glCheckError(); )
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, 
-        GL_RGB, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, 
+        GL_RGBA, GL_UNSIGNED_BYTE, image);
     DEBUG_CODE( glCheckError(); )
 
     if(textureFlags & 128){
