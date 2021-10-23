@@ -1,3 +1,4 @@
+#include<stdio.h>
 #include<stdlib.h>
 #include<stdint.h>
 #include<string.h>
@@ -24,21 +25,13 @@ HeroEvent* heroEventInit()
 void heroEventUpdate(HeroEvent* event)
 {
     while(SDL_PollEvent(&event->sdlEvent) != 0){
-        switch (event->sdlEvent.type)
+        for(int i = 0; i < event->windowNumber; i++)
         {
-        case SDL_WINDOWEVENT:
-            for(int i = 0; i < event->windowNumber; i++)
+            if(event->windows[i] == NULL)
             {
-                if(event->windows[i] == NULL || 
-                    heroWindowGetId(event->windows[i]) != event->sdlEvent.window.windowID)
-                {
-                    continue;
-                }
-
-                heroWindowHandleEvents(event->windows[i], &event->sdlEvent);
-                break;
+                continue;
             }
-            break;
+            heroWindowHandleEvents(event->windows[i], &event->sdlEvent);
         }
     }
 }

@@ -10,8 +10,21 @@
 
 typedef enum
 {
-    HERO_WINDOW_CLOSE = 0,
-    HERO_WINDOW_COUNT = 1
+    HERO_WINDOW_SHOWN = 0,
+    HERO_WINDOW_HIDDEN = 1,
+    HERO_WINDOW_EXPOSED = 2,
+    HERO_WINDOW_MOVED = 3,
+    HERO_WINDOW_RESIZED = 4,
+    HERO_WINDOW_SIZE_CHANGED = 5,
+    HERO_WINDOW_MINIMIZED = 6,
+    HERO_WINDOW_MAXIMIZED = 7,
+    HERO_WINDOW_RESTORED = 8,
+    HERO_WINDOW_ENTER = 9,
+    HERO_WINDOW_LEAVE = 10,
+    HERO_WINDOW_FOCUS_GAINED = 11,
+    HERO_WINDOW_FOCUS_LOST = 12,
+    HERO_WINDOW_CLOSE = 13,
+    HERO_WINDOW_COUNT = 14
 } HeroWindowEventType;
 
 typedef void* HeroWindow;
@@ -24,16 +37,21 @@ extern HeroWindow* heroWindowInit(const char *title, int width, int height, int 
 extern void heroWindowDestroy(void* ptr);
 
 extern void heroWindowSetFullscreen(HeroWindow* window, bool state);
-extern bool heroWindowGetFullscreen(HeroWindow* window);
+extern bool heroWindowIsFullscreen(HeroWindow* window);
 extern HeroInt2 heroWindowGetSize(HeroWindow* window);
 extern SDL_Window* heroWindowGetSdlWindow(HeroWindow* window);
 extern uint32_t heroWindowGetId(HeroWindow* window);
 extern SDL_GLContext heroWindowGetSdlGlContext(HeroWindow* window);
-extern void heroWindowSetCurrent(HeroWindow* window);
+extern void heroWindowSetCurrentContext(HeroWindow* window);
 extern void heroWindowSetBackgroundColor(HeroWindow* window, HeroColor backgroundColor);
+extern void heroWindowSetTitle(HeroWindow* window, const char* title);
+extern void heroWindowIsShown(HeroWindow* window);
+extern void heroWindowIsMinimized(HeroWindow* window);
+extern void heroWindowIsFocused(HeroWindow* window);
+extern void heroWindowIsMouseHovering(HeroWindow* window);
 
 extern void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event);
-extern void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void* data));
+extern void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void** data));
 
 #ifdef __cplusplus
 }
