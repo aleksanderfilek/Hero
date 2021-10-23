@@ -6,7 +6,7 @@
 
 HeroCore* core;
 
-void closeGame(void* data)
+void closeGame(void** data)
 {
     heroCoreClose(core);
 }
