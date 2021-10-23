@@ -7,6 +7,7 @@
 #include"H_headers.h"
 #include"H_math.h"
 #include"H_debug.h"
+#include"H_color.h"
 
 typedef enum
 {
@@ -20,6 +21,7 @@ typedef struct
     SDL_GLContext glContext;
     HeroInt2 size;
     bool fullscreen;
+    HeroColor backgroundColor;
 
     void (*eventFunc[HERO_WINDOW_COUNT])(void* data);
 } HeroWindow;
@@ -74,8 +76,7 @@ HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
     // Create viewport
     glViewport(0,0,width, height);
 
-    // Set background color
-    glClearColor(1.0f,1.0f,1.0f,1.0f);
+    window->backgroundColor = (HeroColor){255,255,255,255};
 
     return window;
 }
@@ -137,4 +138,17 @@ void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event)
 void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void* data))
 {
     window->eventFunc[event] = func;
+}
+
+void heroWindowSetCurrent(HeroWindow* window)
+{
+  HeroColor* color = &window->backgroundColor;
+  glClearColor((float)color->r/255.0f,(float)color->g/255.0f,(float)color->b/255.0f,(float)color->a/255.0f);
+  
+  SDL_GL_MakeCurrent(window->sdlWindow, window->glContext);
+}
+
+void heroWindowSetBackgroundColor(HeroWindow* window, HeroColor backgroundColor)
+{
+    window->backgroundColor = backgroundColor;
 }

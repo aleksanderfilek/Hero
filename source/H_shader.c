@@ -19,7 +19,7 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
     uint32_t vertex = 0, fragment = 0;
 
     char* buffer = NULL;
-    long length = 0;
+    size_t length = 0;
 
     FILE* file = NULL;
 
@@ -34,10 +34,12 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
         }
 
         fseek (file, 0, SEEK_END);
-        length = ftell(file);
+        length = ftell(file) + 1;
         fseek (file, 0, SEEK_SET);
         buffer = (char*)malloc(length);
+        memset(buffer,0,length);
         fread(buffer, 1, length, file);
+        buffer[length] = '\0';
 
         fclose(file);
 
@@ -63,11 +65,12 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
         }
 
         fseek (file, 0, SEEK_END);
-        length = ftell(file);
+        length = ftell(file) + 1;
         fseek (file, 0, SEEK_SET);
         buffer = (char*)malloc(length);
         memset(buffer,0,length);
         fread(buffer, 1, length, file);
+        buffer[length] = '\0';
         fclose(file);
 
         fragment = glCreateShader(GL_FRAGMENT_SHADER);

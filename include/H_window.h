@@ -6,6 +6,7 @@
 
 #include"H_headers.h"
 #include"H_math.h"
+#include"H_color.h"
 
 typedef enum
 {
@@ -28,6 +29,8 @@ extern HeroInt2 heroWindowGetSize(HeroWindow* window);
 extern SDL_Window* heroWindowGetSdlWindow(HeroWindow* window);
 extern uint32_t heroWindowGetId(HeroWindow* window);
 extern SDL_GLContext heroWindowGetSdlGlContext(HeroWindow* window);
+extern void heroWindowSetCurrent(HeroWindow* window);
+extern void heroWindowSetBackgroundColor(HeroWindow* window, HeroColor backgroundColor);
 
 extern void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event);
 extern void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void* data));
