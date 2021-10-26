@@ -9,6 +9,8 @@
 #include"H_debug.h"
 #include"H_color.h"
 
+static uint32_t windowCount = 0;
+
 typedef enum
 {
     HERO_WINDOW_SHOWN = 0,
@@ -62,6 +64,7 @@ glCheckError();
     memset(window, 0, sizeof(HeroWindow));
     
     // Create window object
+    SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, windowCount);
     window->sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 glCheckError();
     // Check if window object was correctly created
@@ -92,10 +95,12 @@ glCheckError();
     // Create OpenGL context
     window->glContext = SDL_GL_CreateContext(window->sdlWindow);
 glCheckError();
+if(windowCount == 0){
     glewExperimental = GL_TRUE;
     glCheckError();
     // Initialize glew
     glewInit();
+}
     glCheckError();
     // Create viewport
     glViewport(0,0,width, height);
@@ -103,6 +108,8 @@ glCheckError();
      window->shown = true;
 
     window->backgroundColor = (HeroColor){255,255,255,255};
+
+    windowCount++;
 
     return window;
 }
@@ -263,14 +270,17 @@ void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*fu
 void heroWindowSetCurrent(HeroWindow* window)
 {
   HeroColor* color = &window->backgroundColor;
-  glClearColor((float)color->r/255.0f,(float)color->g/255.0f,(float)color->b/255.0f,(float)color->a/255.0f);
-  
+//   glClearColor((float)color->r/255.0f,(float)color->g/255.0f,(float)color->b/255.0f,(float)color->a/255.0f);
+  //printf("%d %d\n",window->size.x,window->size.y);
   SDL_GL_MakeCurrent(window->sdlWindow, window->glContext);
+  //glViewport(0,0,window->size.x,window->size.y);
 }
 
 void heroWindowSetBackgroundColor(HeroWindow* window, HeroColor backgroundColor)
 {
     window->backgroundColor = backgroundColor;
+      glClearColor((float)backgroundColor.r/255.0f,(float)backgroundColor.g/255.0f,(float)backgroundColor.b/255.0f,(float)backgroundColor.a/255.0f);
+
 }
 
 void heroWindowSetTitle(HeroWindow* window, const char* title)

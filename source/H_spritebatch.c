@@ -39,6 +39,10 @@ typedef struct
 
     const HeroShader* shader;
     uint32_t shaderTexturesLocation;
+
+    uint32_t viewLoc;
+    HeroMatrix4x4 viewMatrix;
+    int *sampler;
 } HeroSpriteBatch;
 
 
@@ -98,19 +102,17 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
     heroShaderBind(shader);
 
     spriteBatch->shaderTexturesLocation = heroShaderGetUniformLocation(shader, "sb_textures");
-    uint32_t viewLoc = heroShaderGetUniformLocation(shader, "view");
+    spriteBatch->viewLoc = heroShaderGetUniformLocation(shader, "view");
 
     HeroInt2 windowSize = heroWindowGetSize(window);
 
-    HeroMatrix4x4 view = heroMathPixelScreenMatrix(windowSize.x, windowSize.y, 0.00f, 100.0f);
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float*)(&(view.col[0])));
+    spriteBatch->viewMatrix = heroMathPixelScreenMatrix(windowSize.x, windowSize.y, 0.00f, 100.0f);
 
-    int sampler[maxTextures];
+    spriteBatch->sampler = (int*)malloc(maxTextures * sizeof(int));
     for(int i = 0; i < maxTextures; i++)
     {
-        sampler[i] = i;
+        spriteBatch->sampler[i] = i;
     }
-    glUniform1iv(spriteBatch->shaderTexturesLocation, maxTextures, sampler);
 
     return spriteBatch;
 }
@@ -124,10 +126,16 @@ void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch)
     glDeleteBuffers(1, &spriteBatch->EBO);
 
     free(spriteBatch->quadBuffer);
+    free(spriteBatch->sampler);
+    free(spriteBatch);
 }
 
 void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch)
 {
+    heroShaderBind(spriteBatch->shader);
+    glUniformMatrix4fv(spriteBatch->viewLoc, 1, GL_FALSE, (float*)(&(spriteBatch->viewMatrix.col[0])));
+    glUniform1iv(spriteBatch->shaderTexturesLocation, spriteBatch->maxTextureSlots, spriteBatch->sampler);
+
     spriteBatch->quadBufferPtr = spriteBatch->quadBuffer;
 }
 
@@ -136,8 +144,6 @@ void heroSpriteBatchEnd(HeroSpriteBatch* spriteBatch)
     GLsizeiptr size = (uint8_t*)spriteBatch->quadBufferPtr - (uint8_t*)spriteBatch->quadBuffer;
     glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, spriteBatch->quadBuffer);
-
-    heroShaderBind(spriteBatch->shader);
 
     for(int i = 0; i < spriteBatch->textureSlotIndex; i++)
     {
