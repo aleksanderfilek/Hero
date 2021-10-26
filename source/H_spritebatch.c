@@ -9,6 +9,7 @@
 #include"H_math.h"
 #include"H_color.h"
 #include"H_window.h"
+#include"H_debug.h"
 
 typedef struct
 {
@@ -47,14 +48,14 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
     spriteBatch->spriteCapacity = capacity;
     spriteBatch->quadBuffer = (_HeroVertex*)malloc(4 * capacity * sizeof(_HeroVertex));
     spriteBatch->quadBufferPtr = spriteBatch->quadBuffer;
-
+    
     glCreateVertexArrays(1, &spriteBatch->VAO);
     glBindVertexArray(spriteBatch->VAO);
 
     glCreateBuffers(1, &spriteBatch->VBO);
     glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->VBO);
     glBufferData(GL_ARRAY_BUFFER, 4 * capacity * sizeof(_HeroVertex), NULL, GL_DYNAMIC_DRAW);  
-    
+
     glEnableVertexArrayAttrib(spriteBatch->VAO, 0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_HeroVertex), (const void*)0);
 
@@ -95,6 +96,7 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
 
     spriteBatch->shader = shader;
     heroShaderBind(shader);
+
     spriteBatch->shaderTexturesLocation = heroShaderGetUniformLocation(shader, "sb_textures");
     uint32_t viewLoc = heroShaderGetUniformLocation(shader, "view");
 
@@ -109,8 +111,6 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
         sampler[i] = i;
     }
     glUniform1iv(spriteBatch->shaderTexturesLocation, maxTextures, sampler);
-
-
 
     return spriteBatch;
 }

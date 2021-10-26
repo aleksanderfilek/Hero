@@ -49,19 +49,21 @@ void heroWindowDestroy(void* ptr);
 
 HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
 {
+  glCheckError();
+  
     // init window
     if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {
         printf("Window: SDL_Init %s\n", SDL_GetError());
         exit(-1);
     }
-
+glCheckError();
     HeroWindow* window = (HeroWindow*)malloc(sizeof(HeroWindow));
     memset(window, 0, sizeof(HeroWindow));
     
     // Create window object
     window->sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
-
+glCheckError();
     // Check if window object was correctly created
     if(window->sdlWindow == NULL){
         printf("Window could not be created! SDL Error: %s\n",SDL_GetError());
@@ -86,16 +88,18 @@ HeroWindow* heroWindowInit(const char *title, int width, int height, int flags)
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
                         SDL_GL_CONTEXT_PROFILE_CORE);
-
+glCheckError();
     // Create OpenGL context
     window->glContext = SDL_GL_CreateContext(window->sdlWindow);
-
+glCheckError();
     glewExperimental = GL_TRUE;
+    glCheckError();
     // Initialize glew
     glewInit();
+    glCheckError();
     // Create viewport
     glViewport(0,0,width, height);
-
+glCheckError();
      window->shown = true;
 
     window->backgroundColor = (HeroColor){255,255,255,255};
