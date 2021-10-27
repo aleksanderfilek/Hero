@@ -45,10 +45,10 @@ extern SDL_GLContext heroWindowGetSdlGlContext(HeroWindow* window);
 extern void heroWindowSetCurrentContext(HeroWindow* window);
 extern void heroWindowSetBackgroundColor(HeroWindow* window, HeroColor backgroundColor);
 extern void heroWindowSetTitle(HeroWindow* window, const char* title);
-extern void heroWindowIsShown(HeroWindow* window);
-extern void heroWindowIsMinimized(HeroWindow* window);
-extern void heroWindowIsFocused(HeroWindow* window);
-extern void heroWindowIsMouseHovering(HeroWindow* window);
+extern bool heroWindowIsShown(HeroWindow* window);
+extern bool heroWindowIsMinimized(HeroWindow* window);
+extern bool heroWindowIsFocused(HeroWindow* window);
+extern bool heroWindowIsMouseHovering(HeroWindow* window);
 
 extern void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event);
 extern void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void** data));
