@@ -1,4 +1,4 @@
-#include"H_math.h"
+#include"Hero/H_math.h"
 #include<math.h>
 #include<stdlib.h>
 

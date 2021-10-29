@@ -1,6 +1,15 @@
 {
   "files.associations": {
     "h_debug.h": "c",
-    "h_mouse.h": "c"
+    "h_mouse.h": "c",
+    "h_headers.h": "c",
+    "h_audiotypes.h": "c",
+    "h_window.h": "c",
+    "h_keycode.h": "c",
+    "h_math.h": "c",
+    "h_texture.h": "c",
+    "h_shader.h": "c",
+    "h_color.h": "c",
+    "h_font.h": "c"
   }
 }

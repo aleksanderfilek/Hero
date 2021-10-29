@@ -3,8 +3,8 @@
 #include<stdint.h>
 #include<string.h>
 
-#include"H_headers.h"
-#include"H_window.h"
+#include"Hero/H_headers.h"
+#include"Hero/H_window.h"
 
 typedef struct
 {

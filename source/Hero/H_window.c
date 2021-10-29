@@ -4,10 +4,10 @@
 #include<string.h>
 #include<stdio.h>
 
-#include"H_headers.h"
-#include"H_math.h"
-#include"H_debug.h"
-#include"H_color.h"
+#include"Hero/H_headers.h"
+#include"Hero/H_math.h"
+#include"Hero/H_debug.h"
+#include"Hero/H_color.h"
 
 static uint32_t windowCount = 0;
 

@@ -3,9 +3,9 @@
 #include<stdint.h>
 #include<stdbool.h>
 
-#include"H_headers.h"
-#include"H_debug.h"
-#include"H_audiotypes.h"
+#include"Hero/H_headers.h"
+#include"Hero/H_debug.h"
+#include"Hero/H_audiotypes.h"
 
 typedef struct
 {

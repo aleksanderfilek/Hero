@@ -3,13 +3,13 @@
 #include<string.h>
 #include<stdlib.h>
 
-#include"H_headers.h"
-#include"H_texture.h"
-#include"H_shader.h"
-#include"H_math.h"
-#include"H_color.h"
-#include"H_window.h"
-#include"H_debug.h"
+#include"Hero/H_headers.h"
+#include"Hero/H_texture.h"
+#include"Hero/H_shader.h"
+#include"Hero/H_math.h"
+#include"Hero/H_color.h"
+#include"Hero/H_window.h"
+#include"Hero/H_debug.h"
 
 typedef struct
 {

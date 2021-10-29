@@ -3,9 +3,9 @@
 #include<stdlib.h>
 #include<string.h>
 
-#include"H_headers.h"
-#include"H_mouse.h"
-#include"H_keycode.h"
+#include"Hero/H_headers.h"
+#include"Hero/H_mouse.h"
+#include"Hero/H_keycode.h"
 
 typedef struct
 {

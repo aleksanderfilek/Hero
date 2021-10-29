@@ -2,8 +2,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include"H_headers.h"
-#include"H_debug.h"
+
+#include"Hero/H_headers.h"
+#include"Hero/H_debug.h"
 
 typedef struct 
 {
