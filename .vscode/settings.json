@@ -10,6 +10,9 @@
     "h_texture.h": "c",
     "h_shader.h": "c",
     "h_color.h": "c",
-    "h_font.h": "c"
+    "h_font.h": "c",
+    "wchar.h": "c",
+    "direct.h": "c",
+    "stdio.h": "c"
   }
 }

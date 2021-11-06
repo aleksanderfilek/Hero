@@ -116,18 +116,23 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
 
     return spriteBatch;
 }
-
+#include<stdio.h>
 void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch)
 {
+    printf("ok1\n");
     free(spriteBatch->textureSlots);
+    printf("ok2\n");
 
     glDeleteVertexArrays(1, &spriteBatch->VAO);
     glDeleteBuffers(1, &spriteBatch->VBO);
     glDeleteBuffers(1, &spriteBatch->EBO);
+    printf("ok3\n");
 
-    free(spriteBatch->quadBuffer);
-    free(spriteBatch->sampler);
-    free(spriteBatch);
+    free(spriteBatch->quadBuffer);    printf("ok4\n");
+
+    free(spriteBatch->sampler);    printf("ok5\n");
+
+    free(spriteBatch);printf("end\n");
 }
 
 void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch)
@@ -167,7 +172,7 @@ void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture*
 
     float textureIndex = 0.0f;
     // check registred texture
-    for(int i = 1; i < spriteBatch->maxTextureSlots; i++)
+    for(int i = 0; i < spriteBatch->maxTextureSlots; i++)
     {
         if(spriteBatch->textureSlots[i] == texture)
         {
@@ -222,7 +227,7 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
 
     float textureIndex = 0.0f;
     // check registred texture
-    for(int i = 1; i < spriteBatch->maxTextureSlots; i++)
+    for(int i = 0; i < spriteBatch->maxTextureSlots; i++)
     {
         if(spriteBatch->textureSlots[i] == texture)
         {

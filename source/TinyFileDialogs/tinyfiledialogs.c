@@ -78,6 +78,7 @@ Thanks for contributions, bug corrections & thorough testing to:
  #include <shlobj.h>
  #include <conio.h>
  #include <direct.h>
+ 
  #define TINYFD_NOCCSUNICODE
  #define SLASH "\\"
 #else
@@ -100,14 +101,15 @@ Thanks for contributions, bug corrections & thorough testing to:
 #define LOW_MULTIPLE_FILES 32
 
 char tinyfd_version[8] = "3.8.8";
-
 /******************************************************************************************************/
 /**************************************** UTF-8 on Windows ********************************************/
 /******************************************************************************************************/
 #ifdef _WIN32
+
+
 /* if you want to use UTF-8 ( instead of the UTF-16/wchar_t functions at the end of tinyfiledialogs.h )
 Make sure your code is really prepared for UTF-8 (on windows, functions like fopen() expect MBCS and not UTF-8) */
-int tinyfd_winUtf8 = 1; /* on windows char strings can be 1:UTF-8(default) or 0:MBCS */
+int tinyfd_winUtf8 = 0; /* on windows char strings can be 1:UTF-8(default) or 0:MBCS */
 /* for MBCS change this to 0, here or in your code */
 #endif
 /******************************************************************************************************/
@@ -560,7 +562,7 @@ static int sizeUtf16FromMbcs(char const * aMbcsString)
 		aMbcsString, -1, NULL, 0);
 }
 
-
+//typedef unsigned short wchar_t;
 static int sizeUtf8(wchar_t const * aUtf16string)
 {
 	return WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS,

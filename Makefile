@@ -15,7 +15,7 @@ ifeq ($(OS),windows)
 	MKDIR = mkdir
 	COPY = xcopy /s /e
 	IFEXIST = if exist
-	LIBS = -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_mixer -lsoil -lglew32 -lopengl32 -lglu32 -lm
+	LIBS = -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_mixer -lsoil -lglew32 -lopengl32 -lglu32 -lm -lcomdlg32 -lole32
 	EXTENSION = dll
 else
 	OS = linux
@@ -33,21 +33,21 @@ build: compile link clean
 
 compile:
 ifeq ($(OS),windows)
-
+	$(CC) -g -D DEBUG -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
 else
 	$(CC) -g -D DEBUG -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
 endif
 
 link:
 ifeq ($(OS),windows)
-
+	$(CC) -g -D DEBUG -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
 else
 	$(CC) -g -D DEBUG -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
 endif
 
 clean:
 ifeq ($(OS),windows)
-
+	$(RM) *.o
 else
 	$(RM) *.o
 endif

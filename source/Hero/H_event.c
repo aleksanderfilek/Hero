@@ -24,6 +24,7 @@ HeroEvent* heroEventInit()
 
 void heroEventUpdate(HeroEvent* event)
 {
+    
     while(SDL_PollEvent(&event->sdlEvent) != 0){
         for(int i = 0; i < event->windowNumber; i++)
         {
