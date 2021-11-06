@@ -116,23 +116,18 @@ HeroSpriteBatch* heroSpriteBatchInit(HeroWindow* window, uint32_t capacity, uint
 
     return spriteBatch;
 }
-#include<stdio.h>
+
 void heroSpriteBatchDestroy(HeroSpriteBatch* spriteBatch)
 {
-    printf("ok1\n");
     free(spriteBatch->textureSlots);
-    printf("ok2\n");
 
     glDeleteVertexArrays(1, &spriteBatch->VAO);
     glDeleteBuffers(1, &spriteBatch->VBO);
     glDeleteBuffers(1, &spriteBatch->EBO);
-    printf("ok3\n");
 
-    free(spriteBatch->quadBuffer);    printf("ok4\n");
-
-    free(spriteBatch->sampler);    printf("ok5\n");
-
-    free(spriteBatch);printf("end\n");
+    free(spriteBatch->quadBuffer);
+    free(spriteBatch->sampler);
+    free(spriteBatch);
 }
 
 void heroSpriteBatchBegin(HeroSpriteBatch* spriteBatch)
@@ -170,9 +165,9 @@ void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture*
         heroSpriteBatchBegin(spriteBatch);
     }
 
-    float textureIndex = 0.0f;
+    float textureIndex = -1.0f;
     // check registred texture
-    for(int i = 0; i < spriteBatch->maxTextureSlots; i++)
+    for(int i = 0; i <= spriteBatch->textureSlotIndex; i++)
     {
         if(spriteBatch->textureSlots[i] == texture)
         {
@@ -182,7 +177,7 @@ void heroSpriteBatchDrawTexture(HeroSpriteBatch* spriteBatch, const HeroTexture*
     }
 
     // // add texture if not registered
-    if(textureIndex == 0.0f)
+    if(textureIndex == -1.0f)
     {
         textureIndex = spriteBatch->textureSlotIndex;
         spriteBatch->textureSlots[spriteBatch->textureSlotIndex] = (HeroTexture*)texture;
@@ -225,9 +220,9 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
         heroSpriteBatchBegin(spriteBatch);
     }
 
-    float textureIndex = 0.0f;
+    float textureIndex = -1.0f;
     // check registred texture
-    for(int i = 0; i < spriteBatch->maxTextureSlots; i++)
+    for(int i = 0; i < spriteBatch->textureSlotIndex; i++) // why it needs to be  i = 1???
     {
         if(spriteBatch->textureSlots[i] == texture)
         {
@@ -237,7 +232,7 @@ void heroSpriteBatchDrawTextureEx(HeroSpriteBatch* spriteBatch, const HeroTextur
     }
 
     // // add texture if not registered
-    if(textureIndex == 0.0f)
+    if(textureIndex == -1.0f)
     {
         textureIndex = spriteBatch->textureSlotIndex;
         spriteBatch->textureSlots[spriteBatch->textureSlotIndex] = (HeroTexture*)texture;
