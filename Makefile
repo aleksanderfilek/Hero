@@ -7,6 +7,14 @@ LIBDIR = lib
 SOURCES = source/Hero/*.c source/TinyFileDialogs/*.c
 OBJECTS = *.o
 BUILDDIR = lib/windows
+VER ?= debug
+VERFLAGS ?= -g -D DEBUG
+VEREXT ?= d
+
+ifeq ($(VER), release)
+	VERFLAGS = -O3
+	VEREXT = 
+endif
 
 
 ifeq ($(OS),windows)
@@ -22,7 +30,6 @@ else
 	RM = rm -rf
 	RMDIR = rm -rf
 	MKDIR = mkdir -p
-	IFEXIST = 
 	COPY = cp -R
 	LIBS = -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_mixer -lSOIL -lGLEW -lGL -lGLU -lm
 	EXTENSION = so
@@ -33,16 +40,16 @@ build: compile link clean
 
 compile:
 ifeq ($(OS),windows)
-	$(CC) -g -D DEBUG -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
+	$(CC) $(VERFLAGS) -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
 else
-	$(CC) -g -D DEBUG -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
+	$(CC) $(VERFLAGS) -c -I$(INCDIR) -L$(LIBDIR)/$(OS) $(SOURCES) -fPIC $(LIBS)
 endif
 
 link:
 ifeq ($(OS),windows)
-	$(CC) -g -D DEBUG -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
+	$(CC) $(VERSIONFLAGS) -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET)$(VEREXT).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
 else
-	$(CC) -g -D DEBUG -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
+	$(CC) $(VERSIONFLAGS) -I$(INCDIR) -L$(LIBDIR)/$(OS) -o $(BUILDDIR)/$(TARGET)$(VEREXT).$(EXTENSION) $(OBJECTS) -shared $(LIBS)
 endif
 
 clean:
