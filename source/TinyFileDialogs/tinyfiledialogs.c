@@ -65,7 +65,7 @@ Thanks for contributions, bug corrections & thorough testing to:
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
-
+#define SLASH "/"
 #ifdef _WIN32
  #ifdef __BORLANDC__
   #define _getch getch
@@ -80,7 +80,6 @@ Thanks for contributions, bug corrections & thorough testing to:
  #include <direct.h>
  
  #define TINYFD_NOCCSUNICODE
- #define SLASH "\\"
 #else
  #include <limits.h>
  #include <unistd.h>
@@ -88,7 +87,6 @@ Thanks for contributions, bug corrections & thorough testing to:
  #include <termios.h>
  #include <sys/utsname.h>
  #include <signal.h> /* on old systems try <sys/signal.h> instead */
- #define SLASH "/"
 #endif /* _WIN32 */
 
 #include "TinyFileDialogs/tinyfiledialogs.h"
@@ -6944,7 +6942,7 @@ frontmost of process \\\"Python\\\" to true' ''');");
 		lBuff = (char *)( realloc( lBuff, (strlen(lBuff)+1) * sizeof(char)));
 
         /*printf( "lBuff3: %s\n" , lBuff ) ; */
-		return lBuff ;
+	return lBuff ;
 }
 
 

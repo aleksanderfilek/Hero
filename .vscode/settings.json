@@ -13,6 +13,7 @@
     "h_font.h": "c",
     "wchar.h": "c",
     "direct.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "tinyfiledialogs.h": "c"
   }
 }
