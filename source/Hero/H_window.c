@@ -258,6 +258,11 @@ void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event)
     }
 }
 
+void heroWindowRender(HeroWindow* window)
+{
+    SDL_GL_SwapWindow(window->sdlWindow);
+}
+
 void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void** data))
 {
     window->eventFunc[event] = func;

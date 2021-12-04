@@ -49,6 +49,7 @@ extern bool heroWindowIsShown(HeroWindow* window);
 extern bool heroWindowIsMinimized(HeroWindow* window);
 extern bool heroWindowIsFocused(HeroWindow* window);
 extern bool heroWindowIsMouseHovering(HeroWindow* window);
+extern void heroWindowRender(HeroWindow* window);
 
 extern void heroWindowHandleEvents(HeroWindow* window, SDL_Event* event);
 extern void heroWindowSetEvent(HeroWindow* window, HeroWindowEventType event, void (*func)(void** data));
