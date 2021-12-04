@@ -24,3 +24,8 @@ char * heroFileSaveDialogOpen(char const * aTitle, char const * aDefaultPathAndF
 {
     return tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, aSingleFilterDescription);
 }
+
+char * heroFileInputBox(char const* aTitle, char const* aMessage, char const* aDefaultInput)
+{
+    return tinyfd_inputBox(aTitle, aMessage, aDefaultInput);
+}
