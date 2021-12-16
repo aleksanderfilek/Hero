@@ -113,9 +113,9 @@ HeroShader* heroShaderLoad(const char* vertexShader, const char* fragmentShader)
     return shader;
 }
 
-void heroShaderUnload(HeroShader* shader)
+void heroShaderUnload(void* shader)
 {
-    glDeleteProgram(shader->glID);
+    glDeleteProgram(((HeroShader*)shader)->glID);
     free(shader);
 }
 

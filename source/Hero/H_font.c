@@ -17,7 +17,7 @@ HeroFont* heroFontLoad(const char* path, int size)
     return font;
 }
 
-void heroFontUnload(HeroFont* font)
+void heroFontUnload(void* font)
 {
-    TTF_CloseFont(font);
+    TTF_CloseFont((HeroFont*)font);
 }

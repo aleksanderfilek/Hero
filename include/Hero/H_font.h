@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 extern HeroFont* heroFontLoad(const char* path, int size);
-extern void heroFontUnload(HeroFont* font);
+extern void heroFontUnload(void* font);
 
 #ifdef __cplusplus
 }

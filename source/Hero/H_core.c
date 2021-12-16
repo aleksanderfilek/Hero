@@ -51,11 +51,15 @@ HeroCore* heroCoreInit()
     memset(core, 0, sizeof(HeroCore));
     core->quit = false;
 
+    printf("[Core] Init\n");
+
     return core;
 }
 
 void heroCoreStart(HeroCore* core)
 {
+    printf("[Core] Start\n");
+
     uint32_t timer;
 
     while (core->quit == false)
@@ -91,6 +95,7 @@ void heroCoreStart(HeroCore* core)
 
 void heroCoreClose(HeroCore* core)
 {
+    printf("[Core] Close\n");
     core->quit = true;
 }
 
@@ -128,6 +133,7 @@ void heroCoreModuleAdd(HeroCore* core, char* name, void* data,
         module->destroy = destroy;
 
         modules->names[i] = name;
+        printf("[Core] Module %s added\n", name);
         return;
     }
 
@@ -142,10 +148,14 @@ void heroCoreModuleAdd(HeroCore* core, char* name, void* data,
     module->destroy = destroy;
     modules->names[modules->length] = name;
     modules->length++;
+
+    printf("[Core] Module %s added\n", name);
 }
 
 void* heroCoreModuleGet(HeroCore* core, const char* name)
-{
+{   
+    printf("[Core] Module %s ", name);
+
     ModuleSet* modules = &core->modules;
 
     for(int i = 0; i < modules->length; i++)
@@ -154,10 +164,11 @@ void* heroCoreModuleGet(HeroCore* core, const char* name)
         {
             continue;
         }
-
+        printf("found\n");
         return modules->module[i].data;
     }
 
+    printf("not found\n");
     return NULL;
 }
 
@@ -177,6 +188,8 @@ void heroCoreModuleRemove(HeroCore* core, const char* name)
         Module* module = &modules->module[i];
 
         DeleteModule(core, module, i);
+
+        printf("[Core] Module %s removed\n", modules->names[i]);
 
         return;
     }
