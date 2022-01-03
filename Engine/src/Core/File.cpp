@@ -1,4 +1,4 @@
-#include"Core/HeroFile.hpp"
+#include"File.hpp"
 
 #include"../../inc/TinyFileDialogs/tinyfiledialogs.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include"HeroSid.hpp"
+#include"Sid.hpp"
 
 #include<iostream>
 
@@ -18,37 +18,18 @@ protected:
     uint32_t priority = 127;
 
 public:
-    ISystem(Sid _sid):sid(_sid){}
+    ISystem(const Sid& _sid):sid(_sid){}
     virtual ~ISystem(){};
+
+    virtual void init();
+    virtual void update();
+    virtual void close();
+
+    void printMessage(const std::string& msg);
 
     inline std::string getName() { return sid.getName(); }
     inline Sid getSid(){ return sid; }
-
-    virtual void init()
-    {   
-        inited = true;
-        #ifdef HERO_DEBUG 
-        std::cout<<"["<<sid.getName()<<"] - Initializing"<<std::endl; 
-        #endif 
-    }
-
-    virtual void update(){};
-
-    virtual void close()
-    { 
-        #ifdef HERO_DEBUG 
-        std::cout<<"["<<sid.getName()<<"] - Closing"<<std::endl; 
-        #endif
-    }
-    
     uint32_t getPriority(){ return priority; }
-
-    inline void printMessage(const std::string& msg)
-    { 
-        #ifdef HERO_DEBUG
-        std::cout<<"["<<sid.getName()<<"] - "<<msg<<std::endl; 
-        #endif
-    }
 };
 
 }

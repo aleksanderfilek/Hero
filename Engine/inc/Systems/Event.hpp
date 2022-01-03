@@ -1,8 +1,8 @@
 #pragma once
 
-#include"../Core/HeroSystem.hpp"
-#include"../ThirdParty.hpp"
-#include"../Core/HeroSid.hpp"
+#include"ISystem.hpp"
+#include"ThirdParty.hpp"
+#include"Sid.hpp"
 
 #include<vector>
 
@@ -20,7 +20,7 @@ private:
     std::vector<Window*> windows;
 
 public:
-    Event(Sid sid);
+    Event(const Sid& sid);
     ~Event();
 
     void init();

@@ -3,7 +3,15 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Engine/inc/Core/**",
+                "${workspaceFolder}/Engine/inc/Animation/**",
+                "${workspaceFolder}/Engine/inc/Components/**",
+                "${workspaceFolder}/Engine/inc/Graphics/**",
+                "${workspaceFolder}/Engine/inc/Physics/**",
+                "${workspaceFolder}/Engine/inc/Systems/**",
+                "${workspaceFolder}/Engine/inc/UserInterface/**",
+                "${workspaceFolder}/Engine/inc/Utility/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

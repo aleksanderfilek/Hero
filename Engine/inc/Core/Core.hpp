@@ -4,12 +4,12 @@
 #include<vector>
 #include<typeinfo>
 
-#include"HeroSid.hpp"
-#include"HeroSystem.hpp"
-#include"HeroTime.hpp"
-
 namespace Hero
 {
+
+struct  Sid;
+class ISystem;
+class Time;
 
 class Core
 {
@@ -19,7 +19,7 @@ private:
     std::vector<ISystem*> systems;
     bool running = false;
 
-    Time time;
+    Time* time;
 public:
     Core();
     ~Core();
@@ -32,19 +32,7 @@ public:
 
     bool addSystem(ISystem* newSystem);
     bool removeSystem(Sid sid);
-
-    static ISystem* getSystem(Sid sid)
-    {
-        for(ISystem* sys: instance->systems)
-        {
-            if(sid == sys->sid)
-            {
-                return sys;
-            }
-        }
-
-        return nullptr;
-    }
+    ISystem* getSystem(const Sid& sid);
 };
 
 }

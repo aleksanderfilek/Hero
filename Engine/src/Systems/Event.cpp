@@ -1,5 +1,5 @@
-#include"Systems/HeroEventSystem.hpp"
-#include"Systems/HeroWindowSystem.hpp"
+#include"Event.hpp"
+#include"Window.hpp"
 
 #include<sstream>
 
@@ -9,7 +9,7 @@ namespace Hero
 namespace System
 {
 
-Event::Event(Sid sid) : ISystem(sid)
+Event::Event(const Sid& sid) : ISystem(sid)
 {
 
 }

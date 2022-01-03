@@ -1,4 +1,4 @@
-#include"Core/Debug.hpp"
+#include"Debug.hpp"
 
 #include<iostream>
 #include<string>

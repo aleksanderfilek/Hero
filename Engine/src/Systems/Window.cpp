@@ -1,11 +1,11 @@
-#include"Systems/HeroWindowSystem.hpp"
+#include"Window.hpp"
 
 namespace Hero
 {
 namespace System
 {
 
-Window::Window(Sid sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
+Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
 {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {

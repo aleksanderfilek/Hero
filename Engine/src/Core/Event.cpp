@@ -1,4 +1,4 @@
-#include"Core/HeroEvent.hpp"
+#include"Event.hpp"
 
 #include<stdlib.h>
 
