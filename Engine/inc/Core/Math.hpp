@@ -1,5 +1,7 @@
 #pragma once
 
+#include<cstdint>
+
 namespace Hero
 {
 #define PI 3.141596f
