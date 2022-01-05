@@ -1,4 +1,6 @@
 *.out
 *.exe
 *.o
-
+Tools/Builder/src/bin/
+Tools/Builder/src/obj/
+obj/

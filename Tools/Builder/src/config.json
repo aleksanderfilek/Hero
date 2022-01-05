@@ -1,0 +1,21 @@
+{
+    "Name" : "libhero",
+    "Compiler" : "g++",
+    "Debug" : false,
+    "LibsDir" : [
+    ],
+    "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
+        "-lm"
+    ],
+    "Defines" : [
+        "-DHERO_DEBUG"
+    ]
+}
