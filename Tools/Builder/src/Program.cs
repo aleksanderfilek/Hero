@@ -10,9 +10,9 @@ namespace Builder
     {
         static void Main(string[] args)
         {
-            string startDir = args[0];
-            string jsonConfig = File.ReadAllText(Path.Combine(startDir, "config.json"));
-            Config config = JsonSerializer.Deserialize<Config>(jsonConfig);
+            string? startDir = args[0];
+            string? jsonConfig = File.ReadAllText(Path.Combine(startDir, "config.json"));
+            Config? config = JsonSerializer.Deserialize<Config>(jsonConfig);
 
             List<string> headerFiles;
             List<string> sourceFiles;

@@ -10,7 +10,7 @@ namespace Builder
 
 class Compiler
 {
-    public static void run(string startDir, Config config, List<string> headerFiles, List<string> sourceFiles)
+    public static void run(string startDir, Config? config, List<string> headerFiles, List<string> sourceFiles)
     {
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -20,7 +20,7 @@ class Compiler
 
         stopWatch = new Stopwatch();
         stopWatch.Start();
-        link(objectFiles, config);
+        link(startDir, objectFiles, config);
         stopWatch.Stop();
         TimeSpan linkT = stopWatch.Elapsed;
 
@@ -40,8 +40,7 @@ class Compiler
         HashSet<string> incSet = new HashSet<string>();
         foreach(string inc in headerFiles)
         {
-            if(inc == null) continue;
-            string path = Path.GetDirectoryName(inc);
+            string? path = Path.GetDirectoryName(inc);
             if(path == null) continue;
             incSet.Add(path);
         }
@@ -66,10 +65,10 @@ class Compiler
         return builder.ToString();
     }
 
-    private static string combineStringArr(string[] arr)
+    private static string combineStringArr(string[]? arr)
     {
         StringBuilder builder = new StringBuilder();
-        foreach(string str in arr)
+        foreach(string? str in arr)
         {
             builder.AppendFormat("{0} ", str);
         }
@@ -98,7 +97,7 @@ class Compiler
         return "";
     }
 
-    private static List<string> compile(string startDir, Config config, 
+    private static List<string> compile(string? startDir, Config? config, 
         List<string> headerFiles, List<string> sourceFiles)
     {
         Console.WriteLine("Compiling");
@@ -106,17 +105,17 @@ class Compiler
         string incArg = constructIncludes(headerFiles);
         string definesArg = combineStringArr(config.Defines);
         string debugArg = constructDebug(config.Debug);
-        string objPath = startDir + "obj";
+        string? objPath = startDir + "obj";
         List<string> objFiles = new List<string>();
-        List<string> errors = new List<string>();
+        List<string?> errors = new List<string?>();
 
         foreach(string src in sourceFiles)
         {
             StringBuilder builder = new StringBuilder();
 
-            string relativePath = src.Replace(startDir + "src", "");
-            string relativePathO = relativePath.Split(".")[0];
-            string fullObjPath = objPath + "/" + relativePathO + ".o";
+            string? relativePath = src.Replace(Path.Combine(startDir, "src/"), "");
+            string? relativePathO = relativePath.Split(".")[0];
+            string? fullObjPath = objPath + "/" + relativePathO + ".o";
 
             if(!Directory.Exists(Path.GetDirectoryName(fullObjPath)))
             {
@@ -127,7 +126,7 @@ class Compiler
                 debugArg, definesArg, incArg, src, fullObjPath);
             objFiles.Add(fullObjPath);
 
-            Console.WriteLine("Compiling: " + relativePath);
+            Console.Write("Compiling: {0} - ", relativePath);
 
             ProcessStartInfo pStartInfo = new ProcessStartInfo();
 
@@ -138,21 +137,43 @@ class Compiler
             pStartInfo.RedirectStandardError  = false;
             pStartInfo.RedirectStandardOutput = false;
 
+            bool status = true;
             Process proc = new Process();
             proc.StartInfo = pStartInfo;
             proc.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => 
-                { errors.Add(e.Data); });
+            { 
+                errors.Add(e.Data); 
+                status = false;
+            });
 
             proc.Start();
             proc.WaitForExit();
+
+            if(status)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("OK");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("FAILED");
+            }
+            Console.ResetColor();
         }
 
         return objFiles;
     }
 
-    private static void link(List<string> objectFiles, Config config)
+    private static void link(string? startDir,List<string> objectFiles, Config? config)
     {
         Console.WriteLine("Linking");
+
+        string outPath = Path.Combine(startDir, config.OutputDir);
+        if(!Directory.Exists(outPath))
+        {
+            Directory.CreateDirectory(outPath);
+        }
 
         string definesArg = combineStringArr(config.Defines);
         string debugArg = constructDebug(config.Debug);
@@ -161,8 +182,8 @@ class Compiler
         string libsArg = combineStringArr(config.Libs);
 
         StringBuilder builder = new StringBuilder();
-        builder.AppendFormat("{0} {1} {2} {3} -o {4} {5} -shared", 
-            definesArg, debugArg, libsDirArg, objFileArg, config.Name, libsArg);
+        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5} {6} -shared", 
+            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, libsArg);
 
         ProcessStartInfo pStartInfo = new ProcessStartInfo();
 

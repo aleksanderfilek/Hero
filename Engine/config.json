@@ -1,5 +1,6 @@
 {
     "Name" : "libhero.so",
+    "OutputDir": "lib",
     "Compiler" : "g++",
     "Debug" : false,
     "LibsDir" : [
