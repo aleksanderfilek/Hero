@@ -1,5 +1,4 @@
 #include"Font.hpp"
-#include"ThirdParty.hpp"
 
 #include<iostream>
 #include<cstdlib>
@@ -7,7 +6,7 @@
 namespace Hero
 {
 
-Font(const char* _path, uint32_t _size)
+Font::Font(const char* _path, uint32_t _size)
 {
     font = TTF_OpenFont(_path, _size);
 
@@ -18,7 +17,7 @@ Font(const char* _path, uint32_t _size)
     }
 }
 
-~Font()
+Font::~Font()
 {
     TTF_CloseFont(font);
 }

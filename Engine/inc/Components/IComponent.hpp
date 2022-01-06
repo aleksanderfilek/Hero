@@ -13,7 +13,7 @@ namespace Hero
     class IComponentSystem
     {
         protected:
-            std::vector<std::pair<bool, T> data;
+            std::vector<std::pair<bool, T>> data;
             uint32_t usedNumber = 0;
             uint32_t firstEmpty = 0;
 
@@ -22,8 +22,8 @@ namespace Hero
             ~IComponentSystem();
 
             virtual void update();
-            IComponent* add(const T& data);
-            void remove(IComponent* data);
+            IComponent* add(const T& component);
+            void remove(IComponent* component);
 
         private:
 

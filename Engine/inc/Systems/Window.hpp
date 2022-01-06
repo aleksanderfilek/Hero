@@ -1,9 +1,9 @@
 #pragma once
 
-#include"../Core/HeroSystem.hpp"
-#include"../Core/HeroMath.hpp"
-#include"../Core/HeroColor.hpp"
-#include"../Core/HeroEvent.hpp"
+#include"ISystem.hpp"
+#include"Math.hpp"
+#include"Color.hpp"
+#include"Events.hpp"
 #include"../ThirdParty.hpp"
 
 #include<cstdint>
@@ -53,7 +53,7 @@ private:
     EventHandler events[(int)WindowEventType::COUNT];
 
 public:
-    Window(Sid sid, const char *title, int width, int height, int sdlflags = 0);
+    Window(const Sid& sid, const char *title, int width, int height, int sdlflags = 0);
     ~Window();
 
     void init();

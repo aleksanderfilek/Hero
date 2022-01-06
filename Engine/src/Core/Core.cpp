@@ -65,7 +65,7 @@ void Core::start()
         }
 
         deltaTime = (double)(SDL_GetTicks() - timer)/1000.0;
-        time.setDeltaTime(deltaTime);
+        time->setDeltaTime(deltaTime);
     }
 
 

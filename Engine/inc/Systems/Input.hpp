@@ -1,9 +1,8 @@
 #pragma once
+#include"ISystem.hpp"
+#include"ThirdParty.hpp"
 
 #include<cstdint>
-
-#include"Core/HeroSystem.hpp"
-#include"ThirdParty.hpp"
 
 namespace Hero
 {
@@ -23,7 +22,7 @@ public:
     enum Mouse : std::uint8_t;
     enum KeyCode : std::uint16_t;
 
-    Input(Sid sid);
+    Input(const Sid& sid);
     ~Input();
 
     void init();

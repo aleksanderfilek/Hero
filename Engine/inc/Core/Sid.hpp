@@ -22,7 +22,7 @@ struct Sid
         constexpr Sid():id(0) {}
         #endif
 
-        inline std::string getName()
+        inline std::string getName() const
         {
             #ifdef HERO_DEBUG
             return std::string(text);
@@ -32,7 +32,7 @@ struct Sid
             #endif
         }
 
-        inline bool operator== (const Sid &rhs)
+        inline bool operator== (const Sid &rhs) const
         {
             return id == rhs.id;
         }

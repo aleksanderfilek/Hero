@@ -1,10 +1,10 @@
 #pragma once
 
+#include"ThirdParty.hpp"
 #include<cstdint>
 
 namespace Hero
 {
-    struct TTF_Font;
 
     class Font
     {
@@ -17,6 +17,6 @@ namespace Hero
             Font(const char* _path, uint32_t _size);
             ~Font();
 
-            inline TTF_Font* getTTFFont(){ return font };
+            inline TTF_Font* getTTFFont(){ return font; }
     };
 } // namespace Hero

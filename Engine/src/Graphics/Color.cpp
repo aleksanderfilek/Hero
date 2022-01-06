@@ -6,11 +6,11 @@
 namespace Hero
 {
 
-ColorRGB::ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255)
+ColorRGB::ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a)
     :r(_r), g(_g), b(_b), a(_a)
 {}
 
-ColorRGB::ColorRGB(float _r, float _g, float _b, float _a = 1.0f)
+ColorRGB::ColorRGB(float _r, float _g, float _b, float _a)
 {
     r = (float)_r/255.0f;
     g = (float)_g/255.0f;
@@ -18,15 +18,15 @@ ColorRGB::ColorRGB(float _r, float _g, float _b, float _a = 1.0f)
     a = (float)_a/255.0f;
 }
 
-ColorRGB::ColroRGB(const ColorRGB& obj)
+ColorRGB::ColorRGB(const ColorRGB& obj)
     :r(obj.r), g(obj.g), b(obj.b), a(obj.a)
 {}
 
-ColorRGB::ColorHSV convertToHSV()
+ColorHSV ColorRGB::convertToHSV() const
 {
-    float tr = (float)_r/255.0f;
-    float tg = (float)_g/255.0f;
-    float tb = (float)_b/255.0f;
+    float tr = (float)r/255.0f;
+    float tg = (float)g/255.0f;
+    float tb = (float)b/255.0f;
 
     float cmax = 0.0f, cmin = 0.0f;
     cmax = max(tr, max(tg, tb));
@@ -42,21 +42,21 @@ ColorRGB::ColorHSV convertToHSV()
     {
         h = (tg - tb);
         h /= delta;
-        h %= 6;
+        h = fmod(h, 6);
         h *= 60.0f;
     }
     else if(cmax == tg)
     {
         h = (tb - tr);
         h /= delta;
-        h %= 2;
+        h = fmod(h, 2);
         h *= 60.0f;
     }
     else if(cmax == tb)
     {
         h = (tr - tg);
         h /= delta;
-        h %= 4;
+        h = fmod(h, 4);
         h *= 60.0f;
     }
 
@@ -67,7 +67,7 @@ ColorRGB::ColorHSV convertToHSV()
     return ColorHSV(h, s, v, a);
 }
 
-ColorHSV::ColorHSV(float _h, float _s, float _v, float _a)
+ColorHSV::ColorHSV(float _h, float _s, float _v, uint8_t _a)
     :h(_h), s(_s), v(_v), a(_a)
 {}
 
@@ -79,7 +79,7 @@ ColorHSV::ColorHSV(const ColorHSV& obj)
 ColorRGB ColorHSV::convertToRGB() const
 {
     float c = v*s;
-    float x = c * (1 - fabs( ((h/60.0f)%2) - 1);
+    float x = c * (1 - fabs( fmod(h/60.0f,2.0f) - 1));
     uint8_t m = v - c;
 
     int region = (int)(h / 60.0f);
@@ -118,9 +118,9 @@ ColorRGB ColorHSV::convertToRGB() const
             break;
     }
 
-    uint8_t r = (uint8_t((tr+m)*255.0f);
-    uint8_t g = (uint8_t((tg+m)*255.0f);
-    uint8_t b = (uint8_t((tb+m)*255.0f);
+    uint8_t r = (uint8_t)((tr+m)*255.0f);
+    uint8_t g = (uint8_t)((tg+m)*255.0f);
+    uint8_t b = (uint8_t)((tb+m)*255.0f);
 
     return ColorRGB(r,g,b,a);
 }

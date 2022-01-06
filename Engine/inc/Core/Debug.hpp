@@ -6,7 +6,13 @@ namespace Hero
 {
 
 extern GLenum glCheckError_(const char *file, int line);
-#define glCheckError() glCheckError_(__FILE__, __LINE__) 
+inline  GLenum glCheckError()
+{
+    #ifdef HERO_DEBUG
+    glCheckError_(__FILE__, __LINE__);
+    #endif
+    return 0;
+}
 
 extern GLint glShaderCheckError_(GLuint shader, GLenum pname ,const char *file, int line);
 #define glShaderCheckError(shader, type) glShaderCheckError_(shader, type, __FILE__, __LINE__) 

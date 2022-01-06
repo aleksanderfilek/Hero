@@ -17,7 +17,7 @@ class ColorRGB
 
         ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255);
         ColorRGB(float _r, float _g, float _b, float _a = 1.0f);
-        ColroRGB(const ColorRGB& obj);
+        ColorRGB(const ColorRGB& obj);
 
         ColorHSV convertToHSV() const;
         inline SDL_Color convertToSDLColor() const 

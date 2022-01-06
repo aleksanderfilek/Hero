@@ -3,8 +3,7 @@
 namespace Hero
 {
 template<typename T>
-IComponentSystem<T>::IComponentSystem(uint32_t _startSize = 1, 
-    uint32_t _chunkSize = 1)
+IComponentSystem<T>::IComponentSystem(uint32_t _startSize , uint32_t _chunkSize)
 {
     data.reserve(_startSize);
     chunkSize = _chunkSize;
@@ -15,7 +14,7 @@ IComponentSystem<T>::~IComponentSystem()
 {
     for(auto component: data)
     {
-        close(&component.second);
+        dataClose(&component.second);
     }
 
     data.clear();
@@ -29,15 +28,15 @@ void IComponentSystem<T>::update()
         if(!component.first)
             continue;
 
-        update(&component.second);
+        dataUpdate(&component.second);
     }
 } 
 
 template<typename T>
-IComponent* IComponentSystem<T>::add(const T& data)
+IComponent* IComponentSystem<T>::add(const T& component)
 {
     uint32_t index = firstEmpty;
-    std::pair<bool, T> element(true, data);
+    std::pair<bool, T> element(true, component);
     
     element.second.index = this;
     element.second.index = index;
@@ -45,7 +44,7 @@ IComponent* IComponentSystem<T>::add(const T& data)
     usedNumber++;
     dataInit(&data.at(index).second);
 
-    if(data.size() =< usedNumber)
+    if(data.size() <= usedNumber)
     {
         data.resize(usedNumber + chunkSize);
     }
@@ -63,14 +62,14 @@ IComponent* IComponentSystem<T>::add(const T& data)
 }
 
 template<typename T>
-void IComponentSystem<T>::remove(IComponent* data)
+void IComponentSystem<T>::remove(IComponent* component)
 {
-    data.at(data->index).first = false;
+    data.at(component->index).first = false;
     usedNumber--;
     
-    if(data->index < firstEmpty)
+    if(component->index < firstEmpty)
     {
-        firstEmpty = data->index;
+        firstEmpty = component->index;
     }
 }
 
