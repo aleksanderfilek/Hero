@@ -4,16 +4,18 @@
 
 #include<iostream>
 #include<fstream>
+#include<vector>
 
 namespace Hero
 {
 
-Shader::Shader(const char* _name)
+Shader::Shader(const std::string& _name)
 {
     uint32_t program = glCreateProgram();
     uint32_t vertex = 0, fragment = 0;
     
     uint32_t uniformNumber;
+    std::vector<std::string> uniformVec;
     uint8_t flags;
     uint32_t size;
     char* content;
@@ -24,8 +26,20 @@ Shader::Shader(const char* _name)
     std::ifstream file(_name, std::ios::binary);
 
     file.read((char*)&uniformNumber, sizeof(uint32_t));
+
+    for(int i = 0; i < uniformNumber; i++)
+    {
+        file.read((char*)&size, sizeof(uint32_t));
+        content = new char[size];
+        file.read(content, size * sizeof(char));
+
+        std::string uniform(content);
+        uniformVec.push_back(uniform);
+
+        delete content;
+    }
+
     file.read((char*)&flags, sizeof(uint8_t));
-    file.read((char*)&size, sizeof(uint32_t));
 
     for(int i = 0; i < 5; i++)
     {
@@ -81,6 +95,13 @@ Shader::Shader(const char* _name)
     }
 
     file.close();
+
+    glUseProgram(program);
+    for(auto uniform: uniformVec)
+    {
+        uint32_t loc = glGetUniformLocation(program, uniform.c_str());
+        uniforms.insert({uniform, loc});
+    }
     
     name = _name;
     glId = program;
@@ -95,11 +116,12 @@ void Shader::bind()
 {
     glUseProgram(glId);
     glCheckError();
+    isBinded = true;
 }
 
-uint32_t Shader::getUniformLocation(const char* _name)
+int Shader::getUniformLocation(const std::string& _name)
 {
-    return glGetUniformLocation(glId, name);
+    return (uniforms.find(_name) == uniforms.end())? -1 : uniforms[_name];
 }
 
 }

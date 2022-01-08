@@ -1,6 +1,8 @@
 #pragma once
 
 #include<cstdint>
+#include <unordered_map>
+#include<string>
 
 namespace Hero
 {
@@ -8,15 +10,17 @@ namespace Hero
 class Shader
 {   
 private:
-    const char* name;
+    std::string name;
     uint32_t glId;
+    std::unordered_map<std::string, uint32_t> uniforms;
+
     bool isBinded = false;
 public:
-    Shader(const char* _name);
+    Shader(const std::string& _name);
     ~Shader();
 
     void bind();
-    uint32_t getUniformLocation(const char* _name);
+    int getUniformLocation(const std::string& _name);
 
 };
 
