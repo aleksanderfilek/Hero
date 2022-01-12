@@ -11,7 +11,8 @@
                 "${workspaceFolder}/Engine/inc/Physics/**",
                 "${workspaceFolder}/Engine/inc/Systems/**",
                 "${workspaceFolder}/Engine/inc/UserInterface/**",
-                "${workspaceFolder}/Engine/inc/Utility/**"
+                "${workspaceFolder}/Engine/inc/Utility/**",
+                "${workspaceFolder}/Editor/inc/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

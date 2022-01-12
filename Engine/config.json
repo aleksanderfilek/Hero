@@ -1,0 +1,23 @@
+{
+    "Name" : "libhero",
+    "OutputDir": "bin",
+    "Extension": ".dll",
+    "Compiler" : "g++",
+    "Debug" : false,
+    "LibsDir" : [
+    ],
+    "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lglew32",
+        "-lopengl32",
+        "-lglu32",
+        "-lm"
+    ],
+    "Defines" : [
+        "-DHERO_DEBUG"
+    ]
+}

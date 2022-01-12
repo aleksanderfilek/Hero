@@ -1,0 +1,14 @@
+{
+    "Name" : "Editor",
+    "OutputDir": "bin",
+    "Extension": ".exe",
+    "Compiler" : "g++",
+    "Debug" : false,
+    "LibsDir" : [
+    ],
+    "Libs" : [
+    ],
+    "Defines" : [
+        "-DHERO_DEBUG"
+    ]
+}
