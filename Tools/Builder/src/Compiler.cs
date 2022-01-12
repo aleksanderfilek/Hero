@@ -182,8 +182,8 @@ class Compiler
         string libsArg = combineStringArr(config.Libs);
 
         StringBuilder builder = new StringBuilder();
-        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5} {6} -shared", 
-            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, libsArg);
+        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5}{6} {7} -shared", 
+            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, config.Extension, libsArg);
 
         ProcessStartInfo pStartInfo = new ProcessStartInfo();
 

@@ -5,6 +5,7 @@ class Config
 {
     public string? Name { get; set; }
     public string? OutputDir { get; set; }
+    public string? Extension { get; set; }
     public string? Compiler { get; set; }
     public bool Debug { get; set; }
     public string[]? LibsDir { get; set; }

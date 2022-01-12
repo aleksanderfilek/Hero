@@ -1,16 +1,30 @@
 current_dir = $(shell pwd)
 
+OS ?= win
+
+ifeq ($(OS), win)
+	RM = del /F /Q
+	RMDIR = rmdir /S /Q
+	DIR = win
+	RUNTIME = win-x64
+else
+	RM = rm -rf
+	RMDIR = rm -rf
+	DIR = linux
+	RUNTIME = ubuntu.20.10-x64
+endif
+
 run:
 	./bin/Debug/net6.0/Builder ./../../../Engine/
 
-publish: clean
-	dotnet publish -c release -r ubuntu.20.10-x64 --no-self-contained -o ./../bin
+publish:
+	dotnet publish -c release -r $(RUNTIME) --no-self-contained -o ./../$(DIR)/bin
 
 
 build:
 	dotnet build
 
 clean:
-	rm -rf ./bin
-	rm -rf ./obj
-	rm -rf ./../bin
+	$(RMDIR) ./bin
+	$(RMDIR) ./obj
+	$(RMDIR) ./../$(DIR)/bin

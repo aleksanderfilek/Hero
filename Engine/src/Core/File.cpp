@@ -1,6 +1,7 @@
 #include"File.hpp"
+#include"tinyfiledialogs.h"
 
-#include"../../inc/TinyFileDialogs/tinyfiledialogs.h"
+#include<cstring>
 
 namespace Hero
 {
