@@ -1,6 +1,7 @@
 {
     "Name" : "libhero",
-    "OutputDir": "bin",
+    "Type": "SharedLibrary",
+    "OutputDir": "lib",
     "Extension": ".dll",
     "Compiler" : "g++",
     "Debug" : false,
