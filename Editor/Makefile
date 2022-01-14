@@ -1,6 +1,4 @@
-current_dir = $(bash pwd)
-
-OS ?= win
+OS := win
 
 ifeq ($(OS), win)
 	DIR = win
@@ -10,5 +8,9 @@ else
 	EXT = 
 endif
 
-all: 
-	./../Tools/Builder/bin/$(DIR)/Builder$(EXT) .
+build: 
+	./../Tools/Builder/bin/$(DIR)/Builder$(EXT)
+
+run:
+	./bin/Editor.exe
+

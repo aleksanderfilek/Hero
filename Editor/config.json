@@ -1,5 +1,6 @@
 {
     "Name" : "Editor",
+    "Type": "Executable",
     "OutputDir": "bin",
     "Extension": ".exe",
     "Compiler" : "g++",
