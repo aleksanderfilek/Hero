@@ -18,7 +18,7 @@ run:
 	./bin/Debug/net6.0/Builder ./../../../Engine/
 
 publish:
-	dotnet publish -c release -r $(RUNTIME) --no-self-contained -o ./../$(DIR)/bin
+	dotnet publish -c release -r $(RUNTIME) --no-self-contained -o ./../bin/$(DIR)
 
 
 build:
@@ -27,4 +27,4 @@ build:
 clean:
 	$(RMDIR) ./bin
 	$(RMDIR) ./obj
-	$(RMDIR) ./../$(DIR)/bin
+	$(RMDIR) ./../bin/$(DIR)

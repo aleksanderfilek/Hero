@@ -106,6 +106,11 @@ class Compiler
         string definesArg = combineStringArr(config.Defines);
         string debugArg = constructDebug(config.Debug);
         string? objPath = startDir + "obj";
+        string typeArg="";
+        if(config.Type.CompareTo("SharedLibrary")==0)
+        {
+            typeArg = "-fPIC";
+        }
         List<string> objFiles = new List<string>();
         List<string?> errors = new List<string?>();
 
@@ -122,8 +127,8 @@ class Compiler
                 Directory.CreateDirectory(Path.GetDirectoryName(fullObjPath));
             }
 
-            builder.AppendFormat("-c {0} {1} {2} {3} -o {4} -fPIC", 
-                debugArg, definesArg, incArg, src, fullObjPath);
+            builder.AppendFormat("-c {0} {1} {2} {3} -o {4} {5}", 
+                debugArg, definesArg, incArg, src, fullObjPath, typeArg);
             objFiles.Add(fullObjPath);
 
             Console.Write("Compiling: {0} - ", relativePath);
@@ -180,10 +185,15 @@ class Compiler
         string objFileArg = combineStringList(objectFiles);
         string libsDirArg = combineStringArr(config.LibsDir);
         string libsArg = combineStringArr(config.Libs);
+        string typeArg = "";
+        if(config.Type.CompareTo("SharedLibrary")==0)
+        {
+            typeArg = "-shared";
+        }
 
         StringBuilder builder = new StringBuilder();
-        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5}{6} {7} -shared", 
-            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, config.Extension, libsArg);
+        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5}{6} {7} {8}", 
+            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, config.Extension, libsArg, typeArg);
 
         ProcessStartInfo pStartInfo = new ProcessStartInfo();
 
