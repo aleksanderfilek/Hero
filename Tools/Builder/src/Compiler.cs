@@ -105,8 +105,9 @@ class Compiler
         string incArg = constructIncludes(headerFiles);
         string definesArg = combineStringArr(config.Defines);
         string debugArg = constructDebug(config.Debug);
-        string? objPath = startDir + "obj";
+        string? objPath = startDir + "/obj";
         string typeArg="";
+
         if(config.Type.CompareTo("SharedLibrary")==0)
         {
             typeArg = "-fPIC";
@@ -118,9 +119,9 @@ class Compiler
         {
             StringBuilder builder = new StringBuilder();
 
-            string? relativePath = src.Replace(Path.Combine(startDir, "src/"), "");
+            string? relativePath = src.Replace(Path.Combine(startDir, "src"), "");
             string? relativePathO = relativePath.Split(".")[0];
-            string? fullObjPath = objPath + "/" + relativePathO + ".o";
+            string? fullObjPath = objPath + relativePathO + ".o";
 
             if(!Directory.Exists(Path.GetDirectoryName(fullObjPath)))
             {
