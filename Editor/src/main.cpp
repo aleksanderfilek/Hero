@@ -1,6 +1,7 @@
 #include<iostream>
 
 #include"Interpreter.hpp"
+#include"Assets.hpp"
 
 namespace Editor
 {
@@ -12,17 +13,20 @@ void run()
   {
     std::string command;
     std::cout<<"Cmd: ";
-    std::cin>>command;
+    std::getline(std::cin, command);
     
-    Cmd cmd = Editor::Interpreter::interpret(command);
+    Cmd cmd = Interpreter::interpret(command);
 
     switch(cmd.type)
     {
-      case Editor::CmdType::QUIT:
+      case CmdType::QUIT:
         quit = true;
       break;
+      case CmdType::SHADER:
+        shader(cmd);
+      break;
       default:
-        std::cout<<"err"<<std::endl;
+        std::cout<<"Unknown command!"<<std::endl;
       break;
     }
   }

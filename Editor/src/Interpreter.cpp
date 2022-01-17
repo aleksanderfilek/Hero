@@ -1,5 +1,7 @@
 #include"Interpreter.hpp"
 
+#include<iostream>
+    #include <unistd.h>
 namespace Editor
 {
 
@@ -9,17 +11,17 @@ inline static std::vector<std::string> split(const std::string& text, const std:
 {
   std::vector<std::string> tokens;
   std::string token;
-  size_t pos = 0;
-  while((pos = text.find(delimiter)) != std::string::npos)
+  size_t startPos = 0;
+  size_t endPos = 0;
+  while((endPos = text.find(delimiter, startPos)) != std::string::npos)
   {
-    token = text.substr(0, pos);
+    token = text.substr(startPos, endPos - startPos);
+    startPos = endPos+1;
     tokens.push_back(token);
   }
-  
-  if(tokens.size() == 0)
-  {
-    tokens.push_back(text);
-  }
+
+  token = text.substr(startPos, text.length() - startPos);
+  tokens.push_back(token);
 
   return tokens;
 }
@@ -29,6 +31,7 @@ Interpreter::Interpreter()
   instance = this;
 
   tokens["quit"] = CmdType::QUIT;
+  tokens["shader"] = CmdType::SHADER;
 }
 
 Interpreter::~Interpreter()
@@ -40,14 +43,17 @@ Cmd Interpreter::interpret(const std::string& command)
 {
   Cmd cmd;
 
-  std::vector<std::string> args = split(command, " \0");
-  if(args.size() == 0 || instance->tokens.find(command) == instance->tokens.end())
+  std::vector<std::string> args = split(command, " \0\n");
+  
+  if(args.size() == 0 || instance->tokens.find(args[0]) == instance->tokens.end())
   {
     cmd.type = CmdType::ERROR;
     return cmd;
   }
 
   cmd.type = instance->tokens[args[0]];
+  args.erase(args.begin(), args.begin() + 1);
+  cmd.args = args;
 
   return cmd;
 }

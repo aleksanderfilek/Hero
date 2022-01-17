@@ -10,7 +10,8 @@ namespace Editor
 enum class CmdType
 {
   ERROR,
-  QUIT
+  QUIT,
+  SHADER
 };
 
 struct Cmd
