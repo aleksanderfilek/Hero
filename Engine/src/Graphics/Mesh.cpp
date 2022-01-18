@@ -34,7 +34,6 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     for(auto& buff: buffers)
     {
         uint32_t size = buff.length * sizeof(float);
-        std::cout<<size<<std::endl;
         glBufferSubData(GL_ARRAY_BUFFER, buffOffset, size, buff.array);
         glCheckError();
         buffOffset += size;
@@ -65,7 +64,6 @@ HERO void Mesh::draw()
 {
     glBindVertexArray(VAO);
     glCheckError();
-    std::cout<<"I: "<<indices.length<<std::endl;
     glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
     glCheckError();
     glBindVertexArray(0);
