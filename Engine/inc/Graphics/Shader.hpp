@@ -16,11 +16,11 @@ private:
 
     bool isBinded = false;
 public:
-    Shader(const std::string& _name);
-    ~Shader();
+    HERO Shader(const std::string& _name);
+    HERO ~Shader();
 
-    void bind();
-    int getUniformLocation(const std::string& _name);
+    HERO void bind();
+    HERO int getUniformLocation(const std::string& _name);
 
 };
 

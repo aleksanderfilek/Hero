@@ -9,7 +9,7 @@
 namespace Hero
 {
 
-Texture::Texture(const char* _path, uint8_t _flags)
+HERO Texture::Texture(const char* _path, uint8_t _flags)
 {
     // load texture from file
     int width, height;
@@ -55,23 +55,23 @@ Texture::Texture(const char* _path, uint8_t _flags)
     flags = flags;
 }
 
-Texture::Texture(const char* _name, uint32_t _glId, Int2 _size, uint8_t _flags)
+HERO Texture::Texture(const char* _name, uint32_t _glId, Int2 _size, uint8_t _flags)
     : name(_name), glId(_glId), size(_size), flags(_flags)
 {}
 
-Texture::Texture(const char* text, const ColorRGB& color, 
+HERO Texture::Texture(const char* text, const ColorRGB& color, 
     const Font& font, uint8_t flags)
 {
     
 }
 
-Texture::~Texture()
+HERO Texture::~Texture()
 {
     glDeleteTextures(1, &glId);
     glCheckError();
 }
 
-void Texture::bind()
+HERO void Texture::bind()
 {
     glActiveTexture(GL_TEXTURE0);
     glCheckError();
@@ -79,7 +79,7 @@ void Texture::bind()
     glCheckError();
 }
 
-void Texture::unbind()
+HERO void Texture::unbind()
 {
     glDisable(GL_TEXTURE_2D);
     glCheckError();

@@ -20,16 +20,16 @@ private:
     std::vector<Window*> windows;
 
 public:
-    Event(const Sid& sid);
-    ~Event();
+    HERO Event(const Sid& sid);
+    HERO ~Event();
 
-    void init();
-    void update();
-    void close();
+    HERO void init();
+    HERO void update();
+    HERO void close();
 
-    void addWindow(Window* window);
-    void removeWindow(Sid sid);
-    void clearWindows();
+    HERO void addWindow(Window* window);
+    HERO void removeWindow(Sid sid);
+    HERO void clearWindows();
 };
 }
 }

@@ -14,12 +14,12 @@ class EventHandler
         std::vector<EventFunction> functions;
         
     public:
-        EventHandler();
-        ~EventHandler();
+        HERO EventHandler();
+        HERO ~EventHandler();
 
-        void add(EventFunction function);
-        void clear();
-        void invoke(void* object, void *args, int argc);
+        HERO void add(EventFunction function);
+        HERO void clear();
+        HERO void invoke(void* object, void *args, int argc);
 };
 
 }

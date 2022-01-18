@@ -6,11 +6,11 @@
 namespace Hero
 {
 
-ColorRGB::ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a)
+HERO ColorRGB::ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a)
     :r(_r), g(_g), b(_b), a(_a)
 {}
 
-ColorRGB::ColorRGB(float _r, float _g, float _b, float _a)
+HERO ColorRGB::ColorRGB(float _r, float _g, float _b, float _a)
 {
     r = (float)_r/255.0f;
     g = (float)_g/255.0f;
@@ -18,11 +18,11 @@ ColorRGB::ColorRGB(float _r, float _g, float _b, float _a)
     a = (float)_a/255.0f;
 }
 
-ColorRGB::ColorRGB(const ColorRGB& obj)
+HERO ColorRGB::ColorRGB(const ColorRGB& obj)
     :r(obj.r), g(obj.g), b(obj.b), a(obj.a)
 {}
 
-ColorHSV ColorRGB::convertToHSV() const
+HERO ColorHSV ColorRGB::convertToHSV() const
 {
     float tr = (float)r/255.0f;
     float tg = (float)g/255.0f;
@@ -67,16 +67,16 @@ ColorHSV ColorRGB::convertToHSV() const
     return ColorHSV(h, s, v, a);
 }
 
-ColorHSV::ColorHSV(float _h, float _s, float _v, uint8_t _a)
+HERO ColorHSV::ColorHSV(float _h, float _s, float _v, uint8_t _a)
     :h(_h), s(_s), v(_v), a(_a)
 {}
 
-ColorHSV::ColorHSV(const ColorHSV& obj)
+HERO ColorHSV::ColorHSV(const ColorHSV& obj)
     :h(obj.h), s(obj.s), v(obj.v), a(obj.a)
 {}
 
 
-ColorRGB ColorHSV::convertToRGB() const
+HERO ColorRGB ColorHSV::convertToRGB() const
 {
     float c = v*s;
     float x = c * (1 - fabs( fmod(h/60.0f,2.0f) - 1));

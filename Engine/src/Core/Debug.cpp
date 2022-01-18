@@ -3,7 +3,10 @@
 #include<iostream>
 #include<string>
 
-GLenum glCheckError_(const char *file, int line)
+namespace Hero
+{
+
+HERO GLenum glCheckError_(const char *file, int line)
 {
     GLenum errorCode;
     while ((errorCode = glGetError()) != GL_NO_ERROR)
@@ -24,7 +27,7 @@ GLenum glCheckError_(const char *file, int line)
     return errorCode;
 }
 
-GLint glShaderCheckError_(GLuint shader, GLenum pname ,const char *file, int line)
+HERO GLint glShaderCheckError_(GLuint shader, GLenum pname ,const char *file, int line)
 {
     GLint errorCode;
     glGetShaderiv(shader, pname, &errorCode);
@@ -64,7 +67,7 @@ GLint glShaderCheckError_(GLuint shader, GLenum pname ,const char *file, int lin
     return errorCode;
 }
 
-GLint glProgramCheckError_(GLuint program, GLenum pname ,const char *file, int line)
+HERO GLint glProgramCheckError_(GLuint program, GLenum pname ,const char *file, int line)
 {
     GLint errorCode;
     glGetProgramiv(program, pname, &errorCode);
@@ -88,4 +91,6 @@ GLint glProgramCheckError_(GLuint program, GLenum pname ,const char *file, int l
     }
 
     return errorCode;
+}
+
 }

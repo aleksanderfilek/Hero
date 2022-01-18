@@ -6,9 +6,9 @@
 namespace Hero
 {
 
-Spritebatch::Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTextures)
+HERO Spritebatch::Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTextures)
 {
-spriteCapacity = capacity;
+    spriteCapacity = capacity;
     quadBuffer = new SpritebatchVertex[4 * capacity];
     quadBufferPtr = quadBuffer;
     
@@ -65,7 +65,7 @@ spriteCapacity = capacity;
     }
 }
 
-Spritebatch::~Spritebatch()
+HERO Spritebatch::~Spritebatch()
 {
   delete[] textureSlots;
 
@@ -77,14 +77,14 @@ Spritebatch::~Spritebatch()
   delete[] sampler;
 }
 
-void Spritebatch::begin()
+HERO void Spritebatch::begin()
 {
     glUniform1iv(shaderTexturesLocation, maxTextureSlots, sampler);
 
     quadBufferPtr = quadBuffer;
 }
 
-void Spritebatch::end()
+HERO void Spritebatch::end()
 {
     GLsizeiptr size = (uint8_t*)quadBufferPtr - (uint8_t*)quadBuffer;
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -101,7 +101,7 @@ void Spritebatch::end()
     textureSlotIndex = 0;
 }
 
-void Spritebatch::drawTexture(Texture& texture, const Int2& position, const Int2& size, Float4 rect)
+HERO void Spritebatch::drawTexture(Texture& texture, const Int2& position, const Int2& size, Float4 rect)
 {
     if(indexCount >= maxIndexCount || 
         textureSlotIndex > maxTextureSlots)

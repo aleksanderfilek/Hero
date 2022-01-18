@@ -6,7 +6,7 @@
 namespace Hero
 {
 
-void randomSetSeed(int seed)
+HERO void randomSetSeed(int seed)
 {
     if(seed > 0)
     {
@@ -17,12 +17,12 @@ void randomSetSeed(int seed)
     srand(time(NULL));
 }
 
-int randomGetInt(int min, int max)
+HERO int randomGetInt(int min, int max)
 {
     return rand()%max + min;
 }
 
-float randomGetFloat(float min, float max)
+HERO float randomGetFloat(float min, float max)
 {
     return ((float)rand()/(float)(RAND_MAX)) * max + min;
 }

@@ -5,14 +5,7 @@
 namespace Hero
 {
 
-template<typename T>
-MeshBuffer<T>::~MeshBuffer()
-{
-    delete array;
-    length = 0;
-}
-
-Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
+HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
     const MeshBuffer<int>& _indices)
     : name(_name), buffers(_buffers), indices(_indices)
 {
@@ -58,12 +51,12 @@ Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buff
     glBindVertexArray(0);
 }
 
-Mesh::~Mesh()
+HERO Mesh::~Mesh()
 {
 
 }
 
-void Mesh::draw()
+HERO void Mesh::draw()
 {
     glBindVertexArray(VAO);
     glCheckError();

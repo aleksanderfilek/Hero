@@ -5,7 +5,7 @@
 
 namespace Hero
 {
-    char * heroFileDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns, 
+    HERO char * heroFileDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns, 
 	    char const * const * aFilterPatterns, char const * aSingleFilterDescription, int aAllowMultipleSelects)
     {
         char* path = tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, aSingleFilterDescription, aAllowMultipleSelects);
@@ -21,7 +21,7 @@ namespace Hero
         return path;
     }
 
-char * heroFileSaveDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns,
+HERO char * heroFileSaveDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns,
 	char const * const * aFilterPatterns, char const * aSingleFilterDescription)
 {
     return tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, aSingleFilterDescription);

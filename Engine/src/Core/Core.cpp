@@ -9,7 +9,7 @@ namespace Hero
 
 Core* Core::instance = nullptr;
 
-Core::Core()
+HERO Core::Core()
 {
     #ifdef HERO_DEBUG
     std::cout<<"[Core] - Initializing"<<std::endl;
@@ -22,9 +22,11 @@ Core::Core()
         std::cout<<"[Core] - SDL could not initialize! SDL Error: "<<SDL_GetError()<<std::endl;
         exit(-1);
     }
+
+    time = new Time();
 }
 
-Core::~Core()
+HERO Core::~Core()
 {
     #ifdef HERO_DEBUG
     std::cout<<"[Core] - Closing"<<std::endl;
@@ -39,7 +41,7 @@ Core::~Core()
     SDL_Quit();
 }
 
-void Core::start()
+HERO void Core::start()
 {
     #ifdef HERO_DEBUG
     std::cout<<"[Core] - Starting"<<std::endl;
@@ -68,7 +70,6 @@ void Core::start()
         time->setDeltaTime(deltaTime);
     }
 
-
     std::vector<ISystem*>::iterator i = systems.end();
     while (i != systems.begin())
     {
@@ -77,7 +78,7 @@ void Core::start()
     } 
 }
 
-bool Core::addSystem(ISystem* newSystem)
+HERO bool Core::addSystem(ISystem* newSystem)
 {
     #ifdef HERO_DEBUG
     if(running)
@@ -114,7 +115,7 @@ bool Core::addSystem(ISystem* newSystem)
     return true;
 }
 
-bool Core::removeSystem(Sid sid)
+HERO bool Core::removeSystem(Sid sid)
 {
     int index; 
     for(index = 0; index < systems.size(); index++)
@@ -151,7 +152,7 @@ bool Core::removeSystem(Sid sid)
     return true;
 }
 
-ISystem* Core::getSystem(const Sid& sid)
+HERO ISystem* Core::getSystem(const Sid& sid)
 {
     for(ISystem* sys: systems)
     {

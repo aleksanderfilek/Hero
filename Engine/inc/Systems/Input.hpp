@@ -22,12 +22,12 @@ public:
     enum Mouse : std::uint8_t;
     enum KeyCode : std::uint16_t;
 
-    Input(const Sid& sid);
-    ~Input();
+    HERO Input(const Sid& sid);
+    HERO ~Input();
 
-    void init();
-    void update();
-    void close();
+    HERO void init();
+    HERO void update();
+    HERO void close();
 
     inline bool keyPressed(KeyCode key){ 
         return current_keyboard_state[key] && previous_keyboard_state[key]; }

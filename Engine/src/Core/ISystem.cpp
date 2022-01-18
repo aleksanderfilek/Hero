@@ -3,7 +3,7 @@
 namespace Hero
 {
 
-void ISystem::init()
+HERO void ISystem::init()
 {   
     inited = true;
     #ifdef HERO_DEBUG 
@@ -11,16 +11,16 @@ void ISystem::init()
     #endif 
 }
 
-void ISystem::update(){};
+HERO void ISystem::update(){};
 
-void ISystem::close()
+HERO void ISystem::close()
 { 
     #ifdef HERO_DEBUG 
     std::cout<<"["<<sid.getName()<<"] - Closing"<<std::endl; 
     #endif
 }
 
-void ISystem::printMessage(const std::string& msg)
+HERO void ISystem::printMessage(const std::string& msg)
 { 
     #ifdef HERO_DEBUG
     std::cout<<"["<<sid.getName()<<"] - "<<msg<<std::endl; 

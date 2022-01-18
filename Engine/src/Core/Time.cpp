@@ -4,17 +4,17 @@
 
 namespace Hero
 {
-    Time* Time::instance = nullptr;
+Time* Time::instance = nullptr;
 
-    Time::Time()
-    {
-        instance = this;
-        startupTime = SDL_GetTicks();
-    }
+HERO Time::Time()
+{
+    instance = this;
+    startupTime = SDL_GetTicks();
+}
 
-    Time::~Time()
-    {
-        
-    }
+HERO Time::~Time()
+{
+    
+}
 
 }

@@ -9,7 +9,7 @@
 namespace Hero
 {
 
-Shader::Shader(const std::string& _name)
+HERO Shader::Shader(const std::string& _name)
 {
     uint32_t program = glCreateProgram();
     uint32_t vertex = 0, fragment = 0;
@@ -107,19 +107,19 @@ Shader::Shader(const std::string& _name)
     glId = program;
 }
 
-Shader::~Shader()
+HERO Shader::~Shader()
 {
     glDeleteProgram(glId);
 }
 
-void Shader::bind()
+HERO void Shader::bind()
 {
     glUseProgram(glId);
     glCheckError();
     isBinded = true;
 }
 
-int Shader::getUniformLocation(const std::string& _name)
+HERO int Shader::getUniformLocation(const std::string& _name)
 {
     return (uniforms.find(_name) == uniforms.end())? -1 : uniforms[_name];
 }

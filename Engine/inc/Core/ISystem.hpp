@@ -21,11 +21,11 @@ public:
     ISystem(const Sid& _sid):sid(_sid){}
     virtual ~ISystem(){};
 
-    virtual void init();
-    virtual void update();
-    virtual void close();
+    HERO virtual void init();
+    HERO virtual void update();
+    HERO virtual void close();
 
-    void printMessage(const std::string& msg);
+    HERO void printMessage(const std::string& msg);
 
     inline std::string getName() { return sid.getName(); }
     inline Sid getSid(){ return sid; }

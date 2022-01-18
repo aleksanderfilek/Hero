@@ -5,64 +5,64 @@
 namespace Hero
 {
 
-float deg2rad(float degree)
+HERO float deg2rad(float degree)
 {
     return (degree * PI)/180.0f;
 }
 
-float rad2deg(float radians)
+HERO float rad2deg(float radians)
 {
     return (180.0f * radians)/PI;
 }
 
-int clampI(int value, int min, int max)
+HERO int clampI(int value, int min, int max)
 {
     return (value < min)? min : (value > max)? max : value;
 }
 
-float clampF(float value, float min, float max)
+HERO float clampF(float value, float min, float max)
 {
     return (value < min)? min : (value > max)? max : value;
 }
 
-Int2 addI2(Int2 A, Int2 B)
+HERO Int2 addI2(Int2 A, Int2 B)
 {
     return (Int2){A.x + B.x, A.y + B.y};
 }
 
-Int2 substractI2(Int2 A, Int2 B)
+HERO Int2 substractI2(Int2 A, Int2 B)
 {
     return (Int2){A.x - B.x, A.y - B.y};
 }
 
-int dotProductI2(Int2 A, Int2 B)
+HERO int dotProductI2(Int2 A, Int2 B)
 {
     return (A.x * B.x) + (A.y * B.y);
 }
 
-float distanceI2(Int2 A, Int2 B)
+HERO float distanceI2(Int2 A, Int2 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
     return sqrtf(x2 + y2);
 }
 
-Int3 addI3(Int3 A, Int3 B)
+HERO Int3 addI3(Int3 A, Int3 B)
 {
     return (Int3){A.x + B.x, A.y + B.y, A.z + B.z};
 }
 
-Int3 substract(Int3 A, Int3 B)
+HERO Int3 substract(Int3 A, Int3 B)
 {
     return (Int3){A.x - B.x, A.y - B.y, A.z - B.z};
 }
 
-int dotProductI3(Int3 A, Int3 B)
+HERO int dotProductI3(Int3 A, Int3 B)
 {
     return (A.x * B.x) + (A.y * B.y) + (A.z * B.z);
 }
 
-float distanceI3(Int3 A, Int3 B)
+HERO float distanceI3(Int3 A, Int3 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
@@ -70,47 +70,47 @@ float distanceI3(Int3 A, Int3 B)
     return sqrtf(x2 + y2 + z2);
 }
 
-Int4 addI4(Int4 A, Int4 B)
+HERO Int4 addI4(Int4 A, Int4 B)
 {
     return (Int4){A.x + B.x, A.y + B.y, A.z + B.z, A.w + B.w};
 }
 
-Int4 substractI4(Int4 A, Int4 B)
+HERO Int4 substractI4(Int4 A, Int4 B)
 {
     return (Int4){A.x - B.x, A.y - B.y, A.z - B.z, A.w - B.w};
 }
 
-float lerpF(float a, float b, float t)
+HERO float lerpF(float a, float b, float t)
 {
     return (1 - t)*a + t*b;
 }
 
-Float2 addF2(Float2 A,Float2 B)
+HERO Float2 addF2(Float2 A,Float2 B)
 {
     return (Float2){A.x + B.x, A.y + B.y};
 }
 
-Float2 substractF2(Float2 A,Float2 B)
+HERO Float2 substractF2(Float2 A,Float2 B)
 {
     return (Float2){A.x - B.x, A.y - B.y};
 }
 
-float dotProductF2(Float2 A,Float2 B)
+HERO float dotProductF2(Float2 A,Float2 B)
 {
     return (A.x * B.x) + (A.y * B.y);
 }
 
-Float2 multiplyF2(Float2 A, float k)
+HERO Float2 multiplyF2(Float2 A, float k)
 {
     return (Float2){A.x * k, A.y * k};
 }
 
-float lengthF2(Float2 A)
+HERO float lengthF2(Float2 A)
 {
     return sqrtf(A.x*A.x + A.y*A.y);
 }
 
-Float2 normalizeF2(Float2 A)
+HERO Float2 normalizeF2(Float2 A)
 {
     float length = lengthF2(A);
     float x = A.x / length;
@@ -118,51 +118,51 @@ Float2 normalizeF2(Float2 A)
     return (Float2){x, y};
 }
 
-float distanceF2(Float2 A, Float2 B)
+HERO float distanceF2(Float2 A, Float2 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
     return sqrtf(x2 + y2);
 }
 
-Float2 rotateM2x2F2(Float2 vector, float angle)
+HERO Float2 rotateM2x2F2(Float2 vector, float angle)
 {
     float x = vector.x * cos(angle) - vector.y * sin(angle);
     float y = vector.x * sin(angle) + vector.y * cos(angle);
     return (Float2){x, y};
 }
 
-Float3 addF3(Float3 A, Float3 B)
+HERO Float3 addF3(Float3 A, Float3 B)
 {
     return (Float3){A.x + B.x, A.y + B.y, A.z + B.z};
 }
 
-Float3 substractF3(Float3 A, Float3 B)
+HERO Float3 substractF3(Float3 A, Float3 B)
 {
     return (Float3){A.x - B.x, A.y - B.y, A.z - B.z};
 }
 
-float dotProductF3(Float3 A, Float3 B)
+HERO float dotProductF3(Float3 A, Float3 B)
 {
     return (A.x * B.x) + (A.y * B.y) + (A.z * B.z);
 }
 
-Float3 crossProduct(Float3 A, Float3 B)
+HERO Float3 crossProduct(Float3 A, Float3 B)
 {
     return (Float3){A.y*B.z - A.z*B.y, A.z*B.x - A.x*B.y, A.x*B.y - A.y*B.x};
 }
 
-Float3 multiplyF3(Float3 A, float k)
+HERO Float3 multiplyF3(Float3 A, float k)
 {
     return (Float3){A.x * k, A.y * k, A.z * k};
 }
 
-float lengthF3(Float3 A)
+HERO float lengthF3(Float3 A)
 {
     return sqrtf(A.x*A.x + A.y*A.y + A.z*A.z);
 }
 
-Float3 normalizeF3(Float3 A)
+HERO Float3 normalizeF3(Float3 A)
 {
     float length = lengthF3(A);
     float x = A.x / length;
@@ -171,7 +171,7 @@ Float3 normalizeF3(Float3 A)
     return (Float3){x, y, z};
 }
 
-Float3 LlerpF3(Float3 A, Float3 B, float t)
+HERO Float3 LlerpF3(Float3 A, Float3 B, float t)
 {
     float x = (1 - t)*A.x + t*B.x;
     float y = (1 - t)*A.y + t*B.y;
@@ -179,7 +179,7 @@ Float3 LlerpF3(Float3 A, Float3 B, float t)
     return (Float3){x, y, z};
 }
 
-float distanceF3(Float3 A, Float3 B)
+HERO float distanceF3(Float3 A, Float3 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
@@ -187,27 +187,27 @@ float distanceF3(Float3 A, Float3 B)
     return sqrtf(x2 + y2 + z2);
 }
 
-Float4 addF4(Float4 A, Float4 B)
+HERO Float4 addF4(Float4 A, Float4 B)
 {
     return (Float4){A.x + B.x, A.y + B.y, A.z + B.z, A.w + B.w};
 }
 
-Float4 substractF4(Float4 A, Float4 B)
+HERO Float4 substractF4(Float4 A, Float4 B)
 {
     return (Float4){A.x - B.x, A.y - B.y, A.z - B.z, A.w - B.w};
 }
 
-Float4 multiplyF4(Float4 A, float k)
+HERO Float4 multiplyF4(Float4 A, float k)
 {
     return (Float4){A.x * k, A.y * k, A.z * k, A.w * k};
 }
 
-float lengthF4(Float4 A)
+HERO float lengthF4(Float4 A)
 {
     return sqrtf(A.x*A.x + A.y*A.y + A.z*A.z + A.w*A.w);
 }
 
-Float4 normalizeF4(Float4 A)
+HERO Float4 normalizeF4(Float4 A)
 {
     float length = lengthF4(A);
     float x = A.x / length;
@@ -217,7 +217,7 @@ Float4 normalizeF4(Float4 A)
     return (Float4){x, y, z, w};
 }
 
-Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B)
+HERO Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B)
 {
     float x = A.col[0].x * B.col[0].x + A.col[1].x * B.col[0].y;
     float y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y;
@@ -226,31 +226,31 @@ Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B)
     return (Matrix2x2){(Float2){x,y},(Float2){z,w}};
 }   
 
-float determinentM2x2(Matrix2x2 A)
+HERO float determinentM2x2(Matrix2x2 A)
 {
     return (A.col[0].x * A.col[1].y) - (A.col[0].y * A.col[1].x);
 }
 
-Matrix2x2 tansponeM2x2(Matrix2x2 A)
+HERO Matrix2x2 tansponeM2x2(Matrix2x2 A)
 {
     return (Matrix2x2){(Float2){A.col[0].x, A.col[1].x},(Float2){A.col[0].y, A.col[1].y}};
 }
 
-Matrix2x2 invertM2x2(Matrix2x2 A)
+HERO Matrix2x2 invertM2x2(Matrix2x2 A)
 {
     float det = 1.0f / determinentM2x2(A);
     return (Matrix2x2){(Float2){det * A.col[1].y, det * (-A.col[0].y)},
             (Float2){det * (-A.col[1].x), det * A.col[0].x}};
 }
 
-Float2 multiplyM2x2F2(Matrix2x2 matrix, Float2 vector)
+HERO Float2 multiplyM2x2F2(Matrix2x2 matrix, Float2 vector)
 {
     float x = matrix.col[0].x * vector.x + matrix.col[1].x * vector.y;
     float y = matrix.col[0].y * vector.x + matrix.col[1].y * vector.y;
     return (Float2){x, y};
 }
 
-Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B)
+HERO Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B)
 {
     Matrix3x3 matrix;
 
@@ -269,7 +269,7 @@ Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B)
     return matrix;
 }
 
-float determinentM3x3(Matrix3x3 A)
+HERO float determinentM3x3(Matrix3x3 A)
 {
     return A.col[0].x*A.col[1].y*A.col[2].z + 
             A.col[1].x*A.col[2].y*A.col[0].z + 
@@ -279,7 +279,7 @@ float determinentM3x3(Matrix3x3 A)
             A.col[0].x*A.col[2].y*A.col[1].z;
 }
 
-Matrix3x3 tansponeM3x3(Matrix3x3 A)
+HERO Matrix3x3 tansponeM3x3(Matrix3x3 A)
 {
     Matrix3x3 matrix;
 
@@ -296,7 +296,7 @@ Matrix3x3 tansponeM3x3(Matrix3x3 A)
     return matrix;
 }
 
-Matrix3x3 invertM3x3(Matrix3x3 A)
+HERO Matrix3x3 invertM3x3(Matrix3x3 A)
 {
     float det = 1.0f / determinentM3x3(A);
 
@@ -326,7 +326,7 @@ Matrix3x3 invertM3x3(Matrix3x3 A)
     return matrix;
 }
 
-Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector)
+HERO Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector)
 {
     Float3 vec;
 
@@ -337,7 +337,7 @@ Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector)
     return vec;
 }
 
-Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
+HERO Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
 {
     Matrix4x4 matrix;
 
@@ -364,7 +364,7 @@ Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
     return matrix;
 }
 
-float determinentM4x4(Matrix4x4 A)
+HERO float determinentM4x4(Matrix4x4 A)
 {
     Matrix4x4 matrix = Mat4x4Identity;
 
@@ -383,7 +383,7 @@ float determinentM4x4(Matrix4x4 A)
     return matrix.col[0].x * matrix.col[1].y * matrix.col[2].z *matrix.col[3].w;
 }
 
-Matrix4x4 invertM4x4(Matrix4x4 A)
+HERO Matrix4x4 invertM4x4(Matrix4x4 A)
 {
     float* m = m4x4ToArray(A);
     float inv[16], det;
@@ -513,7 +513,7 @@ Matrix4x4 invertM4x4(Matrix4x4 A)
     return arrayToM4x4(inv); 
 }
 
-Matrix4x4 tansponeM4x4(Matrix4x4 A)
+HERO Matrix4x4 tansponeM4x4(Matrix4x4 A)
 {
     Matrix4x4 matrix;
 
@@ -540,7 +540,7 @@ Matrix4x4 tansponeM4x4(Matrix4x4 A)
     return matrix;
 }
 
-Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector)
+HERO Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector)
 {
     float x = vector.x*matrix.col[0].x + vector.y*matrix.col[1].x + vector.z*matrix.col[2].x + vector.w*matrix.col[3].x;
     float y = vector.x*matrix.col[0].y + vector.y*matrix.col[1].y + vector.z*matrix.col[2].y + vector.w*matrix.col[3].y;
@@ -550,7 +550,7 @@ Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector)
     return (Float4){x, y, z, w};
 }
 
-float* m4x4ToArray(Matrix4x4 A)
+HERO float* m4x4ToArray(Matrix4x4 A)
 {
     float* arr = new float[16];
 
@@ -577,7 +577,7 @@ float* m4x4ToArray(Matrix4x4 A)
     return arr;
 }
 
-Matrix4x4 arrayToM4x4(float* array)
+HERO Matrix4x4 arrayToM4x4(float* array)
 {
     Matrix4x4 result;
 
@@ -589,21 +589,21 @@ Matrix4x4 arrayToM4x4(float* array)
     return result;
 }
 
-void translateM4x4(Matrix4x4* matrix, Float4 translation)
+HERO void translateM4x4(Matrix4x4* matrix, Float4 translation)
 {
     matrix->col[3].x += translation.x;
     matrix->col[3].y += translation.y;
     matrix->col[3].z += translation.z;
 }
 
-void scaleM4x4(Matrix4x4* matrix, Float4 scale)
+HERO void scaleM4x4(Matrix4x4* matrix, Float4 scale)
 {
     matrix->col[0].x = scale.x;
     matrix->col[1].y = scale.y;
     matrix->col[2].z = scale.z;
 }
 
-void rotateXM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateXM4x4(Matrix4x4* matrix, float radians)
 {
     float a = matrix->col[0].y;
     float b = matrix->col[0].z;
@@ -623,7 +623,7 @@ void rotateXM4x4(Matrix4x4* matrix, float radians)
     matrix->col[3].z = a*sinf(radians) + b*cosf(radians);
 }
 
-void rotateYM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateYM4x4(Matrix4x4* matrix, float radians)
 {
     float a = matrix->col[0].x;
     float b = matrix->col[0].z;
@@ -643,7 +643,7 @@ void rotateYM4x4(Matrix4x4* matrix, float radians)
     matrix->col[3].z = -a*sinf(radians) + b*cosf(radians);
 }
 
-void rotateZM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateZM4x4(Matrix4x4* matrix, float radians)
 {
     float a = matrix->col[0].x;
     float b = matrix->col[0].y;
@@ -663,7 +663,7 @@ void rotateZM4x4(Matrix4x4* matrix, float radians)
     matrix->col[3].y = -a*sinf(radians) + b*cosf(radians);
 }
 
-void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation)
+HERO void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation)
 {
     if(rotation.x != 0.0f)
         rotateXM4x4(matrix, rotation.x);
@@ -673,7 +673,7 @@ void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation)
         rotateZM4x4(matrix, rotation.z);
 }
 
-Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far)
+HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far)
 {
     Matrix4x4 matrix = Mat4x4Identity;
     matrix.col[0].x = 2.0f/width;
@@ -686,7 +686,7 @@ Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far)
     return matrix;
 }
 
-Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far)
+HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far)
 {
     float aspectRatio = (float)width/(float)height;
     float tg = tanf(FOV*0.5f*PI/180.0f);
@@ -701,7 +701,7 @@ Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float f
     return matrix;
 }
 
-Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
+HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
 {
     Float3 f = substractF3(target, eye);
     f = normalizeF3(f);
@@ -739,7 +739,7 @@ Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
     return matrix;
 }
 
-Matrix4x4 orthographicMatrix(int width, int height, float near, float far)
+HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far)
 {
     Matrix4x4 matrix = Mat4x4Identity;
     matrix.col[0].x = 2.0f/width;

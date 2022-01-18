@@ -16,9 +16,12 @@
         "-lglew32",
         "-lopengl32",
         "-lglu32",
-        "-lm"
+        "-lm",
+        "-lcomdlg32",
+        "-lole32"
     ],
     "Defines" : [
-        "-DHERO_DEBUG"
+        "-DHERO_DEBUG",
+        "-DHERO=__declspec(dllexport)"
     ]
 }

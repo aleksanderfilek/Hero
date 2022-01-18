@@ -5,7 +5,7 @@ namespace Hero
 namespace System
 {
 
-Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
+HERO Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
 {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {
@@ -61,7 +61,7 @@ Window::Window(const Sid& sid, const char *title, int width, int height, int sdl
     }
 }
 
-Window::~Window()
+HERO Window::~Window()
 {
     TTF_Quit();
 
@@ -72,27 +72,27 @@ Window::~Window()
     sdlWindow = nullptr;
 }
 
-void Window::init()
+HERO void Window::init()
 {
     ISystem::init();
 }
 
-void Window::update()
+HERO void Window::update()
 {
 
 }
 
-void Window::close()
+HERO void Window::close()
 {
     ISystem::close();
 }
 
-void Window::apply()
+HERO void Window::apply()
 {
 
 }
 
-void Window::handleEvents(SDL_Event* event)
+HERO void Window::handleEvents(SDL_Event* event)
 {
     if(event->type == SDL_WINDOWEVENT && event->window.windowID == id)
     {

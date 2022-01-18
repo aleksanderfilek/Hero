@@ -1,6 +1,6 @@
 current_dir = $(bash pwd)
 
-OS ?= win
+OS := win
 
 ifeq ($(OS), win)
 	DIR = win

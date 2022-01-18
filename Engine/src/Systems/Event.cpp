@@ -9,22 +9,22 @@ namespace Hero
 namespace System
 {
 
-Event::Event(const Sid& sid) : ISystem(sid)
+HERO Event::Event(const Sid& sid) : ISystem(sid)
 {
 
 }
 
-Event::~Event()
+HERO Event::~Event()
 {
 
 }
 
-void Event::init()
+HERO void Event::init()
 {
     ISystem::init();
 }
 
-void Event::update()
+HERO void Event::update()
 {
     while(SDL_PollEvent(&sdlEvent) != 0){
         for(auto window: windows)
@@ -34,13 +34,13 @@ void Event::update()
     }
 }
 
-void Event::close()
+HERO void Event::close()
 {
     ISystem::close();
     windows.clear();
 }
 
-void Event::addWindow(Window* window)
+HERO void Event::addWindow(Window* window)
 {
     #ifdef HERO_DEBUG
     for(auto win: windows)
@@ -58,7 +58,7 @@ void Event::addWindow(Window* window)
     windows.push_back(window);
 }
 
-void Event::removeWindow(Sid sid)
+HERO void Event::removeWindow(Sid sid)
 {
     int index = 0;
     for(auto win: windows)
@@ -84,7 +84,7 @@ void Event::removeWindow(Sid sid)
     windows.erase(windows.begin() + index);
 }
 
-void Event::clearWindows()
+HERO void Event::clearWindows()
 {
     windows.clear();
 }

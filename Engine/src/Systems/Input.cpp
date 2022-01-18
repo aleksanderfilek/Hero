@@ -5,23 +5,23 @@ namespace Hero
 namespace System
 {
 
-Input::Input(const Sid& sid) : ISystem(sid)
+HERO Input::Input(const Sid& sid) : ISystem(sid)
 {
     this->current_keyboard_state = SDL_GetKeyboardState(&this->keyboard_state_number);
     this->previous_keyboard_state = new std::uint8_t[this->keyboard_state_number];
 }
 
-Input::~Input()
+HERO Input::~Input()
 {
     delete this->previous_keyboard_state;
 }
 
-void Input::init()
+HERO void Input::init()
 {
     ISystem::init();
 }
 
-void Input::update()
+HERO void Input::update()
 {
     //update mouse
     this->previous_mouse_state = this->current_mouse_state;
@@ -30,7 +30,7 @@ void Input::update()
     SDL_memcpy(this->previous_keyboard_state, this->current_keyboard_state, this->keyboard_state_number * sizeof(std::uint8_t));
 }
 
-void Input::close()
+HERO void Input::close()
 {
     ISystem::close();
 }

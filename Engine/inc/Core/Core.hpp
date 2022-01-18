@@ -4,6 +4,12 @@
 #include<vector>
 #include<typeinfo>
 
+#ifdef _WIN32
+    #define HeroMain WinMain
+#else
+    #define HeroMain main
+#endif
+
 namespace Hero
 {
 
@@ -11,7 +17,7 @@ struct  Sid;
 class ISystem;
 class Time;
 
-class Core
+class HERO Core
 {
 private:
     static Core* instance;
@@ -21,18 +27,18 @@ private:
 
     Time* time;
 public:
-    Core();
-    ~Core();
+    HERO Core();
+    HERO ~Core();
 
-    void start();
+    HERO void start();
     inline static void close(){ Core::instance->running = false; }
     inline static bool isRunning(){ return Core::instance->running; }
 
     static Core* get(){ return instance; }
 
-    bool addSystem(ISystem* newSystem);
-    bool removeSystem(Sid sid);
-    ISystem* getSystem(const Sid& sid);
+    HERO bool addSystem(ISystem* newSystem);
+    HERO bool removeSystem(Sid sid);
+    HERO ISystem* getSystem(const Sid& sid);
 };
 
 }
