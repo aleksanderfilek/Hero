@@ -20,7 +20,7 @@ class Compiler
 
         stopWatch = new Stopwatch();
         stopWatch.Start();
-        link(startDir, objectFiles, config);
+        link(startDir, objectFiles, headerFiles, config);
         stopWatch.Stop();
         TimeSpan linkT = stopWatch.Elapsed;
 
@@ -171,7 +171,8 @@ class Compiler
         return objFiles;
     }
 
-    private static void link(string? startDir,List<string> objectFiles, Config? config)
+    private static void link(string? startDir,List<string> objectFiles, 
+        List<string> headerFiles, Config? config)
     {
         Console.WriteLine("Linking");
 
@@ -180,11 +181,16 @@ class Compiler
         {
             Directory.CreateDirectory(outPath);
         }
-
+        string incArg = constructIncludes(headerFiles);
         string definesArg = combineStringArr(config.Defines);
         string debugArg = constructDebug(config.Debug);
         string objFileArg = combineStringList(objectFiles);
-        string libsDirArg = combineStringArr(config.LibsDir);
+        StringBuilder libDirBuilder = new StringBuilder();
+        foreach(string dir in config.LibsDir)
+        {
+            libDirBuilder.AppendFormat("-L{0} ", dir);
+        }
+        string libsDirArg = libDirBuilder.ToString();
         string libsArg = combineStringArr(config.Libs);
         string typeArg = "";
         if(config.Type.CompareTo("SharedLibrary")==0)
@@ -193,8 +199,15 @@ class Compiler
         }
 
         StringBuilder builder = new StringBuilder();
-        builder.AppendFormat("{0} {1} {2} {3} -o {4}/{5}{6} {7} {8}", 
-            definesArg, debugArg, libsDirArg, objFileArg, outPath, config.Name, config.Extension, libsArg, typeArg);
+
+        builder.AppendFormat("{0} ", incArg);
+        builder.AppendFormat("{0} ", definesArg);
+        builder.AppendFormat("{0} ", debugArg);
+        builder.AppendFormat("{0} ", libsDirArg);
+        builder.AppendFormat("{0} ", objFileArg);
+        builder.AppendFormat("-o {0}/{1}{2} ", outPath, config.Name, config.Extension);
+        builder.AppendFormat("{0} ", libsArg);
+        builder.AppendFormat("{0} ", typeArg);
 
         ProcessStartInfo pStartInfo = new ProcessStartInfo();
 
