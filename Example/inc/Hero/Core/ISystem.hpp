@@ -8,7 +8,7 @@ namespace Hero
 {
 class Core;
 
-class ISystem
+class HERO ISystem
 {
 friend class Core;
 

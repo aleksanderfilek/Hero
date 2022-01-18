@@ -28,23 +28,23 @@ public:
     Time();
     ~Time();
 
-    HERO inline static double getDeltaTime()
+    inline static double getDeltaTime()
     { 
         return instance->scaledTime; 
     }
 
-    HERO inline static void setScale(double value)
+    inline static void setScale(double value)
     { 
         instance->timeScale = value; 
         instance->scaledTime = value * instance->deltaTime;
     }
 
-    HERO inline static double getScale()
+    inline static double getScale()
     { 
         return instance->timeScale; 
     }
 
-    HERO inline static uint32_t getStartupTime()
+    inline static uint32_t getStartupTime()
     {
         return instance->startupTime;
     }

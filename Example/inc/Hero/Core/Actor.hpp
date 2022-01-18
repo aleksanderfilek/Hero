@@ -29,7 +29,7 @@ namespace Hero
                 }
 
                 #ifdef HERO_DEBUG
-                std::cout<<"Could not get component of type: "<<typename(T).name()<<std::endl;
+                std::cout<<"Could not get component of type: "<<typeid(T).name()<<std::endl;
                 #endif
 
                 return nullptr;
