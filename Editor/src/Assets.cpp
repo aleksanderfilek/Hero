@@ -71,20 +71,24 @@ void shader(const Cmd& cmd)
     output.write(uniform.c_str(), size * sizeof(char));
   }
 
-  uint8_t flags = 0;
+  uint16_t flags = 0;
   for(int i = 0; i < 5; i++)
   {
-    if(shaderPos[i] != std::string::npos)
+    if(shaders[i].length() > 0)
     {
       flags |= 1 << i;
     }
   }
+  output.write((char*)&flags, sizeof(uint16_t));
 
   for(int i = 0; i < 5; i++)
   {
-    uint32_t size = shaders[i].length();
-    output.write((char*)&size, sizeof(uint32_t));
-    output.write(shaders[i].c_str(), size * sizeof(char));
+    if(flags & 1<<i)
+    {
+      uint32_t size = shaders[i].length();
+      output.write((char*)&size, sizeof(uint32_t));
+      output.write(shaders[i].c_str(), size * sizeof(char));
+    }
   }
 
   output.close();
