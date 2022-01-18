@@ -3,8 +3,8 @@
 namespace Hero
 {
 
-void randomSetSeed(int seed);
-int randomGetInt(int min, int max);
-float randomGetFloat(float min, float max);
+HERO void randomSetSeed(int seed);
+HERO int randomGetInt(int min, int max);
+HERO float randomGetFloat(float min, float max);
 
 }

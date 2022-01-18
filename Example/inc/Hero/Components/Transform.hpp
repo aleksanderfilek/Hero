@@ -20,14 +20,14 @@ struct Transfrom : public IComponent
 class TransformSystem : public IComponentSystem<Transfrom>
 {
 public:
-    TransformSystem(uint32_t _startSize, uint32_t _chunkSize);
+    HERO TransformSystem(uint32_t _startSize, uint32_t _chunkSize);
 
-    void update() override;
+    HERO void update() override;
 
 private:
-    void dataInit(Transfrom* data) override;
-    void dataUpdate(Transfrom* data) override;
-    void dataDestroy(Transfrom* data) override;
+    HERO void dataInit(Transfrom* data) override;
+    HERO void dataUpdate(Transfrom* data) override;
+    HERO void dataDestroy(Transfrom* data) override;
 };
 
 }

@@ -21,7 +21,11 @@ struct MeshBuffer
     T* array = nullptr;
     uint32_t length = 0;
 
-    ~MeshBuffer();
+    HERO ~MeshBuffer()
+    {
+        delete array;
+        length = 0;
+    }
 };
 
 class Mesh
@@ -33,11 +37,11 @@ private:
     MeshBuffer<int> indices;
 
 public:
-    Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
+    HERO Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
         const MeshBuffer<int>& _indices);
-    ~Mesh();
+    HERO ~Mesh();
 
-    void draw();
+    HERO void draw();
 };
 
 } // namespace Hero

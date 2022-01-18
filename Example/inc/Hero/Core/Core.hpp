@@ -4,14 +4,10 @@
 #include<vector>
 #include<typeinfo>
 
-#ifdef __WIN32__
-#ifdef BUILD_LIB
-#define HERO __declspec(dllexport)
+#ifdef _WIN32
+    #define HeroMain WinMain
 #else
-#define HERO __declspec(dllimport)
-#endif
-#else
-#define HERO       // Linux & other Unices : leave it blank !
+    #define HeroMain main
 #endif
 
 namespace Hero
@@ -21,7 +17,7 @@ struct  Sid;
 class ISystem;
 class Time;
 
-class Core
+class HERO Core
 {
 private:
     static Core* instance;
@@ -40,9 +36,9 @@ public:
 
     static Core* get(){ return instance; }
 
-    bool addSystem(ISystem* newSystem);
-    bool removeSystem(Sid sid);
-    ISystem* getSystem(const Sid& sid);
+    HERO bool addSystem(ISystem* newSystem);
+    HERO bool removeSystem(Sid sid);
+    HERO ISystem* getSystem(const Sid& sid);
 };
 
 }

@@ -53,12 +53,12 @@ private:
     EventHandler events[(int)WindowEventType::COUNT];
 
 public:
-    Window(const Sid& sid, const char *title, int width, int height, int sdlflags = 0);
-    ~Window();
+    HERO Window(const Sid& sid, const char *title, int width, int height, int sdlflags = 0);
+    HERO ~Window();
 
-    void init();
-    void update();
-    void close();
+    HERO void init();
+    HERO void update();
+    HERO void close();
 
     inline SDL_Window* getWindow(){ return sdlWindow; }
     inline SDL_Renderer* getRenderer(){ return renderer; }
@@ -73,9 +73,9 @@ public:
     inline Int2 getSize(){ return size; }
     inline uint32_t getId(){ return id; }
     inline void setCurrentContext(){ SDL_GL_MakeCurrent(sdlWindow, glContext); }
-    inline void setBackgroundColor(Color backgroundColor)
+    inline void setBackgroundColor(Color _backgroundColor)
     {
-        backgroundColor = backgroundColor;
+        backgroundColor = _backgroundColor;
         glClearColor((float)backgroundColor.r/255.0f,(float)backgroundColor.g/255.0f,(float)backgroundColor.b/255.0f,(float)backgroundColor.a/255.0f);
     }
     inline void setTitle(const char* title){ SDL_SetWindowTitle(sdlWindow, title); }
@@ -84,10 +84,10 @@ public:
     inline bool isFocused(){ return focused; }
     inline bool isMouseHovering(){ return mouseHover; }
 
-    void apply(); //aktualizuje okno, rozmiar okna, fullscreen
+    HERO void apply(); //aktualizuje okno, rozmiar okna, fullscreen
 
     inline void render(){ SDL_GL_SwapWindow(sdlWindow); }
-    void handleEvents(SDL_Event* event);
+    HERO void handleEvents(SDL_Event* event);
     inline void setEvent(WindowEventType event, EventFunction func){ events[(int)event].add(func); }
 };
 

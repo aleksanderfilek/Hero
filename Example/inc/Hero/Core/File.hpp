@@ -2,9 +2,9 @@
 
 namespace Hero
 {
-    char * heroFileDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns, 
+    HERO char* heroFileDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns, 
 	    char const * const * aFilterPatterns, char const * aSingleFilterDescription, int aAllowMultipleSelects);
 
-    char * heroFileSaveDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns,
+    HERO char* heroFileSaveDialogOpen(char const * aTitle, char const * aDefaultPathAndFile, int aNumOfFilterPatterns,
         char const * const * aFilterPatterns, char const * aSingleFilterDescription);
 }

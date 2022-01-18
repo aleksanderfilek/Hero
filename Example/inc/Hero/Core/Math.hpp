@@ -87,81 +87,81 @@ typedef struct
 
 #define Mat4x4Identity (Matrix4x4){(Float4){1.0f,0.0f,0.0f,0.0f},(Float4){0.0f,1.0f,0.0f,0.0f},(Float4){0.0f,0.0f,1.0f,0.0f},(Float4){0.0f,0.0f,0.0f,1.0f}}
 
-float deg2rad(float degree);
-float rad2deg(float radians);
-int clampI(int value, int min, int max);
-float clampF(float value, float min, float max);
+HERO float deg2rad(float degree);
+HERO float rad2deg(float radians);
+HERO int clampI(int value, int min, int max);
+HERO float clampF(float value, float min, float max);
 
-Int2 addI2(Int2 A, Int2 B);
-Int2 substractI2(Int2 A, Int2 B);
-int dotProductI2(Int2 A, Int2 B);
-float distanceI2(Int2 A, Int2 B);
+HERO Int2 addI2(Int2 A, Int2 B);
+HERO Int2 substractI2(Int2 A, Int2 B);
+HERO int dotProductI2(Int2 A, Int2 B);
+HERO float distanceI2(Int2 A, Int2 B);
 
-Int3 addI3(Int3 A, Int3 B);
-Int3 substract(Int3 A, Int3 B);
-int dotProductI3(Int3 A, Int3 B);
-float distanceI3(Int3 A, Int3 B);
+HERO Int3 addI3(Int3 A, Int3 B);
+HERO Int3 substract(Int3 A, Int3 B);
+HERO int dotProductI3(Int3 A, Int3 B);
+HERO float distanceI3(Int3 A, Int3 B);
 
-Int4 addI4(Int4 A, Int4 B);
-Int4 substractI4(Int4 A, Int4 B);
+HERO Int4 addI4(Int4 A, Int4 B);
+HERO Int4 substractI4(Int4 A, Int4 B);
 
-float lerpF(float a, float b, float t);
+HERO float lerpF(float a, float b, float t);
 
-Float2 addF2(Float2 A,Float2 B);
-Float2 substractF2(Float2 A,Float2 B);
-float dotProductF2(Float2 A,Float2 B);
-Float2 multiplyF2(Float2 A, float k);
-Float2 normalizeF2(Float2 A);
-float lengthF2(Float2 A);
-float distanceF2(Float2 A, Float2 B);
-Float2 rotateF2(Float2 vector, float angle);
+HERO Float2 addF2(Float2 A,Float2 B);
+HERO Float2 substractF2(Float2 A,Float2 B);
+HERO float dotProductF2(Float2 A,Float2 B);
+HERO Float2 multiplyF2(Float2 A, float k);
+HERO Float2 normalizeF2(Float2 A);
+HERO float lengthF2(Float2 A);
+HERO float distanceF2(Float2 A, Float2 B);
+HERO Float2 rotateF2(Float2 vector, float angle);
 
-Float3 addF3(Float3 A, Float3 B);
-Float3 substractF3(Float3 A, Float3 B);
-float dotProductF3(Float3 A, Float3 B);
-Float3 drossProduct(Float3 A, Float3 B);
-Float3 multiplyF3(Float3 A, float k);
-Float3 normalizeF3(Float3 A);
-float lengthF3(Float3 A);
-Float3 lerpF3(Float3 A, Float3 B, float t);
-float distanceF3(Float3 A, Float3 B);
+HERO Float3 addF3(Float3 A, Float3 B);
+HERO Float3 substractF3(Float3 A, Float3 B);
+HERO float dotProductF3(Float3 A, Float3 B);
+HERO Float3 drossProduct(Float3 A, Float3 B);
+HERO Float3 multiplyF3(Float3 A, float k);
+HERO Float3 normalizeF3(Float3 A);
+HERO float lengthF3(Float3 A);
+HERO Float3 lerpF3(Float3 A, Float3 B, float t);
+HERO float distanceF3(Float3 A, Float3 B);
 
-Float4 addF4(Float4 A, Float4 B);
-Float4 substractF4(Float4 A, Float4 B);
-Float4 multiplyF4(Float4 A, float k);
-Float4 normalizeF4(Float4 A);
-float lengthF4(Float4 A);
+HERO Float4 addF4(Float4 A, Float4 B);
+HERO Float4 substractF4(Float4 A, Float4 B);
+HERO Float4 multiplyF4(Float4 A, float k);
+HERO Float4 normalizeF4(Float4 A);
+HERO float lengthF4(Float4 A);
 
-Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B);
-float determinentM2x2(Matrix2x2 A);
-Matrix2x2 tansponeM2x2(Matrix2x2 A);
-Matrix2x2 invertM2x2(Matrix2x2 A);
-Float2 multiplyM2x2F2(Matrix2x2 matrix, Float2 vector);
+HERO Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B);
+HERO float determinentM2x2(Matrix2x2 A);
+HERO Matrix2x2 tansponeM2x2(Matrix2x2 A);
+HERO Matrix2x2 invertM2x2(Matrix2x2 A);
+HERO Float2 multiplyM2x2F2(Matrix2x2 matrix, Float2 vector);
 
-Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B);
-float determinentM3x3(Matrix3x3 A);
-Matrix3x3 tansponeM3x3(Matrix3x3 A);
-Matrix3x3 invertM3x3(Matrix3x3 A);
-Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector);
+HERO Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B);
+HERO float determinentM3x3(Matrix3x3 A);
+HERO Matrix3x3 tansponeM3x3(Matrix3x3 A);
+HERO Matrix3x3 invertM3x3(Matrix3x3 A);
+HERO Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector);
 
-Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B);
-float determinentM4x4(Matrix4x4 A);
-Matrix4x4 tansponeM4x4(Matrix4x4 A);
-Matrix4x4 invertM4x4(Matrix4x4 A);
-Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector);
-float* m4x4ToArray(Matrix4x4 A);
-Matrix4x4 arrayToM4x4(float* array);
+HERO Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B);
+HERO float determinentM4x4(Matrix4x4 A);
+HERO Matrix4x4 tansponeM4x4(Matrix4x4 A);
+HERO Matrix4x4 invertM4x4(Matrix4x4 A);
+HERO Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector);
+HERO float* m4x4ToArray(Matrix4x4 A);
+HERO Matrix4x4 arrayToM4x4(float* array);
 
-void translateM4x4(Matrix4x4* matrix, Float4 translation);
-void scaleM4x4(Matrix4x4* matrix, Float4 scale);
-void rotateXM4x4(Matrix4x4* matrix, float radians);
-void rotateYM4x4(Matrix4x4* matrix, float radians);
-void rotateZM4x4(Matrix4x4* matrix, float radians);
-void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation);
+HERO void translateM4x4(Matrix4x4* matrix, Float4 translation);
+HERO void scaleM4x4(Matrix4x4* matrix, Float4 scale);
+HERO void rotateXM4x4(Matrix4x4* matrix, float radians);
+HERO void rotateYM4x4(Matrix4x4* matrix, float radians);
+HERO void rotateZM4x4(Matrix4x4* matrix, float radians);
+HERO void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation);
 
-Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
-Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);
-Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up);
-Matrix4x4 orthographicMatrix(int width, int height, float near, float far); // need to be rework
+HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
+HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);
+HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up);
+HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far); // need to be rework
 
 }
