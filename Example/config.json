@@ -1,0 +1,17 @@
+{
+    "Name" : "Example",
+    "Type": "Executable",
+    "OutputDir": "bin",
+    "Extension": ".exe",
+    "Compiler" : "g++",
+    "Debug" : false,
+    "LibsDir" : [
+        "bin"
+    ],
+    "Libs" : [
+        "-lhero"
+    ],
+    "Defines" : [
+        "-DHERO_DEBUG"
+    ]
+}
