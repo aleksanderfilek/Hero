@@ -1,4 +1,5 @@
 #include"Window.hpp"
+#include<Debug.hpp>
 
 namespace Hero
 {
@@ -46,6 +47,7 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
     glewExperimental = GL_TRUE;
 
     glewInit();
+    glCheckError();
 
     glViewport(0,0,width, height);
 

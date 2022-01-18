@@ -12,21 +12,25 @@ namespace Hero
 HERO Shader::Shader(const std::string& _name)
 {
     uint32_t program = glCreateProgram();
-    uint32_t vertex = 0, fragment = 0;
     
-    uint32_t uniformNumber;
+    uint32_t uniformNumber = 0;
     std::vector<std::string> uniformVec;
-    uint8_t flags;
-    uint32_t size;
-    char* content;
+    uint16_t flags = 0;
+    uint32_t size = 0;
+    char* content = 0;
     uint32_t typeArr[5] = { GL_VERTEX_SHADER, GL_TESS_CONTROL_SHADER, 
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
 
+
     std::ifstream file(_name, std::ios::binary);
+    if(!file.is_open())
+    {
+        std::cout<<"File could not be opened! Path: "<<_name<<std::endl;
+        return;
+    }
 
     file.read((char*)&uniformNumber, sizeof(uint32_t));
-
     for(int i = 0; i < uniformNumber; i++)
     {
         file.read((char*)&size, sizeof(uint32_t));
@@ -38,8 +42,7 @@ HERO Shader::Shader(const std::string& _name)
 
         delete content;
     }
-
-    file.read((char*)&flags, sizeof(uint8_t));
+    file.read((char*)&flags, sizeof(uint16_t));
 
     for(int i = 0; i < 5; i++)
     {
@@ -49,7 +52,8 @@ HERO Shader::Shader(const std::string& _name)
         }
 
         file.read((char*)&size, sizeof(uint32_t));
-        content = new char[size];
+        content = new char[size+1];
+        content[size]='\0';
         file.read(content, size * sizeof(char));
 
         shaders[i] = glCreateShader(typeArr[i]);

@@ -21,7 +21,7 @@ struct MeshBuffer
     T* array = nullptr;
     uint32_t length = 0;
 
-    HERO ~MeshBuffer()
+    ~MeshBuffer()
     {
         delete array;
         length = 0;

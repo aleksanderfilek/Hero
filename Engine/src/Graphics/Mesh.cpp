@@ -2,6 +2,8 @@
 #include<ThirdParty.hpp>
 #include<Debug.hpp>
 
+#include<iostream>
+
 namespace Hero
 {
 
@@ -15,9 +17,11 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     {
         buffSize += buff.length;
     }
-
+    glCheckError();
     glGenVertexArrays(1, &VAO);
+    glCheckError();
     glGenBuffers(1, &VBO);
+    glCheckError();
     glGenBuffers(1, &EBO);
     glCheckError();
     glBindVertexArray(VAO);
@@ -30,6 +34,7 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     for(auto& buff: buffers)
     {
         uint32_t size = buff.length * sizeof(float);
+        std::cout<<size<<std::endl;
         glBufferSubData(GL_ARRAY_BUFFER, buffOffset, size, buff.array);
         glCheckError();
         buffOffset += size;
@@ -60,6 +65,7 @@ HERO void Mesh::draw()
 {
     glBindVertexArray(VAO);
     glCheckError();
+    std::cout<<"I: "<<indices.length<<std::endl;
     glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
     glCheckError();
     glBindVertexArray(0);
