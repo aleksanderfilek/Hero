@@ -1,7 +1,7 @@
 #include"Interpreter.hpp"
 
 #include<iostream>
-    #include <unistd.h>
+
 namespace Editor
 {
 
@@ -32,6 +32,7 @@ Interpreter::Interpreter()
 
   tokens["quit"] = CmdType::QUIT;
   tokens["shader"] = CmdType::SHADER;
+  tokens["mesh"] = CmdType::MESH;
 }
 
 Interpreter::~Interpreter()

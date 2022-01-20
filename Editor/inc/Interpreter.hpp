@@ -11,7 +11,8 @@ enum class CmdType
 {
   ERROR,
   QUIT,
-  SHADER
+  SHADER,
+  MESH
 };
 
 struct Cmd

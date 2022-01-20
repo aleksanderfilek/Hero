@@ -25,6 +25,9 @@ void run()
       case CmdType::SHADER:
         shader(cmd);
       break;
+      case CmdType::MESH:
+        mesh(cmd);
+      break;
       default:
         std::cout<<"Unknown command!"<<std::endl;
       break;
