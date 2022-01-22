@@ -34,6 +34,7 @@ void shader(const Cmd& cmd)
   while(uniformPosition != std::string::npos)
   {
     size_t spaceDelimiter = content.find(" ", uniformPosition) + 1;
+    spaceDelimiter = content.find(" ", spaceDelimiter) + 1;
     size_t semicolonDelimiter = content.find(";", spaceDelimiter);
 
     std::string name = content.substr(spaceDelimiter, semicolonDelimiter - spaceDelimiter);
@@ -192,10 +193,10 @@ static int objMesh(const std::string& path)
     }
   }
 
-  std::vector<float> outPositions(3 * faceSet.size());
-  std::vector<float> outUVs(2 * faceSet.size());
-  std::vector<float> outNormals(3 * faceSet.size());
-  std::vector<int> outIndices(3 * faces.size());
+  std::vector<float> outPositions;
+  std::vector<float> outUVs;
+  std::vector<float> outNormals;
+  std::vector<int> outIndices;
 
   for(auto str: faceSet)
   {
@@ -204,7 +205,9 @@ static int objMesh(const std::string& path)
     int posID, uvID, normID;
     char delimiter;
     line>>posID>>delimiter>>uvID>>delimiter>>normID;
-
+    posID -= 1;
+    uvID -= 1;
+    normID -= 1;
     outPositions.push_back(positions[3*posID + 0]);
     outPositions.push_back(positions[3*posID + 1]);
     outPositions.push_back(positions[3*posID + 2]);
@@ -236,6 +239,8 @@ static int objMesh(const std::string& path)
   newPath<<"he";
   std::ofstream output(newPath.str(), std::ios::binary);
 
+  uint32_t nameSize = name.length();
+  output.write((char*)&nameSize,sizeof(uint32_t));
   output.write(name.c_str(), name.length() * sizeof(char));
 
   uint32_t indicesCount = outIndices.size();
@@ -245,14 +250,20 @@ static int objMesh(const std::string& path)
   uint32_t bufferCount = 3;
   output.write((char*)&bufferCount, sizeof(uint32_t));
 
+  uint8_t positionType = 3;
+  output.write((char*)&positionType, sizeof(uint8_t));
   uint32_t positionCount = outPositions.size();
   output.write((char*)&positionCount, sizeof(uint32_t));
   output.write((char*)outPositions.data(), outPositions.size() * sizeof(float));
 
+  uint8_t uvType = 2;
+  output.write((char*)&uvType, sizeof(uint8_t));
   uint32_t uvsCount = outUVs.size();
   output.write((char*)&uvsCount, sizeof(uint32_t));
   output.write((char*)outUVs.data(), outUVs.size() * sizeof(float));
 
+  uint8_t normalType = 3;
+  output.write((char*)&normalType, sizeof(uint8_t));
   uint32_t normalCount = outNormals.size();
   output.write((char*)&normalCount, sizeof(uint32_t));
   output.write((char*)outNormals.data(), outNormals.size() * sizeof(float));
