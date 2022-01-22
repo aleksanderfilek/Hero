@@ -6,7 +6,7 @@
 
 #include<cmath>
 
-#define SPEED 3
+#define SPEED 10
 
 Hero::Core* core;
 
@@ -17,6 +17,7 @@ class Test : public Hero::ISystem
     Hero::System::Window* window;
     Hero::Shader* shader;
     Hero::Mesh* mesh;
+    Hero::Texture* texture;
 
     Hero::Matrix4x4 proj, view, model;
 
@@ -42,38 +43,17 @@ class Test : public Hero::ISystem
       input = (Hero::System::Input*)core->getSystem(SID("input"));
 
       shader = new Hero::Shader("bin/assets/standard.he");
-
-      // std::vector<Hero::MeshBuffer<float>> buffers;
-      // Hero::MeshBuffer<float> position;
-      // position.type = Hero::BufferType::vec3;
-      // position.array = new float[9]{0.0f, 0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f};
-      // position.length = 9;
-      // buffers.push_back(position);
-      // Hero::MeshBuffer<float> uvs;
-      // uvs.type = Hero::BufferType::vec2;
-      // uvs.array = new float[6]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f};
-      // uvs.length = 6;
-      // buffers.push_back(uvs);
-      // Hero::MeshBuffer<float> normals;
-      // normals.type = Hero::BufferType::vec3;
-      // normals.array = new float[9]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f};
-      // normals.length = 9;
-      // buffers.push_back(normals);
-
-      // Hero::MeshBuffer<int> indices;
-      // indices.array = new int[3]{0,1,2};
-      // indices.length = 3;
-
-      // mesh = new Hero::Mesh("triangle", buffers, indices);
-
-      mesh = new Hero::Mesh("bin/assets/cube.he");
-
       shader->bind();
       proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.1f, 1000.0f);
       model = Mat4x4Identity;
       Hero::translateM4x4(&model, {0.0f, 0.0f, 10.0f});
       glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "proj"), 1, GL_FALSE, &proj.col[0].x);
       glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "model"), 1, GL_FALSE, &model.col[0].x);
+
+      mesh = new Hero::Mesh("bin/assets/stone.he");
+
+      texture = new Hero::Texture("bin/assets/stone.jpg",(uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::NO_MIPMAP);
+      texture->bind();
     }
 
     void update() override
@@ -122,6 +102,7 @@ class Test : public Hero::ISystem
 
       delete shader;
       delete mesh;
+      delete texture;
     }
 };
 
