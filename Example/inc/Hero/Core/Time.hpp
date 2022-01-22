@@ -6,7 +6,7 @@ namespace Hero
 {
 class Core;
 
-class Time
+class HERO Time
 {
     friend class Core;
 

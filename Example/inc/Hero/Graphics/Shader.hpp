@@ -21,7 +21,7 @@ public:
 
     HERO void bind();
     HERO int getUniformLocation(const std::string& _name);
-
+    inline uint32_t getGlId(){ return glId; }
 };
 
 }
