@@ -3,6 +3,7 @@
 #include<Debug.hpp>
 
 #include<iostream>
+#include<fstream>
 
 namespace Hero
 {
@@ -11,7 +12,70 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     const MeshBuffer<int>& _indices)
     : name(_name), buffers(_buffers), indices(_indices)
 {
+    generate();
+}
 
+HERO Mesh::Mesh(const std::string& path)
+{
+    std::ifstream input(path, std::ios::binary);
+
+    uint32_t nameSize;
+    input.read((char*)&nameSize, sizeof(uint32_t));
+    char nameArr[nameSize];
+    input.read(nameArr, nameSize * sizeof(char));
+    
+    uint32_t indicesCount;
+    input.read((char*)&indicesCount, sizeof(uint32_t));
+    int* indicesArr = new int[indicesCount];
+    input.read((char*)indicesArr, indicesCount * sizeof(int));
+    indices.length = indicesCount;
+    indices.array = indicesArr;
+
+    uint32_t bufferCount;
+    input.read((char*)&bufferCount, sizeof(uint32_t));
+
+    for(int i = 0; i < bufferCount; i++)
+    {
+        uint8_t bufferType;
+        input.read((char*)&bufferType, sizeof(uint8_t));
+        uint32_t bufferLength;
+        input.read((char*)&bufferLength, sizeof(uint32_t));
+        float* bufferArr = new float[bufferLength];
+        input.read((char*)bufferArr, bufferLength * sizeof(float));
+
+        buffers.push_back((MeshBuffer<float>){(BufferType)bufferType, bufferArr, bufferLength});
+    }
+
+    input.close();
+
+    generate();
+}
+
+HERO Mesh::~Mesh()
+{
+    indices.clear();
+    for(auto buff: buffers)
+    {
+        buff.clear();
+    }
+
+    glDeleteBuffers(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+}
+
+HERO void Mesh::draw()
+{
+    glBindVertexArray(VAO);
+    glCheckError();
+    glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
+    glCheckError();
+    glBindVertexArray(0);
+    glCheckError();
+}
+
+HERO void Mesh::generate()
+{
     int buffSize = 0;
     for(auto& buff: buffers)
     {
@@ -34,6 +98,7 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     for(auto& buff: buffers)
     {
         uint32_t size = buff.length * sizeof(float);
+        if(size == 0) std::cout<<"Buffer with lenght zero!"<<std::endl;
         glBufferSubData(GL_ARRAY_BUFFER, buffOffset, size, buff.array);
         glCheckError();
         buffOffset += size;
@@ -53,21 +118,6 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
         buffOffset += buff.length * sizeof(float);
     }
     glBindVertexArray(0);
-}
-
-HERO Mesh::~Mesh()
-{
-
-}
-
-HERO void Mesh::draw()
-{
-    glBindVertexArray(VAO);
-    glCheckError();
-    glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
-    glCheckError();
-    glBindVertexArray(0);
-    glCheckError();
 }
 
 } // namespace Hero

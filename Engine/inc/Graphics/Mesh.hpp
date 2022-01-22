@@ -3,6 +3,7 @@
 #include<cstdint>
 #include<string>
 #include<vector>
+#include<iostream>
 
 namespace Hero
 {
@@ -21,9 +22,10 @@ struct MeshBuffer
     T* array = nullptr;
     uint32_t length = 0;
 
-    ~MeshBuffer()
+    void clear()
     {
-        delete array;
+        delete[] array;
+        array = nullptr;
         length = 0;
     }
 };
@@ -39,9 +41,11 @@ private:
 public:
     HERO Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
         const MeshBuffer<int>& _indices);
+    HERO Mesh(const std::string& path);
     HERO ~Mesh();
 
     HERO void draw();
+    HERO void generate();
 };
 
 } // namespace Hero

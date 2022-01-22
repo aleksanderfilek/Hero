@@ -1,6 +1,7 @@
 #pragma once
 
 #include<cstdint>
+#include<iostream>
 
 namespace Hero
 {
@@ -55,8 +56,8 @@ typedef struct
     float x, y, z;
 } Float3;
 
-#define Float3zero (Float3){0.0f, 0.0f, 0.0f}
-#define Float3one (Float3){1.0f, 1.0f, 1.0f}
+#define Float3zero (Hero::Float3){0.0f, 0.0f, 0.0f}
+#define Float3one (Hero::Float3){1.0f, 1.0f, 1.0f}
 
 typedef struct
 {
@@ -85,7 +86,7 @@ typedef struct
     Float4 col[4];
 } Matrix4x4;
 
-#define Mat4x4Identity (Matrix4x4){(Float4){1.0f,0.0f,0.0f,0.0f},(Float4){0.0f,1.0f,0.0f,0.0f},(Float4){0.0f,0.0f,1.0f,0.0f},(Float4){0.0f,0.0f,0.0f,1.0f}}
+#define Mat4x4Identity (Hero::Matrix4x4){(Hero::Float4){1.0f,0.0f,0.0f,0.0f},(Hero::Float4){0.0f,1.0f,0.0f,0.0f},(Hero::Float4){0.0f,0.0f,1.0f,0.0f},(Hero::Float4){0.0f,0.0f,0.0f,1.0f}}
 
 HERO float deg2rad(float degree);
 HERO float rad2deg(float radians);
@@ -125,6 +126,7 @@ HERO Float3 normalizeF3(Float3 A);
 HERO float lengthF3(Float3 A);
 HERO Float3 lerpF3(Float3 A, Float3 B, float t);
 HERO float distanceF3(Float3 A, Float3 B);
+HERO std::ostream& operator<< (std::ostream& stream, const Float3& vector);
 
 HERO Float4 addF4(Float4 A, Float4 B);
 HERO Float4 substractF4(Float4 A, Float4 B);
@@ -152,7 +154,7 @@ HERO Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector);
 HERO float* m4x4ToArray(Matrix4x4 A);
 HERO Matrix4x4 arrayToM4x4(float* array);
 
-HERO void translateM4x4(Matrix4x4* matrix, Float4 translation);
+HERO void translateM4x4(Matrix4x4* matrix, Float3 translation);
 HERO void scaleM4x4(Matrix4x4* matrix, Float4 scale);
 HERO void rotateXM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateYM4x4(Matrix4x4* matrix, float radians);

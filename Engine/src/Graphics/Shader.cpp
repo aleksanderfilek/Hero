@@ -34,8 +34,9 @@ HERO Shader::Shader(const std::string& _name)
     for(int i = 0; i < uniformNumber; i++)
     {
         file.read((char*)&size, sizeof(uint32_t));
-        content = new char[size];
+        content = new char[size+1];
         file.read(content, size * sizeof(char));
+        content[size]='\0';
 
         std::string uniform(content);
         uniformVec.push_back(uniform);
@@ -104,6 +105,7 @@ HERO Shader::Shader(const std::string& _name)
     for(auto uniform: uniformVec)
     {
         uint32_t loc = glGetUniformLocation(program, uniform.c_str());
+        std::cout<<"Uniform: "<<loc<<" - "<<uniform.c_str()<<std::endl;
         uniforms.insert({uniform, loc});
     }
     

@@ -149,7 +149,7 @@ HERO float dotProductF3(Float3 A, Float3 B)
 
 HERO Float3 crossProduct(Float3 A, Float3 B)
 {
-    return (Float3){A.y*B.z - A.z*B.y, A.z*B.x - A.x*B.y, A.x*B.y - A.y*B.x};
+    return (Float3){A.y*B.z - A.z*B.y, A.z*B.x - A.x*B.z, A.x*B.y - A.y*B.x};
 }
 
 HERO Float3 multiplyF3(Float3 A, float k)
@@ -185,6 +185,13 @@ HERO float distanceF3(Float3 A, Float3 B)
     float y2 = (A.y - B.y)*(A.y - B.y); 
     float z2 = (A.z - B.z)*(A.z - B.z); 
     return sqrtf(x2 + y2 + z2);
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Float3& vector)
+{
+    stream<<"{ "<<vector.x<<", "<<vector.y<<", "<<vector.z<<" }";
+
+    return stream;
 }
 
 HERO Float4 addF4(Float4 A, Float4 B)
@@ -589,7 +596,7 @@ HERO Matrix4x4 arrayToM4x4(float* array)
     return result;
 }
 
-HERO void translateM4x4(Matrix4x4* matrix, Float4 translation)
+HERO void translateM4x4(Matrix4x4* matrix, Float3 translation)
 {
     matrix->col[3].x += translation.x;
     matrix->col[3].y += translation.y;
@@ -695,8 +702,10 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
 
     matrix.col[0].x = 1.0f/(aspectRatio*tg);
     matrix.col[1].y = 1.0f/tg;
-    matrix.col[2].z = -far/(near - far);
-    matrix.col[3].z = (far*near)/(near - far);
+    matrix.col[2].z = (-far - near)/(far - near);
+    matrix.col[2].w = 1.0f;
+    matrix.col[3].z = (far*near)/(far - near);
+    matrix.col[3].w = 0.0f;
 
     return matrix;
 }
@@ -706,34 +715,34 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
     Float3 f = substractF3(target, eye);
     f = normalizeF3(f);
 
-    Float3 r = crossProduct(f, up);
-    r = (Float3){-r.x, -r.y, -r.z};
+    Float3 r = crossProduct(up, f);
+    r = {-r.x, -r.y, -r.z};
     r = normalizeF3(r);
 
-    Float3 u = crossProduct(r, f);
-    u = (Float3){-u.x, -u.y, -u.z};
+    Float3 u = crossProduct(f, r);
+    u = {-u.x, -u.y, -u.z};
 
     Matrix4x4 matrix;
 
     matrix.col[0].x = r.x;
-    matrix.col[1].x = r.y;
-    matrix.col[2].x = r.z;
+    matrix.col[0].y = r.y;
+    matrix.col[0].z = r.z;
 
-    matrix.col[0].y = u.x;
+    matrix.col[1].x = u.x;
     matrix.col[1].y = u.y;
-    matrix.col[2].y = u.z;
+    matrix.col[1].z = u.z;
 
-    matrix.col[0].z = f.x;
-    matrix.col[1].z = f.y;
+    matrix.col[2].x = f.x;
+    matrix.col[2].y = f.y;
     matrix.col[2].z = f.z;
 
     matrix.col[0].w = 0.0f;
     matrix.col[1].w = 0.0f;
     matrix.col[2].w = 0.0f;
 
-    matrix.col[3].x = -dotProductF3(r,eye);
-    matrix.col[3].y = -dotProductF3(u,eye);
-    matrix.col[3].z = -dotProductF3(f,eye);
+    matrix.col[3].x = -dotProductF3(r, eye);
+    matrix.col[3].y = -dotProductF3(u, eye);
+    matrix.col[3].z = -dotProductF3(f, eye);
     matrix.col[3].w = 1.0f;
 
     return matrix;
