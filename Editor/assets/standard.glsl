@@ -6,9 +6,11 @@ layout (location = 2) in vec3 normal;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
+out vec2 TexCoord;
 void main()
 {
     gl_Position = proj * view * model * vec4(position, 1.0);
+    TexCoord = vec2(texCoord.x, 1 - texCoord.y);
 }
 #tessControl
 
@@ -17,7 +19,10 @@ void main()
 #geometry
 
 #fragment
+#version 330 core
+in vec2 TexCoord;
+uniform sampler2D ourTexture;
 void main()
 {
-  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  gl_FragColor = texture(ourTexture, TexCoord);
 }

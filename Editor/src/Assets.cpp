@@ -193,10 +193,38 @@ static int objMesh(const std::string& path)
     }
   }
 
+  std::cout<<"Unique vertices: "<<faceSet.size()<<std::endl;
+  std::cout<<"All vertices: "<<faces.size()<<std::endl;
+
   std::vector<float> outPositions;
   std::vector<float> outUVs;
   std::vector<float> outNormals;
   std::vector<int> outIndices;
+
+  // for(auto str: faces)
+  // {
+  //   std::stringstream line(str);
+
+  //   int posID, uvID, normID;
+  //   char delimiter;
+  //   line>>posID>>delimiter>>uvID>>delimiter>>normID;
+  //   posID -= 1;
+  //   uvID -= 1;
+  //   normID -= 1;
+
+  //   outPositions.push_back(positions[3*posID + 0]);
+  //   outPositions.push_back(positions[3*posID + 1]);
+  //   outPositions.push_back(positions[3*posID + 2]);
+
+  //   outUVs.push_back(uvs[2*uvID + 0]);
+  //   outUVs.push_back(uvs[2*uvID + 1]);
+
+  //   outNormals.push_back(normals[3*normID + 0]);
+  //   outNormals.push_back(normals[3*normID + 1]);
+  //   outNormals.push_back(normals[3*normID + 2]);
+
+  //   outIndices.push_back(outIndices.size());
+  // }
 
   for(auto str: faceSet)
   {
