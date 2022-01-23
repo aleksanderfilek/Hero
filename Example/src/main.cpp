@@ -44,24 +44,50 @@ class Test : public Hero::ISystem
 
       shader = new Hero::Shader("bin/assets/standard.he");
       shader->bind();
-      proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.1f, 1000.0f);
+      proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.1f, 100.0f);
       model = Mat4x4Identity;
       Hero::translateM4x4(&model, {0.0f, 0.0f, 10.0f});
       glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "proj"), 1, GL_FALSE, &proj.col[0].x);
       glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "model"), 1, GL_FALSE, &model.col[0].x);
 
+      // std::vector<Hero::MeshBuffer<float>> buffers;
+      // Hero::MeshBuffer<float> position;
+      // position.type = Hero::BufferType::vec3;
+      // position.array = new float[9]{0.0f, 0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f};
+      // position.length = 9;
+      // buffers.push_back(position);
+      // Hero::MeshBuffer<float> uvs;
+      // uvs.type = Hero::BufferType::vec2;
+      // uvs.array = new float[6]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f};
+      // uvs.length = 6;
+      // buffers.push_back(uvs);
+      // Hero::MeshBuffer<float> normals;
+      // normals.type = Hero::BufferType::vec3;
+      // normals.array = new float[9]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f};
+      // normals.length = 9;
+      // buffers.push_back(normals);
+
+      // Hero::MeshBuffer<int> indices;
+      // indices.array = new int[3]{0,1,2};
+      // indices.length = 3;
+
+      // mesh = new Hero::Mesh("triangle", buffers, indices);
+
       mesh = new Hero::Mesh("bin/assets/stone.he");
 
       texture = new Hero::Texture("bin/assets/stone.jpg",(uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::NO_MIPMAP);
       texture->bind();
+
+      glEnable(GL_DEPTH_TEST);
+      //glEnable(GL_CULL_FACE);
     }
 
     void update() override
     {
       if(input->keyPressed(Hero::System::Input::KeyCode::A))
-      eye.x += SPEED * Hero::Time::getDeltaTime();
-      if(input->keyPressed(Hero::System::Input::KeyCode::D))
       eye.x -= SPEED * Hero::Time::getDeltaTime();
+      if(input->keyPressed(Hero::System::Input::KeyCode::D))
+      eye.x += SPEED * Hero::Time::getDeltaTime();
 
       if(input->keyPressed(Hero::System::Input::KeyCode::W))
       eye.z += SPEED * Hero::Time::getDeltaTime();
@@ -80,7 +106,7 @@ class Test : public Hero::ISystem
 
       float a = Hero::deg2rad(angle);
       float tx = sinf(a);
-      float tz = cosf(a);
+      float tz = -cosf(a);
       Hero::Float3 dir = {tx, 0.0f, tz};
       dir = Hero::normalizeF3(dir);
 
@@ -89,7 +115,7 @@ class Test : public Hero::ISystem
       view = Hero::lookAtMatrix(eye,target,{0.0f, 1.0f, 0.0f});
       glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "view"), 1, GL_FALSE, &view.col[0].x);
 
-      glClear(GL_COLOR_BUFFER_BIT);
+      glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
       mesh->draw();
 
