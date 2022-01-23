@@ -53,9 +53,6 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
 
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    
     if(TTF_Init() < 0)
     {
         std::cout<<"["<<sid.getName()<<"] SDL_ttf could not be initialize! SDL_ttf Error: "<<TTF_GetError()<<std::endl;

@@ -703,8 +703,8 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
     matrix.col[0].x = 1.0f/(aspectRatio*tg);
     matrix.col[1].y = 1.0f/tg;
     matrix.col[2].z = (-far - near)/(far - near);
-    matrix.col[2].w = 1.0f;
-    matrix.col[3].z = (far*near)/(far - near);
+    matrix.col[2].w = -1.0f;
+    matrix.col[3].z = (-far*near)/(far - near);
     matrix.col[3].w = 0.0f;
 
     return matrix;
