@@ -16,17 +16,11 @@ class Test : public Hero::ISystem
     Hero::System::Input* input;
     Hero::System::Window* window;
     Hero::Shader* shader;
-    Hero::Mesh* mesh;
-    Hero::Texture* texture;
-
-    Hero::Matrix4x4 proj, view, model;
-
-    Hero::Float3 eye = Float3zero;
-    float angle = 0.0f;
+    Hero::Spritesheet* spritesheet;
+    Hero::Spritebatch* spritebatch;
   public:
     Test(const Hero::Sid& sid) : Hero::ISystem(sid)
     {
-      printMessage("Siema");
       priority = 255;
     }
 
@@ -42,82 +36,29 @@ class Test : public Hero::ISystem
       window->setBackgroundColor((Hero::Color){0,255,255,255});
       input = (Hero::System::Input*)core->getSystem(SID("input"));
 
-      shader = new Hero::Shader("bin/assets/standard.he");
+      shader = new Hero::Shader("bin/assets/spritebatch.he");
       shader->bind();
-      proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.1f, 100.0f);
-      model = Mat4x4Identity;
-      Hero::translateM4x4(&model, {0.0f, 0.0f, 10.0f});
-      glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "proj"), 1, GL_FALSE, &proj.col[0].x);
-      glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "model"), 1, GL_FALSE, &model.col[0].x);
+      uint32_t viewLoc = shader->getUniformLocation("view");
 
-      // std::vector<Hero::MeshBuffer<float>> buffers;
-      // Hero::MeshBuffer<float> position;
-      // position.type = Hero::BufferType::vec3;
-      // position.array = new float[9]{0.0f, 0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f};
-      // position.length = 9;
-      // buffers.push_back(position);
-      // Hero::MeshBuffer<float> uvs;
-      // uvs.type = Hero::BufferType::vec2;
-      // uvs.array = new float[6]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f};
-      // uvs.length = 6;
-      // buffers.push_back(uvs);
-      // Hero::MeshBuffer<float> normals;
-      // normals.type = Hero::BufferType::vec3;
-      // normals.array = new float[9]{0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f};
-      // normals.length = 9;
-      // buffers.push_back(normals);
+      spritesheet = new Hero::Spritesheet("bin/assets/test.he");
+      Hero::Matrix4x4 view = Hero::pixelScreenMatrix(640, 480, 0.00f, 1.0f);
+      glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view.col[0].x);
 
-      // Hero::MeshBuffer<int> indices;
-      // indices.array = new int[3]{0,1,2};
-      // indices.length = 3;
+      spritebatch = new Hero::Spritebatch(*shader, 10, 10);
 
-      // mesh = new Hero::Mesh("triangle", buffers, indices);
-
-      mesh = new Hero::Mesh("bin/assets/stone.he");
-
-      texture = new Hero::Texture("bin/assets/stone.jpg",(uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::NO_MIPMAP);
-      texture->bind();
-
-      glEnable(GL_DEPTH_TEST);
-      //glEnable(GL_CULL_FACE);
     }
 
     void update() override
     {
-      if(input->keyPressed(Hero::System::Input::KeyCode::A))
-      eye.x -= SPEED * Hero::Time::getDeltaTime();
-      if(input->keyPressed(Hero::System::Input::KeyCode::D))
-      eye.x += SPEED * Hero::Time::getDeltaTime();
-
-      if(input->keyPressed(Hero::System::Input::KeyCode::W))
-      eye.z += SPEED * Hero::Time::getDeltaTime();
-      if(input->keyPressed(Hero::System::Input::KeyCode::S))
-      eye.z -= SPEED * Hero::Time::getDeltaTime();
-
-      if(input->keyPressed(Hero::System::Input::KeyCode::SPACE))
-      eye.y += SPEED * Hero::Time::getDeltaTime();
-      if(input->keyPressed(Hero::System::Input::KeyCode::LCTRL))
-      eye.y -= SPEED * Hero::Time::getDeltaTime();
-
-      if(input->keyPressed(Hero::System::Input::KeyCode::E))
-      angle -= 30.0f * Hero::Time::getDeltaTime();
-      if(input->keyPressed(Hero::System::Input::KeyCode::Q))
-      angle += 30.0f * Hero::Time::getDeltaTime();
-
-      float a = Hero::deg2rad(angle);
-      float tx = sinf(a);
-      float tz = -cosf(a);
-      Hero::Float3 dir = {tx, 0.0f, tz};
-      dir = Hero::normalizeF3(dir);
-
-      Hero::Float3 target = Hero::addF3(eye, dir);
-
-      view = Hero::lookAtMatrix(eye,target,{0.0f, 1.0f, 0.0f});
-      glUniformMatrix4fv(glGetUniformLocation(shader->getGlId(), "view"), 1, GL_FALSE, &view.col[0].x);
-
       glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-      mesh->draw();
+      spritebatch->begin();
+
+      Hero::Int2 position = {0,0};
+      Hero::Int2 size = {200,200};
+      spritebatch->drawTexture(spritesheet->getTexture(), position, size);
+
+      spritebatch->end();
 
       window->render();
     }
@@ -127,8 +68,8 @@ class Test : public Hero::ISystem
       ISystem::close();
 
       delete shader;
-      delete mesh;
-      delete texture;
+      delete spritesheet;
+      delete spritebatch;
     }
 };
 
