@@ -31,11 +31,17 @@ void shader(const Cmd& cmd)
 
   std::vector<std::string> uniformNames;
   size_t uniformPosition = content.find("uniform");
+  const char* endOfUniform[] = {";", "[","{","\n"," "};
   while(uniformPosition != std::string::npos)
   {
     size_t spaceDelimiter = content.find(" ", uniformPosition) + 1;
     spaceDelimiter = content.find(" ", spaceDelimiter) + 1;
-    size_t semicolonDelimiter = content.find(";", spaceDelimiter);
+    size_t semicolonDelimiter = content.find(endOfUniform[0], spaceDelimiter);
+    for(int i = 1; i < 5; i++)
+    {
+      size_t next = content.find(endOfUniform[i], spaceDelimiter);
+      if(next < semicolonDelimiter) semicolonDelimiter = next;
+    }
 
     std::string name = content.substr(spaceDelimiter, semicolonDelimiter - spaceDelimiter);
     uniformNames.push_back(name);
@@ -309,6 +315,8 @@ void spritesheet(const Cmd& cmd)
   output.write((char*)&texturePathSize, sizeof(uint32_t));
   output.write(texturePath.c_str(), texturePathSize*sizeof(char));
 
+  uint32_t spritesCount = sprites.size();
+  output.write((char*)&spritesCount, sizeof(uint32_t));
   for(auto sprite: sprites)
   {
     uint32_t spriteNameSize = sprite.name.length();
