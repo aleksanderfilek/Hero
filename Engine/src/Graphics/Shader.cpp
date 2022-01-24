@@ -105,7 +105,6 @@ HERO Shader::Shader(const std::string& _name)
     for(auto uniform: uniformVec)
     {
         uint32_t loc = glGetUniformLocation(program, uniform.c_str());
-        std::cout<<"Uniform: "<<loc<<" - "<<uniform.c_str()<<std::endl;
         uniforms.insert({uniform, loc});
     }
     

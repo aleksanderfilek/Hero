@@ -15,8 +15,9 @@ HERO Spritesheet::Spritesheet(const std::string& path)
   uint32_t size;
 
   input.read((char*)&size, sizeof(uint32_t));
-  temp = new char[size];
+  temp = new char[size+1];
   input.read(temp, size * sizeof(char));
+  temp[size] = '\0';
   texturePath = temp;
   delete[] temp;
 
@@ -26,8 +27,9 @@ HERO Spritesheet::Spritesheet(const std::string& path)
   for(int i = 0; i < spritesCount; i++)
   {
     input.read((char*)&size, sizeof(uint32_t));
-    temp = new char[size];
+    temp = new char[size+1];
     input.read(temp, size * sizeof(char));
+    temp[size] = '\0';
     std::string name = temp;
     delete[] temp;
 

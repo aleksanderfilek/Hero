@@ -53,10 +53,9 @@ HERO Spritebatch::Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTex
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     maxTextureSlots = maxTextures;
-    textureSlots = new Texture*[maxTextures]{nullptr};
+    textureSlots = new const Texture*[maxTextures]{nullptr};
     textureSlotIndex = 0;
 
-    shader.bind();
     shaderTexturesLocation = shader.getUniformLocation("sb_textures");
     sampler = new int[maxTextures];
     for(int i = 0; i < maxTextures; i++)
@@ -100,8 +99,8 @@ HERO void Spritebatch::end()
     indexCount = 0;
     textureSlotIndex = 0;
 }
-
-HERO void Spritebatch::drawTexture(Texture& texture, const Int2& position, const Int2& size, Float4 rect)
+#include<iostream>
+HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position, const Int2& size, Float4 rect)
 {
     if(indexCount >= maxIndexCount || 
         textureSlotIndex > maxTextureSlots)
@@ -112,9 +111,9 @@ HERO void Spritebatch::drawTexture(Texture& texture, const Int2& position, const
 
     float textureIndex = -1.0f;
     // check registred texture
-    for(int i = 0; i <= textureSlotIndex; i++)
+    for(int i = 0; i <= textureIndex; i++)
     {
-        if(textureSlots[i]->getGlId() == texture.getGlId())
+        if(textureSlots[i]->getGlId() == texture->getGlId())
         {
             textureIndex = (float)i;
             break;
@@ -125,7 +124,7 @@ HERO void Spritebatch::drawTexture(Texture& texture, const Int2& position, const
     if(textureIndex == -1.0f)
     {
         textureIndex = textureSlotIndex;
-        textureSlots[textureSlotIndex] = &texture;
+        textureSlots[textureSlotIndex] = texture;
         textureSlotIndex++;
     }
 

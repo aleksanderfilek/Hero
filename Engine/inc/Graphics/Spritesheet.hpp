@@ -19,8 +19,9 @@ public:
   HERO Spritesheet(const std::string& path);
   HERO ~Spritesheet();
 
-  inline uint32_t getGlId(){ return texture->getGlId(); }
-  inline Int4 getRect(const std::string& name){ return sprites[name]; }
+  inline uint32_t getGlId() const { return texture->getGlId(); }
+  inline Int4 getRect(const std::string& name) { return sprites[name]; }
+  inline const Texture* getTexture() const { return texture; }
 };
 
 }

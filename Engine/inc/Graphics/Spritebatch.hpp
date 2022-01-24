@@ -33,7 +33,7 @@ namespace Hero
     uint32_t maxIndexCount;
 
     uint32_t maxTextureSlots;
-    Texture** textureSlots;
+    const Texture** textureSlots;
     uint32_t textureSlotIndex;
     uint32_t shaderTexturesLocation;
 
@@ -46,6 +46,6 @@ namespace Hero
     HERO void begin();
     HERO void end();
 
-    HERO void drawTexture(Texture& texture, const Int2& position, const Int2& size, Float4 rect = (Float4){ 0.0f,0.0f,1.0f,1.0f });
+    HERO void drawTexture(const Texture* texture, const Int2& position, const Int2& size, Float4 rect = (Float4){ 0.0f,0.0f,1.0f,1.0f });
   };
 } // namespace Hero
