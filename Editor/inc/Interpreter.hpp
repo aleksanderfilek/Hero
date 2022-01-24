@@ -12,7 +12,8 @@ enum class CmdType
   ERROR,
   QUIT,
   SHADER,
-  MESH
+  MESH,
+  SPRITESHEET
 };
 
 struct Cmd

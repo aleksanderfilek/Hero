@@ -33,6 +33,7 @@ Interpreter::Interpreter()
   tokens["quit"] = CmdType::QUIT;
   tokens["shader"] = CmdType::SHADER;
   tokens["mesh"] = CmdType::MESH;
+  tokens["spritesheet"] = CmdType::SPRITESHEET;
 }
 
 Interpreter::~Interpreter()

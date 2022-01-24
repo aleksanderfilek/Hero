@@ -193,38 +193,10 @@ static int objMesh(const std::string& path)
     }
   }
 
-  std::cout<<"Unique vertices: "<<faceSet.size()<<std::endl;
-  std::cout<<"All vertices: "<<faces.size()<<std::endl;
-
   std::vector<float> outPositions;
   std::vector<float> outUVs;
   std::vector<float> outNormals;
   std::vector<int> outIndices;
-
-  // for(auto str: faces)
-  // {
-  //   std::stringstream line(str);
-
-  //   int posID, uvID, normID;
-  //   char delimiter;
-  //   line>>posID>>delimiter>>uvID>>delimiter>>normID;
-  //   posID -= 1;
-  //   uvID -= 1;
-  //   normID -= 1;
-
-  //   outPositions.push_back(positions[3*posID + 0]);
-  //   outPositions.push_back(positions[3*posID + 1]);
-  //   outPositions.push_back(positions[3*posID + 2]);
-
-  //   outUVs.push_back(uvs[2*uvID + 0]);
-  //   outUVs.push_back(uvs[2*uvID + 1]);
-
-  //   outNormals.push_back(normals[3*normID + 0]);
-  //   outNormals.push_back(normals[3*normID + 1]);
-  //   outNormals.push_back(normals[3*normID + 2]);
-
-  //   outIndices.push_back(outIndices.size());
-  // }
 
   for(auto str: faceSet)
   {
@@ -299,6 +271,56 @@ static int objMesh(const std::string& path)
   output.close();
 
   return 0;
+}
+
+void spritesheet(const Cmd& cmd)
+{
+  const std::string path(cmd.args[0]);
+  std::stringstream content;
+
+  std::ifstream input(path);
+  content << input.rdbuf();
+  input.close();
+
+  struct Sprite
+  {
+    std::string name;
+    uint32_t x,y,w,h;
+  };
+  std::string texturePath;
+  std::vector<Sprite> sprites;
+  content>>texturePath;
+
+  while(!content.eof())
+  {
+    Sprite sprite;
+
+    content>>sprite.name>>sprite.x>>sprite.y>>sprite.w>>sprite.h;
+
+    sprites.push_back(sprite);
+  }
+
+  std::stringstream newPath;
+  newPath<<path.substr(0, path.find(".") + 1);
+  newPath<<"he";
+  std::ofstream output(newPath.str(), std::ios::binary);
+
+  uint32_t texturePathSize = texturePath.length();
+  output.write((char*)&texturePathSize, sizeof(uint32_t));
+  output.write(texturePath.c_str(), texturePathSize*sizeof(char));
+
+  for(auto sprite: sprites)
+  {
+    uint32_t spriteNameSize = sprite.name.length();
+    output.write((char*)&spriteNameSize, sizeof(uint32_t));
+    output.write(sprite.name.c_str(), spriteNameSize*sizeof(char));
+    output.write((char*)&sprite.x, sizeof(uint32_t));
+    output.write((char*)&sprite.y, sizeof(uint32_t));
+    output.write((char*)&sprite.w, sizeof(uint32_t));
+    output.write((char*)&sprite.h, sizeof(uint32_t));
+  }
+
+  output.close();
 }
 
 }

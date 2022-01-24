@@ -28,6 +28,9 @@ void run()
       case CmdType::MESH:
         mesh(cmd);
       break;
+      case CmdType::SPRITESHEET:
+        spritesheet(cmd);
+      break;
       default:
         std::cout<<"Unknown command!"<<std::endl;
       break;
