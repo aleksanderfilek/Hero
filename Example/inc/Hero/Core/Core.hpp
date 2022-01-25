@@ -1,5 +1,8 @@
 #pragma once
 
+#include"Sid.hpp"
+#include"ISystem.hpp"
+
 #include<iostream>
 #include<vector>
 #include<typeinfo>
@@ -13,8 +16,6 @@
 namespace Hero
 {
 
-struct  Sid;
-class ISystem;
 class Time;
 
 class HERO Core
@@ -38,7 +39,18 @@ public:
 
     HERO bool addSystem(ISystem* newSystem);
     HERO bool removeSystem(Sid sid);
-    HERO ISystem* getSystem(const Sid& sid);
+    template<class T>
+    static T* getSystem(const Sid& sid)
+    {
+        for(ISystem* sys: instance->systems)
+        {
+            if(sid == sys->sid)
+            {
+                return (T*)sys;
+            }
+        }
+        return nullptr;
+    }
 };
 
 }

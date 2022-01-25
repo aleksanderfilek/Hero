@@ -4,7 +4,7 @@
 #include"Math.hpp"
 #include"Color.hpp"
 #include"Events.hpp"
-#include"../ThirdParty.hpp"
+#include"ThirdParty.hpp"
 
 #include<cstdint>
 
@@ -52,6 +52,8 @@ private:
 
     EventHandler events[(int)WindowEventType::COUNT];
 
+    bool renderFlag = false;
+
 public:
     HERO Window(const Sid& sid, const char *title, int width, int height, int sdlflags = 0);
     HERO ~Window();
@@ -86,7 +88,7 @@ public:
 
     HERO void apply(); //aktualizuje okno, rozmiar okna, fullscreen
 
-    inline void render(){ SDL_GL_SwapWindow(sdlWindow); }
+    inline void render(){ renderFlag = true; }
     HERO void handleEvents(SDL_Event* event);
     inline void setEvent(WindowEventType event, EventFunction func){ events[(int)event].add(func); }
 };

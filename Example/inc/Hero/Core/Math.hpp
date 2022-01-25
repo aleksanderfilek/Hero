@@ -19,37 +19,45 @@ inline T max(T a, T b)
     return (a > b)? a : b;
 }
 
-typedef struct
+struct Int2
 {
     int x, y;
-} Int2;
 
-#define Int2zero (Int2){0, 0}
-#define Int2one (Int2){1, 1}
+    constexpr static inline Int2 zero(){return (Int2){0, 0}; } 
+    inline bool operator==(const Int2& other)
+    {
+        if(x != other.x || y != other.y) 
+            return false;
+        return true;
+    }
+};
+
+#define Int2zero (Hero::Int2){0, 0}
+#define Int2one (Hero::Int2){1, 1}
 
 typedef struct
 {
     int x, y, z;
 } Int3;
 
-#define Int3zero (Int3){0, 0, 0}
-#define Int3one (Int3){1, 1, 1}
+#define Int3zero (Hero::Int3){0, 0, 0}
+#define Int3one (Hero::Int3){1, 1, 1}
 
 typedef struct
 {
     int x, y, z, w;
 } Int4;
 
-#define Int4zero (Int4){0, 0, 0, 0}
-#define Int4one (Int4){1, 1, 1, 1}
+#define Int4zero (Hero::Int4){0, 0, 0, 0}
+#define Int4one (Hero::Int4){1, 1, 1, 1}
 
 typedef struct
 {
     float x, y;
 } Float2;
 
-#define Float2zero (Float2){0.0f, 0.0f}
-#define Float2one (Float2){1.0f, 1.0f}
+#define Float2zero (Hero::Float2){0.0f, 0.0f}
+#define Float2one (Hero::Float2){1.0f, 1.0f}
 
 typedef struct
 {
@@ -59,27 +67,34 @@ typedef struct
 #define Float3zero (Hero::Float3){0.0f, 0.0f, 0.0f}
 #define Float3one (Hero::Float3){1.0f, 1.0f, 1.0f}
 
-typedef struct
+struct Float4
 {
     float x, y, z, w;
-} Float4;
 
-#define Float4zero (Float4){0.0f, 0.0f, 0.0f, 0.0f}
-#define Float4one (Float4){1.0f, 1.0f, 1.0f, 1.0f}
+    constexpr static inline Float4 zero(){return (Float4){0.0f, 0.0f, 0.0f, 0.0f}; } 
+    constexpr static inline Float4 one(){return (Float4){1.0f, 1.0f, 1.0f, 1.0f}; } 
+
+    inline bool operator==(const Float4& other)
+    {
+        if(x != other.x || y != other.y || z != other.z || w != other.w) 
+            return false;
+        return true;
+    }
+};
 
 typedef struct
 {
     Float2 col[2];
 } Matrix2x2;
 
-#define matrix2x2identity (Matrix2x2){(Float2){1.0f,0.0f},(Float2){0.0f,1.0f}}
+#define matrix2x2identity (Hero::Matrix2x2){(Hero::Float2){1.0f,0.0f},(Hero::Float2){0.0f,1.0f}}
 
 typedef struct
 {
     Float3 col[3];
 } Matrix3x3;
 
-#define matrix3x3identity (Matrix3x3){(Float3){1.0f,0.0f,0.0f},(Float3){0.0f,1.0f,0.0f},(Float3){0.0f,0.0f,1.0f}}
+#define matrix3x3identity (Hero::Matrix3x3){(Hero::Float3){1.0f,0.0f,0.0f},(Hero::Float3){0.0f,1.0f,0.0f},(Hero::Float3){0.0f,0.0f,1.0f}}
 
 typedef struct
 {
