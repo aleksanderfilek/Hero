@@ -1,7 +1,5 @@
 #include"Core.hpp"
-#include"Sid.hpp"
 #include"Time.hpp"
-#include"ISystem.hpp"
 #include"ThirdParty.hpp"
 
 namespace Hero
@@ -150,19 +148,6 @@ HERO bool Core::removeSystem(Sid sid)
     #endif
 
     return true;
-}
-
-HERO ISystem* Core::getSystem(const Sid& sid)
-{
-    for(ISystem* sys: systems)
-    {
-        if(sid == sys->sid)
-        {
-            return sys;
-        }
-    }
-
-    return nullptr;
 }
 
 }

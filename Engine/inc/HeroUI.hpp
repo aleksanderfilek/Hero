@@ -10,3 +10,4 @@
 #include"UserInterface/Label.hpp"
 #include"UserInterface/VerticalStack.hpp"
 #include"UserInterface/Widget.hpp"
+#include"UserInterface/Image.hpp"

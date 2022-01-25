@@ -8,6 +8,8 @@ namespace System
 
 HERO Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
 {
+    priority = 0;
+
     if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {
         std::cout<<"["<<sid.getName()<<"] SDL_Init: "<<SDL_GetError()<<std::endl;
@@ -78,7 +80,10 @@ HERO void Window::init()
 
 HERO void Window::update()
 {
-
+    if(renderFlag)
+    {
+        SDL_GL_SwapWindow(sdlWindow);
+    }
 }
 
 HERO void Window::close()

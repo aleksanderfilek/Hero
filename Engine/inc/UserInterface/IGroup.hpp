@@ -35,6 +35,8 @@ public:
 
     return ((IGroup*)it->second)->get<T>(path.substr(namePos+1));
   }
+
+  inline uint32_t getChildrenCount(){ return children.size(); }
 };
 
 }
