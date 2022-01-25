@@ -5,7 +5,7 @@ namespace Hero
 namespace UI
 {
 
-class Canvas
+class Image
 {
 
 };

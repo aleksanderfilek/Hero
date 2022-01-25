@@ -1,14 +1,9 @@
-#pragma once
+#include"HorizontalStack.hpp"
 
 namespace Hero
 {
 namespace UI
 {
-
-class Canvas
-{
-
-};
 
 }
 }

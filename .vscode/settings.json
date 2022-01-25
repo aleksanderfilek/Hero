@@ -48,6 +48,9 @@
     "xlocnum": "cpp",
     "xmemory": "cpp",
     "xstddef": "cpp",
-    "xtr1common": "cpp"
+    "xtr1common": "cpp",
+    "set": "cpp",
+    "unordered_set": "cpp",
+    "xtree": "cpp"
   }
 }

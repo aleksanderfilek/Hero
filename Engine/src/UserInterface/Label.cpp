@@ -1,14 +1,9 @@
-#pragma once
+#include"Label.hpp"
 
 namespace Hero
 {
 namespace UI
 {
-
-class Canvas
-{
-
-};
 
 }
 }

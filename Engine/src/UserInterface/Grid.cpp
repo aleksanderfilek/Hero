@@ -1,14 +1,9 @@
-#pragma once
+#include"Grid.hpp"
 
 namespace Hero
 {
 namespace UI
 {
-
-class Canvas
-{
-
-};
 
 }
 }
