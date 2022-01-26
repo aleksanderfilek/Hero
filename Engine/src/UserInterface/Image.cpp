@@ -7,7 +7,7 @@ namespace UI
 
 HERO Image::~Image()
 {
-  delete texture;
+  if(free) delete texture;
 }
 
 HERO void Image::draw(Spritebatch* spritebatch)
@@ -17,12 +17,14 @@ HERO void Image::draw(Spritebatch* spritebatch)
   spritebatch->drawTexture(texture, absolutePosition, size, rect);
 }
 
-HERO void Image::setTexture(Texture* _texture)
+HERO void Image::setTexture(Texture* _texture, bool _free)
 {
-  if(texture != nullptr)
+  if(texture != nullptr && free == true)
   {
     delete texture;
   }
+
+  free = _free;
 
   texture = _texture;
   if(rect == Float4::zero())
