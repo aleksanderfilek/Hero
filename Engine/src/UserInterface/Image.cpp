@@ -7,7 +7,7 @@ namespace UI
 
 HERO Image::~Image()
 {
-
+  delete texture;
 }
 
 HERO void Image::draw(Spritebatch* spritebatch)
@@ -32,8 +32,7 @@ HERO void Image::setTexture(Texture* _texture)
 
   if(size == Int2::zero())
   {
-    Int2 _size = texture->getSize();
-    size = _size;
+    size = texture->getSize();
   }
 }
 

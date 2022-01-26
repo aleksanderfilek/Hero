@@ -1,6 +1,7 @@
 #include"UserInterface.hpp"
-#include"Shader.hpp"
 #include"Core.hpp"
+#include"Shader.hpp"
+
 
 #include<iostream>
 #include<sstream>
@@ -11,23 +12,15 @@ namespace Hero
 namespace System
 {
 
-HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid, Shader* _shader) : ISystem(sid)
+HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid) : ISystem(sid)
 {
   window = Core::getSystem<Window>(windowSid);
-  shader = _shader;
 
-  shader->bind();
-  spritebatch = new Spritebatch(*shader, 100, 32);
+  spritebatch = new Spritebatch(100, 32);
 }
 
 HERO UserInterface::~UserInterface()
 {
-  delete shader;
-  delete spritebatch;
-  for(auto widget: widgets)
-  {
-    delete widget.second;
-  }
 }
 
 HERO void UserInterface::init()
@@ -37,22 +30,32 @@ HERO void UserInterface::init()
 
 HERO void UserInterface::update()
 {
+  if(shader == nullptr) return;
+
   shader->bind();
+  spritebatch->begin();
   for(auto it: widgets)
   {
     it.second->draw(spritebatch);
   }
+  spritebatch->end();
   window->render();
 }
 
 HERO void UserInterface::close()
 {
   ISystem::close();
+  delete shader;
+  delete spritebatch;
+  for(auto widget: widgets)
+  {
+    delete widget.second;
+  }
 }
 
-HERO bool UserInterface::add(const std::string& name, UI::Widget* element)
+HERO bool UserInterface::add(const std::string& name, UI::Widget* widget)
 {
-  auto result = widgets.insert({name, nullptr});  
+  auto result = widgets.insert({name, widget});  
 
   if(result.second == false)
   {
@@ -97,6 +100,12 @@ HERO UI::Widget* UserInterface::get(const std::string& name)
     return nullptr;
   }
   return result->second;
+}
+
+HERO void UserInterface::setShader(Shader* _shader)
+{
+  shader = _shader;
+  spritebatch->setShader(_shader);
 }
 
 }

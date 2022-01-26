@@ -40,12 +40,14 @@ namespace Hero
     int *sampler;
 
   public:
-    HERO Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTextures);
+    HERO Spritebatch(uint32_t capacity, uint32_t maxTextures);
     HERO ~Spritebatch();
 
     HERO void begin();
     HERO void end();
 
     HERO void drawTexture(const Texture* texture, const Int2& position, const Int2& size, Float4 rect = (Float4){ 0.0f,0.0f,1.0f,1.0f });
+  
+    HERO void setShader(Shader* _shader);
   };
 } // namespace Hero

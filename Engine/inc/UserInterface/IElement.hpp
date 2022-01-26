@@ -21,7 +21,7 @@ enum class Event : uint16_t
 
 class IGroup;
 
-class IElement
+class HERO IElement
 {
   friend class IGroup;
 protected:

@@ -33,7 +33,7 @@ namespace Hero
             HERO void unbind();
 
             inline uint32_t getGlId() const { return glId; }
-            inline Int2 getSize() const { return size; }
+            inline Int2 getSize() { return size; }
             inline const char* getName() const { return name; }
     };
 } // namespace Hero

@@ -8,7 +8,7 @@ namespace Hero
 namespace UI
 {
 
-class Image : public IElement
+class HERO Image : public IElement
 {
 private:
   Texture* texture = nullptr;

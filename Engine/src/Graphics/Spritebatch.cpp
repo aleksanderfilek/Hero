@@ -6,7 +6,7 @@
 namespace Hero
 {
 
-HERO Spritebatch::Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTextures)
+HERO Spritebatch::Spritebatch(uint32_t capacity, uint32_t maxTextures)
 {
     spriteCapacity = capacity;
     quadBuffer = new SpritebatchVertex[4 * capacity];
@@ -56,7 +56,6 @@ HERO Spritebatch::Spritebatch(Shader& shader, uint32_t capacity, uint32_t maxTex
     textureSlots = new const Texture*[maxTextures]{nullptr};
     textureSlotIndex = 0;
 
-    shaderTexturesLocation = shader.getUniformLocation("sb_textures");
     sampler = new int[maxTextures];
     for(int i = 0; i < maxTextures; i++)
     {
@@ -153,6 +152,11 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
     quadBufferPtr++;
 
     indexCount += 6;
+}
+
+HERO void Spritebatch::setShader(Shader* _shader)
+{
+    shaderTexturesLocation = _shader->getUniformLocation("sb_textures");
 }
 
 }
