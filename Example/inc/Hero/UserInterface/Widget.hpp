@@ -14,8 +14,6 @@ class IElement;
 
 class HERO Widget : public IGroup
 {
-public:
-  HERO void draw(Spritebatch* spritebatch) override;
 };
 
 }

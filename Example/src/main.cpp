@@ -37,9 +37,12 @@ class Test : public Hero::ISystem
 
       Hero::UI::Widget* widget = new Hero::UI::Widget();
       Hero::UI::Image* image = new Hero::UI::Image();
+      Hero::UI::Canvas* canvas = new Hero::UI::Canvas();
       image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
-      widget->add("image",image);
-      image->setPosition({100,100});
+      canvas->setPosition({100,100});
+      image->setSize({100,100});
+      canvas->add("image", image);
+      widget->add("canvas", canvas);
       userInterface->add("main", widget);
     }
 

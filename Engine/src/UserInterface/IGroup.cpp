@@ -13,6 +13,16 @@ HERO IGroup::~IGroup()
   }
 }
 
+HERO void IGroup::draw(Spritebatch* spritebatch)
+{
+  if(!visible) return;
+
+  for(auto it: children)
+  {
+    it.second->draw(spritebatch);
+  }
+}
+
 HERO bool IGroup::add(const std::string& name, IElement* element)
 {
   element->parent = this;

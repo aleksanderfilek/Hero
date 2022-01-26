@@ -20,6 +20,7 @@ protected:
 public:
   HERO virtual ~IGroup();
 
+  HERO void draw(Spritebatch* spritebatch);
   HERO virtual bool add(const std::string& name, IElement* element);
   HERO virtual bool remove(const std::string& name);
 
