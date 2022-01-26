@@ -39,8 +39,8 @@ public:
 
   virtual void draw(Spritebatch* spritebatch){};
 
-  HERO void setPosition(Int2 _position);
-  HERO void serSize(Int2 _size);
+  HERO virtual void setPosition(Int2 _position);
+  HERO virtual void serSize(Int2 _size);
 
   inline void setVisibility(bool _visible){ visible = _visible; }
   inline bool isVisible(){ return visible; }

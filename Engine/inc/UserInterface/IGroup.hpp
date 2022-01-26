@@ -11,7 +11,7 @@ namespace Hero
 namespace UI
 {
 
-class IGroup : public IElement
+class HERO IGroup : public IElement
 {
 protected:
   std::map<std::string, IElement*> children;
@@ -20,8 +20,8 @@ protected:
 public:
   HERO virtual ~IGroup();
 
-  HERO virtual bool add(const std::string& name, IElement* element) = 0;
-  HERO virtual bool remove(const std::string& name) = 0;
+  HERO virtual bool add(const std::string& name, IElement* element);
+  HERO virtual bool remove(const std::string& name);
 
   template<class T>
   T* get(const std::string& path)
@@ -37,6 +37,8 @@ public:
   }
 
   inline uint32_t getChildrenCount(){ return children.size(); }
+
+  HERO virtual void recalculatePositions();
 };
 
 }

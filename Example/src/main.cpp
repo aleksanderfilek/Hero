@@ -39,6 +39,7 @@ class Test : public Hero::ISystem
       Hero::UI::Image* image = new Hero::UI::Image();
       image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
       widget->add("image",image);
+      image->setPosition({100,100});
       userInterface->add("main", widget);
     }
 

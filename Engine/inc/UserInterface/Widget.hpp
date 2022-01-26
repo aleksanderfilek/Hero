@@ -12,16 +12,10 @@ namespace UI
 
 class IElement;
 
-class Widget : public IGroup
+class HERO Widget : public IGroup
 {
 public:
-  HERO Widget();
-  HERO ~Widget();
-
   HERO void draw(Spritebatch* spritebatch) override;
-
-  HERO bool add(const std::string& name, IElement* element);
-  HERO bool remove(const std::string& name);
 };
 
 }
