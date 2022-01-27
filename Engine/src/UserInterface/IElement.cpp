@@ -14,6 +14,7 @@ HERO IElement::~IElement()
 HERO void IElement::setAbsolutPosition(Int2 originPosition)
 {
   absolutePosition = addI2(originPosition, relativePosition);
+  std::cout<<absolutePosition<<std::endl;
 }
 
 HERO void IElement::setPosition(Int2 _position)

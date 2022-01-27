@@ -112,6 +112,7 @@ HERO Int2 addI2(Int2 A, Int2 B);
 HERO Int2 substractI2(Int2 A, Int2 B);
 HERO int dotProductI2(Int2 A, Int2 B);
 HERO float distanceI2(Int2 A, Int2 B);
+HERO std::ostream& operator<< (std::ostream& stream, const Int2& vector);
 
 HERO Int3 addI3(Int3 A, Int3 B);
 HERO Int3 substract(Int3 A, Int3 B);
@@ -148,6 +149,7 @@ HERO Float4 substractF4(Float4 A, Float4 B);
 HERO Float4 multiplyF4(Float4 A, float k);
 HERO Float4 normalizeF4(Float4 A);
 HERO float lengthF4(Float4 A);
+HERO std::ostream& operator<< (std::ostream& stream, const Float4& vector);
 
 HERO Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B);
 HERO float determinentM2x2(Matrix2x2 A);

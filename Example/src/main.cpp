@@ -37,13 +37,26 @@ class Test : public Hero::ISystem
 
       Hero::UI::Widget* widget = new Hero::UI::Widget();
       Hero::UI::Image* image = new Hero::UI::Image();
+      Hero::UI::Label* label = new Hero::UI::Label();
       Hero::UI::Canvas* canvas = new Hero::UI::Canvas();
-      image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
       canvas->setPosition({100,100});
+
+      image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
       image->setSize({100,100});
+      image->setPosition({100,0});
+      label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
+      label->setText("Hello, World!");
+      label->setSize({200,200});
+      label->setAlligment(Hero::UI::Alligment::CENTER);
+      label->apply();
+
       canvas->add("image", image);
+      canvas->add("label", label);
       widget->add("canvas", canvas);
       userInterface->add("main", widget);
+
+      glEnable( GL_BLEND );
+      glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     }
 
     void update() override

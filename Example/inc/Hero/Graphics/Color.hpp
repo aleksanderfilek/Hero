@@ -8,23 +8,27 @@ namespace Hero
 
 typedef SDL_Color Color;
 
-class ColorHSV;
+struct ColorHSV;
 
-class ColorRGB
+struct ColorRGB
 {
     public:
         uint8_t r,g,b,a;
-
-        HERO ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255);
-        HERO ColorRGB(float _r, float _g, float _b, float _a = 1.0f);
-        HERO ColorRGB(const ColorRGB& obj);
+        constexpr ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255)
+            :r(_r), g(_g), b(_b), a(_a){}
+        ColorRGB(const ColorRGB& obj)
+            :r(obj.r), g(obj.g), b(obj.b), a(obj.a){}
 
         HERO ColorHSV convertToHSV() const;
         inline SDL_Color convertToSDLColor() const 
             { return (SDL_Color){.r = r, .g = g, .b = b, .a = a}; }
+
+        constexpr static inline ColorRGB white(){
+            return ColorRGB(255,255,255);
+        }
 };
 
-class ColorHSV
+struct ColorHSV
 {
     public:
         float h,s,v;

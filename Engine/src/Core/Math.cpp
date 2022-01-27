@@ -47,6 +47,13 @@ HERO float distanceI2(Int2 A, Int2 B)
     return sqrtf(x2 + y2);
 }
 
+HERO std::ostream& operator<< (std::ostream& stream, const Int2& vector)
+{
+    stream<<"{ "<<vector.x<<", "<<vector.y<<" }";
+
+    return stream;
+}
+
 HERO Int3 addI3(Int3 A, Int3 B)
 {
     return (Int3){A.x + B.x, A.y + B.y, A.z + B.z};
@@ -222,6 +229,13 @@ HERO Float4 normalizeF4(Float4 A)
     float z = A.z / length;
     float w = A.w / length;
     return (Float4){x, y, z, w};
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Float4& vector)
+{
+    stream<<"{ "<<vector.x<<", "<<vector.y<<", "<<vector.z<<", "<<vector.w<<" }";
+
+    return stream;
 }
 
 HERO Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B)

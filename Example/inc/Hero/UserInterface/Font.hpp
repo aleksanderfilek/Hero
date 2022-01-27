@@ -6,17 +6,17 @@
 namespace Hero
 {
 
-    class Font
-    {
-        private:
-            const char* name;
-            uint32_t size;
-            TTF_Font* font;
+class HERO Font
+{
+    private:
+        const char* name;
+        uint32_t size;
+        TTF_Font* font;
 
-        public:
-            Font(const char* _path, uint32_t _size);
-            ~Font();
+    public:
+        HERO Font(const char* _path, uint32_t _size);
+        HERO ~Font();
 
-            inline TTF_Font* getTTFFont(){ return font; }
-    };
+        inline TTF_Font* getTTFFont() const { return font; }
+};
 } // namespace Hero

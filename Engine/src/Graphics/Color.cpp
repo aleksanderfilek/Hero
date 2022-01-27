@@ -6,22 +6,6 @@
 namespace Hero
 {
 
-HERO ColorRGB::ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a)
-    :r(_r), g(_g), b(_b), a(_a)
-{}
-
-HERO ColorRGB::ColorRGB(float _r, float _g, float _b, float _a)
-{
-    r = (float)_r/255.0f;
-    g = (float)_g/255.0f;
-    b = (float)_b/255.0f;
-    a = (float)_a/255.0f;
-}
-
-HERO ColorRGB::ColorRGB(const ColorRGB& obj)
-    :r(obj.r), g(obj.g), b(obj.b), a(obj.a)
-{}
-
 HERO ColorHSV ColorRGB::convertToHSV() const
 {
     float tr = (float)r/255.0f;
