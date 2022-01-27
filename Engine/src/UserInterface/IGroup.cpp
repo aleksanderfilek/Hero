@@ -25,7 +25,6 @@ HERO void IGroup::draw(Spritebatch* spritebatch)
 
 HERO bool IGroup::add(const std::string& name, IElement* element)
 {
-  element->parent = this;
   auto result = children.insert({name, element});  
 
   if(result.second == false)
@@ -36,6 +35,9 @@ HERO bool IGroup::add(const std::string& name, IElement* element)
     #endif
     return false;
   }
+
+  element->parent = this;
+
   return true;
 }
 
@@ -56,6 +58,13 @@ HERO bool IGroup::remove(const std::string& name)
 HERO void IGroup::recalculatePositions()
 {
   
+}
+
+HERO void IGroup::setPosition(Int2 _position)
+{
+  IElement::setPosition(_position);
+
+  recalculatePositions();
 }
 
 }

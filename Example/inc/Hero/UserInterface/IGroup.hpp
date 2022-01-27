@@ -13,16 +13,20 @@ namespace UI
 
 class HERO IGroup : public IElement
 {
+  friend class IElement;
 protected:
   std::map<std::string, IElement*> children;
   
   Int4 rect;
+
+  HERO virtual void recalculatePositions();
 public:
   HERO virtual ~IGroup();
 
-  HERO void draw(Spritebatch* spritebatch);
+  HERO void draw(Spritebatch* spritebatch) override;
   HERO virtual bool add(const std::string& name, IElement* element);
   HERO virtual bool remove(const std::string& name);
+  HERO void setPosition(Int2 _position) override;
 
   template<class T>
   T* get(const std::string& path)
@@ -38,8 +42,6 @@ public:
   }
 
   inline uint32_t getChildrenCount(){ return children.size(); }
-
-  HERO virtual void recalculatePositions();
 };
 
 }

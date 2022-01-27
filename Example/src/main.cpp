@@ -47,11 +47,13 @@ class Test : public Hero::ISystem
       label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
       label->setText("Hello, World!");
       label->setSize({200,200});
-      label->setAlligment(Hero::UI::Alligment::CENTER);
+      label->setAlligment(Hero::UI::Alligment::LEFT_TOP);
       label->apply();
 
       canvas->add("image", image);
       canvas->add("label", label);
+      canvas->setPosition({200,100});
+
       widget->add("canvas", canvas);
       userInterface->add("main", widget);
 

@@ -21,6 +21,8 @@ HERO void Label::draw(Spritebatch* spritebatch)
 HERO void Label::setAlligment(Alligment _alligment)
 {
   alligment = _alligment;
+
+  if(texture) calculateAlligment();
 }
 
 HERO void Label::setFont(Font* _font, bool _free)
@@ -46,6 +48,28 @@ HERO void Label::apply()
   texture = new Texture(text.c_str(), color, font,
     (uint8_t)TextureFlag::LINEAR | (uint8_t)TextureFlag::NO_MIPMAP);
 
+  calculateAlligment();
+}
+
+HERO void Label::setPosition(Int2 _position)
+{
+  IElement::setPosition(_position);
+
+  Int2 diff = substractI2(_position, relativePosition);
+  texturePosition = addI2(texturePosition, diff);
+}
+
+HERO void Label::setAbsolutPosition(Int2 originPosition)
+{
+  Int2 texAbsDiff = substractI2(texturePosition, absolutePosition);
+
+  IElement::setAbsolutPosition(originPosition);
+
+  texturePosition = addI2(texAbsDiff, absolutePosition);
+}
+
+HERO void Label::calculateAlligment()
+{
   Int2 texSize = texture->getSize();
 
   switch(alligment)
