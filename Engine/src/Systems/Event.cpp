@@ -11,7 +11,7 @@ namespace System
 
 HERO Event::Event(const Sid& sid) : ISystem(sid)
 {
-    priority = 255;
+    priority = 254;
 
 }
 

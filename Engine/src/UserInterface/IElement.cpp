@@ -13,7 +13,7 @@ HERO IElement::~IElement()
   
 }
 
-HERO void IElement::update(Int2 mousePosition)
+HERO void IElement::update(Int2 mousePosition, uint8_t buttonState)
 {
   bool hover = pointBoxIntersection(mousePosition, absolutePosition, size);
 
@@ -34,9 +34,23 @@ HERO void IElement::update(Int2 mousePosition)
   {
     bool isHovering = eventState & binaryState(Event::OnHover) 
       || eventState & binaryState(Event::Hover);
+    bool isClick = eventState & binaryState(Event::OnLeftClick) || 
+        eventState & binaryState(Event::OnLeftClick);
     eventState = 0;
-    if(isHovering && !(eventState & binaryState(Event::OffHover))) 
+    if(isHovering && !(eventState & binaryState(Event::OffHover))){
       eventState |= binaryState(Event::OffHover);
+      if(isClick)
+      {
+        eventState |= binaryState(Event::OffLeftClick);
+      }
+    }
+  }
+
+  if(eventState & binaryState(Event::OnHover) 
+    || eventState & binaryState(Event::Hover))
+  {
+    eventState &= 0x07;
+    eventState |= buttonState<<3;
   }
 
   for(int i = 0; i < 8; i++)

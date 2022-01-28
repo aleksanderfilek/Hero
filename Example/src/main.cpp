@@ -22,6 +22,22 @@ event(offhover)
   std::cout<<"offhover"<<std::endl;
 }
 
+event(click)
+{
+  std::cout<<"click"<<std::endl;
+}
+
+event(onclick)
+{
+  std::cout<<"onclick"<<std::endl;
+}
+
+event(offclick)
+{
+  std::cout<<"offclick"<<std::endl;
+}
+
+
 class Test : public Hero::ISystem
 {
   private:
@@ -59,10 +75,12 @@ class Test : public Hero::ISystem
       image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
       image->setSize({100,100});
       image->setPosition({100,0});
-      image->addEvent(Hero::UI::Event::OnHover, onhover, nullptr);
-      image->addEvent(Hero::UI::Event::Hover, hover, nullptr);
-      image->addEvent(Hero::UI::Event::OffHover, offhover, nullptr);
-
+      // image->addEvent(Hero::UI::Event::OnHover, onhover, nullptr);
+      // image->addEvent(Hero::UI::Event::Hover, hover, nullptr);
+      // image->addEvent(Hero::UI::Event::OffHover, offhover, nullptr);
+      image->addEvent(Hero::UI::Event::OnLeftClick, onclick, nullptr);
+      image->addEvent(Hero::UI::Event::HoldLeftClick, click, nullptr);
+      image->addEvent(Hero::UI::Event::OffLeftClick, offclick, nullptr);
       // label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
       // label->setText("Hello, World!");
       // label->setSize({200,200});

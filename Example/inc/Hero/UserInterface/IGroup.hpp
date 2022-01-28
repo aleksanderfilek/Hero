@@ -25,7 +25,7 @@ protected:
 public:
   HERO virtual ~IGroup();
 
-  HERO void update(Int2 mousePosition) override;
+  HERO void update(Int2 mousePosition, uint8_t buttonState) override;
   HERO void draw(Spritebatch* spritebatch) override;
   HERO virtual bool add(const std::string& name, IElement* element);
   HERO virtual bool remove(const std::string& name);

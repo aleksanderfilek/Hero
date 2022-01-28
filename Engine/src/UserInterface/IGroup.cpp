@@ -13,7 +13,7 @@ HERO IGroup::~IGroup()
   }
 }
 
-HERO void IGroup::update(Int2 mousePosition)
+HERO void IGroup::update(Int2 mousePosition, uint8_t buttonState)
 {
   bool result = pointBoxIntersection(mousePosition, absolutePosition, size);
   if(!lastTick && !result)
@@ -24,7 +24,7 @@ HERO void IGroup::update(Int2 mousePosition)
 
   for(auto it: children)
   {
-    it.second->update(mousePosition);
+    it.second->update(mousePosition, buttonState);
   } 
 
   lastTick = result;

@@ -41,12 +41,10 @@ public:
         return current_mouse_state&SDL_BUTTON(button) && !previous_mouse_state&SDL_BUTTON(button); }
     inline bool mouseButtonUp(Mouse button){
         return !current_mouse_state&SDL_BUTTON(button) && previous_mouse_state&SDL_BUTTON(button); }
-    inline void getMousePosition(int *x,int *y){
-        if(x != NULL) *x = mouse_position_X;
-        if(y != NULL) *y = mouse_position_Y; }
-    inline void setMousePosition(int x, int y){
-        mouse_position_X = x;
-        mouse_position_Y = y; }
+    HERO void getMousePosition(int *x,int *y);
+    HERO void setMousePosition(int x, int y);
+    HERO uint8_t getMouseState(Mouse button);
+
 
     enum Mouse : uint8_t
     {

@@ -35,9 +35,11 @@ HERO void UserInterface::update()
 {
   Int2 mousePosition;
   input->getMousePosition(&mousePosition.x, &mousePosition.y);
+  uint8_t buttonState = input->getMouseState(Input::Mouse::Left);
+
   for(auto it: widgets)
   {
-    it.second->update(mousePosition);
+    it.second->update(mousePosition, buttonState);
   }
 
   if(shader == nullptr) return;
