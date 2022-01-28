@@ -6,6 +6,8 @@ namespace Hero
 namespace UI
 {
 
+#define binaryState(state) 1<<(uint8_t)state
+
 HERO IElement::~IElement()
 {
   
@@ -17,36 +19,33 @@ HERO void IElement::update(Int2 mousePosition)
 
   if(hover)
   {
-    if(!(eventState & 1<<(uint8_t)Event::OnHover))
+    if(eventState & binaryState(Event::OnHover))
     {
-      eventState |= 1<<(uint8_t)Event::OnHover;
+      eventState |= binaryState(Event::Hover);
+      eventState &= ~(binaryState(Event::OnHover));
     }
-    else 
+    else if(!(eventState & binaryState(Event::Hover)))
     {
-      eventState |= 1<<(uint8_t)Event::Hover;
-      eventState &=~(1<<(uint8_t)Event::OnHover);
+      eventState &= ~(binaryState(Event::OffHover));
+      eventState |= binaryState(Event::OnHover);
     }
   }
   else
   {
-    if(eventState & 1<<(uint8_t)Event::Hover)
-    {
-      eventState |= 1<<(uint8_t)Event::OffHover;
-      eventState &=~(1<<(uint8_t)Event::Hover);
-    }
-    else if(eventState & 1<<(uint8_t)Event::OffHover)
-    {
-      eventState &= ~(1<<(uint8_t)Event::OffHover);
-    }
+    bool isHovering = eventState & binaryState(Event::OnHover) 
+      || eventState & binaryState(Event::Hover);
+    eventState = 0;
+    if(isHovering && !(eventState & binaryState(Event::OffHover))) 
+      eventState |= binaryState(Event::OffHover);
   }
 
-  for(int i = 7; i >=0; i--)
+  for(int i = 0; i < 8; i++)
   {
-    int num = (eventState & 1<<i)?1:0;
-    std::cout<<num;
+    if(eventState & 1<<i)
+    {
+      eventHandlers[i].invoke(this, eventArgs[i], 1);
+    }
   }
-  std::cout<<std::endl;
-
 }
 
 HERO void IElement::setAbsolutPosition(Int2 originPosition)
@@ -68,6 +67,12 @@ HERO void IElement::setSize(Int2 _size)
   size = _size;
 
   if(parent != nullptr) parent->recalculate();
+}
+
+HERO void IElement::addEvent(Event type, EventFunction function, void* arg)
+{
+  eventHandlers[(uint8_t)type].add(function);
+  eventArgs[(uint8_t)type] = arg;
 }
 
 }

@@ -15,13 +15,19 @@ HERO IGroup::~IGroup()
 
 HERO void IGroup::update(Int2 mousePosition)
 {
-  if(!pointBoxIntersection(mousePosition, absolutePosition, size))
+  bool result = pointBoxIntersection(mousePosition, absolutePosition, size);
+  if(!lastTick && !result)
+  {
+    lastTick = result;
     return;
+  }
 
   for(auto it: children)
   {
     it.second->update(mousePosition);
   } 
+
+  lastTick = result;
 }
 
 HERO void IGroup::draw(Spritebatch* spritebatch)

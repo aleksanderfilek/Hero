@@ -2,21 +2,21 @@
 
 #include"Math.hpp"
 #include"Spritebatch.hpp"
+#include"Events.hpp"
 
 namespace Hero
 {
-
 namespace UI
 {
 
-enum class Event : uint16_t
+enum class Event : uint8_t
 {
-    OnHover = 1,
-    Hover = 2,
-    OffHover = 4,
-    OnLeftClick = 8,
-    HoldLeftClick = 16,
-    OffLeftClick = 32
+  OnHover = 0,
+  Hover = 1,
+  OffHover = 2,
+  OnLeftClick = 3,
+  HoldLeftClick = 4,
+  OffLeftClick = 5
 };
 
 class IGroup;
@@ -33,8 +33,9 @@ protected:
 
   bool visible = true;
 
-  uint16_t eventState;
-
+  uint8_t eventState;
+  EventHandler eventHandlers[6];
+  void* eventArgs[6]{nullptr};
 public:
   HERO virtual ~IElement();
 
@@ -47,6 +48,8 @@ public:
   inline void setVisibility(bool _visible){ visible = _visible; }
   inline bool isVisible(){ return visible; }
   inline bool isEvent(UI::Event event){return eventState & (uint16_t)event; }
+
+  HERO void addEvent(Event type, EventFunction function, void* arg);
 };
 
 }

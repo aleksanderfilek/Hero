@@ -19,6 +19,8 @@ protected:
   
   Int4 rect;
 
+  bool lastTick = true;
+
   HERO virtual void recalculate();
 public:
   HERO virtual ~IGroup();
