@@ -775,4 +775,15 @@ HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far)
     return matrix;
 }
 
+HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize)
+{
+    if(point.x < boxPosition.x || point.y < boxPosition.y) 
+        return false;
+
+    if(point.x > boxPosition.x + boxSize.x || point.y > boxPosition.y + boxSize.y) 
+        return false;
+
+    return true;
+}
+
 }

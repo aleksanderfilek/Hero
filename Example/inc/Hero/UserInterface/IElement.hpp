@@ -39,7 +39,7 @@ public:
   HERO virtual ~IElement();
 
   virtual void draw(Spritebatch* spritebatch){};
-  
+  HERO virtual void update(Int2 mousePosition);
   HERO virtual void setAbsolutPosition(Int2 originPosition);
   HERO virtual void setPosition(Int2 _position);
   HERO virtual void setSize(Int2 _size);

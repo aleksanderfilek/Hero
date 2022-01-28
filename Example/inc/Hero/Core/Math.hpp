@@ -183,4 +183,6 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
 HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up);
 HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far); // need to be rework
 
+HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize);
+
 }

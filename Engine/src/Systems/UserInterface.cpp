@@ -1,7 +1,8 @@
 #include"UserInterface.hpp"
 #include"Core.hpp"
 #include"Shader.hpp"
-
+#include"Window.hpp"
+#include"Input.hpp"
 
 #include<iostream>
 #include<sstream>
@@ -12,9 +13,11 @@ namespace Hero
 namespace System
 {
 
-HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid) : ISystem(sid)
+HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid, 
+  const Sid& inputSid) : ISystem(sid)
 {
   window = Core::getSystem<Window>(windowSid);
+  input = Core::getSystem<Input>(inputSid);
 
   spritebatch = new Spritebatch(100, 32);
 }
@@ -30,6 +33,13 @@ HERO void UserInterface::init()
 
 HERO void UserInterface::update()
 {
+  Int2 mousePosition;
+  input->getMousePosition(&mousePosition.x, &mousePosition.y);
+  for(auto it: widgets)
+  {
+    it.second->update(mousePosition);
+  }
+
   if(shader == nullptr) return;
 
   shader->bind();

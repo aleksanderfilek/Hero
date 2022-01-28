@@ -37,21 +37,21 @@ class Test : public Hero::ISystem
 
       Hero::UI::Widget* widget = new Hero::UI::Widget();
       Hero::UI::Image* image = new Hero::UI::Image();
-      Hero::UI::Label* label = new Hero::UI::Label();
+      // Hero::UI::Label* label = new Hero::UI::Label();
       Hero::UI::Canvas* canvas = new Hero::UI::Canvas();
       canvas->setPosition({100,100});
 
       image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
       image->setSize({100,100});
       image->setPosition({100,0});
-      label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
-      label->setText("Hello, World!");
-      label->setSize({200,200});
-      label->setAlligment(Hero::UI::Alligment::LEFT_TOP);
-      label->apply();
+      // label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
+      // label->setText("Hello, World!");
+      // label->setSize({200,200});
+      // label->setAlligment(Hero::UI::Alligment::LEFT_TOP);
+      // label->apply();
 
       canvas->add("image", image);
-      canvas->add("label", label);
+      //canvas->add("label", label);
       canvas->setPosition({200,100});
 
       widget->add("canvas", canvas);
@@ -87,7 +87,7 @@ int SDL_main(int argc, char* argv[])
   core->addSystem(new Hero::System::Window(SID("window"), "Example", 640, 480));
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
-  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("window")));
+  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("window"),SID("input")));
 
   Hero::System::Event* event = core->getSystem<Hero::System::Event>(SID("event"));
   Hero::System::Window* window = core->getSystem<Hero::System::Window>(SID("window"));

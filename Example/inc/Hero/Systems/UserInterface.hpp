@@ -3,7 +3,6 @@
 #include"ISystem.hpp"
 #include"Widget.hpp"
 #include"Spritebatch.hpp"
-#include"Window.hpp"
 
 #include<map>
 #include<string>
@@ -13,16 +12,22 @@ namespace Hero
 namespace System
 { 
 
+class Window;
+class Input;
+
 class UserInterface : public ISystem
 {
 private:
   Window* window;
+  Input* input;
+
   std::map<std::string, UI::Widget*> widgets;
 
   Shader* shader;
   Spritebatch* spritebatch;
 public:
-    HERO UserInterface(const Sid& sid, const Sid& windowSid);
+    HERO UserInterface(const Sid& sid, const Sid& windowSid, 
+      const Sid& inputSid);
     HERO ~UserInterface();
 
     HERO void init();

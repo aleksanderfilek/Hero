@@ -13,6 +13,17 @@ HERO IGroup::~IGroup()
   }
 }
 
+HERO void IGroup::update(Int2 mousePosition)
+{
+  if(!pointBoxIntersection(mousePosition, absolutePosition, size))
+    return;
+
+  for(auto it: children)
+  {
+    it.second->update(mousePosition);
+  } 
+}
+
 HERO void IGroup::draw(Spritebatch* spritebatch)
 {
   if(!visible) return;
@@ -37,6 +48,8 @@ HERO bool IGroup::add(const std::string& name, IElement* element)
   }
 
   element->parent = this;
+  
+  recalculate();
 
   return true;
 }
@@ -55,16 +68,29 @@ HERO bool IGroup::remove(const std::string& name)
   return true;
 }
 
-HERO void IGroup::recalculatePositions()
+HERO void IGroup::recalculate()
 {
-  
+  int maxX = absolutePosition.x;
+  int maxY = absolutePosition.y;
+
+  for(auto& child: children)
+  {
+    IElement* element = child.second;
+    int x = element->absolutePosition.x + element->size.x;
+    int y = element->absolutePosition.y + element->size.y;
+
+    if(x > maxX) maxX = x;
+    if(y > maxY) maxY = y;
+  }
+
+  size = { maxX, maxY };
 }
 
 HERO void IGroup::setPosition(Int2 _position)
 {
   IElement::setPosition(_position);
 
-  recalculatePositions();
+  recalculate();
 }
 
 }

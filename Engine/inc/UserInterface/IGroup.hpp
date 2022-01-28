@@ -19,10 +19,11 @@ protected:
   
   Int4 rect;
 
-  HERO virtual void recalculatePositions();
+  HERO virtual void recalculate();
 public:
   HERO virtual ~IGroup();
 
+  HERO void update(Int2 mousePosition) override;
   HERO void draw(Spritebatch* spritebatch) override;
   HERO virtual bool add(const std::string& name, IElement* element);
   HERO virtual bool remove(const std::string& name);
