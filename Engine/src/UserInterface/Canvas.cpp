@@ -9,7 +9,8 @@ HERO void Canvas::recalculate()
 {
   for(auto it: children)
   {
-    it.second->setAbsolutPosition(absolutePosition);
+    Int2 position = addI2(absolutePosition, it.second->getRelativePosition());
+    it.second->setAbsolutPosition(position);
   }
 
   IGroup::recalculate();

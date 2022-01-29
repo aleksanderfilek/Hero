@@ -5,6 +5,8 @@
 #include"HeroGraphics.hpp"
 #include"HeroUI.hpp"
 
+#include<cmath>
+
 Hero::Core* core;
 
 event(hover)
@@ -43,6 +45,13 @@ class Test : public Hero::ISystem
   private:
     Hero::System::Window* window;
     Hero::System::UserInterface* userInterface;
+    Hero::System::Input* input;
+
+    Hero::Cubemap* cubemap;
+    Hero::Shader* shader;
+
+    float yaw = 0.0f;
+    float pitch = 0.0f;
   public:
     Test(const Hero::Sid& sid) : Hero::ISystem(sid)
     {
@@ -58,53 +67,54 @@ class Test : public Hero::ISystem
       ISystem::init();
       window = core->getSystem<Hero::System::Window>(SID("window"));
       window->setBackgroundColor((Hero::Color){0,255,255,255});
-
-      userInterface = core->getSystem<Hero::System::UserInterface>(SID("ui"));
-      Hero::Shader* shader = new Hero::Shader("bin/assets/spritebatch.he");
-      userInterface->setShader(shader);
-
-      Hero::Matrix4x4 view = Hero::pixelScreenMatrix(640, 480, 0.0f, 1.0f);
-      glUniformMatrix4fv(shader->getUniformLocation("view"), 1, GL_FALSE, &view.col[0].x);
-
-      Hero::UI::Widget* widget = new Hero::UI::Widget();
-      Hero::UI::Image* image = new Hero::UI::Image();
-      // Hero::UI::Label* label = new Hero::UI::Label();
-      Hero::UI::Canvas* canvas = new Hero::UI::Canvas();
-      canvas->setPosition({100,100});
-
-      image->setTexture(new Hero::Texture("bin/assets/Bricks.png"));
-      image->setSize({100,100});
-      image->setPosition({100,0});
-      // image->addEvent(Hero::UI::Event::OnHover, onhover, nullptr);
-      // image->addEvent(Hero::UI::Event::Hover, hover, nullptr);
-      // image->addEvent(Hero::UI::Event::OffHover, offhover, nullptr);
-      image->addEvent(Hero::UI::Event::OnLeftClick, onclick, nullptr);
-      image->addEvent(Hero::UI::Event::HoldLeftClick, click, nullptr);
-      image->addEvent(Hero::UI::Event::OffLeftClick, offclick, nullptr);
-      // label->setFont(new Hero::Font("bin/assets/arial.ttf",28));
-      // label->setText("Hello, World!");
-      // label->setSize({200,200});
-      // label->setAlligment(Hero::UI::Alligment::LEFT_TOP);
-      // label->apply();
-
-      canvas->add("image", image);
-      //canvas->add("label", label);
-      canvas->setPosition({200,100});
-
-      widget->add("canvas", canvas);
-      userInterface->add("main", widget);
+      input = core->getSystem<Hero::System::Input>(SID("input"));
 
       glEnable( GL_BLEND );
       glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
       glEnable(GL_CULL_FACE);
-      glCullFace(GL_BACK);
-      glFrontFace(GL_CW);  
+      glCullFace(GL_FRONT);
+
+      std::vector<std::string> path{
+        "bin/assets/skybox/right.jpg",
+        "bin/assets/skybox/left.jpg",
+        "bin/assets/skybox/top.jpg",
+        "bin/assets/skybox/bottom.jpg",
+        "bin/assets/skybox/front.jpg",
+        "bin/assets/skybox/back.jpg"
+      };
+
+      cubemap = new Hero::Cubemap(path);
+
+      shader = new Hero::Shader("bin/assets/cubemap.he");
+      shader->bind();
+      Hero::Matrix4x4 proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.01f, 100.0f);
+      shader->setMatrix4f("proj", proj);
     }
 
     void update() override
     {
       glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+
+      if(input->keyPressed(Hero::System::Input::KeyCode::A))
+        yaw -= 50.0f * Hero::Time::getDeltaTime();
+      if(input->keyPressed(Hero::System::Input::KeyCode::D))
+        yaw += 50.0f * Hero::Time::getDeltaTime();
+      if(input->keyPressed(Hero::System::Input::KeyCode::W))
+        pitch -= 50.0f * Hero::Time::getDeltaTime();
+      if(input->keyPressed(Hero::System::Input::KeyCode::S))
+        pitch += 50.0f * Hero::Time::getDeltaTime();
+
+      float ryaw = Hero::deg2rad(yaw);
+      float rpitch = Hero::deg2rad(pitch);
+      float x = sinf(ryaw) * cosf(rpitch);
+      float y = sinf(rpitch);
+      float z = cosf(ryaw) * cosf(rpitch);
+
+      Hero::Matrix4x4 view = Hero::lookAtMatrix({0.0f, 0.0f, 0.0f}, {x, y, z}, {0.0f, 1.0f, 0.0f});
+      shader->setMatrix4f("view", view);
+
+      cubemap->draw();
 
       window->render();
     }
@@ -112,6 +122,9 @@ class Test : public Hero::ISystem
     void close() override
     {
       ISystem::close();
+
+      delete cubemap;
+      delete shader;
 
     }
 };

@@ -62,9 +62,9 @@ HERO void IElement::update(Int2 mousePosition, uint8_t buttonState)
   }
 }
 
-HERO void IElement::setAbsolutPosition(Int2 originPosition)
+HERO void IElement::setAbsolutPosition(Int2 _absolutePosition)
 {
-  absolutePosition = addI2(originPosition, relativePosition);
+  absolutePosition = _absolutePosition;
 }
 
 HERO void IElement::setPosition(Int2 _position)

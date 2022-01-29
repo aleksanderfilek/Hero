@@ -129,4 +129,24 @@ HERO int Shader::getUniformLocation(const std::string& _name)
     return (uniforms.find(_name) == uniforms.end())? -1 : uniforms[_name];
 }
 
+HERO void Shader::setInt(const std::string& _name, int value)
+{
+    glUniform1i(getUniformLocation(_name), value); 
+}
+
+HERO void Shader::setFloat(const std::string& _name, float value)
+{
+    glUniform1f(getUniformLocation(_name), value); 
+}
+
+HERO void Shader::setFloat3(const std::string& _name, const Float3& value)
+{
+    glUniform3fv(getUniformLocation(_name), 1, &value.x); 
+}
+
+HERO void Shader::setMatrix4f(const std::string& _name, const Matrix4x4& value)
+{
+    glUniformMatrix4fv(getUniformLocation(_name), 1, GL_FALSE, &value.col[0].x); 
+}
+
 }

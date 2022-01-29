@@ -1,3 +1,5 @@
+#include"VerticalStack.hpp"
+
 namespace Hero
 {
 namespace UI
@@ -9,8 +11,8 @@ HERO void VerticalStack::recalculate()
 
   for(auto it: children)
   {
-    it.second->absolutePosition = {absolutePosition.x, y};
-    y += it.second->size.y + spacing;
+    it.second->setAbsolutPosition({absolutePosition.x, y});
+    y += it.second->getSize().y + spacing;
   }
 
   IGroup::recalculate();

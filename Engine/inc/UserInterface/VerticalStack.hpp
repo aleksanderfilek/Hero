@@ -1,5 +1,7 @@
 #pragma once
 
+#include"IGroup.hpp"
+
 namespace Hero
 {
 namespace UI

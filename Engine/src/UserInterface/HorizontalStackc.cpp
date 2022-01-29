@@ -11,8 +11,8 @@ HERO void HorizontalStack::recalculate()
 
   for(auto it: children)
   {
-    it.second->absolutePosition = {x, absolutePosition.y};
-    x += it.second->size.x + spacing;
+    it.second->setAbsolutPosition({x, absolutePosition.y});
+    x += it.second->getSize().x + spacing;
   }
 
   IGroup::recalculate();

@@ -17,7 +17,7 @@ public:
   HERO bool add(const std::string& name, IElement* element) override;
 
   inline void setSpacing(uint32_t _spacing){ spacing = _spacing; }
-  inline uint32_t getSpacing(){ return _spacing; }
+  inline uint32_t getSpacing(){ return spacing; }
 };
 
 }
