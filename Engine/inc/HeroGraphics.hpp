@@ -8,3 +8,4 @@
 #include"Graphics/Texture.hpp"
 #include"Graphics/Spritesheet.hpp"
 #include"Graphics/Cubemap.hpp"
+#include"Graphics/Terrain.hpp"

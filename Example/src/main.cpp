@@ -9,35 +9,6 @@
 
 Hero::Core* core;
 
-event(hover)
-{
-  std::cout<<"hover"<<std::endl;
-}
-
-event(onhover)
-{
-  std::cout<<"onhover"<<std::endl;
-}
-
-event(offhover)
-{
-  std::cout<<"offhover"<<std::endl;
-}
-
-event(click)
-{
-  std::cout<<"click"<<std::endl;
-}
-
-event(onclick)
-{
-  std::cout<<"onclick"<<std::endl;
-}
-
-event(offclick)
-{
-  std::cout<<"offclick"<<std::endl;
-}
 
 
 class Test : public Hero::ISystem
@@ -48,10 +19,14 @@ class Test : public Hero::ISystem
     Hero::System::Input* input;
 
     Hero::Cubemap* cubemap;
-    Hero::Shader* shader;
+    Hero::Shader* cubemapShader;
+
+    Hero::Terrain* terrain;
+    Hero::Shader* terrainShader;
 
     float yaw = 0.0f;
     float pitch = 0.0f;
+    float posy = 0.0f;
   public:
     Test(const Hero::Sid& sid) : Hero::ISystem(sid)
     {
@@ -84,18 +59,20 @@ class Test : public Hero::ISystem
         "bin/assets/skybox/back.jpg"
       };
 
-      cubemap = new Hero::Cubemap(path);
-
-      shader = new Hero::Shader("bin/assets/cubemap.he");
-      shader->bind();
       Hero::Matrix4x4 proj = Hero::projectionMatrix(640.0f, 480.0f, 60.0f, 0.01f, 100.0f);
-      shader->setMatrix4f("proj", proj);
+
+      cubemap = new Hero::Cubemap(path);
+      cubemapShader = new Hero::Shader("bin/assets/cubemap.he");
+      cubemapShader->bind();
+      cubemapShader->setMatrix4f("proj", proj);
+      terrain = new Hero::Terrain("bin/assets/iceland_heightmap.png", 0.25f, 16.0f);      
+      terrainShader = new Hero::Shader("bin/assets/terrain.he");
+      terrainShader->bind();
+      terrainShader->setMatrix4f("proj", proj);
     }
 
     void update() override
     {
-      glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-
       if(input->keyPressed(Hero::System::Input::KeyCode::A))
         yaw -= 50.0f * Hero::Time::getDeltaTime();
       if(input->keyPressed(Hero::System::Input::KeyCode::D))
@@ -105,16 +82,31 @@ class Test : public Hero::ISystem
       if(input->keyPressed(Hero::System::Input::KeyCode::S))
         pitch += 50.0f * Hero::Time::getDeltaTime();
 
+      if(input->keyPressed(Hero::System::Input::KeyCode::LCTRL))
+        posy -= 30.0f * Hero::Time::getDeltaTime();
+      if(input->keyPressed(Hero::System::Input::KeyCode::SPACE))
+        posy += 30.0f * Hero::Time::getDeltaTime();
+
+
       float ryaw = Hero::deg2rad(yaw);
       float rpitch = Hero::deg2rad(pitch);
       float x = sinf(ryaw) * cosf(rpitch);
       float y = sinf(rpitch);
       float z = cosf(ryaw) * cosf(rpitch);
 
-      Hero::Matrix4x4 view = Hero::lookAtMatrix({0.0f, 0.0f, 0.0f}, {x, y, z}, {0.0f, 1.0f, 0.0f});
-      shader->setMatrix4f("view", view);
+      Hero::Float3 target = Hero::addF3({0.0f, posy, 0.0f},{x, y, z});
 
-      cubemap->draw();
+      Hero::Matrix4x4 view = Hero::lookAtMatrix({0.0f, posy, 0.0f},target, {0.0f, 1.0f, 0.0f});
+      
+      glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+
+      terrainShader->bind();
+      terrainShader->setMatrix4f("view", view);
+      terrain->draw();
+
+      // cubemapShader->bind();
+      // cubemapShader->setMatrix4f("view", view);
+      // cubemap->draw();
 
       window->render();
     }
@@ -124,8 +116,10 @@ class Test : public Hero::ISystem
       ISystem::close();
 
       delete cubemap;
-      delete shader;
+      delete cubemapShader;
 
+      delete terrain;
+      delete terrainShader;
     }
 };
 
