@@ -35,37 +35,40 @@ struct Int2
 #define Int2zero (Hero::Int2){0, 0}
 #define Int2one (Hero::Int2){1, 1}
 
-typedef struct
+struct Int3
 {
     int x, y, z;
-} Int3;
+};
 
 #define Int3zero (Hero::Int3){0, 0, 0}
 #define Int3one (Hero::Int3){1, 1, 1}
 
-typedef struct
+struct Int4
 {
     int x, y, z, w;
-} Int4;
+};
 
 #define Int4zero (Hero::Int4){0, 0, 0, 0}
 #define Int4one (Hero::Int4){1, 1, 1, 1}
 
-typedef struct
+struct Float2
 {
     float x, y;
-} Float2;
+};
 
 #define Float2zero (Hero::Float2){0.0f, 0.0f}
 #define Float2one (Hero::Float2){1.0f, 1.0f}
 
-typedef struct
+struct Float3
 {
     float x, y, z;
-} Float3;
 
-#define Float3zero (Hero::Float3){0.0f, 0.0f, 0.0f}
-#define Float3one (Hero::Float3){1.0f, 1.0f, 1.0f}
+    constexpr static inline Float3 zero(){return (Float3){0.0f, 0.0f, 0.0f}; } 
+    constexpr static inline Float3 one(){return (Float3){1.0f, 1.0f, 1.0f}; } 
+    constexpr static inline Float3 forward(){return (Float3){0.0f, 0.0f, 1.0f}; } 
+    constexpr static inline Float3 up(){return (Float3){0.0f, 1.0f, 0.0f}; } 
+    constexpr static inline Float3 right(){return (Float3){1.0f, 0.0f, 0.0f}; } 
+};
 
 struct Float4
 {
@@ -82,24 +85,24 @@ struct Float4
     }
 };
 
-typedef struct
+struct Matrix2x2
 {
     Float2 col[2];
-} Matrix2x2;
+};
 
 #define matrix2x2identity (Hero::Matrix2x2){(Hero::Float2){1.0f,0.0f},(Hero::Float2){0.0f,1.0f}}
 
-typedef struct
+struct Matrix3x3
 {
     Float3 col[3];
-} Matrix3x3;
+};
 
 #define matrix3x3identity (Hero::Matrix3x3){(Hero::Float3){1.0f,0.0f,0.0f},(Hero::Float3){0.0f,1.0f,0.0f},(Hero::Float3){0.0f,0.0f,1.0f}}
 
-typedef struct
+struct Matrix4x4
 {
     Float4 col[4];
-} Matrix4x4;
+};
 
 #define Mat4x4Identity (Hero::Matrix4x4){(Hero::Float4){1.0f,0.0f,0.0f,0.0f},(Hero::Float4){0.0f,1.0f,0.0f,0.0f},(Hero::Float4){0.0f,0.0f,1.0f,0.0f},(Hero::Float4){0.0f,0.0f,0.0f,1.0f}}
 

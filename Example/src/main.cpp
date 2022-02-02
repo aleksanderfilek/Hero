@@ -27,6 +27,9 @@ class Test : public Hero::ISystem
     float yaw = 0.0f;
     float pitch = 0.0f;
     float posy = 0.0f;
+
+    Hero::Transform* system;
+  
   public:
     Test(const Hero::Sid& sid) : Hero::ISystem(sid)
     {
@@ -69,6 +72,10 @@ class Test : public Hero::ISystem
       terrainShader = new Hero::Shader("bin/assets/terrain.he");
       terrainShader->bind();
       terrainShader->setMatrix4f("proj", proj);
+
+      system = new Hero::Transform(1, 1);
+
+      Hero::Camera camera;
     }
 
     void update() override
@@ -120,6 +127,8 @@ class Test : public Hero::ISystem
 
       delete terrain;
       delete terrainShader;
+
+      delete system;
     }
 };
 

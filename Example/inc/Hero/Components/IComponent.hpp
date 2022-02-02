@@ -6,95 +6,129 @@
 
 namespace Hero
 {
-    class Actor;
-    
-    class IComponent
+
+class Actor;
+class IComponentSystemHandler;
+
+struct IComponent
+{
+    uint32_t index = 0;
+    Actor* actor = nullptr;
+};
+
+
+class IComponentSystemHandler
+{
+public:
+    virtual IComponent* addComponent(Actor* owner) = 0;
+    virtual void removeComponent(IComponent* component) = 0;
+};
+
+template<class T>
+class HERO IComponentSystem : public IComponentSystemHandler
+{
+    friend struct IComponent;
+
+private:
+    static IComponentSystem<T>* instance;
+
+    int startSize;
+    int chunkSize;
+    virtual void dataInit(T* data){}
+    virtual void dataUpdate(T* data){}
+    virtual void dataDestroy(T* data){}
+
+protected:
+    std::vector<std::pair<bool, T>> data;
+    uint32_t usedNumber = 0;
+    uint32_t firstEmpty = 0;
+
+public:
+    IComponentSystem(uint32_t _startSize, uint32_t _chunkSize)
     {
-        private:
-            void* system = nullptr;
-            uint32_t index = 0;
+        instance = this;
 
-        protected:
-            Actor* actor = nullptr;
-    };
+        data.reserve(_startSize);
+        chunkSize = _chunkSize;
+    }
 
-    template<typename T>
-    class IComponentSystem
+    ~IComponentSystem()
     {
-        private:
-            int startSize;
-            int chunkSize;
-            virtual void dataInit(T* data){}
-            virtual void dataUpdate(T* data){}
-            virtual void dataDestroy(T* data){}
-        protected:
-            std::vector<std::pair<bool, T>> data;
-            uint32_t usedNumber = 0;
-            uint32_t firstEmpty = 0;
+        for(auto component: data)
+        {
+            dataDestroy(&component.second);
+        }
 
-        public:
-            IComponentSystem(uint32_t _startSize, uint32_t _chunkSize)
+        data.clear();
+    }
+
+    inline static IComponentSystem<T>* get(){ return instance; }
+
+    virtual void update()
+    {
+        for(auto component: data)
+        {
+            if(!component.first)
+                continue;
+
+            dataUpdate(&component.second);
+        }
+    } 
+
+    IComponent* addComponent(Actor* owner) override
+    {
+        uint32_t index = firstEmpty;
+        std::pair<bool, T> element;
+        element.first = true;
+
+        element.second.index = index;
+        element.second.actor = owner;
+
+        if(data.size() < index)
+        {
+           data.push_back(element); 
+        }
+        else
+        {
+            data[index] = element;
+        }
+
+        usedNumber++;
+        dataInit(&data[index].second);
+
+        // resize component vector by size
+        if(data.size() <= usedNumber)
+        {
+            data.resize(usedNumber + chunkSize);
+        }
+
+        // prepare for next addition, find first available index
+        for(int i = firstEmpty; i < data.size(); i++)
+        {
+            if(data[i].first == false)
             {
-                data.reserve(_startSize);
-                chunkSize = _chunkSize;
+                firstEmpty = i;
+                break;
             }
-            ~IComponentSystem()
-            {
-                for(auto component: data)
-                {
-                    dataDestroy(&component.second);
-                }
+        }
 
-                data.clear();
-            }
+        return &data[index].second;
+    }
 
-            virtual void update()
-            {
-                for(auto component: data)
-                {
-                    if(!component.first)
-                        continue;
+    void removeComponent(IComponent* component) override
+    {
+        data[component->index].first = false;
+        dataDestroy(&data[component->index].second);
+        usedNumber--;
+        
+        if(component->index < firstEmpty)
+        {
+            firstEmpty = component->index;
+        }
+    }
+};
 
-                    dataUpdate(&component.second);
-                }
-            } 
-            IComponent* add(const T& component)
-            {
-                uint32_t index = firstEmpty;
-                std::pair<bool, T> element(true, component);
-                
-                element.second.index = this;
-                element.second.index = index;
-                data[firstEmpty] = element;
-                usedNumber++;
-                dataInit(&data.at(index).second);
-
-                if(data.size() <= usedNumber)
-                {
-                    data.resize(usedNumber + chunkSize);
-                }
-
-                for(int i = firstEmpty; i < data.size(); i++)
-                {
-                    if(data.at(i).first == false)
-                    {
-                        firstEmpty = i;
-                        break;
-                    }
-                }
-
-                return &data.at(index).second;
-            }
-            void remove(IComponent* component)
-            {
-                data.at(component->index).first = false;
-                usedNumber--;
-                
-                if(component->index < firstEmpty)
-                {
-                    firstEmpty = component->index;
-                }
-            }
-    };
+template<class T>
+IComponentSystem<T>* IComponentSystem<T>::instance = nullptr;
 
 }

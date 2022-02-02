@@ -1,38 +1,50 @@
 #pragma once
 
-#include<vector>
+#include<unordered_map>
 #include<typeinfo>
 #include<iostream>
 
 namespace Hero
 {
-    class IComponent;
+class IComponent;
+class IComponentSystemHandler;
 
-    class Actor
+class Actor
+{
+private:
+    std::unordered_map<IComponentSystemHandler* ,IComponent*> components;
+
+public:
+    HERO ~Actor();
+
+    template<class T>
+    IComponent* getComponent()
     {
-        private:
-            std::vector<IComponent*> components;
+        auto result = components.find(T::get());
+        if(result == components.end()) return nullptr;
 
-        public:
-            Actor();
-            ~Actor();
+        return result->second;
+    }
 
-            template<typename T>
-            T* getComponent()
-            {
-                for(auto component: components)
-                {
-                    if(typeid(T) == typeid(*component))
-                    {
-                        return component;
-                    }
-                }
+    template<class T>
+    IComponent* addComponent()
+    {
+        IComponent* component = T::get()->addComponent(this);
+        components.insert({T::get(), component});
+        return component;
+    }
 
-                #ifdef HERO_DEBUG
-                std::cout<<"Could not get component of type: "<<typeid(T).name()<<std::endl;
-                #endif
+    template<class T>
+    void removeComponent()
+    {
+        auto result = components.find(T::get());
+        if(result == components.end()) return;
 
-                return nullptr;
-            }
-    };
+        T::get()->removeComponent(result->second);
+        components.erase(result);
+    }
+
+    inline uint32_t getComponentsCount(){ return components.size(); }
+};
+
 } 

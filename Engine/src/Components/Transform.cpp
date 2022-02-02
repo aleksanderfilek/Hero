@@ -2,28 +2,28 @@
 
 namespace Hero
 {
-    HERO TransformSystem::TransformSystem(uint32_t _startSize, uint32_t _chunkSize) 
+    HERO Transform::Transform(uint32_t _startSize, uint32_t _chunkSize) 
         : IComponentSystem(_startSize, _chunkSize)
     {
 
     }
 
-    HERO void TransformSystem::update()
+    HERO void Transform::update()
     {
 
     }
 
-    HERO void TransformSystem::dataInit(Transfrom* data)
+    HERO void Transform::dataInit(TransformData* data)
     {
 
     }
 
-    HERO void TransformSystem::dataUpdate(Transfrom* data)
+    HERO void Transform::dataUpdate(TransformData* data)
     {
         
     }
 
-    HERO void TransformSystem::dataDestroy(Transfrom* data)
+    HERO void Transform::dataDestroy(TransformData* data)
     {
         
     }
