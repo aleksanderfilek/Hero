@@ -617,7 +617,7 @@ HERO void translateM4x4(Matrix4x4* matrix, Float3 translation)
     matrix->col[3].z += translation.z;
 }
 
-HERO void scaleM4x4(Matrix4x4* matrix, Float4 scale)
+HERO void scaleM4x4(Matrix4x4* matrix, Float3 scale)
 {
     matrix->col[0].x = scale.x;
     matrix->col[1].y = scale.y;
@@ -684,7 +684,7 @@ HERO void rotateZM4x4(Matrix4x4* matrix, float radians)
     matrix->col[3].y = -a*sinf(radians) + b*cosf(radians);
 }
 
-HERO void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation)
+HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation)
 {
     if(rotation.x != 0.0f)
         rotateXM4x4(matrix, rotation.x);

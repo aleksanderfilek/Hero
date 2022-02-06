@@ -10,21 +10,21 @@ namespace Hero
 class Camera : public Actor
 {
 private:
-    Float3 eye = Float3::zero();
-    Float3 direction = Float3::forward();
-    Float3 up = Float3::up();
+    TransformData* transform;
 
     Matrix4x4 view;
     Matrix4x4 projection;
+    Matrix4x4 invProjection;
 public:
-    HERO Camera();
+    HERO Camera(int width, int height, float FOV, float near, float far);
     HERO ~Camera();
+
+    void begin() override;
+    void update() override;
+    void close() override;
 
     inline Matrix4x4 getViewMatrix(){ return view; }
     inline Matrix4x4 getProjectionMatrix(){ return projection; }
-
-    HERO void setPosition(Float3 _position);
-    HERO void setRotation(Float3 _rotation);
 };
 
 } // namespace Hero

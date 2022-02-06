@@ -17,7 +17,7 @@ struct TransformData : public IComponent
     bool isDirty = true;
 };
 
-class HERO Transform : public IComponentSystem<TransformData>
+class Transform : public IComponentSystem<TransformData>
 {
 public:
     HERO Transform(uint32_t _startSize, uint32_t _chunkSize);

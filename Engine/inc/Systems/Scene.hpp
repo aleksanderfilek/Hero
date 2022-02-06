@@ -1,11 +1,14 @@
-#pragma once
+#pragma once 
 
 namespace Hero
 {
-namespace Systems
+namespace System
 {
 
+class Scene
+{
 
-    
+};
+  
 }
 }
