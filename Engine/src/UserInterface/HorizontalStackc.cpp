@@ -20,9 +20,11 @@ HERO void HorizontalStack::recalculate()
 
 HERO bool HorizontalStack::add(const std::string& name, IElement* element)
 {
-  IGroup::add(name, element);
+  bool result = IGroup::add(name, element);
   
   recalculate();
+
+  return result;
 }
 
 }

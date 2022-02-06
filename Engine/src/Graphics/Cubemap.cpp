@@ -1,6 +1,6 @@
 #include"Cubemap.hpp"
 #include"Debug.hpp"
-#include"Thirdparty.hpp"
+#include"ThirdParty.hpp"
 
 #include<iostream>
 

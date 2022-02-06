@@ -13,12 +13,13 @@
         "-lSDL2_ttf",
         "-lSDL2_mixer",
         "-lSOIL",
-        "-lglew32",
-        "-lopengl32",
-        "-lglu32",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
         "-lm"
     ],
     "Defines" : [
-        "-DHERO_DEBUG"
+        "-DHERO_DEBUG",
+        "-DHERO= "
     ]
 }

@@ -19,5 +19,5 @@ run:
 update: download build run
 	
 download:
-	$(COPY) ..\Engine\inc inc\Hero /e /y /q
-	$(COPY) ..\Engine\lib\libhero.dll bin /y /q
+	$(COPY) ../Engine/inc inc/Hero
+	$(COPY) ../Engine/lib/libhero.so bin

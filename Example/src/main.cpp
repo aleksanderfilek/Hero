@@ -137,7 +137,7 @@ event(close)
   Hero::Core::close();
 }
 
-int SDL_main(int argc, char* argv[])
+int HeroMain(int argc, char* argv[])
 {
   core = new Hero::Core();
 

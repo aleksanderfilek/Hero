@@ -20,9 +20,11 @@ HERO void VerticalStack::recalculate()
 
 HERO bool VerticalStack::add(const std::string& name, IElement* element)
 {
-  IGroup::add(name, element);
+  bool result = IGroup::add(name, element);
   
   recalculate();
+
+  return result;
 }
 
 }
