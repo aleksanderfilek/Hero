@@ -2,7 +2,7 @@
     "Name" : "libhero",
     "Type": "SharedLibrary",
     "OutputDir": "lib",
-    "Extension": ".so",
+    "Extension": ".dll",
     "Compiler" : "g++",
     "Debug" : false,
     "LibsDir" : [
@@ -13,13 +13,15 @@
         "-lSDL2_ttf",
         "-lSDL2_mixer",
         "-lSOIL",
-        "-lGLEW",
-        "-lGL",
-        "-lGLU",
-        "-lm"
+        "-lglew32",
+        "-lopengl32",
+        "-lglu32",
+        "-lm",
+        "-lcomdlg32",
+        "-lole32"
     ],
     "Defines" : [
         "-DHERO_DEBUG",
-        "-DHERO= "
+        "-DHERO=__declspec(dllexport)"
     ]
 }

@@ -17,15 +17,16 @@ struct IComponent
 };
 
 
-class IComponentSystemHandler
+class IComponentSystemHandle
 {
 public:
     virtual IComponent* addComponent(Actor* owner) = 0;
     virtual void removeComponent(IComponent* component) = 0;
+    virtual void update() = 0;
 };
 
 template<class T>
-class HERO IComponentSystem : public IComponentSystemHandler
+class HERO IComponentSystem : public IComponentSystemHandle
 {
     friend struct IComponent;
 
@@ -64,7 +65,7 @@ public:
 
     inline static IComponentSystem<T>* get(){ return instance; }
 
-    virtual void update()
+    void update() override
     {
         for(auto component: data)
         {

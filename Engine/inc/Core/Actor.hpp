@@ -7,12 +7,12 @@
 namespace Hero
 {
 class IComponent;
-class IComponentSystemHandler;
+class IComponentSystemHandle;
 
 class Actor
 {
 private:
-    std::unordered_map<IComponentSystemHandler* ,IComponent*> components;
+    std::unordered_map<IComponentSystemHandle* ,IComponent*> components;
 
 public:
     HERO ~Actor();

@@ -2,26 +2,28 @@
     "Name" : "Example",
     "Type": "Executable",
     "OutputDir": "bin",
-    "Extension": "",
+    "Extension": ".exe",
     "Compiler" : "g++",
     "Debug" : false,
     "LibsDir" : [
         "bin"
     ],
     "Libs" : [
+        "-lhero",
         "-lSDL2main", 
         "-lSDL2", 
         "-lSDL2_ttf",
         "-lSDL2_mixer",
         "-lSOIL",
-        "-lGLEW",
-        "-lGL",
-        "-lGLU",
+        "-lglew32",
+        "-lopengl32",
+        "-lglu32",
         "-lm",
-        "-lhero"
+        "-lcomdlg32",
+        "-lole32"
     ],
     "Defines" : [
         "-DHERO_DEBUG",
-        "-DHERO= "
+        "-DHERO=__declspec(dllimport)"
     ]
 }

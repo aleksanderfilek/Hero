@@ -39,14 +39,14 @@ struct HERO TransformData : public IComponent
 class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
-    HERO Transform(uint32_t _startSize, uint32_t _chunkSize);
+    Transform(uint32_t _startSize, uint32_t _chunkSize);
 
-    HERO void update() override;
+    void update() override;
 
 private:
-    HERO void dataInit(TransformData* data) override;
-    HERO void dataUpdate(TransformData* data) override;
-    HERO void dataDestroy(TransformData* data) override;
+    void dataInit(TransformData* data) override;
+    void dataUpdate(TransformData* data) override;
+    void dataDestroy(TransformData* data) override;
 };
 
 }
