@@ -5,7 +5,10 @@ namespace Hero
 namespace System
 {
 
+class Scene
+{
 
+};
   
 }
 }

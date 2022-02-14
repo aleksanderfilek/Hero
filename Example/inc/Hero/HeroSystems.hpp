@@ -5,5 +5,6 @@
 #include"Systems/Window.hpp"
 #include"Systems/Input.hpp"
 #include"Systems/Profiler.hpp"
+#include"Systems/Scene.hpp"
 #include"Systems/UserInterface.hpp"
 #include"Systems/Window.hpp"

@@ -5,6 +5,7 @@
 
 namespace Hero
 {
+
 #define PI 3.141596f
 
 template<typename T>
@@ -26,9 +27,7 @@ struct Int2
     constexpr static inline Int2 zero(){return (Int2){0, 0}; } 
     inline bool operator==(const Int2& other)
     {
-        if(x != other.x || y != other.y) 
-            return false;
-        return true;
+        return x != other.x || y != other.y;
     }
 };
 
@@ -79,9 +78,7 @@ struct Float4
 
     inline bool operator==(const Float4& other)
     {
-        if(x != other.x || y != other.y || z != other.z || w != other.w) 
-            return false;
-        return true;
+        return x != other.x || y != other.y || z != other.z || w != other.w;
     }
 };
 
@@ -102,9 +99,13 @@ struct Matrix3x3
 struct Matrix4x4
 {
     Float4 col[4];
+    constexpr static inline Matrix4x4 identity(){
+        return {(Float4){1.0f,0.0f,0.0f,0.0f},
+                (Float4){0.0f,1.0f,0.0f,0.0f},
+                (Float4){0.0f,0.0f,1.0f,0.0f},
+                (Float4){0.0f,0.0f,0.0f,1.0f}};
+    }
 };
-
-#define Mat4x4Identity (Hero::Matrix4x4){(Hero::Float4){1.0f,0.0f,0.0f,0.0f},(Hero::Float4){0.0f,1.0f,0.0f,0.0f},(Hero::Float4){0.0f,0.0f,1.0f,0.0f},(Hero::Float4){0.0f,0.0f,0.0f,1.0f}}
 
 HERO float deg2rad(float degree);
 HERO float rad2deg(float radians);
@@ -139,8 +140,9 @@ HERO Float2 rotateF2(Float2 vector, float angle);
 HERO Float3 addF3(Float3 A, Float3 B);
 HERO Float3 substractF3(Float3 A, Float3 B);
 HERO float dotProductF3(Float3 A, Float3 B);
-HERO Float3 drossProduct(Float3 A, Float3 B);
+HERO Float3 crossProduct(Float3 A, Float3 B);
 HERO Float3 multiplyF3(Float3 A, float k);
+HERO Float3 multiplyF3F3(Float3 A, Float3 B);
 HERO Float3 normalizeF3(Float3 A);
 HERO float lengthF3(Float3 A);
 HERO Float3 lerpF3(Float3 A, Float3 B, float t);
@@ -175,11 +177,11 @@ HERO float* m4x4ToArray(Matrix4x4 A);
 HERO Matrix4x4 arrayToM4x4(float* array);
 
 HERO void translateM4x4(Matrix4x4* matrix, Float3 translation);
-HERO void scaleM4x4(Matrix4x4* matrix, Float4 scale);
+HERO void scaleM4x4(Matrix4x4* matrix, Float3 scale);
 HERO void rotateXM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateYM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateZM4x4(Matrix4x4* matrix, float radians);
-HERO void rotateXYZM4x4(Matrix4x4* matrix, Float4 rotation);
+HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation);
 
 HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
 HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);

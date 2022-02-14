@@ -164,6 +164,11 @@ HERO Float3 multiplyF3(Float3 A, float k)
     return (Float3){A.x * k, A.y * k, A.z * k};
 }
 
+HERO Float3 multiplyF3F3(Float3 A, Float3 B)
+{
+    return (Float3){A.x * B.x, A.y * B.y, A.z * B.z};
+}
+
 HERO float lengthF3(Float3 A)
 {
     return sqrtf(A.x*A.x + A.y*A.y + A.z*A.z);
@@ -387,7 +392,7 @@ HERO Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
 
 HERO float determinentM4x4(Matrix4x4 A)
 {
-    Matrix4x4 matrix = Mat4x4Identity;
+    Matrix4x4 matrix = Matrix4x4::identity();
 
     float mul = A.col[0].y / A.col[0].x;
     matrix.col[1].y = A.col[1].y - mul * A.col[1].x;
@@ -696,7 +701,7 @@ HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation)
 
 HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far)
 {
-    Matrix4x4 matrix = Mat4x4Identity;
+    Matrix4x4 matrix = Matrix4x4::identity();
     matrix.col[0].x = 2.0f/width;
     matrix.col[1].y = -2.0f/height;
     matrix.col[2].z = -2.0f/(far - near);
@@ -712,7 +717,7 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
     float aspectRatio = (float)width/(float)height;
     float tg = tanf(FOV*0.5f*PI/180.0f);
 
-    Matrix4x4 matrix = Mat4x4Identity;
+    Matrix4x4 matrix = Matrix4x4::identity();
 
     matrix.col[0].x = 1.0f/(aspectRatio*tg);
     matrix.col[1].y = 1.0f/tg;
@@ -764,7 +769,7 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
 
 HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far)
 {
-    Matrix4x4 matrix = Mat4x4Identity;
+    Matrix4x4 matrix = Matrix4x4::identity();
     matrix.col[0].x = 2.0f/width;
     matrix.col[1].y = -2.0f/height;
     matrix.col[2].z = -2.0f/(far - near);

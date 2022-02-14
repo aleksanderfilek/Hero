@@ -99,9 +99,13 @@ struct Matrix3x3
 struct Matrix4x4
 {
     Float4 col[4];
+    constexpr static inline Matrix4x4 identity(){
+        return {(Float4){1.0f,0.0f,0.0f,0.0f},
+                (Float4){0.0f,1.0f,0.0f,0.0f},
+                (Float4){0.0f,0.0f,1.0f,0.0f},
+                (Float4){0.0f,0.0f,0.0f,1.0f}};
+    }
 };
-
-#define Mat4x4Identity (Hero::Matrix4x4){(Hero::Float4){1.0f,0.0f,0.0f,0.0f},(Hero::Float4){0.0f,1.0f,0.0f,0.0f},(Hero::Float4){0.0f,0.0f,1.0f,0.0f},(Hero::Float4){0.0f,0.0f,0.0f,1.0f}}
 
 HERO float deg2rad(float degree);
 HERO float rad2deg(float radians);
@@ -136,8 +140,9 @@ HERO Float2 rotateF2(Float2 vector, float angle);
 HERO Float3 addF3(Float3 A, Float3 B);
 HERO Float3 substractF3(Float3 A, Float3 B);
 HERO float dotProductF3(Float3 A, Float3 B);
-HERO Float3 drossProduct(Float3 A, Float3 B);
+HERO Float3 crossProduct(Float3 A, Float3 B);
 HERO Float3 multiplyF3(Float3 A, float k);
+HERO Float3 multiplyF3F3(Float3 A, Float3 B);
 HERO Float3 normalizeF3(Float3 A);
 HERO float lengthF3(Float3 A);
 HERO Float3 lerpF3(Float3 A, Float3 B, float t);
