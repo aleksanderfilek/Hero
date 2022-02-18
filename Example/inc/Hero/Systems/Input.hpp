@@ -18,6 +18,10 @@ private:
     std::int32_t current_mouse_state, previous_mouse_state;
     int mouse_position_X = 0;
     int mouse_position_Y = 0;
+    int previousMousePositionX = 0;
+    int previousMousePositionY = 0;
+    bool cursorEnabled = true;
+
 public:
     enum Mouse : std::uint8_t;
     enum KeyCode : std::uint16_t;
@@ -44,7 +48,8 @@ public:
     HERO void getMousePosition(int *x,int *y);
     HERO void setMousePosition(int x, int y);
     HERO uint8_t getMouseState(Mouse button);
-
+    HERO void getMouseDeltaPosition(int& x, int& y);
+    HERO void setCursorState(bool enable = true);
 
     enum Mouse : uint8_t
     {

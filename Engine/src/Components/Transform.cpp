@@ -12,7 +12,7 @@ static Matrix4x4 createModelMatrix(Float3 pos, Float3 rot, Float3 sc)
     return model;
 }
 
-Float3 TransformData::getGlobalPosition() const
+HERO Float3 TransformData::getGlobalPosition() const
 {
     Float3 global = position;
     TransformData* tParent = parent;
@@ -24,7 +24,7 @@ Float3 TransformData::getGlobalPosition() const
     return global;
 }
 
-Float3 TransformData::getGlobalScale() const
+HERO Float3 TransformData::getGlobalScale() const
 {
     Float3 global = scale;
     TransformData* tParent = parent;
@@ -36,32 +36,32 @@ Float3 TransformData::getGlobalScale() const
     return global;
 }
 
-void TransformData::setPosition(Float3 newPosition)
+HERO void TransformData::setPosition(Float3 newPosition)
 {
     isDirty  = true;
     position = newPosition;
 }
 
-void TransformData::setRotation(Float3 newRotation)
+HERO void TransformData::setRotation(Float3 newRotation)
 {
     isDirty  = true;
     rotation = newRotation;
 }
 
-void TransformData::setScale(Float3 newScale)
+HERO void TransformData::setScale(Float3 newScale)
 {
     isDirty  = true;
     scale = newScale;
 }
 
-void TransformData::setParent(TransformData* newParent)
+HERO void TransformData::setParent(TransformData* newParent)
 {
     isDirty = true;
     parent = newParent;
     parent->children.push_back(this);
 }
 
-void TransformData::addChild(TransformData* child, int index)
+HERO void TransformData::addChild(TransformData* child, int index)
 {
     if(index == -1)
         children.push_back(child);
@@ -71,9 +71,33 @@ void TransformData::addChild(TransformData* child, int index)
     child->parent = this;
 }
 
-void TransformData::removeChild(int index)
+HERO void TransformData::removeChild(int index)
 {
     children.erase(children.begin() + index);
+}
+
+HERO Float3 TransformData::forward()
+{
+  Matrix4x4 rotationMatrix = Matrix4x4::identity();
+  rotateXYZM4x4(&rotationMatrix, rotation);
+  Float4 forward = multiplyM4x4F4(rotationMatrix, {0.0f, 0.0f, 1.0f, 0.0f});
+  return { forward.x, forward.y, forward.z };
+}
+
+HERO Float3 TransformData::up()
+{
+  Matrix4x4 rotationMatrix = Matrix4x4::identity();
+  rotateXYZM4x4(&rotationMatrix, rotation);
+  Float4 up = multiplyM4x4F4(rotationMatrix, {0.0f, 1.0f, 0.0f, 0.0f});
+  return { up.x, up.y, up.z };
+}
+
+HERO Float3 TransformData::right()
+{
+  Matrix4x4 rotationMatrix = Matrix4x4::identity();
+  rotateXYZM4x4(&rotationMatrix, rotation);
+  Float4 right = multiplyM4x4F4(rotationMatrix, {1.0f, 0.0f, 0.0f, 0.0f});
+  return { right.x, right.y, right.z };
 }
 
 HERO Transform::Transform(uint32_t _startSize, uint32_t _chunkSize) 

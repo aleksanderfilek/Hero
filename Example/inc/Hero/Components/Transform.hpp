@@ -20,33 +20,36 @@ struct HERO TransformData : public IComponent
     TransformData* parent = nullptr;
     std::vector<TransformData*> children;
 
-    void setPosition(Float3 newPosition);
-    void setRotation(Float3 newRotation);
-    void setScale(Float3 newScale);
+    HERO void setPosition(Float3 newPosition);
+    HERO void setRotation(Float3 newRotation);
+    HERO void setScale(Float3 newScale);
     inline Float3 getLocalPosition()const { return position; }
-    Float3 getGlobalPosition() const;
+    HERO Float3 getGlobalPosition() const;
     inline Float3 getRotation()const { return rotation; }
     inline Float3 getLocalScale()const { return scale; }
-    Float3 getGlobalScale() const;
+    HERO Float3 getGlobalScale() const;
     inline TransformData* getParent() const { return parent; }
-    void setParent(TransformData* newParent);
-    void addChild(TransformData* child, int index = -1);
-    void removeChild(int index);
+    HERO void setParent(TransformData* newParent);
+    HERO void addChild(TransformData* child, int index = -1);
+    HERO void removeChild(int index);
     inline int getChildrenCount() const { return children.size(); }
     inline std::vector<TransformData*> getChildren() const { return children; }
+    HERO Float3 forward();
+    HERO Float3 up();
+    HERO Float3 right();
 };
 
 class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
-    HERO Transform(uint32_t _startSize, uint32_t _chunkSize);
+    Transform(uint32_t _startSize, uint32_t _chunkSize);
 
-    HERO void update() override;
+    void update() override;
 
 private:
-    HERO void dataInit(TransformData* data) override;
-    HERO void dataUpdate(TransformData* data) override;
-    HERO void dataDestroy(TransformData* data) override;
+    void dataInit(TransformData* data) override;
+    void dataUpdate(TransformData* data) override;
+    void dataDestroy(TransformData* data) override;
 };
 
 }

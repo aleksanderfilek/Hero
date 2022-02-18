@@ -19,20 +19,20 @@ private:
     std::vector<Actor*> actors;
 
 public:
-    IScene();
-    ~IScene();
+    HERO IScene();
+    HERO ~IScene();
 
     virtual void begin(){}
-    virtual void update();
+    HERO virtual void update();
     virtual void close(){}
 
-    void addSystem(IComponentSystemHandle* system);
-    void removeSystem(int index);
-    void clearSystems();
+    HERO void addSystem(IComponentSystemHandle* system);
+    HERO void removeSystem(int index);
+    HERO void clearSystems();
 
-    void addActor(Actor* actor);
-    void removeActor(int index);
-    void clearActors();
+    HERO void addActor(Actor* actor);
+    HERO void removeActor(int index);
+    HERO void clearActors();
 };
 
 class HERO Scene : public ISystem
@@ -42,14 +42,14 @@ private:
     IScene* nextScene = nullptr;
 
 public:
-    Scene(const Sid& sid, IScene* startScene);
-    ~Scene();
+    HERO Scene(const Sid& sid, IScene* startScene);
+    HERO ~Scene();
 
-    void init() override;
-    void update() override;
-    void close() override;
+    HERO void init();
+    HERO void update();
+    HERO void close();
 
-    void changeScene(IScene* _nextScene);
+    HERO void changeScene(IScene* _nextScene);
 };
   
 }

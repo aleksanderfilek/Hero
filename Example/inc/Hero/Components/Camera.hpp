@@ -9,7 +9,7 @@ namespace Hero
 
 class Camera : public Actor
 {
-private:
+protected:
     TransformData* transform;
 
     Matrix4x4 view;
@@ -25,14 +25,16 @@ public:
     HERO Camera(int _width, int _height, float _FOV, float _near, float _far);
     HERO ~Camera();
 
-    void begin() override;
-    void update() override;
-    void close() override;
+    HERO void begin() override;
+    HERO void update() override;
+    HERO void close() override;
 
     inline Matrix4x4 getViewMatrix(){ return view; }
     inline Matrix4x4 getProjectionMatrix(){ return projection; }
 
     HERO void setFOV(float _fov);
+
+    inline TransformData* getTransform(){ return transform; }
 };
 
 } // namespace Hero

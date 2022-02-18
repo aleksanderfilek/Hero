@@ -615,6 +615,29 @@ HERO Matrix4x4 arrayToM4x4(float* array)
     return result;
 }
 
+HERO Matrix3x3 convertToM3(const Matrix4x4& matrix)
+{
+    Matrix3x3 result;
+
+    result.col[0] = {matrix.col[0].x,matrix.col[0].y,matrix.col[0].z};
+    result.col[1] = {matrix.col[1].x,matrix.col[1].y,matrix.col[1].z};
+    result.col[2] = {matrix.col[2].x,matrix.col[2].y,matrix.col[2].z};
+
+    return result;
+}
+
+HERO Matrix4x4 convertToM4(const Matrix3x3& matrix)
+{
+    Matrix4x4 result;
+
+    result.col[0] = {matrix.col[0].x,matrix.col[0].y,matrix.col[0].z, 0.0f};
+    result.col[1] = {matrix.col[1].x,matrix.col[1].y,matrix.col[1].z, 0.0f};
+    result.col[2] = {matrix.col[2].x,matrix.col[2].y,matrix.col[2].z, 0.0f};
+    result.col[3] = {0.0f, 0.0f, 0.0f};
+
+    return result;
+}
+
 HERO void translateM4x4(Matrix4x4* matrix, Float3 translation)
 {
     matrix->col[3].x += translation.x;
@@ -733,6 +756,7 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
 {
     Float3 f = substractF3(target, eye);
     f = normalizeF3(f);
+    f = {-f.x, -f.y, -f.z};
 
     Float3 r = crossProduct(up, f);
     r = {-r.x, -r.y, -r.z};
@@ -744,15 +768,15 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
     Matrix4x4 matrix;
 
     matrix.col[0].x = r.x;
-    matrix.col[0].y = r.y;
-    matrix.col[0].z = r.z;
+    matrix.col[1].x = r.y;
+    matrix.col[2].x = r.z;
 
-    matrix.col[1].x = u.x;
+    matrix.col[0].y = u.x;
     matrix.col[1].y = u.y;
-    matrix.col[1].z = u.z;
+    matrix.col[2].y = u.z;
 
-    matrix.col[2].x = f.x;
-    matrix.col[2].y = f.y;
+    matrix.col[0].z = f.x;
+    matrix.col[1].z = f.y;
     matrix.col[2].z = f.z;
 
     matrix.col[0].w = 0.0f;

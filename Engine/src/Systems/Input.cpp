@@ -27,6 +27,8 @@ HERO void Input::update()
 {
     //update mouse
     this->previous_mouse_state = this->current_mouse_state;
+    previousMousePositionX = mouse_position_X;
+    previousMousePositionY = mouse_position_Y;
     this->current_mouse_state = SDL_GetMouseState(&this->mouse_position_X, &this->mouse_position_Y);
     //update keyboard
     SDL_memcpy(this->previous_keyboard_state, this->current_keyboard_state, this->keyboard_state_number * sizeof(std::uint8_t));
@@ -56,6 +58,20 @@ HERO uint8_t Input::getMouseState(Mouse button)
     if(mouseButtonUp(button)) state |= 1<<2;
 
     return state;
+}
+
+HERO void Input::getMouseDeltaPosition(int& x, int& y)
+{
+    x = mouse_position_X - previousMousePositionX;
+    y = mouse_position_Y - previousMousePositionY;
+}
+
+HERO void Input::setCursorState(bool enable)
+{
+    cursorEnabled = enable;
+    SDL_ShowCursor((enable)? SDL_ENABLE : SDL_DISABLE);
+
+
 }
 
 }

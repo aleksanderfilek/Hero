@@ -175,6 +175,8 @@ HERO Matrix4x4 invertM4x4(Matrix4x4 A);
 HERO Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector);
 HERO float* m4x4ToArray(Matrix4x4 A);
 HERO Matrix4x4 arrayToM4x4(float* array);
+HERO Matrix3x3 convertToM3(const Matrix4x4& matrix);
+HERO Matrix4x4 convertToM4(const Matrix3x3& matrix);
 
 HERO void translateM4x4(Matrix4x4* matrix, Float3 translation);
 HERO void scaleM4x4(Matrix4x4* matrix, Float3 scale);
@@ -187,6 +189,7 @@ HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
 HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);
 HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up);
 HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far); // need to be rework
+HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 forward, Float3 up, Float3 right);
 
 HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize);
 

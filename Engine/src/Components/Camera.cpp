@@ -1,6 +1,7 @@
 #include"Camera.hpp"
 
 #include<iostream>
+#include<cmath>
 
 namespace Hero
 {
@@ -21,21 +22,18 @@ HERO Camera::~Camera()
   
 }
 
-void Camera::begin()
+HERO void Camera::begin()
 {
 
 }
 
-void Camera::update()
+HERO void Camera::update()
 {
-  Matrix4x4 rotationMatrix = Matrix4x4::identity();
-  rotateXYZM4x4(&rotationMatrix, transform->rotation);
-  Float4 forward = multiplyM4x4F4(rotationMatrix, {0.0f, 0.0f, 1.0f, 0.0f});
-  Float3 target = addF3(transform->position, {forward.x, forward.y, forward.z});
+  Float3 target = addF3(transform->position, transform->forward());
+
   view = lookAtMatrix(transform->position, target, Float3::up());
 }
-
-void Camera::close()
+HERO void Camera::close()
 {
 
 }

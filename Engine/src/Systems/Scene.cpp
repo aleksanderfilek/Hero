@@ -9,18 +9,18 @@ namespace Hero
 namespace System
 {
 
-IScene::IScene()
+HERO IScene::IScene()
 {
   
 }
 
-IScene::~IScene()
+HERO IScene::~IScene()
 {
   clearSystems();
   clearActors();
 }
 
-void IScene::update()
+HERO void IScene::update()
 {
   for(auto system: systems)
   {
@@ -33,12 +33,12 @@ void IScene::update()
   }
 }
 
-void IScene::addSystem(IComponentSystemHandle* system)
+HERO void IScene::addSystem(IComponentSystemHandle* system)
 {
   systems.push_back(system);
 }
 
-void IScene::removeSystem(int index)
+HERO void IScene::removeSystem(int index)
 {
   try 
   {
@@ -51,18 +51,20 @@ void IScene::removeSystem(int index)
   }
 }
 
-void IScene::clearSystems()
+HERO void IScene::clearSystems()
 {
   systems.clear();
 }
 
-void IScene::addActor(Actor* actor)
+HERO void IScene::addActor(Actor* actor)
 {
   actor->begin();
   actors.push_back(actor);
+
+  
 }
 
-void IScene::removeActor(int index)
+HERO void IScene::removeActor(int index)
 {
   try 
   {
@@ -76,7 +78,7 @@ void IScene::removeActor(int index)
   }
 }
 
-void IScene::clearActors()
+HERO void IScene::clearActors()
 {
   for(auto actor: actors)
   {
@@ -85,23 +87,23 @@ void IScene::clearActors()
   actors.clear();
 }
 
-Scene::Scene(const Sid& sid, IScene* startScene) : ISystem(sid)
+HERO Scene::Scene(const Sid& sid, IScene* startScene) : ISystem(sid)
 {
   nextScene = startScene;
 }
 
-Scene::~Scene()
+HERO Scene::~Scene()
 {
 
 }
 
-void Scene::init()
+HERO void Scene::init()
 {
   ISystem::init();
 }
 
-void Scene::update()
-{
+HERO void Scene::update()
+{    
   if(nextScene != nullptr)
   {
     if(currentScene != nullptr)
@@ -111,11 +113,15 @@ void Scene::update()
     }
     currentScene = nextScene;
     nextScene = nullptr;
+    
     currentScene->begin();
+
   }
+
+  currentScene->update();
 }
 
-void Scene::close()
+HERO void Scene::close()
 {
   ISystem::close();
 
@@ -129,6 +135,11 @@ void Scene::close()
     currentScene->close();
     delete currentScene;
   }
+}
+
+HERO void Scene::changeScene(IScene* _nextScene)
+{
+  nextScene = _nextScene;
 }
 
 
