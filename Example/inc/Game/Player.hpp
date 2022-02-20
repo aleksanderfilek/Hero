@@ -2,6 +2,7 @@
 
 #include"Components/Camera.hpp"
 #include"Systems/Input.hpp"
+#include"Graphics/Shader.hpp"
 
 class Player : public Hero::Camera
 {
@@ -14,6 +15,8 @@ private:
   void keyboard();
   void mouse();
 public:
+  Hero::Shader* shader;
+
   Player(int _width, int _height, float _FOV, float _near, float _far);
 
   void begin() override;

@@ -14,7 +14,7 @@ struct HERO TransformData : public IComponent
     Float3 rotation = Float3::zero(); // euler angles
     Float3 scale = Float3::one();
 
-    Matrix4x4 modelMatrix;
+    Matrix4x4 modelMatrix = Matrix4x4::identity();
     bool isDirty = true;
 
     TransformData* parent = nullptr;
@@ -42,8 +42,6 @@ struct HERO TransformData : public IComponent
 class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
-    Transform(uint32_t _startSize, uint32_t _chunkSize);
-
     void update() override;
 
 private:

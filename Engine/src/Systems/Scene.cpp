@@ -1,6 +1,7 @@
 #include"Scene.hpp"
 #include"IComponent.hpp"
 #include"Actor.hpp"
+#include"Components/Transform.hpp"
 
 #include<iostream>
 
@@ -61,7 +62,11 @@ HERO void IScene::addActor(Actor* actor)
   actor->begin();
   actors.push_back(actor);
 
-  
+  TransformData* data = (TransformData*)actor->getComponent<Transform>();
+  for(auto child: data->getChildren())
+  {
+    addActor(child->actor);
+  }
 }
 
 HERO void IScene::removeActor(int index)

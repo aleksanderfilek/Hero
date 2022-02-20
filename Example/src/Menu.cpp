@@ -1,4 +1,5 @@
 #include"Menu.hpp"
+#include"Pistol.hpp"
 #include"Player.hpp"
 
 #include"Core.hpp"
@@ -11,8 +12,10 @@ void Menu::begin()
   window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
-  addSystem(new Hero::Transform(1,1));
+  addSystem(new Hero::Transform());
+
   camera = new Player(640, 480, 70, 0.1f, 100.0f);
+
   addActor(camera);
 
   std::vector<std::string> path{
@@ -32,12 +35,11 @@ void Menu::begin()
   stone = new Hero::Mesh("bin/assets/stone.he");
   stoneShader = new Hero::Shader("bin/assets/standard.he");
   stoneTexture = new Hero::Texture("bin/assets/stone.jpg");
-  Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
-  Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
 
   stoneShader->bind();
   stoneShader->setMatrix4f("proj", camera->getProjectionMatrix());
-  stoneShader->setMatrix4f("model", stoneModel);
+
+  camera->shader = stoneShader;
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
@@ -52,14 +54,17 @@ void Menu::update()
   cubemapShader->setMatrix4f("view", Hero::convertToM4(Hero::convertToM3(camera->getViewMatrix())));
   cubemap->draw();
 
+  Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
+  Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
   stoneShader->bind();
+  stoneShader->setMatrix4f("model", stoneModel);
   stoneShader->setMatrix4f("view", camera->getViewMatrix());
   stoneTexture->bind();
   stone->draw();
 
-  window->render();
-
   IScene::update();
+
+  window->render();
 }
 
 void Menu::close()

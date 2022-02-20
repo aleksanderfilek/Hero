@@ -41,7 +41,7 @@ HERO Shader::Shader(const std::string& _name)
         std::string uniform(content);
         uniformVec.push_back(uniform);
 
-        delete content;
+        delete[] content;
     }
     file.read((char*)&flags, sizeof(uint16_t));
 
@@ -66,7 +66,7 @@ HERO Shader::Shader(const std::string& _name)
         glProgramCheckError(program, GL_ATTACHED_SHADERS);
 
 
-        delete content;
+        delete[] content;
         content = nullptr;
     }
 

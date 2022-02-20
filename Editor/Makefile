@@ -12,5 +12,5 @@ build:
 	./../Tools/Builder/bin/$(DIR)/Builder$(EXT)
 
 run:
-	./bin/Editor.exe
+	./bin/Editor$(EXT)
 

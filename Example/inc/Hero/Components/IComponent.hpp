@@ -3,7 +3,7 @@
 #include<vector>
 #include<cstdint>
 #include<utility>
-
+#include<iostream>
 namespace Hero
 {
 
@@ -12,16 +12,17 @@ class IComponentSystemHandler;
 
 struct IComponent
 {
-    uint32_t index = 0;
     Actor* actor = nullptr;
+    uint32_t index = 0;
 };
 
 
 class IComponentSystemHandle
 {
 public:
-    virtual IComponent* addComponent(Actor* owner) = 0;
-    virtual void removeComponent(IComponent* component) = 0;
+    virtual uint32_t addComponent(Actor* owner) = 0;
+    virtual void removeComponent(uint32_t index) = 0;
+    virtual IComponent* getComponent(uint32_t index) = 0;
     virtual void update() = 0;
 };
 
@@ -33,8 +34,6 @@ class HERO IComponentSystem : public IComponentSystemHandle
 private:
     static IComponentSystem<T>* instance;
 
-    int startSize;
-    int chunkSize;
     virtual void dataInit(T* data){}
     virtual void dataUpdate(T* data){}
     virtual void dataDestroy(T* data){}
@@ -45,12 +44,9 @@ protected:
     uint32_t firstEmpty = 0;
 
 public:
-    IComponentSystem(uint32_t _startSize, uint32_t _chunkSize)
+    IComponentSystem()
     {
         instance = this;
-
-        data.reserve(_startSize);
-        chunkSize = _chunkSize;
     }
 
     ~IComponentSystem()
@@ -76,56 +72,54 @@ public:
         }
     } 
 
-    IComponent* addComponent(Actor* owner) override
+    uint32_t addComponent(Actor* owner) override
     {
         uint32_t index = firstEmpty;
-        std::pair<bool, T> element;
-        element.first = true;
 
-        element.second.index = index;
-        element.second.actor = owner;
+        T t{};
+        t.actor = owner;
+        std::pair<bool, T> element(true, t);
 
-        if(data.size() < index)
+        if(data.size() <= index)
         {
-           data.push_back(element); 
+            data.push_back(element); 
+            firstEmpty++;
         }
         else
         {
-            data[index] = element;
+            data.at(index) = element;
+            // prepare for next addition, find first available index
+            for(int i = firstEmpty; i < data.size(); i++)
+            {
+                if(data[i].first == false)
+                {
+                    firstEmpty = i;
+                    break;
+                }
+            }
         }
 
         usedNumber++;
         dataInit(&data[index].second);
 
-        // resize component vector by size
-        if(data.size() <= usedNumber)
-        {
-            data.resize(usedNumber + chunkSize);
-        }
-
-        // prepare for next addition, find first available index
-        for(int i = firstEmpty; i < data.size(); i++)
-        {
-            if(data[i].first == false)
-            {
-                firstEmpty = i;
-                break;
-            }
-        }
-
-        return &data[index].second;
+        return index;
     }
 
-    void removeComponent(IComponent* component) override
+    void removeComponent(uint32_t index) override
     {
-        data[component->index].first = false;
-        dataDestroy(&data[component->index].second);
+        data[index].first = false;
+        dataDestroy(&data[index].second);
         usedNumber--;
         
-        if(component->index < firstEmpty)
+        if(index < firstEmpty)
         {
-            firstEmpty = component->index;
+            firstEmpty = index;
         }
+    }
+
+    IComponent* getComponent(uint32_t index) override
+    {
+        return &data[index].second;
     }
 };
 

@@ -18,13 +18,13 @@ class Input;
 class UserInterface : public ISystem
 {
 private:
-  Window* window;
-  Input* input;
+  Window* window = nullptr;
+  Input* input = nullptr;
 
   std::map<std::string, UI::Widget*> widgets;
 
-  Shader* shader;
-  Spritebatch* spritebatch;
+  Shader* shader = nullptr;
+  Spritebatch* spritebatch = nullptr;
 public:
     HERO UserInterface(const Sid& sid, const Sid& windowSid, 
       const Sid& inputSid);

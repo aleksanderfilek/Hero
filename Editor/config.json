@@ -2,14 +2,26 @@
     "Name" : "Editor",
     "Type": "Executable",
     "OutputDir": "bin",
-    "Extension": ".exe",
+    "Extension": "",
     "Compiler" : "g++",
-    "Debug" : false,
+    "Debug" : true,
     "LibsDir" : [
+        "lib"
     ],
     "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
+        "-lm",
+        "-lhero"
     ],
     "Defines" : [
-        "-DHERO_DEBUG"
+        "-DHERO_DEBUG",
+        "-DHERO= "
     ]
 }

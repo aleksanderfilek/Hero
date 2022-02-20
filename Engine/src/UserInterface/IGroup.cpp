@@ -1,5 +1,7 @@
 #include"IGroup.hpp"
 
+#include<iostream>
+
 namespace Hero
 {
 namespace UI
@@ -14,8 +16,9 @@ HERO IGroup::~IGroup()
 }
 
 HERO void IGroup::update(Int2 mousePosition, uint8_t buttonState)
-{
-  bool result = pointBoxIntersection(mousePosition, absolutePosition, size);
+{  
+  bool result = visible && pointBoxIntersection(mousePosition, absolutePosition, size);
+  
   if(!lastTick && !result)
   {
     lastTick = result;
@@ -26,6 +29,7 @@ HERO void IGroup::update(Int2 mousePosition, uint8_t buttonState)
   {
     it.second->update(mousePosition, buttonState);
   } 
+  IElement::update(mousePosition, buttonState);
 
   lastTick = result;
 }

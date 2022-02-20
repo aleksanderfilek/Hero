@@ -15,7 +15,7 @@ private:
     int keyboard_state_number = 0;
     const std::uint8_t *current_keyboard_state = nullptr;
     std::uint8_t *previous_keyboard_state = nullptr;
-    std::int32_t current_mouse_state, previous_mouse_state;
+    std::int32_t current_mouse_state = 0, previous_mouse_state = 0;
     int mouse_position_X = 0;
     int mouse_position_Y = 0;
     int previousMousePositionX = 0;

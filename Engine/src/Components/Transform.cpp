@@ -100,11 +100,6 @@ HERO Float3 TransformData::right()
   return { right.x, right.y, right.z };
 }
 
-HERO Transform::Transform(uint32_t _startSize, uint32_t _chunkSize) 
-    : IComponentSystem(_startSize, _chunkSize)
-{
-
-}
 
 HERO void Transform::update()
 {
@@ -134,7 +129,7 @@ HERO void Transform::update()
                 parent->modelMatrix, transform.modelMatrix);
             parent = (stop)?nullptr : parent->parent;
         }
-    }   
+    }
 }
 
 HERO void Transform::dataInit(TransformData* data)

@@ -7,6 +7,8 @@
 #include"ThirdParty.hpp"
 #include<iostream>
 #include"cmath"
+#include"Components/Transform.hpp"
+#include"Pistol.hpp"
 
 #define SPEED 10.0f
 
@@ -14,12 +16,22 @@ Player::Player(int _width, int _height, float _FOV, float _near, float _far)
 :Camera( _width,  _height,  _FOV,  _near,  _far)
 {
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
-    auto window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
-  SDL_WarpMouseInWindow(window->getWindow(), 320 ,240);
+
+  Hero::TransformData* data = (Hero::TransformData*)getComponent<Hero::Transform>();
+  // Pistol* pistol = new Pistol();
+  // std::cout<<"Pl "<<data->index<<std::endl;
+  // //Hero::TransformData* data2 = (Hero::TransformData*)pistol->getComponent<Hero::Transform>();
+  // //std::cout<<"Pis "<<data2->index<<std::endl;
+
+  // // // data->setPosition({0.0f, 0.0f, 5.0f});
+  // // // data->setScale({0.5f, 0.5f, 0.5f});
+  // //data->addChild(data2);
+  // delete pistol;
 }
 
 void Player::begin()
 {
+
 }
 
 void Player::keyboard()
@@ -60,16 +72,17 @@ void Player::keyboard()
 
 void Player::mouse()
 {
-  int x, y;
-  input->getMousePosition(&x, &y);
+  int x=0, y=0;
+  SDL_GetRelativeMouseState(&x, &y);
+  //input->getMousePosition(&x, &y);
 
   float xpos = (float)x;
   float ypos = (float)y;
 
-  float xoffset = xpos - 320;
-  float yoffset = 240 - ypos; // reversed since y-coordinates go from bottom to top
+  float xoffset = xpos/320.0f;
+  float yoffset = ypos/240.0f; // reversed since y-coordinates go from bottom to top
 
-  float sensitivity = 0.1f; // change this value to your liking
+  float sensitivity = 10.0f; // change this value to your liking
   xoffset *= sensitivity;
   yoffset *= sensitivity;
 
@@ -87,13 +100,15 @@ void Player::mouse()
     Hero::deg2rad(yaw),
     0.0f}
     );
-
-  auto window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
-  SDL_WarpMouseInWindow(window->getWindow(), 320 ,240);
 }
 
 void Player::update()
 {
+  if(input->keyDown(Hero::System::Input::KeyCode::ESCAPE))
+  {
+    SDL_SetRelativeMouseMode((SDL_GetRelativeMouseMode() == SDL_TRUE)?SDL_FALSE:SDL_TRUE);
+  }
+
   mouse();
   keyboard();
   Camera::update();

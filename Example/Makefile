@@ -14,7 +14,7 @@ build:
 	./../Tools/Builder/bin/$(DIR)/Builder$(EXT)
 
 run:
-	./bin/Example.exe
+	./bin/Example$(EXT)
 
 update: download build run
 	

@@ -25,7 +25,7 @@ class HERO IElement
 {
   friend class IGroup;
 protected:
-  IGroup* parent;
+  IGroup* parent = nullptr;
 
   Int2 absolutePosition = Int2::zero();
   Int2 relativePosition = Int2::zero();

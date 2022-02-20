@@ -64,11 +64,14 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
 
 HERO Window::~Window()
 {
+    printMessage("Quiting TTF");
     TTF_Quit();
-
+    printMessage("Deleting GL context");
     SDL_GL_DeleteContext(glContext);
+    printMessage("Destroying SDL renderer");
     SDL_DestroyRenderer(renderer);
     renderer = nullptr;
+    printMessage("Destroying SDL window");
     SDL_DestroyWindow(sdlWindow);
     sdlWindow = nullptr;
 }

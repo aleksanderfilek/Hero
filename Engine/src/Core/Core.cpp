@@ -30,12 +30,21 @@ HERO Core::~Core()
     std::cout<<"[Core] - Closing"<<std::endl;
     #endif
 
+    #ifdef HERO_DEBUG
+    std::cout<<"[Core] - Deleting systems"<<std::endl;
+    #endif
     for(ISystem* sys: systems)
     {
+        #ifdef HERO_DEBUG
+        std::cout<<"[Core] - Deleting "<<sys->getName()<<std::endl;
+        #endif
         delete sys;
     }
     systems.clear();
 
+    #ifdef HERO_DEBUG
+    std::cout<<"[Core] - Quiting SDL"<<std::endl;
+    #endif
     SDL_Quit();
 }
 

@@ -7,7 +7,7 @@ namespace System
 
 HERO Input::Input(const Sid& sid) : ISystem(sid)
 {
-    priority = 255;
+    priority = 253;
 
     this->current_keyboard_state = SDL_GetKeyboardState(&this->keyboard_state_number);
     this->previous_keyboard_state = new std::uint8_t[this->keyboard_state_number];
@@ -15,7 +15,7 @@ HERO Input::Input(const Sid& sid) : ISystem(sid)
 
 HERO Input::~Input()
 {
-    delete this->previous_keyboard_state;
+    delete[] this->previous_keyboard_state;
 }
 
 HERO void Input::init()

@@ -20,6 +20,7 @@ class EventHandler
         HERO void add(EventFunction function);
         HERO void clear();
         HERO void invoke(void* object, void *args, int argc);
+        inline int getFunctionNumber() const { return functions.size(); }
 };
 
 }

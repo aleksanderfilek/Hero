@@ -3,18 +3,19 @@
 #include<unordered_map>
 #include<typeinfo>
 #include<iostream>
-
+#include"IComponent.hpp"
 namespace Hero
 {
-class IComponent;
-class IComponentSystemHandle;
+//class IComponent;
+//class IComponentSystemHandle;
 
 class Actor
 {
 private:
-    std::unordered_map<IComponentSystemHandle* ,IComponent*> components;
+    std::unordered_map<IComponentSystemHandle* ,uint32_t> components;
 
 public:
+    HERO Actor();
     HERO ~Actor();
 
     virtual void begin() = 0;
@@ -27,15 +28,14 @@ public:
         auto result = components.find(T::get());
         if(result == components.end()) return nullptr;
 
-        return result->second;
+        return T::get()->getComponent(result->second);
     }
 
     template<class T>
-    IComponent* addComponent()
+    void addComponent()
     {
-        IComponent* component = T::get()->addComponent(this);
-        components.insert({T::get(), component});
-        return component;
+        uint32_t index = T::get()->addComponent(this);
+        components.insert({T::get(), index});
     }
 
     template<class T>

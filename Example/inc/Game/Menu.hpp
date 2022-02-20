@@ -9,7 +9,7 @@ class Menu : public Hero::System::IScene
 private:
   Hero::System::Window* window;
 
-  class Player* camera;
+  class Player* camera = nullptr;
 
   Hero::Cubemap* cubemap;
   Hero::Shader* cubemapShader;
