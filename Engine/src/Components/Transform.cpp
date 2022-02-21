@@ -103,33 +103,33 @@ HERO Float3 TransformData::right()
 
 HERO void Transform::update()
 {
-    for(auto& component: data)
-    {
-        if(!component.first || !component.second.isDirty) continue;
+    // for(auto& component: data)
+    // {
+    //     if(!component.first || !component.second.isDirty) continue;
 
-        TransformData& transform = component.second;
+    //     TransformData& transform = component.second;
 
-        transform.modelMatrix = createModelMatrix(
-            transform.position, transform.rotation, transform.scale);
-        transform.isDirty = false;
+    //     transform.modelMatrix = createModelMatrix(
+    //         transform.position, transform.rotation, transform.scale);
+    //     transform.isDirty = false;
 
-        TransformData* parent = transform.parent;
-        while(parent)
-        {
-            bool stop = parent->isDirty;
+    //     TransformData* parent = transform.parent;
+    //     while(parent)
+    //     {
+    //         bool stop = parent->isDirty;
 
-            if(parent->isDirty)
-            {
-                parent->modelMatrix = createModelMatrix(
-                    parent->position, parent->rotation, parent->scale);
-                parent->isDirty = false;
-            }
+    //         if(parent->isDirty)
+    //         {
+    //             parent->modelMatrix = createModelMatrix(
+    //                 parent->position, parent->rotation, parent->scale);
+    //             parent->isDirty = false;
+    //         }
 
-            transform.modelMatrix = multiplyM4x4(
-                parent->modelMatrix, transform.modelMatrix);
-            parent = (stop)?nullptr : parent->parent;
-        }
-    }
+    //         transform.modelMatrix = multiplyM4x4(
+    //             parent->modelMatrix, transform.modelMatrix);
+    //         parent = (stop)?nullptr : parent->parent;
+    //     }
+    // }
 }
 
 HERO void Transform::dataInit(TransformData* data)

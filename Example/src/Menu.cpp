@@ -48,23 +48,23 @@ void Menu::begin()
 
 void Menu::update()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  cubemapShader->bind();
-  cubemapShader->setMatrix4f("view", Hero::convertToM4(Hero::convertToM3(camera->getViewMatrix())));
-  cubemap->draw();
+  // cubemapShader->bind();
+  // cubemapShader->setMatrix4f("view", Hero::convertToM4(Hero::convertToM3(camera->getViewMatrix())));
+  // cubemap->draw();
 
-  Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
-  Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
-  stoneShader->bind();
-  stoneShader->setMatrix4f("model", stoneModel);
-  stoneShader->setMatrix4f("view", camera->getViewMatrix());
-  stoneTexture->bind();
-  stone->draw();
+  // Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
+  // Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
+  // stoneShader->bind();
+  // stoneShader->setMatrix4f("model", stoneModel);
+  // stoneShader->setMatrix4f("view", camera->getViewMatrix());
+  // stoneTexture->bind();
+  // stone->draw();
 
-  IScene::update();
+  // IScene::update();
 
-  window->render();
+  // window->render();
 }
 
 void Menu::close()

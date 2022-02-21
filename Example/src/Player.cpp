@@ -18,15 +18,14 @@ Player::Player(int _width, int _height, float _FOV, float _near, float _far)
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
 
   Hero::TransformData* data = (Hero::TransformData*)getComponent<Hero::Transform>();
-  // Pistol* pistol = new Pistol();
-  // std::cout<<"Pl "<<data->index<<std::endl;
-  // //Hero::TransformData* data2 = (Hero::TransformData*)pistol->getComponent<Hero::Transform>();
-  // //std::cout<<"Pis "<<data2->index<<std::endl;
+  Pistol* pistol = new Pistol();
 
-  // // // data->setPosition({0.0f, 0.0f, 5.0f});
-  // // // data->setScale({0.5f, 0.5f, 0.5f});
-  // //data->addChild(data2);
-  // delete pistol;
+  transform = data;
+
+  std::cout<<"Pl "<<data->index<<std::endl;
+  //Hero::TransformData* data2 = (Hero::TransformData*)pistol->getComponent<Hero::Transform>();
+  //data->addChild(data2);
+  delete pistol;
 }
 
 void Player::begin()

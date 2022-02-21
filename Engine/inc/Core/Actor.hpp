@@ -4,15 +4,14 @@
 #include<typeinfo>
 #include<iostream>
 #include"IComponent.hpp"
+
 namespace Hero
 {
-//class IComponent;
-//class IComponentSystemHandle;
 
 class Actor
 {
 private:
-    std::unordered_map<IComponentSystemHandle* ,uint32_t> components;
+    std::unordered_map<IComponentSystemHandle* ,ChunkArrayIndex> components;
 
 public:
     HERO Actor();
@@ -34,7 +33,7 @@ public:
     template<class T>
     void addComponent()
     {
-        uint32_t index = T::get()->addComponent(this);
+        ChunkArrayIndex index = T::get()->addComponent(this);
         components.insert({T::get(), index});
     }
 
