@@ -42,6 +42,8 @@ struct HERO TransformData : public IComponent
 class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
+    Transform(uint32_t chunkSize) : IComponentSystem(chunkSize){}
+
     void update() override;
 
 private:

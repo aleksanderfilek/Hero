@@ -1,6 +1,6 @@
 #pragma once 
 
-#include<vector>
+#include<Utility/ChunkArray.hpp>
 #include<cstdint>
 #include<utility>
 #include<iostream>
@@ -20,9 +20,9 @@ struct IComponent
 class IComponentSystemHandle
 {
 public:
-    virtual uint32_t addComponent(Actor* owner) = 0;
-    virtual void removeComponent(uint32_t index) = 0;
-    virtual IComponent* getComponent(uint32_t index) = 0;
+    virtual ChunkArrayIndex addComponent(Actor* owner) = 0;
+    virtual void removeComponent(const ChunkArrayIndex& index) = 0;
+    virtual IComponent* getComponent(const ChunkArrayIndex& index) = 0;
     virtual void update() = 0;
 };
 
@@ -39,12 +39,10 @@ private:
     virtual void dataDestroy(T* data){}
 
 protected:
-    std::vector<std::pair<bool, T>> data;
-    uint32_t usedNumber = 0;
-    uint32_t firstEmpty = 0;
+    ChunkArray<T> data;
 
 public:
-    IComponentSystem()
+    IComponentSystem(uint32_t chunkSize) : data(chunkSize)
     {
         instance = this;
     }
@@ -53,7 +51,7 @@ public:
     {
         for(auto component: data)
         {
-            dataDestroy(&component.second);
+            dataDestroy(&component);
         }
 
         data.clear();
@@ -65,61 +63,27 @@ public:
     {
         for(auto component: data)
         {
-            if(!component.first)
-                continue;
-
-            dataUpdate(&component.second);
+            dataUpdate(&component);
         }
     } 
 
-    uint32_t addComponent(Actor* owner) override
+    ChunkArrayIndex addComponent(Actor* owner) override
     {
-        uint32_t index = firstEmpty;
-
         T t{};
         t.actor = owner;
-        std::pair<bool, T> element(true, t);
-
-        if(data.size() <= index)
-        {
-            data.push_back(element); 
-            firstEmpty++;
-        }
-        else
-        {
-            data.at(index) = element;
-            // prepare for next addition, find first available index
-            for(int i = firstEmpty; i < data.size(); i++)
-            {
-                if(data[i].first == false)
-                {
-                    firstEmpty = i;
-                    break;
-                }
-            }
-        }
-
-        usedNumber++;
-        dataInit(&data[index].second);
-
-        return index;
+        dataInit(&t);
+        return data.add(t);
     }
 
-    void removeComponent(uint32_t index) override
+    void removeComponent(const ChunkArrayIndex& index) override
     {
-        data[index].first = false;
-        dataDestroy(&data[index].second);
-        usedNumber--;
-        
-        if(index < firstEmpty)
-        {
-            firstEmpty = index;
-        }
+        dataDestroy(&(data[index]));
+        data.remove(index);
     }
 
-    IComponent* getComponent(uint32_t index) override
+    IComponent* getComponent(const ChunkArrayIndex& index) override
     {
-        return &data[index].second;
+        return &(data[index]);
     }
 };
 

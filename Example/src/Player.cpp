@@ -20,8 +20,6 @@ Player::Player(int _width, int _height, float _FOV, float _near, float _far)
   Hero::TransformData* data = (Hero::TransformData*)getComponent<Hero::Transform>();
   Pistol* pistol = new Pistol();
 
-  transform = data;
-
   std::cout<<"Pl "<<data->index<<std::endl;
   //Hero::TransformData* data2 = (Hero::TransformData*)pistol->getComponent<Hero::Transform>();
   //data->addChild(data2);

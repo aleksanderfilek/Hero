@@ -45,30 +45,26 @@ public:
     IComponentSystem(uint32_t chunkSize) : data(chunkSize)
     {
         instance = this;
-        data = new ChunkArray<T>(chunkSize);
     }
 
     ~IComponentSystem()
     {
-        // for(auto component: data)
-        // {
-        //     dataDestroy(&component.second);
-        // }
+        for(auto component: data)
+        {
+            dataDestroy(&component);
+        }
 
-        // data.clear();
+        data.clear();
     }
 
     inline static IComponentSystem<T>* get(){ return instance; }
 
     void update() override
     {
-        // for(auto component: data)
-        // {
-        //     if(!component.first)
-        //         continue;
-
-        //     dataUpdate(&component.second);
-        // }
+        for(auto component: data)
+        {
+            dataUpdate(&component);
+        }
     } 
 
     ChunkArrayIndex addComponent(Actor* owner) override

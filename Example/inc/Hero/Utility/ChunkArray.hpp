@@ -146,7 +146,7 @@ ChunkArrayIndex ChunkArray<T>::add(const T& value)
     chunk.array[chunk.firstAvailable] = { true, value };
     ChunkArrayIndex result = { firstAvailable, chunk.firstAvailable };
 
-    while(chunk.array[++chunk.firstAvailable].first == true 
+    while(chunk.array[chunk.firstAvailable++].first == true 
         && chunk.firstAvailable < chunkSize){}
     
     if(chunk.firstAvailable == chunkSize)
