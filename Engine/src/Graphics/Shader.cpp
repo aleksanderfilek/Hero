@@ -146,6 +146,14 @@ HERO void Shader::setFloat3(const std::string& _name, const Float3& value)
 
 HERO void Shader::setMatrix4f(const std::string& _name, const Matrix4x4& value)
 {
+    int loc = getUniformLocation(_name);
+    #ifdef HERO_DEBUG
+    if(loc == -1)
+    {
+        std::cout<<"Location of "<<_name<<" equales "<<loc<<std::endl;
+        return;
+    }
+    #endif
     glUniformMatrix4fv(getUniformLocation(_name), 1, GL_FALSE, &value.col[0].x); 
 }
 

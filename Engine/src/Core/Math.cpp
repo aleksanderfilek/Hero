@@ -368,24 +368,24 @@ HERO Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
     Matrix4x4 matrix;
 
     matrix.col[0].x = A.col[0].x * B.col[0].x + A.col[1].x * B.col[0].y + A.col[2].x * B.col[0].z + A.col[3].x * B.col[0].w;
-    matrix.col[0].y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y + A.col[2].y * B.col[0].z + A.col[3].x * B.col[0].w;
-    matrix.col[0].z = A.col[0].z * B.col[0].x + A.col[1].z * B.col[0].y + A.col[2].z * B.col[0].z + A.col[3].x * B.col[0].w;
-    matrix.col[0].w = A.col[0].w * B.col[0].x + A.col[1].w * B.col[0].y + A.col[2].w * B.col[0].z + A.col[3].x * B.col[0].w;
+    matrix.col[0].y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y + A.col[2].y * B.col[0].z + A.col[3].y * B.col[0].w;
+    matrix.col[0].z = A.col[0].z * B.col[0].x + A.col[1].z * B.col[0].y + A.col[2].z * B.col[0].z + A.col[3].z * B.col[0].w;
+    matrix.col[0].w = A.col[0].w * B.col[0].x + A.col[1].w * B.col[0].y + A.col[2].w * B.col[0].z + A.col[3].w * B.col[0].w;
 
     matrix.col[1].x = A.col[0].x * B.col[1].x + A.col[1].x * B.col[1].y + A.col[2].x * B.col[1].z + A.col[3].x * B.col[1].w;
-    matrix.col[1].y = A.col[0].y * B.col[1].x + A.col[1].y * B.col[1].y + A.col[2].y * B.col[1].z + A.col[3].x * B.col[1].w;
-    matrix.col[1].z = A.col[0].z * B.col[1].x + A.col[1].z * B.col[1].y + A.col[2].z * B.col[1].z + A.col[3].x * B.col[1].w;
-    matrix.col[1].z = A.col[0].w * B.col[1].x + A.col[1].w * B.col[1].y + A.col[2].w * B.col[1].z + A.col[3].x * B.col[1].w;
+    matrix.col[1].y = A.col[0].y * B.col[1].x + A.col[1].y * B.col[1].y + A.col[2].y * B.col[1].z + A.col[3].y * B.col[1].w;
+    matrix.col[1].z = A.col[0].z * B.col[1].x + A.col[1].z * B.col[1].y + A.col[2].z * B.col[1].z + A.col[3].z * B.col[1].w;
+    matrix.col[1].w = A.col[0].w * B.col[1].x + A.col[1].w * B.col[1].y + A.col[2].w * B.col[1].z + A.col[3].w * B.col[1].w;
 
     matrix.col[2].x = A.col[0].x * B.col[2].x + A.col[1].x * B.col[2].y + A.col[2].x * B.col[2].z + A.col[3].x * B.col[2].w;
-    matrix.col[2].y = A.col[0].y * B.col[2].x + A.col[1].y * B.col[2].y + A.col[2].y * B.col[2].z + A.col[3].x * B.col[2].w;
-    matrix.col[2].z = A.col[0].z * B.col[2].x + A.col[1].z * B.col[2].y + A.col[2].z * B.col[2].z + A.col[3].x * B.col[2].w;
-    matrix.col[2].w = A.col[0].w * B.col[2].w + A.col[1].w * B.col[2].y + A.col[2].w * B.col[2].z + A.col[3].x * B.col[2].w;
+    matrix.col[2].y = A.col[0].y * B.col[2].x + A.col[1].y * B.col[2].y + A.col[2].y * B.col[2].z + A.col[3].y * B.col[2].w;
+    matrix.col[2].z = A.col[0].z * B.col[2].x + A.col[1].z * B.col[2].y + A.col[2].z * B.col[2].z + A.col[3].z * B.col[2].w;
+    matrix.col[2].w = A.col[0].w * B.col[2].x + A.col[1].w * B.col[2].y + A.col[2].w * B.col[2].z + A.col[3].w * B.col[2].w;
 
-    matrix.col[3].x = A.col[0].x * B.col[2].x + A.col[1].x * B.col[2].y + A.col[2].x * B.col[2].z + A.col[3].x * B.col[3].w;
-    matrix.col[3].y = A.col[0].y * B.col[2].x + A.col[1].y * B.col[2].y + A.col[2].y * B.col[2].z + A.col[3].x * B.col[3].w;
-    matrix.col[3].z = A.col[0].z * B.col[2].x + A.col[1].z * B.col[2].y + A.col[2].z * B.col[2].z + A.col[3].x * B.col[3].w;
-    matrix.col[3].w = A.col[0].w * B.col[2].x + A.col[1].w * B.col[2].y + A.col[2].w * B.col[2].z + A.col[3].x * B.col[3].w;
+    matrix.col[3].x = A.col[0].x * B.col[3].x + A.col[1].x * B.col[3].y + A.col[2].x * B.col[3].z + A.col[3].x * B.col[3].w;
+    matrix.col[3].y = A.col[0].y * B.col[3].x + A.col[1].y * B.col[3].y + A.col[2].y * B.col[3].z + A.col[3].y * B.col[3].w;
+    matrix.col[3].z = A.col[0].z * B.col[3].x + A.col[1].z * B.col[3].y + A.col[2].z * B.col[3].z + A.col[3].z * B.col[3].w;
+    matrix.col[3].w = A.col[0].w * B.col[3].x + A.col[1].w * B.col[3].y + A.col[2].w * B.col[3].z + A.col[3].w * B.col[3].w;
 
     return matrix;
 }
@@ -638,6 +638,15 @@ HERO Matrix4x4 convertToM4(const Matrix3x3& matrix)
     return result;
 }
 
+HERO std::ostream& operator<< (std::ostream& stream, const Matrix4x4& matrix)
+{
+    stream<<"| "<<matrix.col[0].x<<" "<<matrix.col[1].x<<" "<<matrix.col[2].x<<" "<<matrix.col[3].x<<" |"<<std::endl;
+    stream<<"| "<<matrix.col[0].y<<" "<<matrix.col[1].y<<" "<<matrix.col[2].y<<" "<<matrix.col[3].y<<" |"<<std::endl;
+    stream<<"| "<<matrix.col[0].z<<" "<<matrix.col[1].z<<" "<<matrix.col[2].z<<" "<<matrix.col[3].z<<" |"<<std::endl;
+    stream<<"| "<<matrix.col[0].w<<" "<<matrix.col[1].w<<" "<<matrix.col[2].w<<" "<<matrix.col[3].w<<" |"<<std::endl;
+    return stream;
+}
+
 HERO void translateM4x4(Matrix4x4* matrix, Float3 translation)
 {
     matrix->col[3].x += translation.x;
@@ -720,6 +729,48 @@ HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation)
         rotateYM4x4(matrix, rotation.y);
     if(rotation.z != 0.0f)
         rotateZM4x4(matrix, rotation.z);
+}
+
+HERO Matrix4x4 translate(Float3 translation)
+{
+    return Matrix4x4::identity();
+}
+
+HERO Matrix4x4 rotate(Float3 rotation)
+{
+    return Matrix4x4::identity();
+}
+
+HERO Matrix4x4 scale(Float3 scale)
+{
+    return Matrix4x4::identity();
+}
+
+HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale)
+{
+    Matrix4x4 matrix = Matrix4x4::identity();
+
+    matrix.col[0].x = scale.x*cosf(rotation.y)*cosf(rotation.z);
+    matrix.col[0].y = scale.x*cosf(rotation.x)*sinf(rotation.z);
+    matrix.col[0].z = scale.x*(-sinf(rotation.y));
+    matrix.col[0].w = 0.0f;
+
+    matrix.col[1].x = scale.y*(sinf(rotation.x)*sinf(rotation.y)*cosf(rotation.z)-cosf(rotation.x)*sinf(rotation.z));
+    matrix.col[1].y = scale.y*(sinf(rotation.x)*sinf(rotation.y)*sinf(rotation.z)+cosf(rotation.x)*cosf(rotation.z));
+    matrix.col[1].z = scale.y*sinf(rotation.x)*cosf(rotation.y);
+    matrix.col[1].w = 0.0f;
+
+    matrix.col[2].x = scale.z*(cosf(rotation.x)*sinf(rotation.y)*cosf(rotation.z)+sinf(rotation.x)*sinf(rotation.z));
+    matrix.col[2].y = scale.z*(cosf(rotation.x)*sinf(rotation.y)*sinf(rotation.z)-sinf(rotation.x)*cosf(rotation.z));
+    matrix.col[2].z = scale.z*cosf(rotation.x)*cosf(rotation.y);
+    matrix.col[2].w = 0.0f;
+
+    matrix.col[3].x = position.x;
+    matrix.col[3].y = position.y;
+    matrix.col[3].z = position.z;
+    matrix.col[3].w = 1.0f;
+
+    return matrix;
 }
 
 HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far)

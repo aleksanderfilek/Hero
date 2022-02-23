@@ -54,8 +54,9 @@ void Menu::update()
   cubemapShader->setMatrix4f("view", Hero::convertToM4(Hero::convertToM3(camera->getViewMatrix())));
   cubemap->draw();
 
-  Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
-  Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
+  // Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
+  // Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
+  Hero::Matrix4x4 stoneModel = Hero::TRS({0.0f, 0.0f, 10.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f});
   stoneShader->bind();
   stoneShader->setMatrix4f("model", stoneModel);
   stoneShader->setMatrix4f("view", camera->getViewMatrix());

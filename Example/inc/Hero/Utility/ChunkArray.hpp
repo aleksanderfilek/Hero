@@ -62,7 +62,7 @@ public:
         Iterator& operator++() 
         { 
             do{
-                if(j < chunkSize)
+                if(j < (chunkSize-1))
                 {
                     j++;
                 }
@@ -71,7 +71,7 @@ public:
                     j = 0;
                     i++;
                 }
-            }while(data[i].array[j].first == false && i == data.size());
+            }while(i < data.size() && data[i].array[j].first == false);
 
             return *this;
         }  
@@ -146,7 +146,7 @@ ChunkArrayIndex ChunkArray<T>::add(const T& value)
     chunk.array[chunk.firstAvailable] = { true, value };
     ChunkArrayIndex result = { firstAvailable, chunk.firstAvailable };
 
-    while(chunk.array[chunk.firstAvailable++].first == true 
+    while(chunk.array[++chunk.firstAvailable].first == true 
         && chunk.firstAvailable < chunkSize){}
     
     if(chunk.firstAvailable == chunkSize)

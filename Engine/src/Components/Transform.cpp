@@ -3,15 +3,6 @@
 namespace Hero
 {
 
-static Matrix4x4 createModelMatrix(Float3 pos, Float3 rot, Float3 sc)
-{
-    Matrix4x4 model = Matrix4x4::identity();
-    rotateXYZM4x4(&model, rot);
-    scaleM4x4(&model, sc);
-    translateM4x4(&model, pos);
-    return model;
-}
-
 HERO Float3 TransformData::getGlobalPosition() const
 {
     Float3 global = position;
@@ -103,45 +94,49 @@ HERO Float3 TransformData::right()
 
 HERO void Transform::update()
 {
-    // for(auto& component: data)
-    // {
-    //     if(!component.first || !component.second.isDirty) continue;
+    // update modelMatrix
+    for(auto& component: data)
+    {
+        TransformData& transform = component;
 
-    //     TransformData& transform = component.second;
+        // if(!component.isDirty)
+        //     continue;
 
-    //     transform.modelMatrix = createModelMatrix(
-    //         transform.position, transform.rotation, transform.scale);
-    //     transform.isDirty = false;
+        transform.modelMatrix = TRS(
+            transform.position, transform.rotation, transform.scale);
+        transform.isDirty = false;
+    }
 
-    //     TransformData* parent = transform.parent;
-    //     while(parent)
-    //     {
-    //         bool stop = parent->isDirty;
+    // update hierarchy
+    for(auto& component: data)
+    {
+        TransformData& transform = component;
 
-    //         if(parent->isDirty)
-    //         {
-    //             parent->modelMatrix = createModelMatrix(
-    //                 parent->position, parent->rotation, parent->scale);
-    //             parent->isDirty = false;
-    //         }
+        //std::cout<<"ptr = "<<(int*)transform.parent<<std::endl;
 
-    //         transform.modelMatrix = multiplyM4x4(
-    //             parent->modelMatrix, transform.modelMatrix);
-    //         parent = (stop)?nullptr : parent->parent;
-    //     }
-    // }
+        if(transform.parent != nullptr)
+        {        
+            // std::cout<<transform.parent->modelMatrix<<std::endl;
+            // std::cout<<transform.modelMatrix<<std::endl;
+        
+            transform.modelMatrix = multiplyM4x4(
+                transform.parent->modelMatrix, transform.modelMatrix);
+
+            // std::cout<<transform.modelMatrix<<std::endl;
+        }
+    }
 }
 
 HERO void Transform::dataInit(TransformData* data)
 {
-    data->modelMatrix = createModelMatrix(
+    data->modelMatrix = TRS(
         data->position, data->rotation, data->scale);
     data->isDirty = false;
 }
 
 HERO void Transform::dataUpdate(TransformData* data)
 {
-    data->modelMatrix = createModelMatrix(
+    data->modelMatrix = TRS(
         data->position, data->rotation, data->scale);
     data->isDirty = false;
 }

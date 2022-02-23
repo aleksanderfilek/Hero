@@ -177,6 +177,7 @@ HERO float* m4x4ToArray(Matrix4x4 A);
 HERO Matrix4x4 arrayToM4x4(float* array);
 HERO Matrix3x3 convertToM3(const Matrix4x4& matrix);
 HERO Matrix4x4 convertToM4(const Matrix3x3& matrix);
+HERO std::ostream& operator<< (std::ostream& stream, const Matrix4x4& matrix);
 
 HERO void translateM4x4(Matrix4x4* matrix, Float3 translation);
 HERO void scaleM4x4(Matrix4x4* matrix, Float3 scale);
@@ -184,6 +185,7 @@ HERO void rotateXM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateYM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateZM4x4(Matrix4x4* matrix, float radians);
 HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation);
+HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale);
 
 HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
 HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);

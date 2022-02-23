@@ -62,7 +62,7 @@ public:
         Iterator& operator++() 
         { 
             do{
-                if(j < chunkSize)
+                if(j < (chunkSize-1))
                 {
                     j++;
                 }
@@ -71,7 +71,7 @@ public:
                     j = 0;
                     i++;
                 }
-            }while(data[i].array[j].first == false && i == data.size());
+            }while(i < data.size() && data[i].array[j].first == false);
 
             return *this;
         }  
@@ -82,7 +82,7 @@ public:
             Iterator tmp(data, chunkSize, i, j); 
             
             do{
-                if(j < chunkSize)
+                if(j < (chunkSize-1))
                 {
                     j++;
                 }
