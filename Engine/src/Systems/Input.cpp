@@ -26,12 +26,19 @@ HERO void Input::init()
 HERO void Input::update()
 {
     //update mouse
-    this->previous_mouse_state = this->current_mouse_state;
+    previous_mouse_state = current_mouse_state;
     previousMousePositionX = mouse_position_X;
     previousMousePositionY = mouse_position_Y;
-    this->current_mouse_state = SDL_GetMouseState(&this->mouse_position_X, &this->mouse_position_Y);
+    if(relativeMode == false)
+    {
+        current_mouse_state = SDL_GetMouseState(&mouse_position_X, &mouse_position_Y);
+    }
+    else
+    {
+        current_mouse_state = SDL_GetRelativeMouseState(&mouse_position_X, &mouse_position_Y);
+    }
     //update keyboard
-    SDL_memcpy(this->previous_keyboard_state, this->current_keyboard_state, this->keyboard_state_number * sizeof(std::uint8_t));
+    SDL_memcpy(this->previous_keyboard_state, current_keyboard_state, keyboard_state_number * sizeof(std::uint8_t));
 }
 
 HERO void Input::close()
@@ -62,16 +69,22 @@ HERO uint8_t Input::getMouseState(Mouse button)
 
 HERO void Input::getMouseDeltaPosition(int& x, int& y)
 {
-    x = mouse_position_X - previousMousePositionX;
-    y = mouse_position_Y - previousMousePositionY;
+    if(relativeMode == false)
+    {
+        x = mouse_position_X - previousMousePositionX;
+        y = mouse_position_Y - previousMousePositionY;
+    }
+    else
+    {
+        x = mouse_position_X;
+        y = mouse_position_Y;
+    }
 }
 
-HERO void Input::setCursorState(bool enable)
+HERO void Input::setRelativeMode(bool enable)
 {
-    cursorEnabled = enable;
-    SDL_ShowCursor((enable)? SDL_ENABLE : SDL_DISABLE);
-
-
+    relativeMode = enable;
+    SDL_SetRelativeMouseMode((enable == true)? SDL_TRUE : SDL_FALSE);
 }
 
 }

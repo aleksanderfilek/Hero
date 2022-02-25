@@ -91,6 +91,8 @@ public:
     inline void render(){ renderFlag = true; }
     HERO void handleEvents(SDL_Event* event);
     inline void setEvent(WindowEventType event, EventFunction func){ events[(int)event].add(func); }
+    HERO static void clear();
+    HERO static void setDepthTest(bool turnOn);
 };
 
 }

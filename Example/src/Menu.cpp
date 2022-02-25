@@ -43,12 +43,12 @@ void Menu::begin()
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
-  glEnable(GL_DEPTH_TEST);  
+  Hero::System::Window::setDepthTest(true);
 }
 
 void Menu::update()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  Hero::System::Window::clear();
 
   cubemapShader->bind();
   cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->getViewMatrix())));

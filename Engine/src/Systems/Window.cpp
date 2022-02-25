@@ -176,5 +176,19 @@ HERO void Window::handleEvents(SDL_Event* event)
     }
 }
 
+static uint8_t depthEnabled = 0;
+
+HERO void Window::clear()
+{
+    glClear(GL_COLOR_BUFFER_BIT | (depthEnabled * GL_DEPTH_BUFFER_BIT));
+}
+
+HERO void Window::setDepthTest(bool turnOn)
+{
+    depthEnabled = (turnOn)?1:0;
+    if(turnOn) glEnable(GL_DEPTH_TEST);  
+    else glDisable(GL_DEPTH_TEST);
+}
+
 }
 }

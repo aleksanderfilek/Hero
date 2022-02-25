@@ -20,7 +20,7 @@ private:
     int mouse_position_Y = 0;
     int previousMousePositionX = 0;
     int previousMousePositionY = 0;
-    bool cursorEnabled = true;
+    bool relativeMode = true;
 
 public:
     enum Mouse : std::uint8_t;
@@ -49,7 +49,7 @@ public:
     HERO void setMousePosition(int x, int y);
     HERO uint8_t getMouseState(Mouse button);
     HERO void getMouseDeltaPosition(int& x, int& y);
-    HERO void setCursorState(bool enable = true);
+    HERO void setRelativeMode(bool enable = true);
 
     enum Mouse : uint8_t
     {
