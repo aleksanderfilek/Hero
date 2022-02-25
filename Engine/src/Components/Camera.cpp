@@ -13,7 +13,6 @@ HERO Camera::Camera(int _width, int _height, float _FOV, float _near, float _far
 
   view = lookAtMatrix(Float3::zero(), Float3::forward(), Float3::up());
   projection = projectionMatrix(width, height, fov, near, far);
-  invProjection = invertM4x4(projection);
 }
 
 
@@ -29,7 +28,7 @@ HERO void Camera::begin()
 
 HERO void Camera::update()
 {
-  Float3 target = addF3(transform->position, transform->forward());
+  Float3 target = transform->position + transform->forward();
 
   view = lookAtMatrix(transform->position, target, Float3::up());
 }
@@ -42,7 +41,6 @@ HERO void Camera::setFOV(float _fov)
 {
   fov = _fov;
   projection = projectionMatrix(width, height, _fov, near, far);
-  invProjection = invertM4x4(projection);
 }
 
 }

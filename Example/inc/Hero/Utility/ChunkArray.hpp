@@ -82,7 +82,7 @@ public:
             Iterator tmp(data, chunkSize, i, j); 
             
             do{
-                if(j < chunkSize)
+                if(j < (chunkSize-1))
                 {
                     j++;
                 }

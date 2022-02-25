@@ -15,76 +15,14 @@ HERO float rad2deg(float radians)
     return (180.0f * radians)/PI;
 }
 
-HERO int clampI(int value, int min, int max)
+HERO int clamp(int value, int min, int max)
 {
     return (value < min)? min : (value > max)? max : value;
 }
 
-HERO float clampF(float value, float min, float max)
+HERO float clamp(float value, float min, float max)
 {
     return (value < min)? min : (value > max)? max : value;
-}
-
-HERO Int2 addI2(Int2 A, Int2 B)
-{
-    return (Int2){A.x + B.x, A.y + B.y};
-}
-
-HERO Int2 substractI2(Int2 A, Int2 B)
-{
-    return (Int2){A.x - B.x, A.y - B.y};
-}
-
-HERO int dotProductI2(Int2 A, Int2 B)
-{
-    return (A.x * B.x) + (A.y * B.y);
-}
-
-HERO float distanceI2(Int2 A, Int2 B)
-{
-    float x2 = (A.x - B.x)*(A.x - B.x);
-    float y2 = (A.y - B.y)*(A.y - B.y); 
-    return sqrtf(x2 + y2);
-}
-
-HERO std::ostream& operator<< (std::ostream& stream, const Int2& vector)
-{
-    stream<<"{ "<<vector.x<<", "<<vector.y<<" }";
-
-    return stream;
-}
-
-HERO Int3 addI3(Int3 A, Int3 B)
-{
-    return (Int3){A.x + B.x, A.y + B.y, A.z + B.z};
-}
-
-HERO Int3 substract(Int3 A, Int3 B)
-{
-    return (Int3){A.x - B.x, A.y - B.y, A.z - B.z};
-}
-
-HERO int dotProductI3(Int3 A, Int3 B)
-{
-    return (A.x * B.x) + (A.y * B.y) + (A.z * B.z);
-}
-
-HERO float distanceI3(Int3 A, Int3 B)
-{
-    float x2 = (A.x - B.x)*(A.x - B.x);
-    float y2 = (A.y - B.y)*(A.y - B.y); 
-    float z2 = (A.z - B.z)*(A.z - B.z); 
-    return sqrtf(x2 + y2 + z2);
-}
-
-HERO Int4 addI4(Int4 A, Int4 B)
-{
-    return (Int4){A.x + B.x, A.y + B.y, A.z + B.z, A.w + B.w};
-}
-
-HERO Int4 substractI4(Int4 A, Int4 B)
-{
-    return (Int4){A.x - B.x, A.y - B.y, A.z - B.z, A.w - B.w};
 }
 
 HERO float lerpF(float a, float b, float t)
@@ -92,40 +30,242 @@ HERO float lerpF(float a, float b, float t)
     return (1 - t)*a + t*b;
 }
 
-HERO Float2 addF2(Float2 A,Float2 B)
-{
-    return (Float2){A.x + B.x, A.y + B.y};
+HERO void Int2::operator+=(const Int2& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y;
 }
 
-HERO Float2 substractF2(Float2 A,Float2 B)
+HERO void Int2::operator-=(const Int2& rhs)
 {
-    return (Float2){A.x - B.x, A.y - B.y};
+    x -= rhs.x;
+    y -= rhs.y;
 }
 
-HERO float dotProductF2(Float2 A,Float2 B)
+HERO bool Int2::operator==(const Int2& rhs)
+{ 
+    return x == rhs.x && y == rhs.y; 
+}
+
+HERO bool Int2::operator!=(const Int2& rhs)
+{ 
+    return !(*this == rhs); 
+}
+
+HERO Int2 operator+(const Int2& lhs, const Int2& rhs)
+{ 
+    return (Int2){ lhs.x + rhs.x, lhs.y + rhs.y }; 
+}
+
+HERO Int2 operator-(const Int2& lhs, const Int2& rhs)
+{ 
+    return (Int2){ lhs.x - rhs.x, lhs.y - rhs.y }; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Int2& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<"}"; 
+    return stream; 
+}
+
+HERO int dotProduct(Int2 A, Int2 B)
 {
     return (A.x * B.x) + (A.y * B.y);
 }
 
-HERO Float2 multiplyF2(Float2 A, float k)
+HERO float distance(Int2 A, Int2 B)
 {
-    return (Float2){A.x * k, A.y * k};
+    float x2 = (A.x - B.x)*(A.x - B.x);
+    float y2 = (A.y - B.y)*(A.y - B.y); 
+    return sqrtf(x2 + y2);
 }
 
-HERO float lengthF2(Float2 A)
-{
-    return sqrtf(A.x*A.x + A.y*A.y);
+HERO void Int3::operator+=(const Int3& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
 }
 
-HERO Float2 normalizeF2(Float2 A)
+HERO void Int3::operator-=(const Int3& rhs)
 {
-    float length = lengthF2(A);
-    float x = A.x / length;
-    float y = A.y / length;
-    return (Float2){x, y};
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
 }
 
-HERO float distanceF2(Float2 A, Float2 B)
+HERO bool Int3::operator==(const Int3& rhs)
+{ 
+    return x == rhs.x && y == rhs.y && z == rhs.z; 
+}
+
+HERO bool Int3::operator!=(const Int3& rhs)
+{ 
+    return !(*this == rhs); 
+}
+
+HERO Int3 operator+(const Int3& lhs, const Int3& rhs)
+{ 
+    return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z }; 
+}
+
+HERO Int3 operator-(const Int3& lhs, const Int3& rhs)
+{ 
+    return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z}; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Int3& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<","<<v.z<<"}"; 
+    return stream; 
+}
+
+HERO int dotProduct(Int3 A, Int3 B)
+{
+    return (A.x * B.x) + (A.y * B.y) + (A.z * B.z);
+}
+
+HERO float distance(Int3 A, Int3 B)
+{
+    float x2 = (A.x - B.x)*(A.x - B.x);
+    float y2 = (A.y - B.y)*(A.y - B.y); 
+    float z2 = (A.z - B.z)*(A.z - B.z); 
+    return sqrtf(x2 + y2 + z2);
+}
+
+HERO void Int4::operator+=(const Int4& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    w += rhs.w;
+}
+
+HERO void Int4::operator-=(const Int4& rhs)
+{ 
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    w -= rhs.w;   
+}
+
+HERO bool Int4::operator==(const Int4& rhs)
+{ 
+    return x == rhs.x && y == rhs.y && z == rhs.z; 
+}
+
+HERO bool Int4::operator!=(const Int4& rhs)
+{ 
+    return !(*this == rhs); 
+}
+
+HERO Int4 operator+(Int4 lhs, const Int4& rhs)
+{ 
+    return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w}; 
+}
+
+HERO Int4 operator-(Int4 lhs, const Int4& rhs)
+{ 
+    return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w}; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Int4& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<","<<v.z<<","<<v.w<<"}"; 
+    return stream; 
+}
+
+HERO float Float2::length()
+{
+    return sqrtf(x*x + y*y);
+}
+
+HERO void Float2::normalize()
+{
+    float len = length();
+    x /= len;
+    y /= len;
+}
+
+HERO Float2 Float2::normalized()
+{
+    float len = length();
+    float nx = x / len;
+    float ny = y / len;
+    return (Float2){nx, ny};
+}
+
+HERO Float2& Float2::operator+=(const Float2& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y; 
+    return *this;
+}
+
+HERO Float2& Float2::operator-=(const Float2& rhs)
+{ 
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
+}
+
+HERO Float2& Float2::operator*=(float rhs)
+{  
+    x *= rhs;
+    y *= rhs;
+    return *this; 
+}
+
+HERO Float2& Float2::operator/=(float rhs)
+{
+    x /= rhs;
+    y /= rhs;
+    return *this; 
+}
+
+HERO bool Float2::operator==(const Float2& rhs)
+{ 
+    return (fabs(x - rhs.x) < COMP_EPSILON) && 
+        (fabs(y - rhs.y) < COMP_EPSILON); 
+}
+
+HERO bool Float2::operator!=(const Float2& rhs)
+{ 
+    return !(*this == rhs); 
+}
+
+HERO Float2 operator+(const Float2& lhs, const Float2& rhs)
+{ 
+    return (Float2){ lhs.x + rhs.x, lhs.y + rhs.y }; 
+}
+
+HERO Float2 operator-(const Float2& lhs, const Float2& rhs)
+{ 
+    return (Float2){ lhs.x - rhs.x, lhs.y - rhs.y }; 
+}
+
+HERO Float2 operator*(const Float2& lhs, float rhs)
+{ 
+    return (Float2){lhs.x * rhs, lhs.y * rhs}; 
+}
+
+HERO Float2 operator/(const Float2& lhs, float rhs)
+{ 
+    return (Float2){lhs.x / rhs, lhs.y / rhs}; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Float2& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<"}"; 
+    return stream; 
+}
+
+HERO float dotProduct(Float2 A, Float2 B)
+{
+    return (A.x * B.x) + (A.y * B.y);
+}
+
+HERO float distance(Float2 A, Float2 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
@@ -139,51 +279,121 @@ HERO Float2 rotateM2x2F2(Float2 vector, float angle)
     return (Float2){x, y};
 }
 
-HERO Float3 addF3(Float3 A, Float3 B)
+HERO Float3::Float3(const Float4& vector)
 {
-    return (Float3){A.x + B.x, A.y + B.y, A.z + B.z};
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
 }
 
-HERO Float3 substractF3(Float3 A, Float3 B)
+HERO float Float3::length()
 {
-    return (Float3){A.x - B.x, A.y - B.y, A.z - B.z};
+    return sqrtf(x*x + y*y + z*z);
 }
 
-HERO float dotProductF3(Float3 A, Float3 B)
+HERO void Float3::normalize()
+{
+    float len = length();
+    x / len;
+    y / len;
+    z / len;
+}
+
+HERO Float3 Float3::normalized()
+{
+    float len = length();
+    float nx = x / len;
+    float ny = y / len;
+    float nz = z / len;
+    return (Float3){nx, ny, nz};
+}
+
+HERO Float3& Float3::operator+=(const Float3& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    return *this;
+}
+
+HERO Float3& Float3::operator-=(const Float3& rhs)
+{ 
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    return *this;
+}
+
+HERO Float3& Float3::operator*=(float rhs)
+{  
+    x *= rhs;
+    y *= rhs;
+    z *= rhs;
+    return *this; 
+}
+
+HERO Float3& Float3::operator/=(float rhs)
+{  
+    x /= rhs;
+    y /= rhs;
+    z /= rhs;
+    return *this; 
+}
+
+HERO bool Float3::operator==(const Float3& rhs)
+{ 
+    return (fabs(x - rhs.x) < COMP_EPSILON) 
+    && (fabs(y - rhs.y) < COMP_EPSILON)
+    && (fabs(z - rhs.z) < COMP_EPSILON); 
+}
+
+HERO bool Float3::operator!=(const Float3& rhs)
+{ 
+    return !(*this == rhs); 
+}
+
+HERO Float3 operator+(const Float3& lhs, const Float3& rhs)
+{ 
+    return (Float3){ lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z }; 
+}
+
+HERO Float3 operator-(const Float3& lhs, const Float3& rhs)
+{ 
+    return (Float3){ lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z}; 
+}
+
+HERO Float3 operator*(const Float3& lhs, float rhs)
+{ 
+    return (Float3){lhs.x * rhs, lhs.y * rhs, lhs.z * rhs}; 
+}
+
+HERO Float3 operator*(const Float3& lhs, const Float3& rhs)
+{
+    return (Float3){lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z};
+}
+
+HERO Float3 operator/(const Float3& lhs, float rhs)
+{ 
+    return (Float3){lhs.x / rhs, lhs.y / rhs, lhs.z / rhs}; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Float3& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<","<<v.z<<"}"; 
+    return stream; 
+}
+
+HERO float dotProduct(Float3 A, Float3 B)
 {
     return (A.x * B.x) + (A.y * B.y) + (A.z * B.z);
 }
 
 HERO Float3 crossProduct(Float3 A, Float3 B)
 {
-    return (Float3){A.y*B.z - A.z*B.y, A.z*B.x - A.x*B.z, A.x*B.y - A.y*B.x};
+    return Float3(A.y*B.z - A.z*B.y, A.z*B.x - A.x*B.z, A.x*B.y - A.y*B.x);
 }
 
-HERO Float3 multiplyF3(Float3 A, float k)
-{
-    return (Float3){A.x * k, A.y * k, A.z * k};
-}
-
-HERO Float3 multiplyF3F3(Float3 A, Float3 B)
-{
-    return (Float3){A.x * B.x, A.y * B.y, A.z * B.z};
-}
-
-HERO float lengthF3(Float3 A)
-{
-    return sqrtf(A.x*A.x + A.y*A.y + A.z*A.z);
-}
-
-HERO Float3 normalizeF3(Float3 A)
-{
-    float length = lengthF3(A);
-    float x = A.x / length;
-    float y = A.y / length;
-    float z = A.z / length;
-    return (Float3){x, y, z};
-}
-
-HERO Float3 LlerpF3(Float3 A, Float3 B, float t)
+HERO Float3 lerp(Float3 A, Float3 B, float t)
 {
     float x = (1 - t)*A.x + t*B.x;
     float y = (1 - t)*A.y + t*B.y;
@@ -191,7 +401,7 @@ HERO Float3 LlerpF3(Float3 A, Float3 B, float t)
     return (Float3){x, y, z};
 }
 
-HERO float distanceF3(Float3 A, Float3 B)
+HERO float distance(Float3 A, Float3 B)
 {
     float x2 = (A.x - B.x)*(A.x - B.x);
     float y2 = (A.y - B.y)*(A.y - B.y); 
@@ -199,551 +409,541 @@ HERO float distanceF3(Float3 A, Float3 B)
     return sqrtf(x2 + y2 + z2);
 }
 
-HERO std::ostream& operator<< (std::ostream& stream, const Float3& vector)
+HERO Float4::Float4(const Float3& vector)
 {
-    stream<<"{ "<<vector.x<<", "<<vector.y<<", "<<vector.z<<" }";
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
+    w = 0.0f;
+}
 
+HERO float Float4::length()
+{
+    return sqrtf(x*x + y*y + z*z + w*w);
+}
+
+HERO void Float4::normalize()
+{
+    float len = length();
+    x /= len;
+    y /= len;
+    z /= len;
+    w /= len;
+}
+
+HERO Float4 Float4::normalized()
+{
+    float len = length();
+    float nx = x / len;
+    float ny = y / len;
+    float nz = z / len;
+    float nw = w / len;
+    return (Float4){nx, ny, nz, nw};
+}
+
+HERO Float4& Float4::operator+=(const Float4& rhs)
+{ 
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    w += rhs.w;
+    return *this;
+}
+
+HERO Float4& Float4::operator-=(const Float4& rhs)
+{ 
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    w -= rhs.w;
+    return *this;
+}
+
+HERO Float4& Float4::operator*=(float rhs)
+{  
+    x *= rhs;
+    y *= rhs;
+    z *= rhs;
+    w *= rhs;
+    return *this;
+}
+
+HERO Float4& Float4::operator/=(float rhs)
+{  
+    x /= rhs;
+    y /= rhs;
+    z /= rhs;
+    w /= rhs;
+    return *this; 
+}
+
+HERO bool Float4::operator==(const Float4& rhs)
+{ 
+    return (fabs(x - rhs.x) < COMP_EPSILON) 
+    && (fabs(y - rhs.y) < COMP_EPSILON)
+    && (fabs(z - rhs.z) < COMP_EPSILON)
+    && (fabs(w - rhs.w) < COMP_EPSILON); 
+}
+
+HERO bool Float4::operator!=(const Float4& rhs)
+{
+    return !(*this == rhs);
+}
+
+HERO Float4 operator+(Float4 lhs, const Float4& rhs)
+{ 
+    return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w}; 
+}
+
+HERO Float4 operator-(Float4 lhs, const Float4& rhs)
+{ 
+    return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w}; 
+}
+
+HERO Float4 operator*(Float4 lhs, float rhs)
+{ 
+    return (Float4){lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs}; 
+}
+
+HERO Float4 operator/(Float4 lhs, float rhs)
+{
+    return (Float4){lhs.x / rhs, lhs.y / rhs, lhs.z / rhs, lhs.w / rhs}; 
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Float4& v)
+{ 
+    stream << "{"<<v.x<<","<<v.y<<","<<v.z<<","<<v.w<<"}"; 
     return stream;
 }
 
-HERO Float4 addF4(Float4 A, Float4 B)
+HERO float Matrix2x2::determinant()
 {
-    return (Float4){A.x + B.x, A.y + B.y, A.z + B.z, A.w + B.w};
+    return (col[0].x * col[1].y) - (col[0].y * col[1].x);
 }
 
-HERO Float4 substractF4(Float4 A, Float4 B)
+HERO Matrix2x2 Matrix2x2::tansponed()
 {
-    return (Float4){A.x - B.x, A.y - B.y, A.z - B.z, A.w - B.w};
+    return (Matrix2x2){(Float2){col[0].x, col[1].x},
+                        (Float2){col[0].y, col[1].y}};
 }
 
-HERO Float4 multiplyF4(Float4 A, float k)
+HERO Matrix2x2 Matrix2x2::inverted()
 {
-    return (Float4){A.x * k, A.y * k, A.z * k, A.w * k};
+    float det = 1.0f / determinant();
+    return (Matrix2x2){(Float2){det * col[1].y, det * (-col[0].y)},
+            (Float2){det * (-col[1].x), det * col[0].x}};
 }
 
-HERO float lengthF4(Float4 A)
+HERO Matrix2x2& Matrix2x2::operator*=(float rhs)
 {
-    return sqrtf(A.x*A.x + A.y*A.y + A.z*A.z + A.w*A.w);
+    col[0] *= rhs;
+    col[1] *= rhs;
+    return *this;
 }
 
-HERO Float4 normalizeF4(Float4 A)
+HERO Matrix2x2 operator+(const Matrix2x2& lhs, const Matrix2x2& rhs)
 {
-    float length = lengthF4(A);
-    float x = A.x / length;
-    float y = A.y / length;
-    float z = A.z / length;
-    float w = A.w / length;
-    return (Float4){x, y, z, w};
+    Matrix2x2 result;
+    result.col[0] = lhs.col[0] + rhs.col[0];
+    result.col[1] = lhs.col[1] + rhs.col[1];
+    return result;
 }
 
-HERO std::ostream& operator<< (std::ostream& stream, const Float4& vector)
+HERO Matrix2x2 operator-(const Matrix2x2& lhs, const Matrix2x2& rhs)
 {
-    stream<<"{ "<<vector.x<<", "<<vector.y<<", "<<vector.z<<", "<<vector.w<<" }";
+    Matrix2x2 result;
+    result.col[0] = lhs.col[0] - rhs.col[0];
+    result.col[1] = lhs.col[1] - rhs.col[1];
+    return result;
+}
 
+HERO Matrix2x2 operator*(const Matrix2x2& lhs, const Matrix2x2& rhs)
+{
+    Matrix2x2 result;
+    result.col[0].x = lhs.col[0].x * rhs.col[0].x + lhs.col[1].x * rhs.col[0].y;
+    result.col[0].y = lhs.col[0].y * rhs.col[0].x + lhs.col[1].y * rhs.col[0].y;
+    result.col[1].x = lhs.col[0].x * rhs.col[1].x + lhs.col[1].x * rhs.col[1].y;
+    result.col[1].y = lhs.col[0].y * rhs.col[1].x + lhs.col[1].y * rhs.col[1].y;
+    return result;
+}
+
+HERO Float2 operator*(const Matrix2x2& lhs, const Float2& rhs)
+{
+    Float2 result;
+    result.x = lhs.col[0].x * rhs.x + lhs.col[1].x * rhs.y;
+    result.y = lhs.col[0].y * rhs.x + lhs.col[1].y * rhs.y;
+    return result;
+}
+
+HERO Matrix2x2 operator*(const Matrix2x2& lhs, float rhs)
+{
+    Matrix2x2 result = lhs;
+    result *= rhs;
+    return result;
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Matrix2x2& m)
+{
+    stream<<"{"<<m.col[0]<<","<<m.col[1]<<"}";
     return stream;
 }
 
-HERO Matrix2x2 multiplyM2x2(Matrix2x2 A, Matrix2x2 B)
+HERO Matrix3x3::Matrix3x3(const Matrix4x4& matrix)
 {
-    float x = A.col[0].x * B.col[0].x + A.col[1].x * B.col[0].y;
-    float y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y;
-    float z = A.col[0].x * B.col[1].x + A.col[1].x * B.col[1].y;
-    float w = A.col[0].y * B.col[1].x + A.col[1].y * B.col[1].y;
-    return (Matrix2x2){(Float2){x,y},(Float2){z,w}};
-}   
-
-HERO float determinentM2x2(Matrix2x2 A)
-{
-    return (A.col[0].x * A.col[1].y) - (A.col[0].y * A.col[1].x);
+    col[0] = Float3(matrix.col[0]);
+    col[1] = Float3(matrix.col[1]);
+    col[2] = Float3(matrix.col[2]);
 }
 
-HERO Matrix2x2 tansponeM2x2(Matrix2x2 A)
+HERO float Matrix3x3::determinant()
 {
-    return (Matrix2x2){(Float2){A.col[0].x, A.col[1].x},(Float2){A.col[0].y, A.col[1].y}};
+    return col[0].x*col[1].y*col[2].z + 
+            col[1].x*col[2].y*col[0].z + 
+            col[2].x*col[0].y*col[1].z -
+            col[2].x*col[1].y*col[0].z - 
+            col[1].x*col[0].y*col[2].z - 
+            col[0].x*col[2].y*col[1].z;
 }
 
-HERO Matrix2x2 invertM2x2(Matrix2x2 A)
-{
-    float det = 1.0f / determinentM2x2(A);
-    return (Matrix2x2){(Float2){det * A.col[1].y, det * (-A.col[0].y)},
-            (Float2){det * (-A.col[1].x), det * A.col[0].x}};
-}
-
-HERO Float2 multiplyM2x2F2(Matrix2x2 matrix, Float2 vector)
-{
-    float x = matrix.col[0].x * vector.x + matrix.col[1].x * vector.y;
-    float y = matrix.col[0].y * vector.x + matrix.col[1].y * vector.y;
-    return (Float2){x, y};
-}
-
-HERO Matrix3x3 multiplyM3x3(Matrix3x3 A, Matrix3x3 B)
+HERO Matrix3x3 Matrix3x3::tansponed()
 {
     Matrix3x3 matrix;
 
-    matrix.col[0].x = A.col[0].x * B.col[0].x + A.col[1].x * B.col[0].y + A.col[2].x * B.col[0].z;
-    matrix.col[0].y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y + A.col[2].y * B.col[0].z;
-    matrix.col[0].z = A.col[0].z * B.col[0].x + A.col[1].z * B.col[0].y + A.col[2].z * B.col[0].z;
-
-    matrix.col[1].x = A.col[0].x * B.col[1].x + A.col[1].x * B.col[1].y + A.col[2].x * B.col[1].z;
-    matrix.col[1].y = A.col[0].y * B.col[1].x + A.col[1].y * B.col[1].y + A.col[2].y * B.col[1].z;
-    matrix.col[1].z = A.col[0].z * B.col[1].x + A.col[1].z * B.col[1].y + A.col[2].z * B.col[1].z;
-
-    matrix.col[2].x = A.col[0].x * B.col[2].x + A.col[1].x * B.col[2].y + A.col[2].x * B.col[2].z;
-    matrix.col[2].y = A.col[0].y * B.col[2].x + A.col[1].y * B.col[2].y + A.col[2].y * B.col[2].z;
-    matrix.col[2].z = A.col[0].z * B.col[2].x + A.col[1].z * B.col[2].y + A.col[2].z * B.col[2].z;
+    matrix.col[0].x = col[0].x;
+    matrix.col[1].x = col[0].y;
+    matrix.col[2].x = col[0].z;
+    matrix.col[0].y = col[1].x;
+    matrix.col[1].y = col[1].y;
+    matrix.col[2].y = col[1].z;
+    matrix.col[0].z = col[2].x;
+    matrix.col[1].z = col[2].y;
+    matrix.col[2].z = col[2].z;
 
     return matrix;
 }
 
-HERO float determinentM3x3(Matrix3x3 A)
+HERO Matrix3x3 Matrix3x3::inverted()
 {
-    return A.col[0].x*A.col[1].y*A.col[2].z + 
-            A.col[1].x*A.col[2].y*A.col[0].z + 
-            A.col[2].x*A.col[0].y*A.col[1].z -
-            A.col[2].x*A.col[1].y*A.col[0].z - 
-            A.col[1].x*A.col[0].y*A.col[2].z - 
-            A.col[0].x*A.col[2].y*A.col[1].z;
-}
-
-HERO Matrix3x3 tansponeM3x3(Matrix3x3 A)
-{
-    Matrix3x3 matrix;
-
-    matrix.col[0].x = A.col[0].x;
-    matrix.col[1].x = A.col[0].y;
-    matrix.col[2].x = A.col[0].z;
-    matrix.col[0].y = A.col[1].x;
-    matrix.col[1].y = A.col[1].y;
-    matrix.col[2].y = A.col[1].z;
-    matrix.col[0].z = A.col[2].x;
-    matrix.col[1].z = A.col[2].y;
-    matrix.col[2].z = A.col[2].z;
-
-    return matrix;
-}
-
-HERO Matrix3x3 invertM3x3(Matrix3x3 A)
-{
-    float det = 1.0f / determinentM3x3(A);
+    float det = 1.0f / determinant();
 
     Matrix3x3 matrix;
 
-    matrix.col[0].x = (A.col[1].y * A.col[2].z) - (A.col[2].y * A.col[1].z);
+    matrix.col[0].x = (col[1].y * col[2].z) - (col[2].y * col[1].z);
     matrix.col[0].x *= det;
-    matrix.col[0].y = (A.col[0].y * A.col[2].z) - (A.col[2].y * A.col[0].z);
+    matrix.col[0].y = (col[0].y * col[2].z) - (col[2].y * col[0].z);
     matrix.col[0].y *= -det;
-    matrix.col[0].z = (A.col[0].y * A.col[1].z) - (A.col[1].y * A.col[0].z);
+    matrix.col[0].z = (col[0].y * col[1].z) - (col[1].y * col[0].z);
     matrix.col[0].z *= det;
 
-    matrix.col[1].x = (A.col[1].x * A.col[2].z) - (A.col[2].x * A.col[1].z);
+    matrix.col[1].x = (col[1].x * col[2].z) - (col[2].x * col[1].z);
     matrix.col[1].x *= -det;
-    matrix.col[1].y = (A.col[0].x * A.col[2].z) - (A.col[2].x * A.col[0].z);
+    matrix.col[1].y = (col[0].x * col[2].z) - (col[2].x * col[0].z);
     matrix.col[1].y *= det;
-    matrix.col[1].z = (A.col[0].x * A.col[1].z) - (A.col[1].x * A.col[0].z);
+    matrix.col[1].z = (col[0].x * col[1].z) - (col[1].x * col[0].z);
     matrix.col[1].z *= -det;
 
-    matrix.col[2].x = (A.col[1].x * A.col[2].y) - (A.col[2].x * A.col[1].y);
+    matrix.col[2].x = (col[1].x * col[2].y) - (col[2].x * col[1].y);
     matrix.col[2].x *= det;
-    matrix.col[2].y = (A.col[0].x * A.col[2].y) - (A.col[2].x * A.col[0].y);
+    matrix.col[2].y = (col[0].x * col[2].y) - (col[2].x * col[0].y);
     matrix.col[2].y *= -det;
-    matrix.col[2].z = (A.col[0].x * A.col[1].y) - (A.col[1].x * A.col[0].y);
+    matrix.col[2].z = (col[0].x * col[1].y) - (col[1].x * col[0].y);
     matrix.col[2].z *= det;
 
     return matrix;
 }
 
-HERO Float3 multiplyM3x3F3(Matrix3x3 matrix, Float3 vector)
+HERO Matrix3x3 Matrix3x3::operator*=(float rhs)
 {
-    Float3 vec;
-
-    vec.x = matrix.col[0].x * vector.x + matrix.col[1].x * vector.y + matrix.col[2].x * vector.z;
-    vec.y = matrix.col[0].y * vector.x + matrix.col[1].y * vector.y + matrix.col[2].y * vector.z;
-    vec.z = matrix.col[0].z * vector.x + matrix.col[2].z * vector.y + matrix.col[2].z * vector.z;
-    
-    return vec;
+    col[0] *= rhs;
+    col[1] *= rhs;
+    col[2] *= rhs;
+    return *this;
 }
 
-HERO Matrix4x4 multiplyM4x4(Matrix4x4 A, Matrix4x4 B)
+HERO Matrix3x3 operator+(const Matrix3x3& lhs, const Matrix3x3& rhs)
 {
-    Matrix4x4 matrix;
+    Matrix3x3 result;
+    result.col[0] = lhs.col[0] + rhs.col[0];
+    result.col[1] = lhs.col[1] + rhs.col[1];
+    result.col[2] = lhs.col[2] + rhs.col[2];
+    return result;
+}
 
-    matrix.col[0].x = A.col[0].x * B.col[0].x + A.col[1].x * B.col[0].y + A.col[2].x * B.col[0].z + A.col[3].x * B.col[0].w;
-    matrix.col[0].y = A.col[0].y * B.col[0].x + A.col[1].y * B.col[0].y + A.col[2].y * B.col[0].z + A.col[3].y * B.col[0].w;
-    matrix.col[0].z = A.col[0].z * B.col[0].x + A.col[1].z * B.col[0].y + A.col[2].z * B.col[0].z + A.col[3].z * B.col[0].w;
-    matrix.col[0].w = A.col[0].w * B.col[0].x + A.col[1].w * B.col[0].y + A.col[2].w * B.col[0].z + A.col[3].w * B.col[0].w;
+HERO Matrix3x3 operator-(const Matrix3x3& lhs, const Matrix3x3& rhs)
+{
+    Matrix3x3 result;
+    result.col[0] = lhs.col[0] - rhs.col[0];
+    result.col[1] = lhs.col[1] - rhs.col[1];
+    result.col[2] = lhs.col[2] - rhs.col[2];
+    return result;
+}
 
-    matrix.col[1].x = A.col[0].x * B.col[1].x + A.col[1].x * B.col[1].y + A.col[2].x * B.col[1].z + A.col[3].x * B.col[1].w;
-    matrix.col[1].y = A.col[0].y * B.col[1].x + A.col[1].y * B.col[1].y + A.col[2].y * B.col[1].z + A.col[3].y * B.col[1].w;
-    matrix.col[1].z = A.col[0].z * B.col[1].x + A.col[1].z * B.col[1].y + A.col[2].z * B.col[1].z + A.col[3].z * B.col[1].w;
-    matrix.col[1].w = A.col[0].w * B.col[1].x + A.col[1].w * B.col[1].y + A.col[2].w * B.col[1].z + A.col[3].w * B.col[1].w;
+HERO Matrix3x3 operator*(const Matrix3x3& lhs, const Matrix3x3& rhs)
+{
+    Matrix3x3 matrix;
 
-    matrix.col[2].x = A.col[0].x * B.col[2].x + A.col[1].x * B.col[2].y + A.col[2].x * B.col[2].z + A.col[3].x * B.col[2].w;
-    matrix.col[2].y = A.col[0].y * B.col[2].x + A.col[1].y * B.col[2].y + A.col[2].y * B.col[2].z + A.col[3].y * B.col[2].w;
-    matrix.col[2].z = A.col[0].z * B.col[2].x + A.col[1].z * B.col[2].y + A.col[2].z * B.col[2].z + A.col[3].z * B.col[2].w;
-    matrix.col[2].w = A.col[0].w * B.col[2].x + A.col[1].w * B.col[2].y + A.col[2].w * B.col[2].z + A.col[3].w * B.col[2].w;
+    matrix.col[0].x = lhs.col[0].x * rhs.col[0].x + lhs.col[1].x * rhs.col[0].y + lhs.col[2].x * rhs.col[0].z;
+    matrix.col[0].y = lhs.col[0].y * rhs.col[0].x + lhs.col[1].y * rhs.col[0].y + lhs.col[2].y * rhs.col[0].z;
+    matrix.col[0].z = lhs.col[0].z * rhs.col[0].x + lhs.col[1].z * rhs.col[0].y + lhs.col[2].z * rhs.col[0].z;
 
-    matrix.col[3].x = A.col[0].x * B.col[3].x + A.col[1].x * B.col[3].y + A.col[2].x * B.col[3].z + A.col[3].x * B.col[3].w;
-    matrix.col[3].y = A.col[0].y * B.col[3].x + A.col[1].y * B.col[3].y + A.col[2].y * B.col[3].z + A.col[3].y * B.col[3].w;
-    matrix.col[3].z = A.col[0].z * B.col[3].x + A.col[1].z * B.col[3].y + A.col[2].z * B.col[3].z + A.col[3].z * B.col[3].w;
-    matrix.col[3].w = A.col[0].w * B.col[3].x + A.col[1].w * B.col[3].y + A.col[2].w * B.col[3].z + A.col[3].w * B.col[3].w;
+    matrix.col[1].x = lhs.col[0].x * rhs.col[1].x + lhs.col[1].x * rhs.col[1].y + lhs.col[2].x * rhs.col[1].z;
+    matrix.col[1].y = lhs.col[0].y * rhs.col[1].x + lhs.col[1].y * rhs.col[1].y + lhs.col[2].y * rhs.col[1].z;
+    matrix.col[1].z = lhs.col[0].z * rhs.col[1].x + lhs.col[1].z * rhs.col[1].y + lhs.col[2].z * rhs.col[1].z;
+
+    matrix.col[2].x = lhs.col[0].x * rhs.col[2].x + lhs.col[1].x * rhs.col[2].y + lhs.col[2].x * rhs.col[2].z;
+    matrix.col[2].y = lhs.col[0].y * rhs.col[2].x + lhs.col[1].y * rhs.col[2].y + lhs.col[2].y * rhs.col[2].z;
+    matrix.col[2].z = lhs.col[0].z * rhs.col[2].x + lhs.col[1].z * rhs.col[2].y + lhs.col[2].z * rhs.col[2].z;
 
     return matrix;
 }
 
-HERO float determinentM4x4(Matrix4x4 A)
+HERO Float3 operator*(const Matrix3x3& lhs, const Float3& rhs)
+{
+    Float3 vec;
+    vec.x = lhs.col[0].x * rhs.x + lhs.col[1].x * rhs.y + lhs.col[2].x * rhs.z;
+    vec.y = lhs.col[0].y * rhs.x + lhs.col[1].y * rhs.y + lhs.col[2].y * rhs.z;
+    vec.z = lhs.col[0].z * rhs.x + lhs.col[2].z * rhs.y + lhs.col[2].z * rhs.z;
+    return vec;
+}
+
+HERO Matrix3x3 operator*(const Matrix3x3& lhs, float rhs)
+{
+    Matrix3x3 result;
+    result.col[0] *= rhs;
+    result.col[1] *= rhs;
+    result.col[2] *= rhs;
+    return result;
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, const Matrix3x3& m)
+{
+    stream<<"{"<<m.col[0]<<","<<m.col[1]<<","<<m.col[2]<<"}";
+    return stream;
+}
+
+HERO Matrix4x4::Matrix4x4(const Matrix3x3& matrix)
+{
+    col[0] = Float4(matrix.col[0]);
+    col[1] = Float4(matrix.col[1]);
+    col[2] = Float4(matrix.col[2]);
+    col[3] = Float4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+HERO float Matrix4x4::determinent()
 {
     Matrix4x4 matrix = Matrix4x4::identity();
 
-    float mul = A.col[0].y / A.col[0].x;
-    matrix.col[1].y = A.col[1].y - mul * A.col[1].x;
-    matrix.col[2].y = A.col[2].y - mul * A.col[2].x;
-    matrix.col[3].y = A.col[3].y - mul * A.col[3].x;
+    float mul = col[0].y / col[0].x;
+    matrix.col[1].y = col[1].y - mul * col[1].x;
+    matrix.col[2].y = col[2].y - mul * col[2].x;
+    matrix.col[3].y = col[3].y - mul * col[3].x;
 
-    mul = A.col[0].z / A.col[0].y;
-    matrix.col[2].z = A.col[2].z - mul * A.col[2].y;
-    matrix.col[3].z = A.col[3].z - mul * A.col[3].y;
+    mul = col[0].z / col[0].y;
+    matrix.col[2].z = col[2].z - mul * col[2].y;
+    matrix.col[3].z = col[3].z - mul * col[3].y;
 
-    mul = A.col[0].w / A.col[0].z;
-    matrix.col[2].w = A.col[2].w - mul * A.col[2].z;
+    mul = col[0].w / col[0].z;
+    matrix.col[2].w = col[2].w - mul * col[2].z;
 
     return matrix.col[0].x * matrix.col[1].y * matrix.col[2].z *matrix.col[3].w;
 }
 
-HERO Matrix4x4 invertM4x4(Matrix4x4 A)
-{
-    float* m = m4x4ToArray(A);
-    float inv[16], det;
-    int i;
-
-    inv[0] = m[5]  * m[10] * m[15] - 
-             m[5]  * m[11] * m[14] - 
-             m[9]  * m[6]  * m[15] + 
-             m[9]  * m[7]  * m[14] +
-             m[13] * m[6]  * m[11] - 
-             m[13] * m[7]  * m[10];
-
-    inv[4] = -m[4]  * m[10] * m[15] + 
-              m[4]  * m[11] * m[14] + 
-              m[8]  * m[6]  * m[15] - 
-              m[8]  * m[7]  * m[14] - 
-              m[12] * m[6]  * m[11] + 
-              m[12] * m[7]  * m[10];
-
-    inv[8] = m[4]  * m[9] * m[15] - 
-             m[4]  * m[11] * m[13] - 
-             m[8]  * m[5] * m[15] + 
-             m[8]  * m[7] * m[13] + 
-             m[12] * m[5] * m[11] - 
-             m[12] * m[7] * m[9];
-
-    inv[12] = -m[4]  * m[9] * m[14] + 
-               m[4]  * m[10] * m[13] +
-               m[8]  * m[5] * m[14] - 
-               m[8]  * m[6] * m[13] - 
-               m[12] * m[5] * m[10] + 
-               m[12] * m[6] * m[9];
-
-    inv[1] = -m[1]  * m[10] * m[15] + 
-              m[1]  * m[11] * m[14] + 
-              m[9]  * m[2] * m[15] - 
-              m[9]  * m[3] * m[14] - 
-              m[13] * m[2] * m[11] + 
-              m[13] * m[3] * m[10];
-
-    inv[5] = m[0]  * m[10] * m[15] - 
-             m[0]  * m[11] * m[14] - 
-             m[8]  * m[2] * m[15] + 
-             m[8]  * m[3] * m[14] + 
-             m[12] * m[2] * m[11] - 
-             m[12] * m[3] * m[10];
-
-    inv[9] = -m[0]  * m[9] * m[15] + 
-              m[0]  * m[11] * m[13] + 
-              m[8]  * m[1] * m[15] - 
-              m[8]  * m[3] * m[13] - 
-              m[12] * m[1] * m[11] + 
-              m[12] * m[3] * m[9];
-
-    inv[13] = m[0]  * m[9] * m[14] - 
-              m[0]  * m[10] * m[13] - 
-              m[8]  * m[1] * m[14] + 
-              m[8]  * m[2] * m[13] + 
-              m[12] * m[1] * m[10] - 
-              m[12] * m[2] * m[9];
-
-    inv[2] = m[1]  * m[6] * m[15] - 
-             m[1]  * m[7] * m[14] - 
-             m[5]  * m[2] * m[15] + 
-             m[5]  * m[3] * m[14] + 
-             m[13] * m[2] * m[7] - 
-             m[13] * m[3] * m[6];
-
-    inv[6] = -m[0]  * m[6] * m[15] + 
-              m[0]  * m[7] * m[14] + 
-              m[4]  * m[2] * m[15] - 
-              m[4]  * m[3] * m[14] - 
-              m[12] * m[2] * m[7] + 
-              m[12] * m[3] * m[6];
-
-    inv[10] = m[0]  * m[5] * m[15] - 
-              m[0]  * m[7] * m[13] - 
-              m[4]  * m[1] * m[15] + 
-              m[4]  * m[3] * m[13] + 
-              m[12] * m[1] * m[7] - 
-              m[12] * m[3] * m[5];
-
-    inv[14] = -m[0]  * m[5] * m[14] + 
-               m[0]  * m[6] * m[13] + 
-               m[4]  * m[1] * m[14] - 
-               m[4]  * m[2] * m[13] - 
-               m[12] * m[1] * m[6] + 
-               m[12] * m[2] * m[5];
-
-    inv[3] = -m[1] * m[6] * m[11] + 
-              m[1] * m[7] * m[10] + 
-              m[5] * m[2] * m[11] - 
-              m[5] * m[3] * m[10] - 
-              m[9] * m[2] * m[7] + 
-              m[9] * m[3] * m[6];
-
-    inv[7] = m[0] * m[6] * m[11] - 
-             m[0] * m[7] * m[10] - 
-             m[4] * m[2] * m[11] + 
-             m[4] * m[3] * m[10] + 
-             m[8] * m[2] * m[7] - 
-             m[8] * m[3] * m[6];
-
-    inv[11] = -m[0] * m[5] * m[11] + 
-               m[0] * m[7] * m[9] + 
-               m[4] * m[1] * m[11] - 
-               m[4] * m[3] * m[9] - 
-               m[8] * m[1] * m[7] + 
-               m[8] * m[3] * m[5];
-
-    inv[15] = m[0] * m[5] * m[10] - 
-              m[0] * m[6] * m[9] - 
-              m[4] * m[1] * m[10] + 
-              m[4] * m[2] * m[9] + 
-              m[8] * m[1] * m[6] - 
-              m[8] * m[2] * m[5];
-
-    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
-    delete[] m;
-
-    det = 1.0 / det;
-
-    for (i = 0; i < 16; i++)
-        inv[i] *= det;
-
-    return arrayToM4x4(inv); 
-}
-
-HERO Matrix4x4 tansponeM4x4(Matrix4x4 A)
+HERO Matrix4x4 Matrix4x4::tansponed()
 {
     Matrix4x4 matrix;
 
-    matrix.col[0].x = A.col[0].x;
-    matrix.col[1].x = A.col[0].y;
-    matrix.col[2].x = A.col[0].z;
-    matrix.col[3].x = A.col[0].w;
+    matrix.col[0].x = col[0].x;
+    matrix.col[1].x = col[0].y;
+    matrix.col[2].x = col[0].z;
+    matrix.col[3].x = col[0].w;
 
-    matrix.col[0].y = A.col[1].x;
-    matrix.col[1].y = A.col[1].y;
-    matrix.col[2].y = A.col[1].z;
-    matrix.col[3].y = A.col[1].w;
+    matrix.col[0].y = col[1].x;
+    matrix.col[1].y = col[1].y;
+    matrix.col[2].y = col[1].z;
+    matrix.col[3].y = col[1].w;
 
-    matrix.col[0].z = A.col[2].x;
-    matrix.col[1].z = A.col[2].y;
-    matrix.col[2].z = A.col[2].z;
-    matrix.col[3].z = A.col[2].w;
+    matrix.col[0].z = col[2].x;
+    matrix.col[1].z = col[2].y;
+    matrix.col[2].z = col[2].z;
+    matrix.col[3].z = col[2].w;
 
-    matrix.col[0].w = A.col[3].x;
-    matrix.col[1].w = A.col[3].y;
-    matrix.col[2].w = A.col[3].z;
-    matrix.col[3].w = A.col[3].w;
+    matrix.col[0].w = col[3].x;
+    matrix.col[1].w = col[3].y;
+    matrix.col[2].w = col[3].z;
+    matrix.col[3].w = col[3].w;
 
     return matrix;
 }
 
-HERO Float4 multiplyM4x4F4(Matrix4x4 matrix, Float4 vector)
+HERO Matrix4x4 Matrix4x4::inverted()
 {
-    float x = vector.x*matrix.col[0].x + vector.y*matrix.col[1].x + vector.z*matrix.col[2].x + vector.w*matrix.col[3].x;
-    float y = vector.x*matrix.col[0].y + vector.y*matrix.col[1].y + vector.z*matrix.col[2].y + vector.w*matrix.col[3].y;
-    float z = vector.x*matrix.col[0].z + vector.y*matrix.col[1].z + vector.z*matrix.col[2].z + vector.w*matrix.col[3].z;
-    float w = vector.x*matrix.col[0].w + vector.y*matrix.col[1].w + vector.z*matrix.col[2].w + vector.w*matrix.col[3].w;
+    return Matrix4x4::identity();
+}
+
+HERO Matrix4x4& Matrix4x4::operator*=(float rhs)
+{
+    col[0] *= rhs;
+    col[1] *= rhs;
+    col[2] *= rhs;
+    col[3] *= rhs;
+    return *this;
+}
+
+HERO Matrix4x4 operator+(const Matrix4x4& lhs, const Matrix4x4& rhs)
+{
+    Matrix4x4 result;
+    result.col[0] = lhs.col[0] + rhs.col[0];
+    result.col[1] = lhs.col[1] + rhs.col[1];
+    result.col[2] = lhs.col[2] + rhs.col[2];
+    result.col[3] = lhs.col[3] + rhs.col[3];
+    return result;
+}
+
+HERO Matrix4x4 operator-(const Matrix4x4& lhs, const Matrix4x4& rhs)
+{
+    Matrix4x4 result;
+    result.col[0] = lhs.col[0] - rhs.col[0];
+    result.col[1] = lhs.col[1] - rhs.col[1];
+    result.col[2] = lhs.col[2] - rhs.col[2];
+    result.col[3] = lhs.col[3] - rhs.col[3];
+    return result;
+}
+
+HERO Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs)
+{
+    Matrix4x4 matrix;
+
+    matrix.col[0].x = lhs.col[0].x * rhs.col[0].x + lhs.col[1].x * rhs.col[0].y + lhs.col[2].x * rhs.col[0].z + lhs.col[3].x * rhs.col[0].w;
+    matrix.col[0].y = lhs.col[0].y * rhs.col[0].x + lhs.col[1].y * rhs.col[0].y + lhs.col[2].y * rhs.col[0].z + lhs.col[3].y * rhs.col[0].w;
+    matrix.col[0].z = lhs.col[0].z * rhs.col[0].x + lhs.col[1].z * rhs.col[0].y + lhs.col[2].z * rhs.col[0].z + lhs.col[3].z * rhs.col[0].w;
+    matrix.col[0].w = lhs.col[0].w * rhs.col[0].x + lhs.col[1].w * rhs.col[0].y + lhs.col[2].w * rhs.col[0].z + lhs.col[3].w * rhs.col[0].w;
+
+    matrix.col[1].x = lhs.col[0].x * rhs.col[1].x + lhs.col[1].x * rhs.col[1].y + lhs.col[2].x * rhs.col[1].z + lhs.col[3].x * rhs.col[1].w;
+    matrix.col[1].y = lhs.col[0].y * rhs.col[1].x + lhs.col[1].y * rhs.col[1].y + lhs.col[2].y * rhs.col[1].z + lhs.col[3].y * rhs.col[1].w;
+    matrix.col[1].z = lhs.col[0].z * rhs.col[1].x + lhs.col[1].z * rhs.col[1].y + lhs.col[2].z * rhs.col[1].z + lhs.col[3].z * rhs.col[1].w;
+    matrix.col[1].w = lhs.col[0].w * rhs.col[1].x + lhs.col[1].w * rhs.col[1].y + lhs.col[2].w * rhs.col[1].z + lhs.col[3].w * rhs.col[1].w;
+
+    matrix.col[2].x = lhs.col[0].x * rhs.col[2].x + lhs.col[1].x * rhs.col[2].y + lhs.col[2].x * rhs.col[2].z + lhs.col[3].x * rhs.col[2].w;
+    matrix.col[2].y = lhs.col[0].y * rhs.col[2].x + lhs.col[1].y * rhs.col[2].y + lhs.col[2].y * rhs.col[2].z + lhs.col[3].y * rhs.col[2].w;
+    matrix.col[2].z = lhs.col[0].z * rhs.col[2].x + lhs.col[1].z * rhs.col[2].y + lhs.col[2].z * rhs.col[2].z + lhs.col[3].z * rhs.col[2].w;
+    matrix.col[2].w = lhs.col[0].w * rhs.col[2].x + lhs.col[1].w * rhs.col[2].y + lhs.col[2].w * rhs.col[2].z + lhs.col[3].w * rhs.col[2].w;
+
+    matrix.col[3].x = lhs.col[0].x * rhs.col[3].x + lhs.col[1].x * rhs.col[3].y + lhs.col[2].x * rhs.col[3].z + lhs.col[3].x * rhs.col[3].w;
+    matrix.col[3].y = lhs.col[0].y * rhs.col[3].x + lhs.col[1].y * rhs.col[3].y + lhs.col[2].y * rhs.col[3].z + lhs.col[3].y * rhs.col[3].w;
+    matrix.col[3].z = lhs.col[0].z * rhs.col[3].x + lhs.col[1].z * rhs.col[3].y + lhs.col[2].z * rhs.col[3].z + lhs.col[3].z * rhs.col[3].w;
+    matrix.col[3].w = lhs.col[0].w * rhs.col[3].x + lhs.col[1].w * rhs.col[3].y + lhs.col[2].w * rhs.col[3].z + lhs.col[3].w * rhs.col[3].w;
+
+    return matrix;
+}
+
+HERO Float4 operator*(const Matrix4x4& lhs, const Float4& rhs)
+{
+    float x = rhs.x*lhs.col[0].x + rhs.y*lhs.col[1].x + rhs.z*lhs.col[2].x + rhs.w*lhs.col[3].x;
+    float y = rhs.x*lhs.col[0].y + rhs.y*lhs.col[1].y + rhs.z*lhs.col[2].y + rhs.w*lhs.col[3].y;
+    float z = rhs.x*lhs.col[0].z + rhs.y*lhs.col[1].z + rhs.z*lhs.col[2].z + rhs.w*lhs.col[3].z;
+    float w = rhs.x*lhs.col[0].w + rhs.y*lhs.col[1].w + rhs.z*lhs.col[2].w + rhs.w*lhs.col[3].w;
 
     return (Float4){x, y, z, w};
 }
 
-HERO float* m4x4ToArray(Matrix4x4 A)
-{
-    float* arr = new float[16];
-
-    arr[0] = A.col[0].x;
-    arr[1] = A.col[0].y;
-    arr[2] = A.col[0].z;
-    arr[3] = A.col[0].w;
-
-    arr[4] = A.col[1].x;
-    arr[5] = A.col[1].y;
-    arr[6] = A.col[1].z;
-    arr[7] = A.col[1].w;
-
-    arr[8] = A.col[2].x;
-    arr[9] = A.col[2].y;
-    arr[10] = A.col[2].z;
-    arr[11] = A.col[2].w;
-
-    arr[12] = A.col[3].x;
-    arr[13] = A.col[3].y;
-    arr[14] = A.col[3].z;
-    arr[15] = A.col[3].w;
-
-    return arr;
-}
-
-HERO Matrix4x4 arrayToM4x4(float* array)
+HERO Matrix4x4 operator*(const Matrix4x4& lhs, float rhs)
 {
     Matrix4x4 result;
-
-    result.col[0] = (Float4){array[0], array[4], array[8], array[12]};
-    result.col[1] = (Float4){array[1], array[5], array[9], array[13]};
-    result.col[2] = (Float4){array[2], array[6], array[10], array[14]};
-    result.col[3] = (Float4){array[3], array[7], array[11], array[15]};
-
+    result.col[0] *= rhs;
+    result.col[1] *= rhs;
+    result.col[2] *= rhs;
+    result.col[3] *= rhs;
     return result;
 }
 
-HERO Matrix3x3 convertToM3(const Matrix4x4& matrix)
+HERO std::ostream& operator<< (std::ostream& stream, const Matrix4x4& m)
 {
-    Matrix3x3 result;
-
-    result.col[0] = {matrix.col[0].x,matrix.col[0].y,matrix.col[0].z};
-    result.col[1] = {matrix.col[1].x,matrix.col[1].y,matrix.col[1].z};
-    result.col[2] = {matrix.col[2].x,matrix.col[2].y,matrix.col[2].z};
-
-    return result;
-}
-
-HERO Matrix4x4 convertToM4(const Matrix3x3& matrix)
-{
-    Matrix4x4 result;
-
-    result.col[0] = {matrix.col[0].x,matrix.col[0].y,matrix.col[0].z, 0.0f};
-    result.col[1] = {matrix.col[1].x,matrix.col[1].y,matrix.col[1].z, 0.0f};
-    result.col[2] = {matrix.col[2].x,matrix.col[2].y,matrix.col[2].z, 0.0f};
-    result.col[3] = {0.0f, 0.0f, 0.0f};
-
-    return result;
-}
-
-HERO std::ostream& operator<< (std::ostream& stream, const Matrix4x4& matrix)
-{
-    stream<<"| "<<matrix.col[0].x<<" "<<matrix.col[1].x<<" "<<matrix.col[2].x<<" "<<matrix.col[3].x<<" |"<<std::endl;
-    stream<<"| "<<matrix.col[0].y<<" "<<matrix.col[1].y<<" "<<matrix.col[2].y<<" "<<matrix.col[3].y<<" |"<<std::endl;
-    stream<<"| "<<matrix.col[0].z<<" "<<matrix.col[1].z<<" "<<matrix.col[2].z<<" "<<matrix.col[3].z<<" |"<<std::endl;
-    stream<<"| "<<matrix.col[0].w<<" "<<matrix.col[1].w<<" "<<matrix.col[2].w<<" "<<matrix.col[3].w<<" |"<<std::endl;
+    stream<<"{"<<m.col[0]<<","<<m.col[1]<<","<<m.col[2]<<","<<m.col[3]<<"}";
     return stream;
 }
 
-HERO void translateM4x4(Matrix4x4* matrix, Float3 translation)
+HERO void translate(Matrix4x4& matrix, Float3 translation)
 {
-    matrix->col[3].x += translation.x;
-    matrix->col[3].y += translation.y;
-    matrix->col[3].z += translation.z;
+    matrix.col[3].x += translation.x;
+    matrix.col[3].y += translation.y;
+    matrix.col[3].z += translation.z;
 }
 
-HERO void scaleM4x4(Matrix4x4* matrix, Float3 scale)
+HERO void scale(Matrix4x4& matrix, Float3 scale)
 {
-    matrix->col[0].x = scale.x;
-    matrix->col[1].y = scale.y;
-    matrix->col[2].z = scale.z;
+    matrix.col[0].x = scale.x;
+    matrix.col[1].y = scale.y;
+    matrix.col[2].z = scale.z;
 }
 
-HERO void rotateXM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateX(Matrix4x4& matrix, float radians)
 {
-    float a = matrix->col[0].y;
-    float b = matrix->col[0].z;
-    matrix->col[0].y = a*cosf(radians) - b*sinf(radians);
-    matrix->col[0].z = a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[1].y;
-    b = matrix->col[1].z;
-    matrix->col[1].y = a*cosf(radians) - b*sinf(radians);
-    matrix->col[1].z = a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[2].y;
-    b = matrix->col[2].z;
-    matrix->col[2].y = a*cosf(radians) - b*sinf(radians);
-    matrix->col[2].z = a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[3].y;
-    b = matrix->col[3].z;   
-    matrix->col[3].y = a*cosf(radians) - b*sinf(radians);
-    matrix->col[3].z = a*sinf(radians) + b*cosf(radians);
+    float a = matrix.col[0].y;
+    float b = matrix.col[0].z;
+    matrix.col[0].y = a*cosf(radians) - b*sinf(radians);
+    matrix.col[0].z = a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[1].y;
+    b = matrix.col[1].z;
+    matrix.col[1].y = a*cosf(radians) - b*sinf(radians);
+    matrix.col[1].z = a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[2].y;
+    b = matrix.col[2].z;
+    matrix.col[2].y = a*cosf(radians) - b*sinf(radians);
+    matrix.col[2].z = a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[3].y;
+    b = matrix.col[3].z;   
+    matrix.col[3].y = a*cosf(radians) - b*sinf(radians);
+    matrix.col[3].z = a*sinf(radians) + b*cosf(radians);
 }
 
-HERO void rotateYM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateY(Matrix4x4& matrix, float radians)
 {
-    float a = matrix->col[0].x;
-    float b = matrix->col[0].z;
-    matrix->col[0].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[0].z = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[1].x;
-    b = matrix->col[1].z;
-    matrix->col[1].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[1].z = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[2].x;
-    b = matrix->col[2].z;
-    matrix->col[2].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[2].z = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[3].x;
-    b = matrix->col[3].z;   
-    matrix->col[3].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[3].z = -a*sinf(radians) + b*cosf(radians);
+    float a = matrix.col[0].x;
+    float b = matrix.col[0].z;
+    matrix.col[0].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[0].z = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[1].x;
+    b = matrix.col[1].z;
+    matrix.col[1].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[1].z = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[2].x;
+    b = matrix.col[2].z;
+    matrix.col[2].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[2].z = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[3].x;
+    b = matrix.col[3].z;   
+    matrix.col[3].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[3].z = -a*sinf(radians) + b*cosf(radians);
 }
 
-HERO void rotateZM4x4(Matrix4x4* matrix, float radians)
+HERO void rotateZ(Matrix4x4& matrix, float radians)
 {
-    float a = matrix->col[0].x;
-    float b = matrix->col[0].y;
-    matrix->col[0].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[0].y = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[1].x;
-    b = matrix->col[1].y;
-    matrix->col[1].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[1].y = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[2].x;
-    b = matrix->col[2].y;
-    matrix->col[2].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[2].y = -a*sinf(radians) + b*cosf(radians);
-    a = matrix->col[3].x;
-    b = matrix->col[3].y;   
-    matrix->col[3].x = a*cosf(radians) + b*sinf(radians);
-    matrix->col[3].y = -a*sinf(radians) + b*cosf(radians);
+    float a = matrix.col[0].x;
+    float b = matrix.col[0].y;
+    matrix.col[0].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[0].y = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[1].x;
+    b = matrix.col[1].y;
+    matrix.col[1].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[1].y = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[2].x;
+    b = matrix.col[2].y;
+    matrix.col[2].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[2].y = -a*sinf(radians) + b*cosf(radians);
+    a = matrix.col[3].x;
+    b = matrix.col[3].y;   
+    matrix.col[3].x = a*cosf(radians) + b*sinf(radians);
+    matrix.col[3].y = -a*sinf(radians) + b*cosf(radians);
 }
 
-HERO void rotateXYZM4x4(Matrix4x4* matrix, Float3 rotation)
+HERO void rotateXYZ(Matrix4x4& matrix, Float3 rotation)
 {
     if(rotation.x != 0.0f)
-        rotateXM4x4(matrix, rotation.x);
+        rotateX(matrix, rotation.x);
     if(rotation.y != 0.0f)
-        rotateYM4x4(matrix, rotation.y);
+        rotateY(matrix, rotation.y);
     if(rotation.z != 0.0f)
-        rotateZM4x4(matrix, rotation.z);
-}
-
-HERO Matrix4x4 translate(Float3 translation)
-{
-    return Matrix4x4::identity();
-}
-
-HERO Matrix4x4 rotate(Float3 rotation)
-{
-    return Matrix4x4::identity();
-}
-
-HERO Matrix4x4 scale(Float3 scale)
-{
-    return Matrix4x4::identity();
+        rotateZ(matrix, rotation.z);
 }
 
 HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale)
@@ -805,16 +1005,16 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
 
 HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
 {
-    Float3 f = substractF3(target, eye);
-    f = normalizeF3(f);
-    f = {-f.x, -f.y, -f.z};
+    Float3 f = target - eye;
+    f.normalize();
+    f *= -1.0f;
 
     Float3 r = crossProduct(up, f);
-    r = {-r.x, -r.y, -r.z};
-    r = normalizeF3(r);
+    r.normalize();
+    r *= -1.0f;
 
     Float3 u = crossProduct(f, r);
-    u = {-u.x, -u.y, -u.z};
+    u *= -1.0f;
 
     Matrix4x4 matrix;
 
@@ -834,9 +1034,9 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
     matrix.col[1].w = 0.0f;
     matrix.col[2].w = 0.0f;
 
-    matrix.col[3].x = -dotProductF3(r, eye);
-    matrix.col[3].y = -dotProductF3(u, eye);
-    matrix.col[3].z = -dotProductF3(f, eye);
+    matrix.col[3].x = -dotProduct(r, eye);
+    matrix.col[3].y = -dotProduct(u, eye);
+    matrix.col[3].z = -dotProduct(f, eye);
     matrix.col[3].w = 1.0f;
 
     return matrix;

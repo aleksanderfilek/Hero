@@ -9,7 +9,7 @@ HERO void Canvas::recalculate()
 {
   for(auto it: children)
   {
-    Int2 position = addI2(absolutePosition, it.second->getRelativePosition());
+    Int2 position = absolutePosition + it.second->getRelativePosition();
     it.second->setAbsolutPosition(position);
   }
 

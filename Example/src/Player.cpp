@@ -40,30 +40,31 @@ void Player::keyboard()
   Hero::Float3 deltaPosition = Hero::Float3::zero();
   if(input->keyPressed(Hero::System::Input::KeyCode::W))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(forward, SPEED));
+    deltaPosition += forward * SPEED;
   }
   else if(input->keyPressed(Hero::System::Input::KeyCode::S))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(forward, -SPEED));
+    deltaPosition -= forward * SPEED;
   }
   if(input->keyPressed(Hero::System::Input::KeyCode::D))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(right, SPEED));
+    deltaPosition += right * SPEED;
   }
   else if(input->keyPressed(Hero::System::Input::KeyCode::A))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(right, -SPEED));
+    deltaPosition -= right * SPEED;
   }
   if(input->keyPressed(Hero::System::Input::KeyCode::SPACE))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(up, SPEED));
+    deltaPosition += up * SPEED;
   }
   else if(input->keyPressed(Hero::System::Input::KeyCode::LCTRL))
   {
-    deltaPosition = Hero::addF3(deltaPosition, Hero::multiplyF3(up, -SPEED));
+    deltaPosition -= up * SPEED;
   }
 
-  transform->setPosition(Hero::addF3(transform->position, Hero::multiplyF3(deltaPosition, deltaTime)));
+  deltaPosition *= deltaTime;
+  transform->setPosition(transform->position + deltaPosition);
 }
 
 void Player::mouse()

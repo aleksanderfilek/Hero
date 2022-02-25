@@ -55,17 +55,17 @@ HERO void Label::setPosition(Int2 _position)
 {
   IElement::setPosition(_position);
 
-  Int2 diff = substractI2(_position, relativePosition);
-  texturePosition = addI2(texturePosition, diff);
+  Int2 diff = _position - relativePosition;
+  texturePosition = texturePosition + diff;
 }
 
 HERO void Label::setAbsolutPosition(Int2 originPosition)
 {
-  Int2 texAbsDiff = substractI2(texturePosition, absolutePosition);
+  Int2 texAbsDiff = texturePosition - absolutePosition;
 
   IElement::setAbsolutPosition(originPosition);
 
-  texturePosition = addI2(texAbsDiff, absolutePosition);
+  texturePosition = texAbsDiff + absolutePosition;;
 }
 
 HERO void Label::calculateAlligment()

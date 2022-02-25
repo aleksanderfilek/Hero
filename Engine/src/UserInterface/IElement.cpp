@@ -69,9 +69,9 @@ HERO void IElement::setAbsolutPosition(Int2 _absolutePosition)
 
 HERO void IElement::setPosition(Int2 _position)
 {
-  Int2 difference = substractI2(_position, relativePosition);
+  Int2 difference = _position - relativePosition;
   relativePosition = _position;
-  absolutePosition = addI2(absolutePosition, difference);
+  absolutePosition = absolutePosition + difference;
 
   if(parent != nullptr) parent->recalculate();
 }

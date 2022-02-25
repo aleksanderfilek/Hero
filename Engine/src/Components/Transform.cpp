@@ -9,7 +9,7 @@ HERO Float3 TransformData::getGlobalPosition() const
     TransformData* tParent = parent;
     while(tParent)
     {
-        global = addF3(global, tParent->position);
+        global = global + tParent->position;
         tParent = tParent->parent;
     }
     return global;
@@ -21,7 +21,7 @@ HERO Float3 TransformData::getGlobalScale() const
     TransformData* tParent = parent;
     while(tParent)
     {
-        global = multiplyF3F3(global, tParent->scale);
+        global = global * tParent->scale;
         tParent = tParent->parent;
     }
     return global;
@@ -70,24 +70,24 @@ HERO void TransformData::removeChild(int index)
 HERO Float3 TransformData::forward()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
-  rotateXYZM4x4(&rotationMatrix, rotation);
-  Float4 forward = multiplyM4x4F4(rotationMatrix, {0.0f, 0.0f, 1.0f, 0.0f});
+  rotateXYZ(rotationMatrix, rotation);
+  Float4 forward = rotationMatrix * Float4(0.0f, 0.0f, 1.0f, 0.0f);
   return { forward.x, forward.y, forward.z };
 }
 
 HERO Float3 TransformData::up()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
-  rotateXYZM4x4(&rotationMatrix, rotation);
-  Float4 up = multiplyM4x4F4(rotationMatrix, {0.0f, 1.0f, 0.0f, 0.0f});
+  rotateXYZ(rotationMatrix, rotation);
+  Float4 up = rotationMatrix * Float4(0.0f, 1.0f, 0.0f, 0.0f);
   return { up.x, up.y, up.z };
 }
 
 HERO Float3 TransformData::right()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
-  rotateXYZM4x4(&rotationMatrix, rotation);
-  Float4 right = multiplyM4x4F4(rotationMatrix, {1.0f, 0.0f, 0.0f, 0.0f});
+  rotateXYZ(rotationMatrix, rotation);
+  Float4 right = rotationMatrix * Float4(1.0f, 0.0f, 0.0f, 0.0f);
   return { right.x, right.y, right.z };
 }
 
@@ -119,8 +119,7 @@ HERO void Transform::update()
             // std::cout<<transform.parent->modelMatrix<<std::endl;
             // std::cout<<transform.modelMatrix<<std::endl;
         
-            transform.modelMatrix = multiplyM4x4(
-                transform.parent->modelMatrix, transform.modelMatrix);
+            transform.modelMatrix = transform.parent->modelMatrix * transform.modelMatrix;
 
             // std::cout<<transform.modelMatrix<<std::endl;
         }

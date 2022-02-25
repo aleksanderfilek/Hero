@@ -51,7 +51,7 @@ void Menu::update()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   cubemapShader->bind();
-  cubemapShader->setMatrix4f("view", Hero::convertToM4(Hero::convertToM3(camera->getViewMatrix())));
+  cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->getViewMatrix())));
   cubemap->draw();
 
   // Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
