@@ -11,6 +11,8 @@ namespace Hero
 class Actor
 {
 private:
+    uint32_t id = 0;
+    
     std::unordered_map<IComponentSystemHandle* ,ChunkArrayIndex> components;
 
 public:
