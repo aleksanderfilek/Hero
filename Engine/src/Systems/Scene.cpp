@@ -92,6 +92,16 @@ HERO void IScene::clearActors()
   actors.clear();
 }
 
+HERO void IScene::load(const std::string& path)
+{
+
+}
+
+HERO void IScene::save(const std::string& path)
+{
+
+}
+
 HERO Scene::Scene(const Sid& sid, IScene* startScene) : ISystem(sid)
 {
   nextScene = startScene;
