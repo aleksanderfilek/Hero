@@ -71,24 +71,30 @@ HERO Float3 TransformData::forward()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
   rotateXYZ(rotationMatrix, rotation);
-  Float4 forward = rotationMatrix * Float4(0.0f, 0.0f, 1.0f, 0.0f);
-  return { forward.x, forward.y, forward.z };
+  Float4 tforward = rotationMatrix * Float4(0.0f, 0.0f, 1.0f, 0.0f);
+  Float3 forward(tforward);
+  forward.normalize();
+  return forward;
 }
 
 HERO Float3 TransformData::up()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
   rotateXYZ(rotationMatrix, rotation);
-  Float4 up = rotationMatrix * Float4(0.0f, 1.0f, 0.0f, 0.0f);
-  return { up.x, up.y, up.z };
+  Float4 tup = rotationMatrix * Float4(0.0f, 1.0f, 0.0f, 0.0f);
+  Float3 up(tup);
+  up.normalize();
+  return up;
 }
 
 HERO Float3 TransformData::right()
 {
   Matrix4x4 rotationMatrix = Matrix4x4::identity();
   rotateXYZ(rotationMatrix, rotation);
-  Float4 right = rotationMatrix * Float4(1.0f, 0.0f, 0.0f, 0.0f);
-  return { right.x, right.y, right.z };
+  Float4 tright = rotationMatrix * Float4(1.0f, 0.0f, 0.0f, 0.0f);
+  Float3 right(tright);
+  right.normalize();
+  return right;
 }
 
 

@@ -294,9 +294,9 @@ HERO float Float3::length()
 HERO void Float3::normalize()
 {
     float len = length();
-    x / len;
-    y / len;
-    z / len;
+    x /= len;
+    y /= len;
+    z /= len;
 }
 
 HERO Float3 Float3::normalized()
@@ -1014,6 +1014,7 @@ HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
     r *= -1.0f;
 
     Float3 u = crossProduct(f, r);
+    u.normalize();
     u *= -1.0f;
 
     Matrix4x4 matrix;

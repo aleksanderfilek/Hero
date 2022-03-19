@@ -19,7 +19,7 @@ void Menu::begin()
   Hero::Actor* actor = new Hero::Actor();
   actor->addComponent<Hero::Camera>();
   camera = (Hero::CameraData*)actor->getComponent<Hero::Camera>();
-  camera->setPerspective(1280, 720, 120.0f, 0.1f, 100.0f);
+  camera->setPerspective(1280, 720, 70.0f, 0.1f, 100.0f);
   actor->addComponent<Player>();
 
   addActor(actor);
@@ -55,6 +55,9 @@ void Menu::update()
   IScene::update();
 
   Hero::System::Window::clear();
+
+  // std::cout<<camera->transform->forward()<<std::endl;
+  // std::cout<<camera->view<<std::endl;
 
   cubemapShader->bind();
   cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
