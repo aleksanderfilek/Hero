@@ -2,6 +2,7 @@
 
 #include"ISystem.hpp"
 
+#include<string>
 #include<vector>
 
 namespace Hero
@@ -33,6 +34,9 @@ public:
     HERO void addActor(Actor* actor);
     HERO void removeActor(int index);
     HERO void clearActors();
+
+    HERO void load(const std::string& path);
+    HERO void save(const std::string& path);
 };
 
 class HERO Scene : public ISystem

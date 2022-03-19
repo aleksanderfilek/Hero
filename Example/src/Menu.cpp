@@ -1,9 +1,9 @@
 #include"Menu.hpp"
-#include"Pistol.hpp"
 #include"Player.hpp"
 
-#include"Core.hpp"
+#include"Core/Core.hpp"
 #include"Components/Transform.hpp"
+#include"Core/Actor.hpp"
 
 #include<iostream>
 
@@ -13,10 +13,16 @@ void Menu::begin()
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
   addSystem(new Hero::Transform(2));
+  addSystem(new Hero::Camera(1));
+  addSystem(new Player(1));
 
-  camera = new Player(640, 480, 70, 0.1f, 100.0f);
+  Hero::Actor* actor = new Hero::Actor();
+  actor->addComponent<Hero::Camera>();
+  camera = (Hero::CameraData*)actor->getComponent<Hero::Camera>();
+  camera->setPerspective(1280, 720, 120.0f, 0.1f, 100.0f);
+  actor->addComponent<Player>();
 
-  addActor(camera);
+  addActor(actor);
 
   std::vector<std::string> path{
     "bin/assets/skybox/right.jpg",
@@ -30,16 +36,14 @@ void Menu::begin()
   cubemap = new Hero::Cubemap(path);
   cubemapShader = new Hero::Shader("bin/assets/cubemap.he");
   cubemapShader->bind();
-  cubemapShader->setMatrix4f("proj", camera->getProjectionMatrix());
+  cubemapShader->setMatrix4f("proj", camera->projection);
 
   stone = new Hero::Mesh("bin/assets/stone.he");
   stoneShader = new Hero::Shader("bin/assets/standard.he");
   stoneTexture = new Hero::Texture("bin/assets/stone.jpg");
 
   stoneShader->bind();
-  stoneShader->setMatrix4f("proj", camera->getProjectionMatrix());
-
-  camera->shader = stoneShader;
+  stoneShader->setMatrix4f("proj", camera->projection);
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
@@ -48,22 +52,20 @@ void Menu::begin()
 
 void Menu::update()
 {
+  IScene::update();
+
   Hero::System::Window::clear();
 
   cubemapShader->bind();
-  cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->getViewMatrix())));
+  cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
   cubemap->draw();
 
-  // Hero::Matrix4x4 stoneModel = Hero::Matrix4x4::identity();
-  // Hero::translateM4x4(&stoneModel, {0.0f, 0.0f, 10.0f});
   Hero::Matrix4x4 stoneModel = Hero::TRS({0.0f, 0.0f, 10.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f});
   stoneShader->bind();
   stoneShader->setMatrix4f("model", stoneModel);
-  stoneShader->setMatrix4f("view", camera->getViewMatrix());
+  stoneShader->setMatrix4f("view", camera->view);
   stoneTexture->bind();
   stone->draw();
-
-  IScene::update();
 
   window->render();
 }

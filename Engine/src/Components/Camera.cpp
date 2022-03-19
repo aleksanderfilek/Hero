@@ -13,8 +13,13 @@ HERO void CameraData::setFOV(float _fov)
   projection = projectionMatrix(width, height, _fov, near, far);
 }
 
-HERO void CameraData::setPerspective(int _width, int _height, float _FOV, float _near, float _far)
+HERO void CameraData::setPerspective(int _width, int _height, float _fov, float _near, float _far)
 {
+  width = _width;
+  height = _height;
+  fov = _fov;
+  near = _near;
+  far = _far;
   projection = projectionMatrix(width, height, fov, near, far);
 }
 

@@ -2,38 +2,37 @@
 
 #include"Transform.hpp"
 #include"Math.hpp"
-#include"Actor.hpp"
+#include"IComponent.hpp"
 
 namespace Hero
 {
 
-class Camera : public Actor
+struct CameraData : public IComponent
 {
-protected:
-    TransformData* transform;
+    TransformData* transform = nullptr;
 
-    Matrix4x4 view;
-    Matrix4x4 projection;
+    Matrix4x4 view = Matrix4x4::identity();
+    Matrix4x4 projection = Matrix4x4::identity();
 
-    int width;
-    int height;
-    float fov;
-    float near;
-    float far;
-public:
-    HERO Camera(int _width, int _height, float _FOV, float _near, float _far);
-    HERO ~Camera();
-
-    HERO void begin() override;
-    HERO void update() override;
-    HERO void close() override;
-
-    inline Matrix4x4 getViewMatrix(){ return view; }
-    inline Matrix4x4 getProjectionMatrix(){ return projection; }
+    int width = 0;
+    int height = 0;
+    float fov = 0.0f;
+    float near = 0.0f;
+    float far = 0.0f;
 
     HERO void setFOV(float _fov);
+    HERO void setPerspective(int _width, int _height, float _fov, float _near, float _far);
+};
 
-    inline TransformData* getTransform(){ return transform; }
+class HERO Camera : public IComponentSystem<CameraData>
+{
+public:
+    Camera(uint32_t chunkSize) : IComponentSystem(chunkSize){}
+
+private:
+    void dataInit(CameraData* data) override;
+    void dataUpdate(CameraData* data) override;
+    void dataDestroy(CameraData* data) override;
 };
 
 } // namespace Hero

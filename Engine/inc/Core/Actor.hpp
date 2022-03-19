@@ -19,10 +19,6 @@ public:
     HERO Actor();
     HERO ~Actor();
 
-    virtual void begin() = 0;
-    virtual void update() = 0;
-    virtual void close() = 0;
-
     template<class T>
     IComponent* getComponent()
     {

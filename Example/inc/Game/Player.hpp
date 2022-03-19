@@ -1,25 +1,26 @@
 #pragma once
 
-#include"Components/Camera.hpp"
+#include"Components/IComponent.hpp"
+#include"Components/Transform.hpp"
 #include"Systems/Input.hpp"
-#include"Graphics/Shader.hpp"
 
-class Player : public Hero::Camera
+struct PlayerData : public Hero::IComponent
 {
-private:
-  Hero::System::Input* input;
+    Hero::TransformData* transform = nullptr;
+    Hero::System::Input* input = nullptr;
 
-  float yaw = 0.0f;
-  float pitch = 0.0f;
+    float yaw = 0.0f;
+    float pitch = 0.0f;
+};
 
-  void keyboard();
-  void mouse();
+class Player : public Hero::IComponentSystem<PlayerData>
+{
 public:
-  Hero::Shader* shader;
+    Player(uint32_t chunkSize) : Hero::IComponentSystem<PlayerData>(chunkSize){}
 
-  Player(int _width, int _height, float _FOV, float _near, float _far);
 
-  void begin() override;
-  void update() override;
-  void close() override;
+private:
+    void dataInit(PlayerData* data) override;
+    void dataUpdate(PlayerData* data) override;
+    void dataDestroy(PlayerData* data) override;
 };

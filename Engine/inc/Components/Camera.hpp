@@ -21,7 +21,7 @@ struct CameraData : public IComponent
     float far = 0.0f;
 
     HERO void setFOV(float _fov);
-    HERO void setPerspective(int _width, int _height, float _FOV, float _near, float _far);
+    HERO void setPerspective(int _width, int _height, float _fov, float _near, float _far);
 };
 
 class HERO Camera : public IComponentSystem<CameraData>

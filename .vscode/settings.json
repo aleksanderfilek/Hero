@@ -53,6 +53,18 @@
     "unordered_set": "cpp",
     "xtree": "cpp",
     "map": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "array": "cpp",
+    "cstdarg": "cpp",
+    "cwctype": "cpp",
+    "deque": "cpp",
+    "algorithm": "cpp",
+    "functional": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "random": "cpp",
+    "string_view": "cpp",
+    "cinttypes": "cpp"
   }
 }

@@ -18,7 +18,7 @@ int HeroMain(int argc, char* argv[])
 {
   core = new Hero::Core();
 
-  core->addSystem(new Hero::System::Window(SID("window"), "Example", 640, 480));
+  core->addSystem(new Hero::System::Window(SID("window"), "Example", 1280, 720));
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
   core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("window"),SID("input")));

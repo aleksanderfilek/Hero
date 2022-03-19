@@ -67,7 +67,7 @@ IComponentSystem<T>::IComponentSystem(uint32_t chunkSize) : data(chunkSize)
 template<class T>
 IComponentSystem<T>::~IComponentSystem()
 {
-    for(auto component: data)
+    for(auto& component: data)
     {
         dataDestroy(&component);
     }
@@ -78,7 +78,7 @@ IComponentSystem<T>::~IComponentSystem()
 template<class T>
 void IComponentSystem<T>::update()
 {
-    for(auto component: data)
+    for(auto& component: data)
     {
         dataUpdate(&component);
     }
@@ -89,8 +89,9 @@ ChunkArrayIndex IComponentSystem<T>::addComponent(Actor* owner)
 {
     T t{};
     t.actor = owner;
-    dataInit(&t);
-    return data.add(t);
+    ChunkArrayIndex index = data.add(t);
+    dataInit(&(data[index]));
+    return index;
 }
 
 template<class T>
