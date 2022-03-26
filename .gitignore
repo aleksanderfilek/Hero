@@ -4,3 +4,4 @@
 **/bin
 !Example/bin
 !Tools/Builder/bin
+**/.builder

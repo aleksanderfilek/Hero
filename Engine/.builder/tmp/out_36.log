@@ -1,3 +1,0 @@
-.builder/obj/src/Core/File.o:File.cpp:(.text+0x30): undefined reference to `tinyfd_openFileDialog'
-.builder/obj/src/Core/File.o:File.cpp:(.text+0xa0): undefined reference to `tinyfd_saveFileDialog'
-collect2.exe: error: ld returned 1 exit status
