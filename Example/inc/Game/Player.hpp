@@ -1,8 +1,8 @@
 #pragma once
 
-#include"Components/IComponent.hpp"
-#include"Components/Transform.hpp"
-#include"Systems/Input.hpp"
+#include"IComponent.hpp"
+#include"Transform.hpp"
+#include"Input.hpp"
 
 struct PlayerData : public Hero::IComponent
 {

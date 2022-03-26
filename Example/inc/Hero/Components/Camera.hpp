@@ -30,9 +30,9 @@ public:
     Camera(uint32_t chunkSize) : IComponentSystem(chunkSize){}
 
 private:
-    void dataInit(CameraData* data) override;
-    void dataUpdate(CameraData* data) override;
-    void dataDestroy(CameraData* data) override;
+    HERO void dataInit(CameraData* data) override;
+    HERO void dataUpdate(CameraData* data) override;
+    HERO void dataDestroy(CameraData* data) override;
 };
 
 } // namespace Hero

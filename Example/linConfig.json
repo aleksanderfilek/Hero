@@ -1,0 +1,26 @@
+{
+    "Name" : "Example",
+    "Type": "Executable",
+    "OutputDir": "bin",
+    "Compiler" : "g++",
+    "LibsDir" : [
+        "bin"
+    ],
+    "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
+        "-lm",
+        "-lhero"
+    ],
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO="
+    ]
+}

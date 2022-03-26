@@ -1,12 +1,10 @@
 {
-    "Name" : "Example",
+    "Name" : "Editor",
     "Type": "Executable",
     "OutputDir": "bin",
-    "Extension": "",
     "Compiler" : "g++",
-    "Debug" : false,
     "LibsDir" : [
-        "bin"
+        "lib"
     ],
     "Libs" : [
         "-lSDL2main", 
@@ -20,8 +18,9 @@
         "-lm",
         "-lhero"
     ],
-    "Defines" : [
-        "-DHERO_DEBUG",
-        "-DHERO= "
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO="
     ]
 }

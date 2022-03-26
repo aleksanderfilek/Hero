@@ -1,5 +1,5 @@
 #include"File.hpp"
-#include"tinyfiledialogs.h"
+#include"tinyfiledialogs.hpp"
 
 #include<cstring>
 

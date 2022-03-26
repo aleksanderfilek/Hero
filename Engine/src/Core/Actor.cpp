@@ -7,10 +7,10 @@
 namespace Hero
 {
 
-HERO Actor::Actor()
-{
-  addComponent<Transform>();
-}
+// HERO Actor::Actor()
+// {
+//   addComponent<Transform>();
+// }
 
 HERO Actor::~Actor()
 {

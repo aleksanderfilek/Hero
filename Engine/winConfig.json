@@ -1,11 +1,10 @@
 {
-    "Name" : "libhero",
+    "Name" : "libhero.dll",
     "Type": "SharedLibrary",
     "OutputDir": "lib",
-    "Extension": ".dll",
     "Compiler" : "g++",
-    "Debug" : true,
     "LibsDir" : [
+        "bin"
     ],
     "Libs" : [
         "-lSDL2main", 
@@ -20,8 +19,9 @@
         "-lcomdlg32",
         "-lole32"
     ],
-    "Defines" : [
-        "-DHERO_DEBUG",
-        "-DHERO=__declspec(dllexport)"
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO=__declspec(dllexport)"
     ]
 }

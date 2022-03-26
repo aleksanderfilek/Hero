@@ -4,6 +4,7 @@
 #include<typeinfo>
 #include<iostream>
 #include"IComponent.hpp"
+#include"Components/Transform.hpp"
 
 namespace Hero
 {
@@ -16,7 +17,6 @@ private:
     std::unordered_map<IComponentSystemHandle* ,ChunkArrayIndex> components;
 
 public:
-    HERO Actor();
     HERO ~Actor();
 
     template<class T>
@@ -31,6 +31,7 @@ public:
     template<class T>
     void addComponent()
     {
+        std::cout<<T::get()<<std::endl;
         ChunkArrayIndex index = T::get()->addComponent(this);
         components.insert({T::get(), index});
     }
@@ -46,6 +47,12 @@ public:
     }
 
     inline uint32_t getComponentsCount(){ return components.size(); }
+
+    Actor()
+    {
+        addComponent<Transform>();
+    }
 };
+
 
 } 

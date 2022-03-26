@@ -1,7 +1,7 @@
 #pragma once
 
 #include"HeroSystems.hpp"
-#include"Components/Camera.hpp"
+#include"Camera.hpp"
 
 #include"HeroGraphics.hpp"
 

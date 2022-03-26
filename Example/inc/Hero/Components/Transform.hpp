@@ -8,7 +8,7 @@
 namespace Hero
 {
 
-struct HERO TransformData : public IComponent
+struct TransformData : public IComponent
 {
     Float3 position = Float3::zero();
     Float3 rotation = Float3::zero(); // euler angles
@@ -43,13 +43,13 @@ class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
     Transform(uint32_t chunkSize) : IComponentSystem(chunkSize){}
-
-    void update() override;
+    
+    HERO void update() override;
 
 private:
-    void dataInit(TransformData* data) override;
-    void dataUpdate(TransformData* data) override;
-    void dataDestroy(TransformData* data) override;
+    HERO void dataInit(TransformData* data) override;
+    HERO void dataUpdate(TransformData* data) override;
+    HERO void dataDestroy(TransformData* data) override;
 };
 
 }

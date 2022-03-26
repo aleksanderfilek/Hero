@@ -1,13 +1,13 @@
 {
-    "Name" : "libhero",
-    "Type": "SharedLibrary",
-    "OutputDir": "lib",
-    "Extension": ".dll",
+    "Name" : "Example.exe",
+    "Type": "Executable",
+    "OutputDir": "bin",
     "Compiler" : "g++",
-    "Debug" : true,
     "LibsDir" : [
+        "bin"
     ],
     "Libs" : [
+        "-lhero",
         "-lSDL2main", 
         "-lSDL2", 
         "-lSDL2_ttf",
@@ -20,8 +20,9 @@
         "-lcomdlg32",
         "-lole32"
     ],
-    "Defines" : [
-        "-DHERO_DEBUG",
-        "-DHERO=__declspec(dllexport)"
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO=__declspec(dllimport)"
     ]
 }

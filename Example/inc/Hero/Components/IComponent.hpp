@@ -27,7 +27,7 @@ public:
 };
 
 template<class T>
-class HERO IComponentSystem : public IComponentSystemHandle
+class IComponentSystem : public IComponentSystemHandle
 {
     friend struct IComponent;
 

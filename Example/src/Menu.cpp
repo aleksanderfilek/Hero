@@ -1,9 +1,9 @@
 #include"Menu.hpp"
 #include"Player.hpp"
 
-#include"Core/Core.hpp"
-#include"Components/Transform.hpp"
-#include"Core/Actor.hpp"
+#include"Core.hpp"
+#include"Transform.hpp"
+#include"Actor.hpp"
 
 #include<iostream>
 
@@ -12,7 +12,7 @@ void Menu::begin()
   window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
-  addSystem(new Hero::Transform(2));
+  addSystem(new Hero::Transform(1));
   addSystem(new Hero::Camera(1));
   addSystem(new Player(1));
 
