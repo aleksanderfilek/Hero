@@ -11,7 +11,7 @@
 
 void Player::dataInit(PlayerData* data)
 {
-    data->transform = (Hero::TransformData*)data->actor->getComponent<Hero::Transform>();
+    data->transform = (Hero::TransformData*)data->actor->GetComponent(SID("Transform"));
     data->input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
 }
 

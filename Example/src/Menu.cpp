@@ -1,6 +1,6 @@
 #include"Menu.hpp"
 #include"Player.hpp"
-
+#include"ComponentContext.hpp"
 #include"Core.hpp"
 #include"Transform.hpp"
 #include"Actor.hpp"
@@ -12,16 +12,17 @@ void Menu::begin()
   window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
-  addSystem(new Hero::Transform(1));
-  addSystem(new Hero::Camera(1));
-  addSystem(new Player(1));
+  Hero::ComponentContext* context = new Hero::ComponentContext();
+  addContext(SID("Main"), context);
+  context->Register(SID("Transform"), new Hero::Transform(1));
+  context->Register(SID("Camera"), new Hero::Camera(1));
+  context->Register(SID("Player"), new Player(1));
 
-  Hero::Actor* actor = new Hero::Actor();
-  actor->addComponent<Hero::Camera>();
-  camera = (Hero::CameraData*)actor->getComponent<Hero::Camera>();
+  Hero::Actor* actor = new Hero::Actor(context);
+  actor->AddComponent(SID("Camera"));
+  camera = (Hero::CameraData*)actor->GetComponent(SID("Camera"));
   camera->setPerspective(1280, 720, 70.0f, 0.1f, 100.0f);
-  actor->addComponent<Player>();
-
+  actor->AddComponent(SID("Player"));
   addActor(actor);
 
   std::vector<std::string> path{

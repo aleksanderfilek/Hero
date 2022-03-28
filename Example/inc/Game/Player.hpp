@@ -18,7 +18,6 @@ class Player : public Hero::IComponentSystem<PlayerData>
 public:
     Player(uint32_t chunkSize) : Hero::IComponentSystem<PlayerData>(chunkSize){}
 
-
 private:
     void dataInit(PlayerData* data) override;
     void dataUpdate(PlayerData* data) override;
