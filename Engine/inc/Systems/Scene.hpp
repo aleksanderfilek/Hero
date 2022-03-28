@@ -1,14 +1,16 @@
 #pragma once 
 
 #include"ISystem.hpp"
+#include"Sid.hpp"
 
 #include<string>
 #include<vector>
+#include<unordered_map>
 
 namespace Hero
 {
 class Actor;
-class IComponentSystemHandle;
+class ComponentContext;
 
 namespace System
 {
@@ -16,7 +18,7 @@ namespace System
 class HERO IScene
 {
 private:
-    std::vector<IComponentSystemHandle*> systems;
+    std::unordered_map<Sid, ComponentContext*, SidHashFunction> systemsContext;
     std::vector<Actor*> actors;
 
 public:
@@ -27,9 +29,10 @@ public:
     HERO virtual void update();
     virtual void close(){}
 
-    HERO void addSystem(IComponentSystemHandle* system);
-    HERO void removeSystem(int index);
-    HERO void clearSystems();
+    HERO void addContext(const Sid& sid, ComponentContext* context);
+    HERO void removeContext(const Sid& sid);
+    HERO ComponentContext* getContext(const Sid& sid);
+    HERO void clearContexts();
 
     HERO void addActor(Actor* actor);
     HERO void removeActor(int index);

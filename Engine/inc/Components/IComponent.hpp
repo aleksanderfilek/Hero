@@ -27,14 +27,11 @@ public:
 };
 
 template<class T>
-class HERO IComponentSystem : public IComponentSystemHandle
+class IComponentSystem : public IComponentSystemHandle
 {
     friend struct IComponent;
 
 private:
-    static IComponentSystem<T>* instance;
-    uint32_t id = 0;
-
     virtual void dataInit(T* data){}
     virtual void dataUpdate(T* data){}
     virtual void dataDestroy(T* data){}
@@ -46,8 +43,6 @@ public:
     IComponentSystem(uint32_t chunkSize);
     ~IComponentSystem();
 
-    inline static IComponentSystem<T>* get(){ return instance; }
-
     void update() override;
 
     ChunkArrayIndex addComponent(Actor* owner) override;
@@ -55,14 +50,11 @@ public:
     IComponent* getComponent(const ChunkArrayIndex& index) override;
 };
 
-template<class T>
-IComponentSystem<T>* IComponentSystem<T>::instance = nullptr;
 
 template<class T>
-IComponentSystem<T>::IComponentSystem(uint32_t chunkSize) : data(chunkSize)
-{
-    instance = this;
-}
+IComponentSystem<T>::IComponentSystem(uint32_t chunkSize) 
+: data(chunkSize){}
+
 
 template<class T>
 IComponentSystem<T>::~IComponentSystem()

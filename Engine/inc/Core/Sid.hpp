@@ -57,8 +57,20 @@ struct Sid
 
             return sid;
         }
+
+        friend std::ostream& operator<< (std::ostream& stream, const Sid& sid);
 };
 
 #define SID(name) Hero::Sid::create(name)
+
+HERO std::ostream& operator<< (std::ostream& stream, const Sid& sid);
+
+struct SidHashFunction
+{
+    size_t operator()(const Hero::Sid& sid) const
+    {
+        return sid.id;
+    }
+};
 
 }

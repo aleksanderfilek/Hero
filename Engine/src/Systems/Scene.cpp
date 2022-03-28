@@ -1,6 +1,6 @@
 #include"Scene.hpp"
-#include"IComponent.hpp"
-#include"Actor.hpp"
+#include"Components/ComponentContext.hpp"
+#include"Core/Actor.hpp"
 #include"Components/Transform.hpp"
 
 #include<iostream>
@@ -17,46 +17,77 @@ HERO IScene::IScene()
 
 HERO IScene::~IScene()
 {
-  clearSystems();
+  clearContexts();
   clearActors();
 }
 
 HERO void IScene::update()
 {
-  for(auto system: systems)
+  for(auto system: systemsContext)
   {
-    system->update();
+    system.second->Update();
   }
 }
 
-HERO void IScene::addSystem(IComponentSystemHandle* system)
+HERO void IScene::addContext(const Sid& sid, ComponentContext* context)
 {
-  systems.push_back(system);
+  if(systemsContext.find(sid) != systemsContext.end())
+  {
+    #ifdef HERO_DEBUG
+    std::cout<<"[IScene] - ComponentSystem with sid: "<<sid<<" aleardy exists in the scene."<<std::endl;
+    #endif
+    return;
+  }
+
+  bool result = systemsContext.insert({sid, context}).second;
+  if(!result)
+  {
+    #ifdef HERO_DEBUG
+    std::cout<<"[IScene] - Could not add system with sid: "<<sid<<" to the scene."<<std::endl;
+    #endif
+  }
 }
 
-HERO void IScene::removeSystem(int index)
+HERO void IScene::removeContext(const Sid& sid)
 {
-  try 
+  if(systemsContext.find(sid) == systemsContext.end())
   {
-    IComponentSystemHandle* system = systems.at(index);
-    systems.erase(systems.begin() + index);
+    #ifdef HERO_DEBUG
+    std::cout<<"[IScene] - ComponentSystem with sid: "<<sid<<" aleardy exists in the scene."<<std::endl;
+    #endif
+    return;
   }
-  catch (std::out_of_range const& exc) 
-  {
-    std::cout<<exc.what()<<std::endl;
-  }
+
+  systemsContext.erase(sid);
 }
 
-HERO void IScene::clearSystems()
+HERO ComponentContext* IScene::getContext(const Sid& sid)
 {
-  systems.clear();
+  auto context = systemsContext.find(sid);
+  if(context == systemsContext.end())
+  {
+    #ifdef HERO_DEBUG
+    std::cout<<"[IScene] - ComponentSystem with sid: "<<sid<<" aleardy exists in the scene."<<std::endl;
+    #endif
+    return nullptr;
+  }
+
+  return context->second;
+}
+
+HERO void IScene::clearContexts()
+{
+  for(auto context: systemsContext)
+  {
+    delete context.second;
+  }
 }
 
 HERO void IScene::addActor(Actor* actor)
 {
   actors.push_back(actor);
 
-  TransformData* data = (TransformData*)actor->getComponent<Transform>();
+  TransformData* data = (TransformData*)actor->GetComponent(SID("Transform"));
   for(auto child: data->getChildren())
   {
     addActor(child->actor);

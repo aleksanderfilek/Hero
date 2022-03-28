@@ -1,57 +1,30 @@
 #pragma once
 
-#include<unordered_map>
-#include<typeinfo>
-#include<iostream>
 #include"IComponent.hpp"
-#include"Components/Transform.hpp"
+#include"Transform.hpp"
+#include"Sid.hpp"
+
+#include<unordered_map>
 
 namespace Hero
 {
 
 class Actor
 {
-private:
-    uint32_t id = 0;
-    
-    std::unordered_map<IComponentSystemHandle* ,ChunkArrayIndex> components;
+private:    
+    class ComponentContext* context = nullptr;
+
+    std::unordered_map<Sid, ChunkArrayIndex, SidHashFunction> components;
 
 public:
+    HERO Actor(ComponentContext* Context);
     HERO ~Actor();
 
-    template<class T>
-    IComponent* getComponent()
-    {
-        auto result = components.find(T::get());
-        if(result == components.end()) return nullptr;
-
-        return T::get()->getComponent(result->second);
-    }
-
-    template<class T>
-    void addComponent()
-    {
-        std::cout<<T::get()<<std::endl;
-        ChunkArrayIndex index = T::get()->addComponent(this);
-        components.insert({T::get(), index});
-    }
-
-    template<class T>
-    void removeComponent()
-    {
-        auto result = components.find(T::get());
-        if(result == components.end()) return;
-
-        T::get()->removeComponent(result->second);
-        components.erase(result);
-    }
+    HERO void AddComponent(const Sid& sid);
+    HERO bool RemoveComponent(const Sid& sid);
+    HERO IComponent* GetComponent(const Sid& sid);
 
     inline uint32_t getComponentsCount(){ return components.size(); }
-
-    Actor()
-    {
-        addComponent<Transform>();
-    }
 };
 
 

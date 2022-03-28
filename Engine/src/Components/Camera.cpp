@@ -25,7 +25,7 @@ HERO void CameraData::setPerspective(int _width, int _height, float _fov, float 
 
 HERO void Camera::dataInit(CameraData* data)
 {
-  data->transform = (TransformData*)data->actor->getComponent<Transform>();
+  data->transform = (TransformData*)data->actor->GetComponent(SID("Transform"));
 
   data->view = lookAtMatrix(data->transform->position, data->transform->forward(), Float3::up());
 }
