@@ -8,6 +8,11 @@
 namespace Hero
 {
 
+HERO Mesh::Mesh()
+{
+    id = GetId(); 
+}
+
 HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
     const MeshBuffer<int>& _indices)
     : name(_name), buffers(_buffers), indices(_indices)
@@ -15,8 +20,11 @@ HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& 
     generate();
 }
 
-HERO Mesh::Mesh(const std::string& path)
+HERO IResource* Mesh::Load(const std::string& path)
 {
+    std::vector<MeshBuffer<float>> buffers;
+    MeshBuffer<int> indices;
+
     std::ifstream input(path, std::ios::binary);
 
     uint32_t nameSize;
@@ -48,20 +56,22 @@ HERO Mesh::Mesh(const std::string& path)
 
     input.close();
 
-    generate();
+    Mesh* mesh = new Mesh(path, buffers, indices);
+    return mesh;
 }
 
-HERO Mesh::~Mesh()
+HERO void Mesh::Unload(IResource* resource)
 {
-    indices.clear();
-    for(auto buff: buffers)
+    Mesh* mesh = (Mesh*)resource;
+    mesh->indices.clear();
+    for(auto buff: mesh->buffers)
     {
         buff.clear();
     }
 
-    glDeleteBuffers(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &mesh->VAO);
+    glDeleteBuffers(1, &mesh->VBO);
+    glDeleteBuffers(1, &mesh->EBO);
 }
 
 HERO void Mesh::draw()

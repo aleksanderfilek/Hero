@@ -61,7 +61,10 @@ IComponentSystem<T>::~IComponentSystem()
 {
     for(auto& component: data)
     {
-        dataDestroy(&component);
+        if(component.first == false)
+            continue;
+            
+        dataDestroy(&component.second);
     }
 
     data.clear();
@@ -72,7 +75,10 @@ void IComponentSystem<T>::update()
 {
     for(auto& component: data)
     {
-        dataUpdate(&component);
+        if(component.first == false)
+            continue;
+
+        dataUpdate(&component.second);
     }
 } 
 

@@ -14,7 +14,7 @@ HERO void Image::draw(Spritebatch* spritebatch)
 {
   if(!visible) return;
 
-  spritebatch->drawTexture(texture, absolutePosition, size, rect);
+  spritebatch->drawTexture(texture, absolutePosition, 0, size, rect);
 }
 
 HERO void Image::setTexture(Texture* _texture, bool _free)

@@ -4,7 +4,7 @@
 #include"Core.hpp"
 #include"Transform.hpp"
 #include"Actor.hpp"
-
+#include"Sprite.hpp"
 #include<iostream>
 
 void Menu::begin()
@@ -17,13 +17,23 @@ void Menu::begin()
   context->Register(SID("Transform"), new Hero::Transform(1));
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
+  spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he");
+  context->Register(SID("Sprite"), new Hero::Sprite(1,spriteBatchShader));
 
   Hero::Actor* actor = new Hero::Actor(context);
   actor->AddComponent(SID("Camera"));
   camera = (Hero::CameraData*)actor->GetComponent(SID("Camera"));
-  camera->setPerspective(1280, 720, 70.0f, 0.1f, 100.0f);
+  camera->setPerspective(1280, 720, 70.0f, 0.1f, 1000.0f);
   actor->AddComponent(SID("Player"));
   addActor(actor);
+
+  spriteTexture = new Hero::Texture("bin/assets/Bricks.png");
+
+  Hero::Actor* actor2 = new Hero::Actor(context);
+  actor2->AddComponent(SID("Sprite"));
+  auto sprite = (Hero::SpriteData*)actor2->GetComponent(SID("Sprite"));
+  sprite->texture = spriteTexture;
+  addActor(actor2);
 
   std::vector<std::string> path{
     "bin/assets/skybox/right.jpg",
@@ -35,12 +45,12 @@ void Menu::begin()
   };
 
   cubemap = new Hero::Cubemap(path);
-  cubemapShader = new Hero::Shader("bin/assets/cubemap.he");
+  cubemapShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/cubemap.he");
   cubemapShader->bind();
   cubemapShader->setMatrix4f("proj", camera->projection);
 
-  stone = new Hero::Mesh("bin/assets/stone.he");
-  stoneShader = new Hero::Shader("bin/assets/standard.he");
+  stone = (Hero::Mesh*)Hero::Mesh::Load("bin/assets/stone.he");
+  stoneShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/standard.he");
   stoneTexture = new Hero::Texture("bin/assets/stone.jpg");
 
   stoneShader->bind();
@@ -56,9 +66,6 @@ void Menu::update()
   IScene::update();
 
   Hero::System::Window::clear();
-
-  // std::cout<<camera->transform->forward()<<std::endl;
-  // std::cout<<camera->view<<std::endl;
 
   cubemapShader->bind();
   cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
@@ -77,9 +84,16 @@ void Menu::update()
 void Menu::close()
 {
   delete cubemap;
+  Hero::Shader::Unload(cubemapShader);
   delete cubemapShader;
 
+  Hero::Shader::Unload(stoneShader);
+  Hero::Mesh::Unload(stone);
   delete stone;
   delete stoneTexture;
   delete stoneShader;
+
+  Hero::Shader::Unload(spriteBatchShader);
+  delete spriteBatchShader;
+  delete spriteTexture;
 }

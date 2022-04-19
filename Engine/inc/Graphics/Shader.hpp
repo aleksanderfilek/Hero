@@ -1,15 +1,16 @@
 #pragma once
 
 #include"Math.hpp"
+#include"IResource.hpp"
 
 #include<cstdint>
-#include <unordered_map>
+#include<unordered_map>
 #include<string>
 
 namespace Hero
 {
 
-class Shader
+class Shader : public IResource
 {   
 private:
     std::string name;
@@ -18,8 +19,12 @@ private:
 
     bool isBinded = false;
 public:
-    HERO Shader(const std::string& _name);
-    HERO ~Shader();
+    HERO Shader();
+    HERO Shader(const std::string& Name, uint32_t GlId, const std::unordered_map<std::string, uint32_t>& Uniforms);
+
+    HERO static IResource* Load(const std::string& path);
+    HERO static void Unload(IResource* resource);
+    static int GetId(){ return 1; }
 
     HERO void bind();
     HERO int getUniformLocation(const std::string& _name);

@@ -9,12 +9,24 @@
 namespace Hero
 {
 
-HERO Shader::Shader(const std::string& _name)
+HERO Shader::Shader()
+{ 
+    id = GetId(); 
+}
+
+HERO Shader::Shader(const std::string& Name, uint32_t GlId, 
+    const std::unordered_map<std::string, uint32_t>& Uniforms)
+    :name(Name), glId(GlId), uniforms(Uniforms)
+{
+
+}
+
+HERO IResource* Shader::Load(const std::string& path)
 {
     uint32_t program = glCreateProgram();
     
     uint32_t uniformNumber = 0;
-    std::vector<std::string> uniformVec;
+
     uint16_t flags = 0;
     uint32_t size = 0;
     char* content = 0;
@@ -22,14 +34,14 @@ HERO Shader::Shader(const std::string& _name)
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
 
-
-    std::ifstream file(_name, std::ios::binary);
+    std::ifstream file(path, std::ios::binary);
     if(!file.is_open())
     {
-        std::cout<<"File could not be opened! Path: "<<_name<<std::endl;
-        return;
+        std::cout<<"File could not be opened! Path: "<<path<<std::endl;
+        return nullptr;
     }
 
+    std::vector<std::string> uniformVec;
     file.read((char*)&uniformNumber, sizeof(uint32_t));
     for(int i = 0; i < uniformNumber; i++)
     {
@@ -70,7 +82,6 @@ HERO Shader::Shader(const std::string& _name)
         content = nullptr;
     }
 
-
     glLinkProgram(program);
     int  success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -102,19 +113,20 @@ HERO Shader::Shader(const std::string& _name)
     file.close();
 
     glUseProgram(program);
+    std::unordered_map<std::string, uint32_t> uniforms;
     for(auto uniform: uniformVec)
     {
         uint32_t loc = glGetUniformLocation(program, uniform.c_str());
         uniforms.insert({uniform, loc});
     }
     
-    name = _name;
-    glId = program;
+    Shader* shader = new Shader(path, program, uniforms);
+    return shader;
 }
 
-HERO Shader::~Shader()
+HERO void Shader::Unload(IResource* resource)
 {
-    glDeleteProgram(glId);
+    glDeleteProgram(((Shader*)resource)->glId);
 }
 
 HERO void Shader::bind()

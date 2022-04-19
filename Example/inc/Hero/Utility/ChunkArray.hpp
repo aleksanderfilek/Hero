@@ -48,30 +48,28 @@ public:
     {
         using iterator_category = std::forward_iterator_tag;
         using difference_type   = std::ptrdiff_t;
-        using value_type        = T;
-        using pointer           = T*;
-        using reference         = T&;
+        using value_type        = std::pair<bool, T>;
+        using pointer           = std::pair<bool, T>*;
+        using reference         = std::pair<bool, T>&;
 
         Iterator(std::vector<Chunk>& _data, uint32_t _chunkSize, uint32_t _i, uint32_t _j) 
             : data(_data), chunkSize(_chunkSize), i(_i), j(_j) {}
 
-        reference operator*() const { return data[i].array[j].second; }
-        pointer operator->() { return &data[i].array[j].second; }
+        reference operator*() const { return data[i].array[j]; }
+        pointer operator->() { return &data[i].array[j]; }
 
         // Prefix increment
         Iterator& operator++() 
         { 
-            do{
-                if(j < (chunkSize-1))
-                {
-                    j++;
-                }
-                else
-                {
-                    j = 0;
-                    i++;
-                }
-            }while(i < data.size() && data[i].array[j].first == false);
+            if(j < (chunkSize-1))
+            {
+                j++;
+            }
+            else
+            {
+                j = 0;
+                i++;
+            }
 
             return *this;
         }  
@@ -81,18 +79,16 @@ public:
         { 
             Iterator tmp(data, chunkSize, i, j); 
             
-            do{
-                if(j < (chunkSize-1))
-                {
-                    j++;
-                }
-                else
-                {
-                    j = 0;
-                    i++;
-                }
-            }while(data[i].array[j].first == false && i == data.size());
-            
+            if(j < (chunkSize-1))
+            {
+                j++;
+            }
+            else
+            {
+                j = 0;
+                i++;
+            }
+
             return tmp; 
         }
 

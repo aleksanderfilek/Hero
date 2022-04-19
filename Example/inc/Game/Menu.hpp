@@ -12,10 +12,12 @@ private:
 
   Hero::Cubemap* cubemap;
   Hero::Shader* cubemapShader;
+  Hero::Shader* spriteBatchShader;
 
   Hero::Mesh* stone;
   Hero::Shader* stoneShader;
   Hero::Texture* stoneTexture;
+  Hero::Texture* spriteTexture;
 
   Hero::CameraData* camera;
 

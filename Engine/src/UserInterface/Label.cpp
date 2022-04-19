@@ -15,7 +15,7 @@ HERO void Label::draw(Spritebatch* spritebatch)
 {
   if(!visible) return;
 
-  spritebatch->drawTexture(texture, texturePosition, textureSize, rect);
+  spritebatch->drawTexture(texture, texturePosition, 0, textureSize, rect);
 }
 
 HERO void Label::setAlligment(Alligment _alligment)

@@ -5,6 +5,7 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoords;
 layout (location = 2) in float texIndex;
 layout (location = 3) in vec4 color;
+layout (location = 4) in float layer;
 
 uniform mat4 view;
 
@@ -18,6 +19,7 @@ void main()
     TexIndex = texIndex;
     Color = color;
     gl_Position = view * vec4(position, 1.0);
+    gl_Position.z = layer / 256.0;
 }
 
 #tessControl

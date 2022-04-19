@@ -17,7 +17,7 @@ HERO IScene::IScene()
 
 HERO IScene::~IScene()
 {
-  clearContexts();
+  //clearContexts();
   clearActors();
 }
 

@@ -20,16 +20,25 @@ HERO Spritebatch::Spritebatch(uint32_t capacity, uint32_t maxTextures)
     glBufferData(GL_ARRAY_BUFFER, 4 * capacity * sizeof(SpritebatchVertex), NULL, GL_DYNAMIC_DRAW);  
 
     glEnableVertexArrayAttrib(VAO, 0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), (const void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), 
+        (const void*)0);
 
     glEnableVertexArrayAttrib(VAO, 1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), (const void*)(sizeof(Float3)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), 
+        (const void*)(sizeof(Float3)));
 
     glEnableVertexArrayAttrib(VAO, 2);
-    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), (const void*)(sizeof(Float3) + sizeof(Float2)));
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), 
+        (const void*)(sizeof(Float3) + sizeof(Float2)));
 
     glEnableVertexArrayAttrib(VAO, 3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), (const void*)(sizeof(Float3) + sizeof(Float2) + sizeof(float)));
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), 
+        (const void*)(sizeof(Float3) + sizeof(Float2) + sizeof(float)));
+
+    glEnableVertexArrayAttrib(VAO, 3);
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(SpritebatchVertex), 
+        (const void*)(sizeof(Float3) + sizeof(Float2) + sizeof(float) + sizeof(Float4)));
+
 
     indexCount = 0;
     maxIndexCount = 6 * capacity;
@@ -98,8 +107,8 @@ HERO void Spritebatch::end()
     indexCount = 0;
     textureSlotIndex = 0;
 }
-#include<iostream>
-HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position, const Int2& size, Float4 rect)
+
+HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position, int layer, const Int2& size, Float4 rect)
 {
     if(indexCount >= maxIndexCount || 
         textureSlotIndex > maxTextureSlots)
@@ -128,24 +137,28 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
     }
 
     quadBufferPtr->position = (Float3){ (float)position.x, (float)position.y, 0.0f };
+    quadBufferPtr->layer = (float)layer;
     quadBufferPtr->texCoords = (Float2){ rect.x, rect.y };
     quadBufferPtr->texIndex = textureIndex;
     quadBufferPtr->color = (Float4){ 1.0f, 1.0f, 1.0f, 1.0f };
     quadBufferPtr++;
 
     quadBufferPtr->position = (Float3){ (float)(position.x + size.x), (float)position.y, 0.0f };
+    quadBufferPtr->layer = (float)layer;
     quadBufferPtr->texCoords = (Float2){ rect.z, rect.y };
     quadBufferPtr->texIndex = textureIndex;
     quadBufferPtr->color = (Float4){ 1.0f, 1.0f, 1.0f, 1.0f };
     quadBufferPtr++;
 
     quadBufferPtr->position = (Float3){ (float)(position.x + size.x), (float)(position.y + size.y), 0.0f };
+    quadBufferPtr->layer = (float)layer;
     quadBufferPtr->texCoords = (Float2){ rect.z, rect.w };
     quadBufferPtr->texIndex = textureIndex;
     quadBufferPtr->color = (Float4){ 1.0f, 1.0f, 1.0f, 1.0f };
     quadBufferPtr++;
 
     quadBufferPtr->position = (Float3){ (float)position.x, (float)(position.y + size.y), 0.0f };
+    quadBufferPtr->layer = (float)layer;
     quadBufferPtr->texCoords = (Float2){ rect.x, rect.w };
     quadBufferPtr->texIndex = textureIndex;
     quadBufferPtr->color = (Float4){ 1.0f, 1.0f, 1.0f, 1.0f };
@@ -156,6 +169,7 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
 
 HERO void Spritebatch::setShader(Shader* _shader)
 {
+    _shader->bind();
     shaderTexturesLocation = _shader->getUniformLocation("sb_textures");
 }
 

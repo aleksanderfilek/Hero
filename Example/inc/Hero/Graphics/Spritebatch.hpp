@@ -15,6 +15,7 @@ namespace Hero
     Float2 texCoords;
     float texIndex;
     Float4 color;
+    float layer;
   };
 
   class Spritebatch
@@ -46,7 +47,7 @@ namespace Hero
     HERO void begin();
     HERO void end();
 
-    HERO void drawTexture(const Texture* texture, const Int2& position, const Int2& size, Float4 rect = (Float4){ 0.0f,0.0f,1.0f,1.0f });
+    HERO void drawTexture(const Texture* texture, const Int2& position, int layer, const Int2& size, Float4 rect = (Float4){ 0.0f,0.0f,1.0f,1.0f });
   
     HERO void setShader(Shader* _shader);
   };
