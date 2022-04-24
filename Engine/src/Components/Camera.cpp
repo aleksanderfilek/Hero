@@ -7,15 +7,17 @@ namespace Hero
 
 HERO void CameraData::setFOV(float _fov)
 {
+  Type = CameraPerspective::Projection;
   fov = _fov;
   projection = projectionMatrix(width, height, _fov, near, far);
   glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &view.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-HERO void CameraData::setPerspective(int _width, int _height, float _fov, float _near, float _far)
+HERO void CameraData::setProjection(int _width, int _height, float _fov, float _near, float _far)
 {
+  Type = CameraPerspective::Projection;
   width = _width;
   height = _height;
   fov = _fov;
@@ -23,7 +25,20 @@ HERO void CameraData::setPerspective(int _width, int _height, float _fov, float 
   far = _far;
   projection = projectionMatrix(width, height, fov, near, far);
   glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &view.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
+  glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+HERO void CameraData::setOrthogonal(int width, int height, float near, float far)
+{
+  Type = CameraPerspective::Orthogonal;
+  width = _width;
+  height = _height;
+  near = _near;
+  far = _far;
+  projection = orthographicMatrix(width, height, near, far);
+  glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 

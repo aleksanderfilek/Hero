@@ -7,18 +7,18 @@
 namespace Hero
 {
 
-enum class CameraType : uint8_t
+enum class CameraPerspective : uint8_t
 {
     Projection = 0,
-    Orthographic = 1
+    Orthogonal = 1
 };
 
 struct CameraData : public IComponent
 {
     TransformData* transform = nullptr;
     uint32_t uboMatrices;
-    
-    CameraType Type = CameraType::Projection;
+
+    CameraPerspective Type = CameraPerspective::Projection;
 
     Matrix4x4 view = Matrix4x4::identity();
     Matrix4x4 projection = Matrix4x4::identity();
@@ -31,6 +31,7 @@ struct CameraData : public IComponent
 
     HERO void setFOV(float _fov);
     HERO void setPerspective(int _width, int _height, float _fov, float _near, float _far);
+    HERO void setOrthogonal(int width, int height, float near, float far);
 };
 
 class HERO Camera : public IComponentSystem<CameraData>
