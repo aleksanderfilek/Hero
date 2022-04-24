@@ -7,9 +7,18 @@
 namespace Hero
 {
 
+enum class CameraType : uint8_t
+{
+    Projection = 0,
+    Orthographic = 1
+};
+
 struct CameraData : public IComponent
 {
     TransformData* transform = nullptr;
+    uint32_t uboMatrices;
+    
+    CameraType Type = CameraType::Projection;
 
     Matrix4x4 view = Matrix4x4::identity();
     Matrix4x4 projection = Matrix4x4::identity();
