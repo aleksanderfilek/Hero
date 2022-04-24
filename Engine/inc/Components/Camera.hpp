@@ -30,7 +30,7 @@ struct CameraData : public IComponent
     float far = 0.0f;
 
     HERO void setFOV(float _fov);
-    HERO void setPerspective(int _width, int _height, float _fov, float _near, float _far);
+    HERO void setProjection(int _width, int _height, float _fov, float _near, float _far);
     HERO void setOrthogonal(int width, int height, float near, float far);
 };
 
