@@ -17,13 +17,13 @@ struct ResourceFunctions
   void (*Unload)(IResource* Resource);
 };
 
-templete<class T> 
+template<class T> 
 T* LoadResource(const std::string& path)
 {
   return (T*)T::Load(path);
 }
 
-templete<class T>
+template<class T>
 void UnloadResource(IResource* Resource)
 {
   T::Unload(Resource);

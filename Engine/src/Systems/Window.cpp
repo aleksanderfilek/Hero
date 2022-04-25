@@ -186,8 +186,15 @@ HERO void Window::clear()
 HERO void Window::setDepthTest(bool turnOn)
 {
     depthEnabled = (turnOn)?1:0;
-    if(turnOn) glEnable(GL_DEPTH_TEST);  
-    else glDisable(GL_DEPTH_TEST);
+    if(turnOn) 
+        glEnable(GL_DEPTH_TEST);  
+    else 
+        glDisable(GL_DEPTH_TEST);
+}
+
+HERO bool Window::isDepthTest()
+{
+    return depthEnabled;
 }
 
 }

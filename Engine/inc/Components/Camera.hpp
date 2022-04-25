@@ -22,6 +22,7 @@ struct CameraData : public IComponent
 
     Matrix4x4 view = Matrix4x4::identity();
     Matrix4x4 projection = Matrix4x4::identity();
+    Matrix4x4 pixel = Matrix4x4::identity();
 
     int width = 0;
     int height = 0;
@@ -31,7 +32,7 @@ struct CameraData : public IComponent
 
     HERO void setFOV(float _fov);
     HERO void setProjection(int _width, int _height, float _fov, float _near, float _far);
-    HERO void setOrthogonal(int width, int height, float near, float far);
+    HERO void setOrthogonal(int _width, int _height, float _near, float _far);
 };
 
 class HERO Camera : public IComponentSystem<CameraData>

@@ -23,7 +23,7 @@ void Menu::begin()
   Hero::Actor* actor = new Hero::Actor(context);
   actor->AddComponent(SID("Camera"));
   camera = (Hero::CameraData*)actor->GetComponent(SID("Camera"));
-  camera->setPerspective(1280, 720, 70.0f, 0.1f, 1000.0f);
+  camera->setProjection(1280, 720, 70.0f, 0.1f, 1000.0f);
   actor->AddComponent(SID("Player"));
   addActor(actor);
 
@@ -46,15 +46,15 @@ void Menu::begin()
 
   cubemap = new Hero::Cubemap(path);
   cubemapShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/cubemap.he");
-  cubemapShader->bind();
-  cubemapShader->setMatrix4f("proj", camera->projection);
+  //cubemapShader->bind();
+  //cubemapShader->setMatrix4f("proj", camera->projection);
 
   stone = (Hero::Mesh*)Hero::Mesh::Load("bin/assets/stone.he");
   stoneShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/standard.he");
   stoneTexture = new Hero::Texture("bin/assets/stone.jpg");
 
-  stoneShader->bind();
-  stoneShader->setMatrix4f("proj", camera->projection);
+  // stoneShader->bind();
+  // stoneShader->setMatrix4f("proj", camera->projection);
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
@@ -63,22 +63,22 @@ void Menu::begin()
 
 void Menu::update()
 {
-  IScene::update();
-
   Hero::System::Window::clear();
 
   cubemapShader->bind();
-  cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
+  // cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
   cubemap->draw();
 
   Hero::Matrix4x4 stoneModel = Hero::TRS({0.0f, 0.0f, 10.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f});
   stoneShader->bind();
   stoneShader->setMatrix4f("model", stoneModel);
-  stoneShader->setMatrix4f("view", camera->view);
+  // stoneShader->setMatrix4f("view", camera->view);
   stoneTexture->bind();
   stone->draw();
 
   window->render();
+
+  IScene::update();
 }
 
 void Menu::close()

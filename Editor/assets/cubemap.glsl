@@ -19,7 +19,7 @@ out VS_OUT
 void main()
 {
   vs_out.TexCoords = position;
-  vec4 pos = projection * view * vec4(position, 1.0);
+  vec4 pos = projection * mat4(mat3(view)) * vec4(position, 1.0);
   gl_Position = pos.xyww;
 }
 #tessControl
@@ -30,6 +30,7 @@ void main()
 
 #fragment
 #version 450 core
+layout (location=0) out vec4 o_Color;
 
 in VS_OUT
 {
@@ -40,5 +41,5 @@ uniform samplerCube skybox;
 
 void main()
 {
-  gl_FragColor = texture(skybox, fs_in.TexCoords);
+  o_Color = texture(skybox, fs_in.TexCoords);
 }

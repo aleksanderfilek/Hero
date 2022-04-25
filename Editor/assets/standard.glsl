@@ -31,6 +31,7 @@ void main()
 
 #fragment
 #version 450 core
+layout (location=0) out vec4 o_Color;
 
 uniform sampler2D ourTexture;
 
@@ -41,5 +42,5 @@ in VS_OUT
 
 void main()
 {
-  gl_FragColor = texture(ourTexture, fs_in.TexCoord);
+  o_Color = texture(ourTexture, fs_in.TexCoord);
 }

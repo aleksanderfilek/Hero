@@ -27,7 +27,6 @@ void main()
     vs_out.TexIndex = texIndex;
     vs_out.Color = color;
     gl_Position = pixel * vec4(position, 1.0);
-    gl_Position.z = layer / 256.0;
 }
 
 #tessControl

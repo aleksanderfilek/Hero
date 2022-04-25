@@ -93,6 +93,7 @@ public:
     inline void setEvent(WindowEventType event, EventFunction func){ events[(int)event].add(func); }
     HERO static void clear();
     HERO static void setDepthTest(bool turnOn);
+    HERO static bool isDepthTest();
 };
 
 }

@@ -11,7 +11,7 @@ HERO void CameraData::setFOV(float _fov)
   fov = _fov;
   projection = projectionMatrix(width, height, _fov, near, far);
   glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), sizeof(Matrix4x4), &projection.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -25,11 +25,16 @@ HERO void CameraData::setProjection(int _width, int _height, float _fov, float _
   far = _far;
   projection = projectionMatrix(width, height, fov, near, far);
   glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), sizeof(Matrix4x4), &projection.col[0].x);
+  glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+  pixel = pixelScreenMatrix(width, height, 0.0f, 1.0f);
+  glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+  glBufferSubData(GL_UNIFORM_BUFFER, 2*sizeof(Matrix4x4), sizeof(Matrix4x4), &pixel.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-HERO void CameraData::setOrthogonal(int width, int height, float near, float far)
+HERO void CameraData::setOrthogonal(int _width, int _height, float _near, float _far)
 {
   Type = CameraPerspective::Orthogonal;
   width = _width;
@@ -38,7 +43,7 @@ HERO void CameraData::setOrthogonal(int width, int height, float near, float far
   far = _far;
   projection = orthographicMatrix(width, height, near, far);
   glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), siezof(Matrix4x4), &projection.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), sizeof(Matrix4x4), &projection.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -55,7 +60,7 @@ HERO void Camera::dataInit(CameraData* data)
   glBindBufferRange(GL_UNIFORM_BUFFER, 0, data->uboMatrices, 0, 3 * sizeof(Matrix4x4));
 
   glBindBuffer(GL_UNIFORM_BUFFER, data->uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), sizeof(Matrix4x4), &data->view.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4x4), &data->view.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -64,7 +69,7 @@ HERO void Camera::dataUpdate(CameraData* data)
   Float3 target = data->transform->position + data->transform->forward();
   data->view = lookAtMatrix(data->transform->position, target, Float3::up());
   glBindBuffer(GL_UNIFORM_BUFFER, data->uboMatrices);
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4x4), sizeof(Matrix4x4), &data->view.col[0].x);
+  glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4x4), &data->view.col[0].x);
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 

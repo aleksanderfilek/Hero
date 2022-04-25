@@ -103,7 +103,10 @@ HERO void Transform::update()
     // update modelMatrix
     for(auto& component: data)
     {
-        TransformData& transform = component;
+        if(!component.first)
+            continue;
+
+        TransformData& transform = component.second;
 
         // if(!component.isDirty)
         //     continue;
@@ -116,7 +119,10 @@ HERO void Transform::update()
     // update hierarchy
     for(auto& component: data)
     {
-        TransformData& transform = component;
+        if(!component.first)
+            continue;
+
+        TransformData& transform = component.second;
 
         //std::cout<<"ptr = "<<(int*)transform.parent<<std::endl;
 

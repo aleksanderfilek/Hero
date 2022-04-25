@@ -3,6 +3,8 @@
 #include"Texture.hpp"
 #include"Transform.hpp"
 #include"Actor.hpp"
+#include"Shader.hpp"
+#include"Window.hpp"
 
 namespace Hero
 {
@@ -22,7 +24,9 @@ HERO Sprite::~Sprite()
 HERO void Sprite::update()
 {
   shader->bind();
+  spritebatch->begin();
   IComponentSystem::update();
+  spritebatch->end();
 }
 
 HERO void Sprite::dataInit(SpriteData* data)
@@ -35,9 +39,9 @@ HERO void Sprite::dataUpdate(SpriteData* data)
   Float3 gPos = data->transform->getGlobalPosition();
   Int2 position = {(int)gPos.x, (int)gPos.y};
   Int2 size = data->texture->getSize();
-  size.x = (int)((float)size.x/pixelsPerUnit);
-  size.y = (int)((float)size.y/pixelsPerUnit);
-  spritebatch->drawTexture(data->texture, position, (int)gPos.z, size, data->rect);
+  size.x = (int)((float)size.x);
+  size.y = (int)((float)size.y);
+  spritebatch->drawTexture(data->texture, position, 256, size, data->rect);
 }
 
 HERO void Sprite::dataDestroy(SpriteData* data)
