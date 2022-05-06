@@ -1,18 +1,14 @@
 {
     "Name" : "libhero.dll",
     "Type": "SharedLibrary",
-    "OutputDir": "lib",
+    "OutputDir": "bin",
     "Compiler" : "g++",
     "LibsDir" : [
-        "bin"
+        "bin/windows"
     ],
     "Libs" : [
-        "-lSDL2main", 
         "-lSDL2", 
         "-lSDL2_ttf",
-        "-lSDL2_mixer",
-        "-lSOIL",
-        "-lglew32",
         "-lopengl32",
         "-lglu32",
         "-lm",
