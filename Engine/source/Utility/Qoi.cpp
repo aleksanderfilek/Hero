@@ -1,5 +1,6 @@
 #include"Qoi.hpp"
 #include"ByteOperations.hpp"
+#include<iostream>
 
 /*
 Encoder and decoder code was copies from https://github.com/phoboslab/qoi/blob/master/qoi.h repository.
@@ -41,7 +42,7 @@ typedef union {
 
 static const unsigned char qoi_padding[8] = {0,0,0,0,0,0,0,1};
 
-uint8_t* Encode(uint8_t* Data, uint32_t Width, uint32_t Height, uint8_t Channels, uint32_t& ByteLength)
+HERO uint8_t* Encode(uint8_t* Data, uint32_t Width, uint32_t Height, uint8_t Channels, uint32_t& ByteLength)
 {
     int i, max_size, p, run;
 	int px_len, px_end, px_pos, channels;
@@ -166,7 +167,7 @@ uint8_t* Encode(uint8_t* Data, uint32_t Width, uint32_t Height, uint8_t Channels
     return bytes;
 }
 
-uint8_t* Decode(uint8_t* Data, uint32_t Size, int Width, int Height, uint8_t Channels)
+HERO uint8_t* Decode(uint8_t* Data, uint32_t Size, int Width, int Height, uint8_t Channels)
 {
     const uint8_t *bytes;
 	uint32_t header_magic;
@@ -176,10 +177,13 @@ uint8_t* Decode(uint8_t* Data, uint32_t Size, int Width, int Height, uint8_t Cha
 	int px_len, chunks_len, px_pos;
 	int p = 0, run = 0;
 
-	if (
-		Data == nullptr ||
-		Size < QOI_HEADER_SIZE + (int)sizeof(qoi_padding)
-	) {
+	if (Data == nullptr) 
+	{
+		return nullptr;
+	}
+
+	if (Size < QOI_HEADER_SIZE + (int)sizeof(qoi_padding)) 
+	{
 		return nullptr;
 	}
 

@@ -5,7 +5,7 @@
 namespace Hero
 {
 
-void WriteUint32(uint8_t *bytes, int *currentPtr, uint32_t value);
-uint32_t ReadUint32(const uint8_t *bytes, int *currentPtr);
+HERO void WriteUint32(uint8_t *bytes, int *currentPtr, uint32_t value);
+HERO uint32_t ReadUint32(const uint8_t *bytes, int *currentPtr);
 
 }

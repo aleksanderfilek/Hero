@@ -38,9 +38,10 @@ HERO void Sprite::dataUpdate(SpriteData* data)
 {
   Float3 gPos = data->transform->getGlobalPosition();
   Int2 position = {(int)gPos.x, (int)gPos.y};
+  Float3 scale = data->transform->getGlobalScale();
   Int2 size = data->texture->getSize();
-  size.x = (int)((float)size.x);
-  size.y = (int)((float)size.y);
+  size.x = (int)((float)size.x * scale.x);
+  size.y = (int)((float)size.y * scale.y);
   spritebatch->drawTexture(data->texture, position, 256, size, data->rect);
 }
 

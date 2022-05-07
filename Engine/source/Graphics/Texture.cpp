@@ -96,9 +96,9 @@ HERO IResource* Texture::Load(const std::string& path)
 
     int ResourceId;
     file.read((char*)&ResourceId, sizeof(int));
-    uint32_t width, height;
-    file.read((char*)&width, sizeof(uint32_t));
-    file.read((char*)&height, sizeof(uint32_t));
+    int width, height;
+    file.read((char*)&width, sizeof(int));
+    file.read((char*)&height, sizeof(int));
     uint8_t channels;
     file.read((char*)&channels, sizeof(uint8_t));
     uint8_t colorSpace;
@@ -107,13 +107,12 @@ HERO IResource* Texture::Load(const std::string& path)
     file.read((char*)&flags, sizeof(uint8_t));
     uint32_t ByteLength;
     file.read((char*)&ByteLength, sizeof(uint32_t));
-
     uint8_t* Data = new  uint8_t[ByteLength];
     file.read((char*)Data, ByteLength*sizeof(char));
 
     file.close();
 
-    uint8_t* image = QOI::Decode(Data+1, ByteLength, width, height, channels);
+    uint8_t* image = QOI::Decode(Data, ByteLength, width, height, channels);
 
     delete[] Data;
 
@@ -149,7 +148,7 @@ HERO IResource* Texture::Load(const std::string& path)
     Texture* texture = new Texture();
 
     texture->glId = gl_id;
-    texture->size = (Int2){ (int)width, (int)height };
+    texture->size = (Int2){ width, height };
     texture->name = path;
     texture->flags = flags;
     texture->channels = (channels == 3)?ColorChannel::RGB : ColorChannel::RGBA;
