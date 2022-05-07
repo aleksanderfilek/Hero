@@ -1,10 +1,10 @@
 {
     "Name" : "libhero.dll",
     "Type": "SharedLibrary",
-    "OutputDir": "bin",
+    "OutputDir": "Hero/lib",
     "Compiler" : "g++",
     "LibsDir" : [
-        "bin/windows"
+        "Hero/lib"
     ],
     "Libs" : [
         "-lSDL2", 
