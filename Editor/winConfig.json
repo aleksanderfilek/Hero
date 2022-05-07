@@ -8,12 +8,8 @@
     ],
     "Libs" : [
         "-lhero",
-        "-lSDL2main", 
         "-lSDL2", 
         "-lSDL2_ttf",
-        "-lSDL2_mixer",
-        "-lSOIL",
-        "-lglew32",
         "-lopengl32",
         "-lglu32",
         "-lm",

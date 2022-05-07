@@ -7,7 +7,7 @@
 #include"Hero/Systems/Scene.hpp"
 #include"Hero/Systems/UserInterface.hpp"
 
-#include"Menu.hpp"
+#include"Scenes/Menu.hpp"
 
 #include<cmath>
 

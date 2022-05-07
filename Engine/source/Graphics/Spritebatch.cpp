@@ -89,6 +89,9 @@ HERO void Spritebatch::begin()
     glUniform1iv(shaderTexturesLocation, maxTextureSlots, sampler);
 
     quadBufferPtr = quadBuffer;
+
+    indexCount = 0;
+    textureSlotIndex = 0;
 }
 
 HERO void Spritebatch::end()
@@ -104,8 +107,6 @@ HERO void Spritebatch::end()
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
-    indexCount = 0;
-    textureSlotIndex = 0;
 }
 
 HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position, int layer, const Int2& size, Float4 rect)
@@ -119,7 +120,7 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
 
     float textureIndex = -1.0f;
     // check registred texture
-    for(int i = 0; i <= textureIndex; i++)
+    for(int i = 0; i < textureSlotIndex; i++)
     {
         if(textureSlots[i]->getGlId() == texture->getGlId())
         {
