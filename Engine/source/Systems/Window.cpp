@@ -7,7 +7,8 @@ namespace Hero
 namespace System
 {
 
-HERO Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags) : ISystem(sid)
+HERO Window::Window(const Sid& sid, const char *title, int width, int height, int sdlflags)
+ : ISystem(sid)
 {
     priority = 0;
 

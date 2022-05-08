@@ -1,5 +1,6 @@
 #include"ComponentContext.hpp"
 #include"IComponent.hpp"
+#include"../Systems/Profiler.hpp"
 
 #include <iostream>
 
@@ -15,7 +16,10 @@ HERO void ComponentContext::Update()
 {
   for(auto& system: systems)
   {
+    uint64_t start = System::Profiler::GetTime();
     system.second->update();
+    uint64_t end = System::Profiler::GetTime();
+    System::Profiler::Register(system.first, end - start);
   }
 }
 

@@ -82,7 +82,7 @@ public:
         backgroundColor = _backgroundColor;
         glClearColor((float)backgroundColor.r/255.0f,(float)backgroundColor.g/255.0f,(float)backgroundColor.b/255.0f,(float)backgroundColor.a/255.0f);
     }
-    inline void setTitle(const char* title){ SDL_SetWindowTitle(sdlWindow, title); }
+    inline void setTitle(const std::string& title){ SDL_SetWindowTitle(sdlWindow, title.c_str()); }
     inline bool isShown(){ return shown; }
     inline bool isMinimized(){ return minimized; }
     inline bool isFocused(){ return focused; }

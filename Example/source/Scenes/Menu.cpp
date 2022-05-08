@@ -12,6 +12,7 @@
 #include"../Hero/Core/Time.hpp"
 
 #include<iostream>
+#include<string>
 
 Hero::Actor* Menu::CreateMoverActor(Hero::ComponentContext* context)
 {
@@ -38,7 +39,7 @@ void Menu::begin()
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
   spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he");
-  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 10000, 1));
+  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 100, 1));
   context->Register(SID("Mover"), new Mover(1000));
 
   Hero::Actor* actor = new Hero::Actor(context);
@@ -83,7 +84,14 @@ void Menu::begin()
 
 void Menu::update()
 {
-  std::cout<<"fps: "<<(int)(1.0f/Hero::Time::getDeltaTime())<<"   - units: "<<units<<std::endl;
+  int fps = (int)(1.0f/Hero::Time::getDeltaTime());
+
+  std::string title = "FPS: ";
+  title += std::to_string(fps);
+  title += " Units: ";
+  title += std::to_string(units);
+
+  window->setTitle(title);
 
   Hero::System::Window::clear();
 

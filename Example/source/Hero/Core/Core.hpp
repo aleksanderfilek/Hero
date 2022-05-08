@@ -7,7 +7,7 @@
 #include<typeinfo>
 
 #ifdef _WIN32
-    #define HeroMain WinMain
+    #define HeroMain SDL_main
 #else
     #define HeroMain main
 #endif
