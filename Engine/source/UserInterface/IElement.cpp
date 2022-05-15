@@ -83,6 +83,58 @@ HERO void IElement::setSize(Int2 _size)
   if(parent != nullptr) parent->recalculate();
 }
 
+HERO void IElement::setHorizontalAnchor(HorizontalAnchor NewHorizontalAnchor)
+{
+  if(parent == nullptr)
+    return;
+
+  horizontalAnchor = NewHorizontalAnchor;
+
+  float x = 0.0f;
+  switch(horizontalAnchor)
+  {
+    case HorizontalAnchor::LEFT:
+      x = absolutePosition.x - parent->absolutePosition.x;
+      break;
+    case HorizontalAnchor::CENTER:
+      x = absolutePosition.x - parent->absolutePosition.x + (parent->size.x/2);
+      break;
+    case HorizontalAnchor::RIGHT:
+      x = parent->absolutePosition.x + parent->size.x - absolutePosition.x;
+      break;
+  }
+
+  relativePosition.x = x;
+
+  parent->recalculate();
+}
+
+HERO void IElement::setVerticalAnchor(VerticalAnchor NewVerticalAnchor)
+{
+    if(parent == nullptr)
+    return;
+    
+  verticalAnchor = NewVerticalAnchor;
+
+  float y = 0.0f;
+  switch(horizontalAnchor)
+  {
+    case HorizontalAnchor::LEFT:
+      y = absolutePosition.y - parent->absolutePosition.y;
+      break;
+    case HorizontalAnchor::CENTER:
+      y = absolutePosition.y - parent->absolutePosition.y + (parent->size.y/2);
+      break;
+    case HorizontalAnchor::RIGHT:
+      y = parent->absolutePosition.y + parent->size.y - absolutePosition.y;
+      break;
+  }
+
+  relativePosition.y = y;
+
+  parent->recalculate();
+}
+
 HERO void IElement::addEvent(Event type, EventFunction function, void* arg)
 {
   eventHandlers[(uint8_t)type].add(function);

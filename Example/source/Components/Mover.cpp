@@ -45,7 +45,7 @@ void Mover::dataUpdate(MoverData* data)
     //     data->GetTarget();
     // }
 
-    data->transform->position = Hero::lerp(data->StartPosition, data->TargetPosition, data->alpha);
+    data->transform->setPosition(Hero::lerp(data->StartPosition, data->TargetPosition, data->alpha));
 
     data->alpha += data->dir * Hero::Time::getDeltaTime();
 

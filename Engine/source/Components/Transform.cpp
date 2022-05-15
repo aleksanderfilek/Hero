@@ -1,5 +1,5 @@
 #include"Transform.hpp"
-
+#include"../Systems/Profiler.hpp"
 namespace Hero
 {
 
@@ -29,25 +29,25 @@ HERO Float3 TransformData::getGlobalScale() const
 
 HERO void TransformData::setPosition(Float3 newPosition)
 {
-    isDirty  = true;
+    isDirty  = 1;
     position = newPosition;
 }
 
 HERO void TransformData::setRotation(Float3 newRotation)
 {
-    isDirty  = true;
+    isDirty  = 1;
     rotation = newRotation;
 }
 
 HERO void TransformData::setScale(Float3 newScale)
 {
-    isDirty  = true;
+    isDirty  = 1;
     scale = newScale;
 }
 
 HERO void TransformData::setParent(TransformData* newParent)
 {
-    isDirty = true;
+    isDirty = 1;
     parent = newParent;
     parent->children.push_back(this);
 }
@@ -97,9 +97,15 @@ HERO Float3 TransformData::right()
   return right;
 }
 
+HERO Transform::Transform(uint32_t chunkSize, bool _CanUpdate) 
+: IComponentSystem(chunkSize), CanUpdate(_CanUpdate)
+{}
 
 HERO void Transform::update()
 {
+    if(!CanUpdate)
+        return;
+
     // update modelMatrix
     for(auto& component: data)
     {
@@ -108,12 +114,18 @@ HERO void Transform::update()
 
         TransformData& transform = component.second;
 
-        // if(!component.isDirty)
-        //     continue;
+        if(transform.isDirty == 0)
+            continue;
 
+        uint64_t start = System::Profiler::GetTime();
         transform.modelMatrix = TRS(
-            transform.position, transform.rotation, transform.scale);
+        transform.position, transform.rotation, transform.scale);
         transform.isDirty = false;
+        uint64_t end = System::Profiler::GetTime();
+        //System::Profiler::Register(SID("TRS"), end - start);
+
+        transform.isDirty = (transform.parent == nullptr)? 0 : 2;
+    
     }
 
     // update hierarchy
@@ -124,17 +136,20 @@ HERO void Transform::update()
 
         TransformData& transform = component.second;
 
-        //std::cout<<"ptr = "<<(int*)transform.parent<<std::endl;
+        if(transform.isDirty != 2)
+            continue;
 
-        if(transform.parent != nullptr)
-        {        
+        //std::cout<<"ptr = "<<(int*)transform.parent<<std::endl;
+     
             // std::cout<<transform.parent->modelMatrix<<std::endl;
             // std::cout<<transform.modelMatrix<<std::endl;
-        
-            transform.modelMatrix = transform.parent->modelMatrix * transform.modelMatrix;
-
+        uint64_t start = System::Profiler::GetTime();
+        transform.modelMatrix = transform.parent->modelMatrix * transform.modelMatrix;
+        uint64_t end = System::Profiler::GetTime();
+        //System::Profiler::Register(SID("mul"), end - start);
             // std::cout<<transform.modelMatrix<<std::endl;
-        }
+
+        transform.isDirty = 0;
     }
 }
 
@@ -142,14 +157,14 @@ HERO void Transform::dataInit(TransformData* data)
 {
     data->modelMatrix = TRS(
         data->position, data->rotation, data->scale);
-    data->isDirty = false;
+    data->isDirty = 0;
 }
 
 HERO void Transform::dataUpdate(TransformData* data)
 {
     data->modelMatrix = TRS(
         data->position, data->rotation, data->scale);
-    data->isDirty = false;
+    data->isDirty = 0;
 }
 
 HERO void Transform::dataDestroy(TransformData* data)

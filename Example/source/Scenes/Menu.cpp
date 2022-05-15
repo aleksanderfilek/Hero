@@ -35,11 +35,11 @@ void Menu::begin()
 
   context = new Hero::ComponentContext();
   addContext(SID("Main"), context);
-  context->Register(SID("Transform"), new Hero::Transform(1000));
+  context->Register(SID("Transform"), new Hero::Transform(1000, false));
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
   spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he");
-  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 100, 1));
+  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 1000, 1));
   context->Register(SID("Mover"), new Mover(1000));
 
   Hero::Actor* actor = new Hero::Actor(context);
@@ -95,7 +95,8 @@ void Menu::update()
 
   Hero::System::Window::clear();
 
-  if(input->keyDown(Hero::System::Input::KeyCode::RETURN))
+  timer += Hero::Time::getDeltaTime();
+  if(timer > 0.1f)
   {
     units += 1000;
     for(int i = 0; i < 1000; i++)

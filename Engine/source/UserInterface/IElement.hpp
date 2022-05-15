@@ -3,6 +3,7 @@
 #include"../Core/Math.hpp"
 #include"../Graphics/Spritebatch.hpp"
 #include"../Core/Events.hpp"
+#include"Anchor.hpp"
 
 namespace Hero
 {
@@ -24,6 +25,7 @@ class IGroup;
 class HERO IElement
 {
   friend class IGroup;
+
 protected:
   IGroup* parent = nullptr;
 
@@ -31,11 +33,15 @@ protected:
   Int2 relativePosition = Int2::zero();
   Int2 size = Int2::zero();
 
+  HorizontalAnchor horizontalAnchor = HorizontalAnchor::LEFT;
+  VerticalAnchor verticalAnchor = VerticalAnchor::TOP;
+
   bool visible = true;
 
   uint8_t eventState;
   EventHandler eventHandlers[6];
   void* eventArgs[6]{nullptr};
+
 public:
   HERO virtual ~IElement();
 
@@ -44,6 +50,8 @@ public:
   HERO virtual void setAbsolutPosition(Int2 _absolutePosition);
   HERO virtual void setPosition(Int2 _position);
   HERO virtual void setSize(Int2 _size);
+  HERO void setHorizontalAnchor(HorizontalAnchor NewHorizontalAnchor);
+  HERO void setVerticalAnchor(VerticalAnchor NewVerticalAnchor);
 
   inline void setVisibility(bool _visible){ visible = _visible; }
   inline bool isVisible(){ return visible; }
