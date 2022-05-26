@@ -12,8 +12,10 @@ namespace UI
 
 class IElement;
 
-class HERO Widget : public IGroup
+class Widget : public IGroup
 {
+  public:
+  HERO Widget();
 };
 
 }

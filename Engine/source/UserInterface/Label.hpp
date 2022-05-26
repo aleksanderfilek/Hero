@@ -31,8 +31,6 @@ private:
 public:
   HERO ~Label();
 
-  HERO void setAbsolutPosition(Int2 originPosition) override;
-  HERO void setPosition(Int2 _position) override;
   HERO void draw(Spritebatch* spritebatch) override;
   HERO void setAlligment(Alligment _alligment);
   HERO void setFont(Font* _font, bool _free = true);

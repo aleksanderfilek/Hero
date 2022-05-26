@@ -15,7 +15,7 @@ enum class Alligment
   RIGHT,
   LEFT_BOTTOM,
   BOTTOM,
-  RIGHT_BOTTOM
+  RIGHT_BOTTOM,
 };
 
 }

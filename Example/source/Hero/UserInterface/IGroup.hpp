@@ -21,7 +21,6 @@ protected:
 
   bool lastTick = true;
 
-  HERO virtual void recalculate();
 public:
   HERO virtual ~IGroup();
 
@@ -29,7 +28,6 @@ public:
   HERO void draw(Spritebatch* spritebatch) override;
   HERO virtual bool add(const std::string& name, IElement* element);
   HERO virtual bool remove(const std::string& name);
-  HERO void setPosition(Int2 _position) override;
 
   template<class T>
   T* get(const std::string& path)

@@ -29,10 +29,10 @@ class HERO IElement
 protected:
   IGroup* parent = nullptr;
 
-  Int2 absolutePosition = Int2::zero();
-  Int2 relativePosition = Int2::zero();
-  Int2 size = Int2::zero();
-
+  Int4 relativeTransform = Int4::zero();
+  Int4 absoluteTransform = Int4::zero();
+  Float2 pivot = Float2::zero();
+  Float2 anchor = Float2::zero();
   HorizontalAnchor horizontalAnchor = HorizontalAnchor::LEFT;
   VerticalAnchor verticalAnchor = VerticalAnchor::TOP;
 
@@ -47,18 +47,19 @@ public:
 
   virtual void draw(Spritebatch* spritebatch){};
   HERO virtual void update(Int2 mousePosition, uint8_t buttonState);
-  HERO virtual void setAbsolutPosition(Int2 _absolutePosition);
-  HERO virtual void setPosition(Int2 _position);
-  HERO virtual void setSize(Int2 _size);
-  HERO void setHorizontalAnchor(HorizontalAnchor NewHorizontalAnchor);
-  HERO void setVerticalAnchor(VerticalAnchor NewVerticalAnchor);
+
+  HERO void SetPivot(Float2 Pivot);
+  HERO void SetRelativeTransform(Int4 Transform, 
+    HorizontalAnchor NewHorizontalAnchor = HorizontalAnchor::LEFT, 
+    VerticalAnchor NewVerticalAnchor = VerticalAnchor::TOP);
+  HERO Int4 GetRelativeTransform() const;
+  HERO Int2 GetAbsolutePosition() const;
+  HERO Int2 GetAbsoluteSize() const;
+  HERO void UpdateAbsoluteTransform();
 
   inline void setVisibility(bool _visible){ visible = _visible; }
   inline bool isVisible(){ return visible; }
   inline bool isEvent(UI::Event event){return eventState & (uint16_t)event; }
-  inline Int2 getRelativePosition(){ return relativePosition; }
-  inline Int2 getAbsolutePosition(){ return absolutePosition; }
-  inline Int2 getSize(){ return size; }
 
   HERO void addEvent(Event type, EventFunction function, void* arg);
 };
