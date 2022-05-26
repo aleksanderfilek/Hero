@@ -30,6 +30,7 @@ private:
   Hero::CameraData* camera;
 
   int units = 1000;
+  float timer = 0.0f;
 
 public:
   void begin() override;

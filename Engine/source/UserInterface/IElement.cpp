@@ -1,6 +1,6 @@
 #include"IElement.hpp"
 #include"IGroup.hpp"
-
+#include<iostream>
 namespace Hero
 {
 namespace UI
@@ -10,12 +10,12 @@ namespace UI
 
 HERO IElement::~IElement()
 {
-  
+
 }
 
 HERO void IElement::update(Int2 mousePosition, uint8_t buttonState)
 {
-  bool hover = pointBoxIntersection(mousePosition, absolutePosition, size);
+  bool hover = pointBoxIntersection(mousePosition, GetAbsolutePosition(), GetAbsoluteSize());
 
   if(hover)
   {
@@ -62,25 +62,112 @@ HERO void IElement::update(Int2 mousePosition, uint8_t buttonState)
   }
 }
 
-HERO void IElement::setAbsolutPosition(Int2 _absolutePosition)
+HERO void IElement::UpdateAbsoluteTransform()
 {
-  absolutePosition = _absolutePosition;
+  Int2 ParentPosition = Int2::zero();
+  Int2 ParentSize = Int2::zero();
+  if(parent)
+  {
+    ParentPosition = parent->GetAbsolutePosition();
+    ParentSize = parent->GetAbsoluteSize();
+  }
+
+  switch(horizontalAnchor)
+  {
+    case HorizontalAnchor::LEFT:
+    case HorizontalAnchor::CENTER:
+    case HorizontalAnchor::RIGHT:
+    {
+      int PivotPoint = relativeTransform.x + pivot.x * relativeTransform.z;
+
+      absoluteTransform.x = anchor.x * ParentSize.x - PivotPoint;
+      absoluteTransform.z = relativeTransform.z;
+      }  break;
+    case HorizontalAnchor::STRETCH:
+      absoluteTransform.x = relativeTransform.x;
+      absoluteTransform.z = ParentSize.x - relativeTransform.z - relativeTransform.x;
+      break;
+  }
+
+  switch(verticalAnchor)
+  {
+    case VerticalAnchor::TOP:
+    case VerticalAnchor::CENTER:
+    case VerticalAnchor::BOTTOM:
+    {
+      int PivotPoint = relativeTransform.y + pivot.y * relativeTransform.w;
+
+      absoluteTransform.y = anchor.y * ParentSize.y - PivotPoint;
+      absoluteTransform.w = relativeTransform.w;
+      }  break;
+    case VerticalAnchor::STRETCH:
+      absoluteTransform.y = relativeTransform.y;
+      absoluteTransform.w = ParentSize.y - relativeTransform.w - relativeTransform.y;
+      break;
+  }
+
+  absoluteTransform.x += ParentPosition.x;
+  absoluteTransform.y += ParentPosition.y;
+
+  std::cout<<absoluteTransform<<std::endl;
 }
 
-HERO void IElement::setPosition(Int2 _position)
+HERO void IElement::SetPivot(Float2 Pivot)
 {
-  Int2 difference = _position - relativePosition;
-  relativePosition = _position;
-  absolutePosition = absolutePosition + difference;
-
-  if(parent != nullptr) parent->recalculate();
+  pivot = Pivot;
+  UpdateAbsoluteTransform();
 }
 
-HERO void IElement::setSize(Int2 _size)
+HERO void IElement::SetRelativeTransform(Int4 Transform, 
+  HorizontalAnchor NewHorizontalAnchor, VerticalAnchor NewVerticalAnchor)
 {
-  size = _size;
+  relativeTransform = Transform;
 
-  if(parent != nullptr) parent->recalculate();
+  horizontalAnchor = NewHorizontalAnchor;
+  verticalAnchor = NewVerticalAnchor;
+
+  switch(horizontalAnchor)
+  {
+    case HorizontalAnchor::LEFT:
+      anchor.x = 0.0f;
+      break;
+    case HorizontalAnchor::CENTER:
+      anchor.x = 0.5f;
+      break;
+    case HorizontalAnchor::RIGHT:
+      anchor.x = 1.0f;
+      break;
+  }
+
+  switch(verticalAnchor)
+  {
+    case VerticalAnchor::TOP:
+      anchor.y = 0.0f;
+      break;
+    case VerticalAnchor::CENTER:
+      anchor.y = 0.5f;
+      break;
+    case VerticalAnchor::BOTTOM:
+      anchor.y = 1.0f;
+      break;
+  }
+  
+  UpdateAbsoluteTransform();
+}
+
+HERO Int4 IElement::GetRelativeTransform() const
+{
+  return relativeTransform;
+}
+
+HERO Int2 IElement::GetAbsolutePosition() const
+{
+  return Int2(absoluteTransform.x, absoluteTransform.y);
+}
+
+HERO Int2 IElement::GetAbsoluteSize() const
+{
+  return Int2(absoluteTransform.z, absoluteTransform.w);
 }
 
 HERO void IElement::addEvent(Event type, EventFunction function, void* arg)

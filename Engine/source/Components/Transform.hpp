@@ -15,7 +15,7 @@ struct TransformData : public IComponent
     Float3 scale = Float3::one();
 
     Matrix4x4 modelMatrix = Matrix4x4::identity();
-    bool isDirty = true;
+    uint8_t isDirty = 0;
 
     TransformData* parent = nullptr;
     std::vector<TransformData*> children;
@@ -42,11 +42,13 @@ struct TransformData : public IComponent
 class HERO Transform : public IComponentSystem<TransformData>
 {
 public:
-    Transform(uint32_t chunkSize) : IComponentSystem(chunkSize){}
+    HERO Transform(uint32_t chunkSize, bool _CanUpdate = true);
     
     HERO void update() override;
 
 private:
+    bool CanUpdate; 
+
     HERO void dataInit(TransformData* data) override;
     HERO void dataUpdate(TransformData* data) override;
     HERO void dataDestroy(TransformData* data) override;

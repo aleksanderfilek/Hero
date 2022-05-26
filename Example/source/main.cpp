@@ -23,15 +23,15 @@ int WinMain(int argc, char* argv[])
 {
   core = new Hero::Core();
 
-  core->addSystem(new Hero::System::Profiler(SID("Profiler"), 128));
-  core->addSystem(new Hero::System::Window(SID("window"), "Example", 1280, 720));
+  core->addSystem(new Hero::System::Profiler(SID("Profiler"), 2048));
+  core->addSystem(new Hero::System::Window(SID("Window"), "Example", 1280, 720));
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
-  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("window"),SID("input")));
+  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
   core->addSystem(new Hero::System::Scene(SID("scene"), new Menu()));
 
   Hero::System::Event* event = core->getSystem<Hero::System::Event>(SID("event"));
-  Hero::System::Window* window = core->getSystem<Hero::System::Window>(SID("window"));
+  Hero::System::Window* window = core->getSystem<Hero::System::Window>(SID("Window"));
   window->setEvent(Hero::System::WindowEventType::CLOSE, close);
   event->addWindow(window);
 

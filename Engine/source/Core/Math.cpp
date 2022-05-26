@@ -950,19 +950,26 @@ HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale)
 {
     Matrix4x4 matrix = Matrix4x4::identity();
 
-    matrix.col[0].x = scale.x*cosf(rotation.y)*cosf(rotation.z);
-    matrix.col[0].y = scale.x*cosf(rotation.x)*sinf(rotation.z);
-    matrix.col[0].z = scale.x*(-sinf(rotation.y));
+    float cosx = cosf(rotation.x);
+    float sinx = sinf(rotation.x);
+    float cosy = cosf(rotation.y);
+    float siny = sinf(rotation.y);
+    float cosz = cosf(rotation.z);
+    float sinz = sinf(rotation.z);
+
+    matrix.col[0].x = scale.x*cosy*cosz;
+    matrix.col[0].y = scale.x*cosx*sinz;
+    matrix.col[0].z = scale.x*(-siny);
     matrix.col[0].w = 0.0f;
 
-    matrix.col[1].x = scale.y*(sinf(rotation.x)*sinf(rotation.y)*cosf(rotation.z)-cosf(rotation.x)*sinf(rotation.z));
-    matrix.col[1].y = scale.y*(sinf(rotation.x)*sinf(rotation.y)*sinf(rotation.z)+cosf(rotation.x)*cosf(rotation.z));
-    matrix.col[1].z = scale.y*sinf(rotation.x)*cosf(rotation.y);
+    matrix.col[1].x = scale.y*(sinx*siny*cosz-cosx*sinz);
+    matrix.col[1].y = scale.y*(sinx*siny*sinz+cosx*cosz);
+    matrix.col[1].z = scale.y*sinx*cosy;
     matrix.col[1].w = 0.0f;
 
-    matrix.col[2].x = scale.z*(cosf(rotation.x)*sinf(rotation.y)*cosf(rotation.z)+sinf(rotation.x)*sinf(rotation.z));
-    matrix.col[2].y = scale.z*(cosf(rotation.x)*sinf(rotation.y)*sinf(rotation.z)-sinf(rotation.x)*cosf(rotation.z));
-    matrix.col[2].z = scale.z*cosf(rotation.x)*cosf(rotation.y);
+    matrix.col[2].x = scale.z*(cosx*siny*cosz+sinx*sinz);
+    matrix.col[2].y = scale.z*(cosx*siny*sinz-sinx*cosz);
+    matrix.col[2].z = scale.z*cosx*cosy;
     matrix.col[2].w = 0.0f;
 
     matrix.col[3].x = position.x;

@@ -5,3 +5,5 @@
 !Example/bin
 !Tools/Builder/bin
 **/.builder
+*.csv
+*.temp

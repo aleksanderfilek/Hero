@@ -51,27 +51,12 @@ HERO void Label::apply()
   calculateAlligment();
 }
 
-HERO void Label::setPosition(Int2 _position)
-{
-  IElement::setPosition(_position);
-
-  Int2 diff = _position - relativePosition;
-  texturePosition = texturePosition + diff;
-}
-
-HERO void Label::setAbsolutPosition(Int2 originPosition)
-{
-  Int2 texAbsDiff = texturePosition - absolutePosition;
-
-  IElement::setAbsolutPosition(originPosition);
-
-  texturePosition = texAbsDiff + absolutePosition;;
-}
-
 HERO void Label::calculateAlligment()
 {
   Int2 texSize = texture->getSize();
-
+  Int2 absolutePosition = GetAbsolutePosition();
+  Int2 size = GetAbsoluteSize();
+  
   switch(alligment)
   {
     case Alligment::LEFT_TOP:

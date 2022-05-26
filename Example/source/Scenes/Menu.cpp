@@ -10,6 +10,9 @@
 #include"../Hero/Components/Sprite.hpp"
 #include"../Hero/Core/Random.hpp"
 #include"../Hero/Core/Time.hpp"
+#include"../Hero/Systems/UserInterface.hpp"
+#include"../Hero/UserInterface/Widget.hpp"
+#include"../Hero/UserInterface/Image.hpp"
 
 #include<iostream>
 #include<string>
@@ -30,16 +33,16 @@ void Menu::begin()
 {
   Hero::randomSetSeed(0);
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
-  window = Hero::Core::getSystem<Hero::System::Window>(SID("window"));
+  window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
   context = new Hero::ComponentContext();
   addContext(SID("Main"), context);
-  context->Register(SID("Transform"), new Hero::Transform(1000));
+  context->Register(SID("Transform"), new Hero::Transform(1000, false));
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
   spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he");
-  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 100, 1));
+  context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 1000, 1));
   context->Register(SID("Mover"), new Mover(1000));
 
   Hero::Actor* actor = new Hero::Actor(context);
@@ -55,6 +58,20 @@ void Menu::begin()
   {
     addActor(CreateMoverActor(context));
   }
+
+  Hero::Texture* uiTex = (Hero::Texture*)Hero::Texture::Load("bin/assets/Bricks.he");
+
+  Hero::System::UserInterface* ui = Hero::Core::getSystem<Hero::System::UserInterface>(SID("ui"));
+  ui->setShader((Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he"));
+  Hero::UI::Widget* widget = new Hero::UI::Widget();
+  Hero::UI::Image* image = new Hero::UI::Image();
+  image->SetRelativeTransform(Hero::Int4(50.0f, 50.0f, 50.0f, 50.0f), 
+    Hero::UI::HorizontalAnchor::STRETCH, Hero::UI::VerticalAnchor::STRETCH);
+  //image->SetPivot(Hero::Float2(1.0f, 1.0f));
+  image->setTexture(uiTex);
+  widget->add("img", image);
+  ui->add("main", widget);
+
 
   // std::vector<std::string> path{
   //   "bin/assets/skybox/right.jpg",
@@ -94,15 +111,6 @@ void Menu::update()
   window->setTitle(title);
 
   Hero::System::Window::clear();
-
-  if(input->keyDown(Hero::System::Input::KeyCode::RETURN))
-  {
-    units += 1000;
-    for(int i = 0; i < 1000; i++)
-    {
-      addActor(CreateMoverActor(context));
-    }
-  }
 
   // cubemapShader->bind();
   // // cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
