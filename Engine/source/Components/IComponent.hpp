@@ -26,6 +26,7 @@ public:
     virtual void removeComponent(const ChunkArrayIndex& index) = 0;
     virtual IComponent* getComponent(const ChunkArrayIndex& index) = 0;
     virtual void update() = 0;
+    virtual uint32_t GetComponentSize() = 0;
 };
 
 template<class T>
@@ -50,6 +51,8 @@ public:
     ChunkArrayIndex addComponent(Actor* owner) override;
     void removeComponent(const ChunkArrayIndex& index) override;
     IComponent* getComponent(const ChunkArrayIndex& index) override;
+
+    uint32_t GetComponentSize() override;
 };
 
 
@@ -105,6 +108,12 @@ template<class T>
 IComponent* IComponentSystem<T>::getComponent(const ChunkArrayIndex& index)
 {
     return &(data[index]);
+}
+
+template<class T>
+uint32_t IComponentSystem<T>::GetComponentSize()
+{ 
+    return sizeof(T); 
 }
 
 }

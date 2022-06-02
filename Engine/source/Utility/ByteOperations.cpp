@@ -1,4 +1,5 @@
 #include"ByteOperations.hpp"
+#include"cstring"
 
 namespace Hero
 {
@@ -18,6 +19,18 @@ HERO uint32_t ReadUint32(const uint8_t *bytes, int *currentPtr)
 	unsigned int c = bytes[(*currentPtr)++];
 	unsigned int d = bytes[(*currentPtr)++];
 	return a << 24 | b << 16 | c << 8 | d;
+}
+
+HERO void WritePtr(uint8_t *bytes, int *currentPtr, void* data, uint32_t byteSize)
+{
+	std::memcpy(bytes + *currentPtr, data, byteSize);
+	*currentPtr += byteSize;
+}
+
+HERO void ReadPtr(const uint8_t *bytes, int *currentPtr, void* dest, uint32_t byteSize)
+{
+	std::memcpy(dest, bytes + *currentPtr, byteSize);
+	*currentPtr += byteSize;
 }
 
 }

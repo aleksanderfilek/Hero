@@ -47,4 +47,25 @@ HERO IComponent* Actor::GetComponent(const Sid& sid)
   return context->Get(sid)->getComponent(result->second);
 }
 
+HERO std::vector<IComponent*> Actor::GetAllComponentsData()
+{
+  std::vector<IComponent*> Out;
+  for(auto component: components)
+  {
+    Out.push_back(context->Get(component.first)->getComponent(component.second));
+  }
+
+  return Out;
+}
+
+HERO std::vector<Sid> Actor::GetAllComponentsSid()
+{
+  std::vector<Sid> Sids;
+  for(auto component: components)
+  {
+    Sids.push_back(component.first);
+  }
+  return Sids;
+}
+
 }
