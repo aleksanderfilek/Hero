@@ -1,77 +1,68 @@
 #include"Mesh.hpp"
 #include"../ThirdParty/GL/Gl.hpp"
 #include"../Core/Debug.hpp"
+#include"../Utility/ByteOperations.hpp"
 
 #include<iostream>
-#include<fstream>
 
 namespace Hero
 {
 
 HERO Mesh::Mesh()
-{
-    id = GetId(); 
-}
+{}
 
-HERO Mesh::Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
+HERO Mesh::Mesh(const std::vector<MeshBuffer<float>>& _buffers,
     const MeshBuffer<int>& _indices)
-    : name(_name), buffers(_buffers), indices(_indices)
+    : buffers(_buffers), indices(_indices)
 {
     generate();
 }
 
-HERO IResource* Mesh::Load(const std::string& path)
+HERO ResourceHandle* Mesh::Load(uint8_t* Data)
 {
+    int index = 0;
+    
     std::vector<MeshBuffer<float>> buffers;
     MeshBuffer<int> indices;
-
-    std::ifstream input(path, std::ios::binary);
-
-    uint32_t nameSize;
-    input.read((char*)&nameSize, sizeof(uint32_t));
-    char nameArr[nameSize];
-    input.read(nameArr, nameSize * sizeof(char));
     
-    uint32_t indicesCount;
-    input.read((char*)&indicesCount, sizeof(uint32_t));
+    uint32_t indicesCount = ReadUint32(Data, &index);
     int* indicesArr = new int[indicesCount];
-    input.read((char*)indicesArr, indicesCount * sizeof(int));
+    ReadPtr(Data, &index, indicesArr, indicesCount);
     indices.length = indicesCount;
     indices.array = indicesArr;
 
-    uint32_t bufferCount;
-    input.read((char*)&bufferCount, sizeof(uint32_t));
+    uint32_t bufferCount = ReadUint32(Data, &index);
 
     for(int i = 0; i < bufferCount; i++)
     {
-        uint8_t bufferType;
-        input.read((char*)&bufferType, sizeof(uint8_t));
-        uint32_t bufferLength;
-        input.read((char*)&bufferLength, sizeof(uint32_t));
+        uint8_t bufferType = ReadUint8(Data, &index);
+        uint32_t bufferLength = ReadUint32(Data, &index);
         float* bufferArr = new float[bufferLength];
-        input.read((char*)bufferArr, bufferLength * sizeof(float));
+        ReadPtr(Data, &index, indicesArr, indicesCount);
 
         buffers.push_back((MeshBuffer<float>){(BufferType)bufferType, bufferArr, bufferLength});
     }
 
-    input.close();
-
-    Mesh* mesh = new Mesh(path, buffers, indices);
+    Mesh* mesh = new Mesh(buffers, indices);
     return mesh;
 }
 
-HERO void Mesh::Unload(IResource* resource)
+HERO Mesh::~Mesh()
 {
-    Mesh* mesh = (Mesh*)resource;
-    mesh->indices.clear();
-    for(auto buff: mesh->buffers)
+    indices.clear();
+    for(auto buff: buffers)
     {
         buff.clear();
     }
 
-    glDeleteBuffers(1, &mesh->VAO);
-    glDeleteBuffers(1, &mesh->VBO);
-    glDeleteBuffers(1, &mesh->EBO);
+    glDeleteBuffers(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+}
+
+HERO void Mesh::Unload(ResourceHandle* resource)
+{
+    delete resource;
 }
 
 HERO void Mesh::draw()

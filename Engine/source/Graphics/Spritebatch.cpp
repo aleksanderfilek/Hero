@@ -2,6 +2,7 @@
 #include"Texture.hpp"
 #include"Shader.hpp"
 #include"../ThirdParty/GL/Gl.hpp"
+#include"../Core/Sid.hpp"
 
 namespace Hero
 {
@@ -171,7 +172,7 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
 HERO void Spritebatch::setShader(Shader* _shader)
 {
     _shader->bind();
-    shaderTexturesLocation = _shader->getUniformLocation("sb_textures");
+    shaderTexturesLocation = _shader->getUniformLocation(SID("sb_textures"));
 }
 
 }

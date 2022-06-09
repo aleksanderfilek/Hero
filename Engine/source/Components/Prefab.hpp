@@ -1,6 +1,6 @@
 #pragma once
 
-#include"../Core/IResource.hpp"
+#include"../Systems/Resources.hpp"
 #include"../Core/Sid.hpp"
 #include<utility>
 #include<unordered_map>
@@ -10,7 +10,7 @@
 namespace Hero
 {
 
-class Prefab : public IResource
+class Prefab : public ResourceHandle
 {
 private:
   uint8_t* data = nullptr;
@@ -26,8 +26,8 @@ public:
 
   HERO ~Prefab();
 
-  HERO static IResource* Load(const std::string& path);
-  HERO static void Unload(IResource* resource);
+  HERO static ResourceHandle* Load(uint8_t* Data);
+  HERO static void Unload(ResourceHandle* resource);
   static int GetId(){ return 5; }
 
   HERO class Actor* Spawn(class ComponentContext* Context, Float3 Position, Float3 Rotation, Float3 Scale);

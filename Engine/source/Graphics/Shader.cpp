@@ -1,9 +1,9 @@
 #include"Shader.hpp"
 #include"../ThirdParty/GL/Gl.hpp"
 #include"../Core/Debug.hpp"
+#include"../Utility/ByteOperations.hpp"
 
 #include<iostream>
-#include<fstream>
 #include<vector>
 
 namespace Hero
@@ -14,15 +14,14 @@ HERO Shader::Shader()
     id = GetId(); 
 }
 
-HERO Shader::Shader(const std::string& Name, uint32_t GlId, 
+HERO Shader::Shader(uint32_t GlId, 
     const std::unordered_map<std::string, uint32_t>& Uniforms)
-    :name(Name), glId(GlId), uniforms(Uniforms)
-{
+    :glId(GlId), uniforms(Uniforms)
+{}
 
-}
-
-HERO IResource* Shader::Load(const std::string& path)
+HERO ResourceHandle* Shader::Load(uint8_t* Data)
 {
+    int index = 0;
     uint32_t program = glCreateProgram();
     
     uint32_t uniformNumber = 0;
@@ -34,28 +33,21 @@ HERO IResource* Shader::Load(const std::string& path)
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
 
-    std::ifstream file(path, std::ios::binary);
-    if(!file.is_open())
-    {
-        std::cout<<"File could not be opened! Path: "<<path<<std::endl;
-        return nullptr;
-    }
-
     std::vector<std::string> uniformVec;
-    file.read((char*)&uniformNumber, sizeof(uint32_t));
+    uniformNumber = ReadUint32(Data, &index);
     for(int i = 0; i < uniformNumber; i++)
     {
-        file.read((char*)&size, sizeof(uint32_t));
+        size = ReadUint32(Data, &index);
         content = new char[size+1];
-        file.read(content, size * sizeof(char));
         content[size]='\0';
+        ReadPtr(Data, &index, content, size);
 
         std::string uniform(content);
         uniformVec.push_back(uniform);
 
         delete[] content;
     }
-    file.read((char*)&flags, sizeof(uint16_t));
+    flags = ReadUint16(Data, &index);
 
     for(int i = 0; i < 5; i++)
     {
@@ -64,10 +56,10 @@ HERO IResource* Shader::Load(const std::string& path)
             continue;
         }
 
-        file.read((char*)&size, sizeof(uint32_t));
+        size = ReadUint32(Data, &index);
         content = new char[size+1];
         content[size]='\0';
-        file.read(content, size * sizeof(char));
+        ReadPtr(Data, &index, content, size);
 
         shaders[i] = glCreateShader(typeArr[i]);
         glShaderSource(shaders[i], 1, (const char**)&content, nullptr);
@@ -110,23 +102,26 @@ HERO IResource* Shader::Load(const std::string& path)
         glShaderCheckError(shaders[i], GL_DELETE_STATUS);
     }
 
-    file.close();
-
     glUseProgram(program);
     std::unordered_map<std::string, uint32_t> uniforms;
     for(auto uniform: uniformVec)
     {
         uint32_t loc = glGetUniformLocation(program, uniform.c_str());
-        uniforms.insert({uniform, loc});
+        uniforms.insert({SID(uniform), loc});
     }
     
     Shader* shader = new Shader(path, program, uniforms);
     return shader;
 }
 
-HERO void Shader::Unload(IResource* resource)
+HERO Shader::~Shader()
 {
-    glDeleteProgram(((Shader*)resource)->glId);
+    glDeleteProgram(glId);
+}
+
+HERO void Shader::Unload(ResourceHandle* resource)
+{
+    delete resource;
 }
 
 HERO void Shader::bind()
@@ -136,37 +131,37 @@ HERO void Shader::bind()
     isBinded = true;
 }
 
-HERO int Shader::getUniformLocation(const std::string& _name)
+HERO int Shader::getUniformLocation(const Sid& name)
 {
-    return (uniforms.find(_name) == uniforms.end())? -1 : uniforms[_name];
+    return (uniforms.find(name) == uniforms.end())? -1 : uniforms[name];
 }
 
-HERO void Shader::setInt(const std::string& _name, int value)
+HERO void Shader::setInt(const Sid& name, int value)
 {
-    glUniform1i(getUniformLocation(_name), value); 
+    glUniform1i(getUniformLocation(name), value); 
 }
 
-HERO void Shader::setFloat(const std::string& _name, float value)
+HERO void Shader::setFloat(const Sid& name, float value)
 {
-    glUniform1f(getUniformLocation(_name), value); 
+    glUniform1f(getUniformLocation(name), value); 
 }
 
-HERO void Shader::setFloat3(const std::string& _name, const Float3& value)
+HERO void Shader::setFloat3(const Sid& name, const Float3& value)
 {
-    glUniform3fv(getUniformLocation(_name), 1, &value.x); 
+    glUniform3fv(getUniformLocation(name), 1, &value.x); 
 }
 
-HERO void Shader::setMatrix4f(const std::string& _name, const Matrix4x4& value)
+HERO void Shader::setMatrix4f(const Sid& name, const Matrix4x4& value)
 {
-    int loc = getUniformLocation(_name);
+    int loc = getUniformLocation(name);
     #ifdef HERO_DEBUG
     if(loc == -1)
     {
-        std::cout<<"Location of "<<_name<<" equales "<<loc<<std::endl;
+        std::cout<<"Location of "<<name<<" equales "<<loc<<std::endl;
         return;
     }
     #endif
-    glUniformMatrix4fv(getUniformLocation(_name), 1, GL_FALSE, &value.col[0].x); 
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value.col[0].x); 
 }
 
 }

@@ -4,6 +4,9 @@
 #include"../Graphics/Texture.hpp"
 #include"../Graphics/Spritesheet.hpp"
 
+#include<fstream>
+#include<cstdlib>
+
 namespace Hero
 {
 
@@ -41,20 +44,35 @@ bool Resources::Exists(const Sid& sid) const
   return (bank.find(sid) != bank.end()); 
 }
 
-IResource* Resources::Get(const Sid& sid) const 
+ResourceHandle* Resources::Get(const Sid& sid) const 
 { 
   return bank.at(sid); 
 }
 
-bool Resources::Add(const Sid& sid, IResource* resource)
-{
-  return bank.insert({sid, resource}).second; 
-}
 
-bool Resources::Add(const Sid& sid, int ResourceId, std::string& path)
+bool Resources::Add(const Sid& sid, std::string& path)
 {
-  IResource* resource = Functions[ResourceId].Load(path);
-  return bank.insert({sid, resource}).second; 
+  std::ifstream file(path, std::ios::binary);
+  if(!file.is_open())
+  {
+    printMessage("Could not load resource");
+    return false;
+  }
+
+  file.seekg(0, std::ios::end);
+  int size = file.tellg();
+
+  int id = 0;
+  file.read((char*)&resourceId, sizeof(int)); 
+  size -= sizeof(int);
+
+  uint8_t* data = new uint8_t[size];
+  file.read((char*)data, size * sizeof(uint8_t));
+  file.close();
+
+  ResourceHandle* resource = Functions[resourceId].Load(data);
+  delete[] data;
+  return bank.insert({Sid(id), reresource}).second; 
 }
 
 void Resources::Remove(const Sid& sid)
@@ -63,24 +81,14 @@ void Resources::Remove(const Sid& sid)
   if(resource == bank.end())
     return;
 
-  Functions[resource->second->id].Unload(resource->second);
-}
-
-bool Resources::LoadFromFile(const std::string& path)
-{
-  return false;
-}
-
-void Resources::UnloadFromFile(const std::string& path)
-{
-
+  Functions[resource->second->GetId()].Unload(resource->second);
 }
 
 void Resources::Clear()
 {
-  for(std::pair<Sid, IResource*> resource: bank)
+  for(std::pair<Sid, ResourceHandle*> resource: bank)
   {
-    Functions[resource.second->id].Unload(resource.second);
+    Functions[resource.second->GetId()].Unload(resource.second);
   }
   bank.clear();
 }

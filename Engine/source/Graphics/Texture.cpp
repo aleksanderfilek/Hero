@@ -3,11 +3,10 @@
 #include"Color.hpp"
 #include"../Core/Debug.hpp"
 #include"../Utility/Qoi.hpp"
+#include"../Utility/ByteOperations.hpp"
 
 #include<iostream>
 #include<cstdlib>
-#include<fstream>
-
 
 namespace Hero
 {
@@ -15,8 +14,8 @@ namespace Hero
 HERO Texture::Texture()
 {}
 
-HERO Texture::Texture(const std::string& _name, uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace)
-    : name(_name), glId(_glId), size(_size), flags(_flags), channels(_channels), colorSpace(_colorSpace)
+HERO Texture::Texture(uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace)
+    : glId(_glId), size(_size), flags(_flags), channels(_channels), colorSpace(_colorSpace)
 {}
 
 HERO Texture::Texture(const std::string& text, const ColorRGB& color, 
@@ -81,40 +80,22 @@ HERO void Texture::unbind()
     glCheckError();
 }
 
-HERO IResource* Texture::Load(const std::string& path)
+HERO IResource* Texture::Load(uint8_t* Data)
 {
-    // load texture from file
+    int index = 0;
 
-    std::ifstream file(path, std::ios::binary);
+    int width = ReadUint32(Data, &index);
+    int height = ReadUint32(Data, &index);;
+    uint8_t channels = ReadUint8(Data, &index);
+    uint8_t colorSpace = ReadUint8(Data, &index);
+    uint8_t flags = ReadUint8(Data, &index);;
+    uint32_t ByteLength = ReadUint32(Data, &index);
+    uint8_t* imgData = new  uint8_t[ByteLength];
+    ReadPtr(Data, &index, imgData, ByteLength);
 
-    if(!file.is_open())
-    {
-        std::cout<<"Could not open asset: "<< path<<std::endl;
-        exit(-1);
-        return nullptr;
-    }
+    uint8_t* image = QOI::Decode(imgData, ByteLength, width, height, channels);
 
-    int ResourceId;
-    file.read((char*)&ResourceId, sizeof(int));
-    int width, height;
-    file.read((char*)&width, sizeof(int));
-    file.read((char*)&height, sizeof(int));
-    uint8_t channels;
-    file.read((char*)&channels, sizeof(uint8_t));
-    uint8_t colorSpace;
-    file.read((char*)&colorSpace, sizeof(uint8_t));
-    uint8_t flags;
-    file.read((char*)&flags, sizeof(uint8_t));
-    uint32_t ByteLength;
-    file.read((char*)&ByteLength, sizeof(uint32_t));
-    uint8_t* Data = new  uint8_t[ByteLength];
-    file.read((char*)Data, ByteLength*sizeof(char));
-
-    file.close();
-
-    uint8_t* image = QOI::Decode(Data, ByteLength, width, height, channels);
-
-    delete[] Data;
+    delete[] imgData;
 
     unsigned int gl_id;
     glGenTextures(1, &gl_id);
@@ -158,7 +139,7 @@ HERO IResource* Texture::Load(const std::string& path)
 
 HERO void Texture::Unload(IResource* resource)
 {
-
+    delete resource;
 }
 
 }

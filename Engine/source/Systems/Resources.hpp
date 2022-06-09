@@ -2,7 +2,6 @@
 
 #include"../Core/ISystem.hpp"
 #include"../Core/Sid.hpp"
-#include"../Core/IResource.hpp"
 
 #include<unordered_map>
 #include<vector>
@@ -12,10 +11,18 @@
 namespace Hero
 {
 
+class ResourceHandle{};
+
+struct ResourceFunctions
+{
+  ResourceHandle* (*Load)(uint8_t* Data);
+  void (*Unload)(ResourceHandle* Resource);
+};
+
 class Resources : public ISystem
 {
 private:
-  std::unordered_map<Sid, IResource*, SidHashFunction> bank;
+  std::unordered_map<Sid, ResourceHandle*, SidHashFunction> bank;
 
   std::unordered_map<int, ResourceFunctions> Functions;
 
@@ -35,12 +42,9 @@ public:
   }
 
   bool Exists(const Sid& sid) const;
-  IResource* Get(const Sid& sid) const;
-  bool Add(const Sid& sid, IResource* resource);
-  bool Add(const Sid& sid, int ResourceId, std::string& path);
+  ResourceHandle* Get(const Sid& sid) const;
+  bool Add(const Sid& sid, std::string& path);
   void Remove(const Sid& sid);
-  bool LoadFromFile(const std::string& path);
-  void UnloadFromFile(const std::string& path);
   void Clear();
 };
 

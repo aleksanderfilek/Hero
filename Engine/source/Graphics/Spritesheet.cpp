@@ -3,8 +3,7 @@
 #include"Color.hpp"
 #include"../Core/Debug.hpp"
 #include"../Utility/Qoi.hpp"
-
-#include<fstream>
+#include"../Utility/ByteOperations.hpp"
 
 namespace Hero
 {
@@ -18,60 +17,46 @@ HERO Spritesheet::~Spritesheet()
   delete texture;
 }
 
-HERO IResource* Spritesheet::Load(const std::string& path)
+HERO ResourceHandle* Spritesheet::Load(uint8_t* Data)
 {
-  std::ifstream file(path, std::ios::binary);
-
+  int index = 0;
   std::string texturePath;
-  char* temp;
   uint32_t size;
+  int id;
 
-  int ResourceId;
-  file.read((char*)&ResourceId, sizeof(int));
-
-  uint32_t spritesCount;
-  file.read((char*)&spritesCount, sizeof(uint32_t));
+  uint32_t spritesCount = ReadUint32(Data, &index);
 
   Spritesheet* spritesheet = new Spritesheet();
 
   for(int i = 0; i < spritesCount; i++)
   {
-    file.read((char*)&size, sizeof(uint32_t));
-    temp = new char[size+1];
-    file.read(temp, size * sizeof(char));
-    temp[size] = '\0';
-    std::string name = temp;
-    delete[] temp;
+    size = ReadUint32(Data, &index);
+    id = ReadUint32(Data, &index);
+    Sid name(id);
 
     Int4 rect;
-    file.read((char*)&rect.x, sizeof(uint32_t));
-    file.read((char*)&rect.y, sizeof(uint32_t));
-    file.read((char*)&rect.z, sizeof(uint32_t));
-    file.read((char*)&rect.w, sizeof(uint32_t));
+    rect.x = ReadInt(Data, &index);
+    rect.y = ReadInt(Data, &index);
+    rect.z = ReadInt(Data, &index);
+    rect.w = ReadInt(Data, &index);
 
     spritesheet->sprites.insert({name, rect});
   }
 
   uint32_t width, height;
-  file.read((char*)&width, sizeof(uint32_t));
-  file.read((char*)&height, sizeof(uint32_t));
-  uint8_t channels;
-  file.read((char*)&channels, sizeof(uint8_t));
-  uint8_t colorSpace;
-  file.read((char*)&colorSpace, sizeof(uint8_t));
-  uint8_t flags;
-  file.read((char*)&flags, sizeof(uint8_t));
-  uint32_t ByteLength;
-  file.read((char*)&ByteLength, sizeof(uint32_t));
+  width = ReadUint32(Data, &index);
+  height = ReadUint32(Data, &index);
+  uint8_t channels = ReadUint8(Data, &index);;
+  uint8_t colorSpace = ReadUint8(Data, &index);;
+  uint8_t flags = ReadUint8(Data, &index);;
+  uint32_t ByteLength = ReadUint32(Data, &index);
 
-  uint8_t* Data = new  uint8_t[ByteLength];
-  file.read((char*)Data, ByteLength*sizeof(char));
+  uint8_t* imgData = new  uint8_t[ByteLength];
+  ReadPtr(Data, &index, imgData, ByteLength);
 
-  file.close();
+  uint8_t* image = QOI::Decode(imgData+1, ByteLength, width, height, channels);
 
-  uint8_t* image = QOI::Decode(Data+1, ByteLength, width, height, channels);
-
-  delete[] Data;
+  delete[] imgData;
 
   unsigned int gl_id;
   glGenTextures(1, &gl_id);
@@ -111,11 +96,9 @@ HERO IResource* Spritesheet::Load(const std::string& path)
   return spritesheet;
 }
 
-HERO void Spritesheet::Unload(IResource* resource)
+HERO void Spritesheet::Unload(ResourceHandle* resource)
 {
-  Spritesheet* spritesheet = static_cast<Spritesheet*>(resource);
-  spritesheet->sprites.clear();
-  delete spritesheet->texture;
+  delete resource;
 }
 
 }

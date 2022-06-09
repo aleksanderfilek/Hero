@@ -2,9 +2,10 @@
 #include"ComponentContext.hpp"
 #include"Actor.hpp"
 #include"../Utility/ByteOperations.hpp"
-#include<fstream>
 #include<cstring>
 #include"Transform.hpp"
+
+#include<fstream>
 
 namespace Hero
 {
@@ -54,25 +55,15 @@ HERO Prefab::~Prefab()
   componentsData.clear();
 }
 
-HERO IResource* Prefab::Load(const std::string& path)
+HERO ResourceHandle* Prefab::Load(uint8_t* Data)
 {
+  int index = 0;
   Prefab* prefab = new Prefab();
 
-  std::ifstream input(path, std::ios::binary);
-
-  int Id;
-  input.read((char*)&Id, sizeof(int));
-
-  if(Id != GetId())
-  {
-    return nullptr;
-  }
-
-  input.read((char*)&prefab->size, sizeof(uint32_t));
+  prefab->size = ReadUint32(Data, &index);
 
   prefab->data = new uint8_t[prefab->size];
-  input.read((char*)prefab->data, prefab->size * sizeof(uint8_t));
-  input.close();
+  ReadPtr(Data, &index, prefab->data, prefab->size);
 
   int currentPtr = 0;
   prefab->count = ReadUint32(prefab->data, &currentPtr);
@@ -82,19 +73,15 @@ HERO IResource* Prefab::Load(const std::string& path)
     int byteSize = ReadUint32(prefab->data, &currentPtr);
     prefab->componentsData.insert( 
       { Sid(sidid), std::pair<uint8_t*, uint32_t>(prefab->data + currentPtr, byteSize) });
+    currentPtr += byteSize;
   }
 
   return prefab;
 }
 
-HERO void Prefab::Unload(IResource* resource)
+HERO void Prefab::Unload(ResourceHandle* resource)
 {
-  Prefab* prefab = (Prefab*)resource;
-
-  if(prefab->data)
-    delete[] prefab->data;
-
-    prefab->componentsData.clear();
+  delete resource;
 }
 
 HERO Actor* Prefab::Spawn(class ComponentContext* Context, Float3 Position, Float3 Rotation, Float3 Scale)

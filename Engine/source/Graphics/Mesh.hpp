@@ -1,7 +1,7 @@
 #pragma once
 
-#include"../Core/IResource.hpp"
-
+#include"../Systems/Resources.hpp"
+#include"../Core/Sid.hpp"
 #include<cstdint>
 #include<string>
 #include<vector>
@@ -32,21 +32,21 @@ struct MeshBuffer
     }
 };
 
-class Mesh : public IResource
+class Mesh : public ResourceHandle
 {
 private:
     uint32_t VAO, VBO, EBO;
-    std::string name;
     std::vector<MeshBuffer<float>> buffers;
     MeshBuffer<int> indices;
 
 public:
     HERO Mesh();
-    HERO Mesh(const std::string& _name, const std::vector<MeshBuffer<float>>& _buffers,
+    HERO Mesh(const std::vector<MeshBuffer<float>>& _buffers,
         const MeshBuffer<int>& _indices);
+    HERO ~Mesh();
 
-    HERO static IResource* Load(const std::string& path);
-    HERO static void Unload(IResource* resource);
+    HERO static ResourceHandle* Load(uint8_t* Data);
+    HERO static void Unload(ResourceHandle* resource);
     static int GetId(){ return 2; }
 
     HERO void draw();

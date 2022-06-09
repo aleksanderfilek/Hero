@@ -80,7 +80,7 @@ HERO Cubemap::Cubemap(const std::vector<std::string> path)
   };
   indicies.length = 36;
 
-  mesh = new Mesh("cubemap", buffers, indicies);
+  mesh = new Mesh(buffers, indicies);
 }
 
 HERO Cubemap::~Cubemap()
