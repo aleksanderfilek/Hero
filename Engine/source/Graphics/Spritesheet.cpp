@@ -17,7 +17,7 @@ HERO Spritesheet::~Spritesheet()
   delete texture;
 }
 
-HERO ResourceHandle* Spritesheet::Load(uint8_t* Data)
+HERO ResourceHandle* Spritesheet::Load(uint8_t* Data, Resources* system)
 {
   int index = 0;
   std::string texturePath;
@@ -40,7 +40,7 @@ HERO ResourceHandle* Spritesheet::Load(uint8_t* Data)
     rect.z = ReadInt(Data, &index);
     rect.w = ReadInt(Data, &index);
 
-    spritesheet->sprites.insert({name, rect});
+    spritesheet->sprites.insert(std::pair<Sid, Int4>(name, rect));
   }
 
   uint32_t width, height;
@@ -87,7 +87,7 @@ HERO ResourceHandle* Spritesheet::Load(uint8_t* Data)
   glBindTexture(GL_TEXTURE_2D, 0);
   glCheckError();
 
-  Texture* texture = new Texture(path, gl_id, (Int2){ (int)width, (int)height },
+  Texture* texture = new Texture(gl_id, (Int2){ (int)width, (int)height },
     flags, (channels == 3)?ColorChannel::RGB : ColorChannel::RGBA,
     (colorSpace == 0)?ColorSpace::SRGB : ColorSpace::Linear);
 

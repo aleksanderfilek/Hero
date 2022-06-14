@@ -8,14 +8,29 @@
 #include<utility>
 #include<string>
 
+#define MESH_ID         1
+#define SHADER_ID       2
+#define TEXTURE_ID      3
+#define SPRITESHEET_ID  4
+#define TERRAIN_ID      5
+#define PREFAB_ID       6
+#define MATERIAL_ID     7
+#define CUBEMAP_ID      8
+
 namespace Hero
 {
 
-class ResourceHandle{};
+class ResourceHandle
+{
+public:
+  int id; 
+};
+
+class Resources;
 
 struct ResourceFunctions
 {
-  ResourceHandle* (*Load)(uint8_t* Data);
+  ResourceHandle* (*Load)(uint8_t* Data, Resources* system);
   void (*Unload)(ResourceHandle* Resource);
 };
 

@@ -55,7 +55,7 @@ HERO Prefab::~Prefab()
   componentsData.clear();
 }
 
-HERO ResourceHandle* Prefab::Load(uint8_t* Data)
+HERO ResourceHandle* Prefab::Load(uint8_t* Data, Resources* system)
 {
   int index = 0;
   Prefab* prefab = new Prefab();

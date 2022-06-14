@@ -18,7 +18,7 @@ HERO Mesh::Mesh(const std::vector<MeshBuffer<float>>& _buffers,
     generate();
 }
 
-HERO ResourceHandle* Mesh::Load(uint8_t* Data)
+HERO ResourceHandle* Mesh::Load(uint8_t* Data, Resources* system)
 {
     int index = 0;
     

@@ -6,10 +6,18 @@
 
 #include<cstdint>
 #include<unordered_map>
-#include<string>
 
 namespace Hero
 {
+
+union ShaderData{
+    int i;
+    float f;
+    Float3 vec;
+    Matrix4x4 mat4;
+    ShaderData(){}
+    ~ShaderData(){}
+};
 
 class Shader : public ResourceHandle
 {   
@@ -23,9 +31,9 @@ public:
     HERO Shader(uint32_t GlId, const std::unordered_map<Sid, uint32_t, SidHashFunction>& Uniforms);
     HERO ~Shader();
 
-    HERO static ResourceHandle* Load(uint8_t* Data);
+    HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
     HERO static void Unload(ResourceHandle* resource);
-    static int GetId(){ return 1; }
+    static int GetId(){ return SHADER_ID; }
 
     HERO void bind();
     HERO int getUniformLocation(const Sid& name);

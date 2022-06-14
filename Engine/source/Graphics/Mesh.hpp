@@ -34,7 +34,7 @@ struct MeshBuffer
 
 class Mesh : public ResourceHandle
 {
-private:
+protected:
     uint32_t VAO, VBO, EBO;
     std::vector<MeshBuffer<float>> buffers;
     MeshBuffer<int> indices;
@@ -45,11 +45,11 @@ public:
         const MeshBuffer<int>& _indices);
     HERO ~Mesh();
 
-    HERO static ResourceHandle* Load(uint8_t* Data);
+    HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
     HERO static void Unload(ResourceHandle* resource);
-    static int GetId(){ return 2; }
+    static int GetId(){ return MESH_ID; }
 
-    HERO void draw();
+    HERO virtual void draw();
     HERO void generate();
 };
 

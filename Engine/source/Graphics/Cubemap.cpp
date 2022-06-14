@@ -1,37 +1,40 @@
 #include"Cubemap.hpp"
 #include"../Core/Debug.hpp"
 #include"../ThirdParty/GL/Gl.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include"../ThirdParty/Stb/stb_image.h"
 #include"Mesh.hpp"
+#include"../Utility/ByteOperations.hpp"
 
 #include<iostream>
 
 namespace Hero
 {
 
-HERO Cubemap::Cubemap(const std::vector<std::string> path)
+HERO Cubemap::Cubemap()
+{}
+
+HERO ResourceHandle* Cubemap::Load(uint8_t* Data, Resources* system)
 {
+  int index = 0;
+
+  uint32_t glId;
   glGenTextures(1, &glId);
   glBindTexture(GL_TEXTURE_CUBE_MAP, glId);
 
-  int width, height, nrChannels;
-  for (unsigned int i = 0; i < path.size(); i++)
-  {
-    // load texture from file
-    int width, height, nrChannels;
-    unsigned char *image = stbi_load(path[i].c_str(), &width, &height, &nrChannels, 0);
+  uint32_t width = ReadUint32(Data, &index);
+  uint32_t height = ReadUint32(Data, &index);
+  uint8_t channel = ReadUint8(Data, &index);
+  uint32_t glChannel = (channel == 3)? GL_RGB : GL_RGBA;
 
-    if(!image)
-    {
-        std::cout<<"Could not load texture: "<< path[i]<<std::endl;
-        exit(-1);
-    }
+  for(int i = 0; i < 6; i++)
+  {
+    uint32_t byteSize = ReadUint32(Data, &index);
+    uint8_t* image = new uint8_t[byteSize];
+    ReadPtr(Data, &index, image, byteSize);
 
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
-                  0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+      0, glChannel, width, height, 0, glChannel, GL_UNSIGNED_BYTE, image);
 
-    stbi_image_free(image);
+    delete[] image;
   }
 
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -39,7 +42,6 @@ HERO Cubemap::Cubemap(const std::vector<std::string> path)
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
 
   MeshBuffer<float> position;
   position.type = BufferType::vec3;
@@ -80,15 +82,25 @@ HERO Cubemap::Cubemap(const std::vector<std::string> path)
   };
   indicies.length = 36;
 
-  mesh = new Mesh(buffers, indicies);
+  Cubemap* cubemap = new Cubemap();
+
+  cubemap->buffers = buffers;
+  cubemap->indices = indicies;
+  cubemap->glId = glId;
+  cubemap->generate();
+
+  return cubemap;
+}
+
+HERO void Cubemap::Unload(ResourceHandle* resource)
+{
+  delete resource;
 }
 
 HERO Cubemap::~Cubemap()
 {
   glDeleteTextures(1, &glId);
   glCheckError();
-
-  delete mesh;
 }
 
 HERO void Cubemap::draw()
@@ -97,7 +109,7 @@ HERO void Cubemap::draw()
   glBindTexture(GL_TEXTURE_CUBE_MAP, glId);
 
   glDepthFunc(GL_LEQUAL);
-  mesh->draw();
+  Mesh::draw();
   glDepthFunc(GL_LESS);
 }
 

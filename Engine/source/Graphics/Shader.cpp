@@ -10,16 +10,13 @@ namespace Hero
 {
 
 HERO Shader::Shader()
-{ 
-    id = GetId(); 
-}
+{}
 
-HERO Shader::Shader(uint32_t GlId, 
-    const std::unordered_map<std::string, uint32_t>& Uniforms)
+HERO Shader::Shader(uint32_t GlId, const std::unordered_map<Sid, uint32_t, SidHashFunction>& Uniforms)
     :glId(GlId), uniforms(Uniforms)
 {}
 
-HERO ResourceHandle* Shader::Load(uint8_t* Data)
+HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
 {
     int index = 0;
     uint32_t program = glCreateProgram();
@@ -103,14 +100,14 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data)
     }
 
     glUseProgram(program);
-    std::unordered_map<std::string, uint32_t> uniforms;
+    std::unordered_map<Sid, uint32_t, SidHashFunction> uniforms;
     for(auto uniform: uniformVec)
     {
         uint32_t loc = glGetUniformLocation(program, uniform.c_str());
-        uniforms.insert({SID(uniform), loc});
+        uniforms.insert(std::pair<Sid,uint32_t>(SID(uniform.c_str()), loc));
     }
     
-    Shader* shader = new Shader(path, program, uniforms);
+    Shader* shader = new Shader(program, uniforms);
     return shader;
 }
 

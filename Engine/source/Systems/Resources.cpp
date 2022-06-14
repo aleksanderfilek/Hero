@@ -3,6 +3,10 @@
 #include"../Graphics/Mesh.hpp"
 #include"../Graphics/Texture.hpp"
 #include"../Graphics/Spritesheet.hpp"
+#include"../Graphics/Terrain.hpp"
+#include"../Components/Prefab.hpp"
+#include"../Graphics/Material.hpp"
+#include"../Graphics/Cubemap.hpp"
 
 #include<fstream>
 #include<cstdlib>
@@ -13,10 +17,14 @@ namespace Hero
 Resources::Resources(const Hero::Sid& sid)
   :ISystem(sid)
 {
-  RegisterResource<Shader>();
   RegisterResource<Mesh>();
+  RegisterResource<Shader>();
   RegisterResource<Texture>();
   RegisterResource<Spritesheet>();
+  RegisterResource<Terrain>();
+  RegisterResource<Prefab>();
+  RegisterResource<Material>();
+  RegisterResource<Cubemap>();
 }
 
 Resources::~Resources()
@@ -62,7 +70,7 @@ bool Resources::Add(const Sid& sid, std::string& path)
   file.seekg(0, std::ios::end);
   int size = file.tellg();
 
-  int id = 0;
+  int resourceId = 0;
   file.read((char*)&resourceId, sizeof(int)); 
   size -= sizeof(int);
 
@@ -70,9 +78,10 @@ bool Resources::Add(const Sid& sid, std::string& path)
   file.read((char*)data, size * sizeof(uint8_t));
   file.close();
 
-  ResourceHandle* resource = Functions[resourceId].Load(data);
+  ResourceHandle* resource = Functions[resourceId].Load(data, this);
+  resource->id = resourceId;
   delete[] data;
-  return bank.insert({Sid(id), reresource}).second; 
+  return bank.insert(std::pair<Sid, ResourceHandle*>(Sid(resourceId), resource)).second; 
 }
 
 void Resources::Remove(const Sid& sid)
@@ -81,14 +90,14 @@ void Resources::Remove(const Sid& sid)
   if(resource == bank.end())
     return;
 
-  Functions[resource->second->GetId()].Unload(resource->second);
+  Functions[resource->second->id].Unload(resource->second);
 }
 
 void Resources::Clear()
 {
-  for(std::pair<Sid, ResourceHandle*> resource: bank)
+  for(auto resource: bank)
   {
-    Functions[resource.second->GetId()].Unload(resource.second);
+    Functions[resource.second->id].Unload(resource.second);
   }
   bank.clear();
 }

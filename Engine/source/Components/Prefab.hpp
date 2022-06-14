@@ -26,9 +26,9 @@ public:
 
   HERO ~Prefab();
 
-  HERO static ResourceHandle* Load(uint8_t* Data);
+  HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
   HERO static void Unload(ResourceHandle* resource);
-  static int GetId(){ return 5; }
+  static int GetId(){ return PREFAB_ID; }
 
   HERO class Actor* Spawn(class ComponentContext* Context, Float3 Position, Float3 Rotation, Float3 Scale);
 

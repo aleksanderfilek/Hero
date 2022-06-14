@@ -31,9 +31,9 @@ namespace Hero
             HERO Texture(const std::string& text, const ColorRGB& color, const Font* font, uint8_t _flags);
             HERO ~Texture();
 
-            HERO static ResourceHandle* Load(uint8_t* Data);
+            HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
             HERO static void Unload(ResourceHandle* resource);
-            static int GetId(){ return 3; }
+            static int GetId(){ return TEXTURE_ID; }
 
             HERO void bind();
             HERO void unbind();

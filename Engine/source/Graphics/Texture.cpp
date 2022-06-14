@@ -54,7 +54,6 @@ HERO Texture::Texture(const std::string& text, const ColorRGB& color,
 
     glId = gl_id;
     size = (Int2){ surface->w, surface->h };
-    name = text;
     flags = _flags;
 
     SDL_FreeSurface(surface);
@@ -80,7 +79,7 @@ HERO void Texture::unbind()
     glCheckError();
 }
 
-HERO IResource* Texture::Load(uint8_t* Data)
+HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
 {
     int index = 0;
 
@@ -130,14 +129,13 @@ HERO IResource* Texture::Load(uint8_t* Data)
 
     texture->glId = gl_id;
     texture->size = (Int2){ width, height };
-    texture->name = path;
     texture->flags = flags;
     texture->channels = (channels == 3)?ColorChannel::RGB : ColorChannel::RGBA;
     texture->colorSpace = (colorSpace == 0)?ColorSpace::SRGB : ColorSpace::Linear;
     return texture;
 }
 
-HERO void Texture::Unload(IResource* resource)
+HERO void Texture::Unload(ResourceHandle* resource)
 {
     delete resource;
 }
