@@ -6,12 +6,10 @@ namespace Hero
 
 HERO Material::Material()
 {
-
 }
 
 HERO Material::~Material()
 {
-
 }
 
 HERO ResourceHandle* Material::Load(uint8_t* Data, Resources* system)

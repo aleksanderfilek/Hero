@@ -16,16 +16,13 @@ struct Sid
     #endif
 
     public:
-        #ifdef HERO_DEBUG
-        constexpr Sid() {}
-        #else
         constexpr Sid():id(0) {}
-        #endif
-
+        Sid(int Id):id(Id){}
+        
         inline std::string getName() const
         {
             #ifdef HERO_DEBUG
-            return std::string(text);
+            return (text)?std::string(text):std::to_string(id);
             #else
             std::cout<<"[SID] - getName function can only be used in Hero Debug Mode!"<<std::endl;
             return std::to_string(id);

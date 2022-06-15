@@ -84,7 +84,7 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
     int index = 0;
 
     int width = ReadUint32(Data, &index);
-    int height = ReadUint32(Data, &index);;
+    int height = ReadUint32(Data, &index);
     uint8_t channels = ReadUint8(Data, &index);
     uint8_t colorSpace = ReadUint8(Data, &index);
     uint8_t flags = ReadUint8(Data, &index);;

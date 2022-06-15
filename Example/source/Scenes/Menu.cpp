@@ -41,7 +41,7 @@ void Menu::begin()
   context->Register(SID("Transform"), new Hero::Transform(1000, false));
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
-  spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he");
+  spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("assets/spritebatch.he");
   context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 1000, 1));
   context->Register(SID("Mover"), new Mover(1000));
 
@@ -52,17 +52,17 @@ void Menu::begin()
   actor->AddComponent(SID("Player"));
   addActor(actor);
 
-  spriteTexture = (Hero::Texture*)Hero::Texture::Load("bin/assets/papaj.he");
+  spriteTexture = (Hero::Texture*)Hero::Texture::Load("assets/papaj.he");
 
   for(int i = 0; i < units; i++)
   {
     addActor(CreateMoverActor(context));
   }
 
-  Hero::Texture* uiTex = (Hero::Texture*)Hero::Texture::Load("bin/assets/Bricks.he");
+  Hero::Texture* uiTex = (Hero::Texture*)Hero::Texture::Load("assets/Bricks.he");
 
   Hero::System::UserInterface* ui = Hero::Core::getSystem<Hero::System::UserInterface>(SID("ui"));
-  ui->setShader((Hero::Shader*)Hero::Shader::Load("bin/assets/spritebatch.he"));
+  ui->setShader((Hero::Shader*)Hero::Shader::Load("assets/spritebatch.he"));
   Hero::UI::Widget* widget = new Hero::UI::Widget();
   Hero::UI::Image* image = new Hero::UI::Image();
   image->SetRelativeTransform(Hero::Int4(50.0f, 50.0f, 50.0f, 50.0f), 
@@ -74,21 +74,21 @@ void Menu::begin()
 
 
   // std::vector<std::string> path{
-  //   "bin/assets/skybox/right.jpg",
-  //   "bin/assets/skybox/left.jpg",
-  //   "bin/assets/skybox/top.jpg",
-  //   "bin/assets/skybox/bottom.jpg",
-  //   "bin/assets/skybox/front.jpg",
-  //   "bin/assets/skybox/back.jpg"
+  //   "assets/skybox/right.jpg",
+  //   "assets/skybox/left.jpg",
+  //   "assets/skybox/top.jpg",
+  //   "assets/skybox/bottom.jpg",
+  //   "assets/skybox/front.jpg",
+  //   "assets/skybox/back.jpg"
   // };
 
   // cubemap = new Hero::Cubemap(path);
-  // cubemapShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/cubemap.he");
+  // cubemapShader = (Hero::Shader*)Hero::Shader::Load("assets/cubemap.he");
   //cubemapShader->bind();
   //cubemapShader->setMatrix4f("proj", camera->projection);
 
-  // stone = (Hero::Mesh*)Hero::Mesh::Load("bin/assets/stone.he");
-  // stoneShader = (Hero::Shader*)Hero::Shader::Load("bin/assets/standard.he");
+  // stone = (Hero::Mesh*)Hero::Mesh::Load("assets/stone.he");
+  // stoneShader = (Hero::Shader*)Hero::Shader::Load("assets/standard.he");
   // stoneTexture = spriteTexture;
 
   // stoneShader->bind();

@@ -43,7 +43,7 @@ protected:
   void* eventArgs[6]{nullptr};
 
 public:
-  HERO virtual ~IElement(){};
+  HERO virtual ~IElement();
 
   virtual void draw(Spritebatch* spritebatch){};
   HERO virtual void update(Int2 mousePosition, uint8_t buttonState);

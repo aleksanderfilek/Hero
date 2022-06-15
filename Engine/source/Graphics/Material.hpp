@@ -4,6 +4,16 @@
 #include"Shader.hpp"
 #include<unordered_map>
 
+/*
+file format
+resource id
+shader id
+properties count
+property id
+data type
+data
+...
+*/
 namespace Hero
 {
 
