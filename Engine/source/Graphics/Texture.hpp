@@ -4,6 +4,17 @@
 #include"../Systems/Resources.hpp"
 #include "../Graphics/Color.hpp"
 
+/*
+file format
+id
+width
+height
+channels
+colorSpace
+flags
+imageSize
+imageData
+*/
 namespace Hero
 {
     class Font;

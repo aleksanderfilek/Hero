@@ -20,7 +20,6 @@ HERO Spritesheet::~Spritesheet()
 HERO ResourceHandle* Spritesheet::Load(uint8_t* Data, Resources* system)
 {
   int index = 0;
-  std::string texturePath;
   uint32_t size;
   int id;
 
