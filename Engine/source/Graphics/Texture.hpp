@@ -29,7 +29,7 @@ namespace Hero
 
     class Texture : public ResourceHandle
     {
-        private:
+        protected:
             uint32_t glId;
             Int2 size;
             uint8_t flags;
@@ -38,6 +38,7 @@ namespace Hero
 
         public:
             HERO Texture();
+            HERO Texture(uint32_t width, uint32_t height, ColorChannel channel);
             HERO Texture(uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace);
             HERO Texture(const std::string& text, const ColorRGB& color, const Font* font, uint8_t _flags);
             HERO ~Texture();

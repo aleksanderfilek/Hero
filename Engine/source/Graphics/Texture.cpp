@@ -14,6 +14,25 @@ namespace Hero
 HERO Texture::Texture()
 {}
 
+HERO Texture::Texture(uint32_t width, uint32_t height, ColorChannel channel)
+{
+    uint32_t texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    int format = ConvertColorChannelToGl(channel);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);  
+
+    glId = texture;
+    size = {(int)width, (int)height};
+    flags = (uint8_t)TextureFlag::NEAREST | (uint8_t)TextureFlag::NO_MIPMAP; 
+    channels = channel;
+    colorSpace = ColorSpace::Linear;
+}
+
 HERO Texture::Texture(uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace)
     : glId(_glId), size(_size), flags(_flags), channels(_channels), colorSpace(_colorSpace)
 {}
@@ -28,9 +47,11 @@ HERO Texture::Texture(const std::string& text, const ColorRGB& color,
         return;
     }
 
-    int mode = GL_RGB;
-    if(surface->format->BytesPerPixel == 4)
-            mode = GL_RGBA;
+    int mode = GL_RED;
+    if(surface->format->BytesPerPixel == 3)
+        mode = GL_RGB;
+    else if(surface->format->BytesPerPixel == 4)
+        mode = GL_RGBA;
 
     unsigned int gl_id;
     glGenTextures(1, &gl_id);
@@ -111,7 +132,7 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glCheckError();
 
-    uint32_t glChannel = (channels == 3)? GL_RGB : GL_RGBA;
+    int glChannel = ConvertColorChannelToGl(ConvertToColorChannel(channels));
     glTexImage2D(GL_TEXTURE_2D, 0, glChannel, width, height, 0, 
         glChannel, GL_UNSIGNED_BYTE, image);
     glCheckError();

@@ -1,10 +1,36 @@
 #include"Color.hpp"
 #include"../Core/Math.hpp"
+#include"../ThirdParty/GL/Gl.hpp"
 
 #include<cmath>
 
 namespace Hero
 {
+
+HERO ColorChannel ConvertToColorChannel(uint8_t channel)
+{
+    return static_cast<ColorChannel>(channel);
+}
+
+HERO int ConvertColorChannelToGl(ColorChannel channel)
+{
+    int gl = 0;
+
+    switch(channel)
+    {
+        case ColorChannel::RED:
+            gl = GL_RED;
+            break;
+        case ColorChannel::RGB:
+            gl = GL_RGB;
+            break;
+        case ColorChannel::RGBA:
+            gl = GL_RGBA;
+            break;
+    }
+
+    return gl;
+}
 
 HERO ColorHSV ColorRGB::convertToHSV() const
 {
