@@ -7,6 +7,19 @@
 #include<cstdint>
 #include<unordered_map>
 
+/*
+file format
+resourceId
+uniform number
+uniformSize
+uniformString
+...
+flags
+shaderSize
+shaderString
+...
+*/
+
 namespace Hero
 {
 

@@ -7,6 +7,18 @@
 #include<vector>
 #include<iostream>
 
+/*
+file format
+resourceId
+indicesCount
+indicesArray
+bufferCount
+bufferType
+bufferLength
+bufferArray
+...
+*/
+
 namespace Hero
 {
 

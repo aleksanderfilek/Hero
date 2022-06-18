@@ -3,6 +3,16 @@
 #include"../Systems/Resources.hpp"
 #include"Mesh.hpp"
 
+/*
+resourceId
+width
+height
+iamgeSize
+image
+yScale
+yShift
+*/
+
 namespace Hero
 {
 

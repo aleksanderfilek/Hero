@@ -85,6 +85,6 @@ HERO ResourceHandle* Terrain::Load(uint8_t* Data, Resources* system)
 
 HERO void Terrain::Unload(ResourceHandle* resource)
 {
-
+  delete resource;
 }
 }
