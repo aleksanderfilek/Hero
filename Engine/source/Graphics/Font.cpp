@@ -1,25 +1,39 @@
 #include"Font.hpp"
+#include"../Utility/ByteOperations.hpp"
 
 #include<iostream>
-#include<cstdlib>
-            
+
 namespace Hero
 {
 
-HERO Font::Font(const char* _path, uint32_t _size)
-{
-    font = TTF_OpenFont(_path, _size);
-
-    if(!font)
-    {
-        std::cout<<"Could not load font! SDL_ttf Error: "<< TTF_GetError()<<std::endl;
-        exit(-1);
-    }
-}
+HERO Font::Font()
+{}
 
 HERO Font::~Font()
 {
-    TTF_CloseFont(font);
+    TTF_CloseFont(ttfFont);
+}
+
+HERO ResourceHandle* Font::Load(uint8_t* Data, Resources* system)
+{
+    int index = 0;
+    uint32_t fontSize = ReadUint32(Data, &index);
+    uint32_t pathSize = ReadUint32(Data, &index);
+    char* path = new char[pathSize];
+    ReadPtr(Data, &index, path, pathSize);
+
+    Font* font = new Font();
+    font->size = fontSize;
+    font->ttfFont = TTF_OpenFont(path, fontSize);
+
+    delete[] path;
+
+    return font;
+}
+
+HERO void Font::Unload(ResourceHandle* resource)
+{
+    delete resource;
 }
 
 }

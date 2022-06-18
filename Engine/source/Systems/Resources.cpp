@@ -7,6 +7,7 @@
 #include"../Components/Prefab.hpp"
 #include"../Graphics/Material.hpp"
 #include"../Graphics/Cubemap.hpp"
+#include"../Graphics/Font.hpp"
 
 #include<fstream>
 #include<cstdlib>
@@ -25,6 +26,7 @@ Resources::Resources(const Hero::Sid& sid)
   RegisterResource<Prefab>();
   RegisterResource<Material>();
   RegisterResource<Cubemap>();
+  RegisterResource<Font>();
 }
 
 Resources::~Resources()
