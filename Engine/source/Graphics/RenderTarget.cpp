@@ -69,9 +69,12 @@ HERO void RenderTarget::Clear()
   {
     glEnable(GL_DEPTH_TEST);
   }
-  // dodać sprawdzenie czy ktorys z testow byl wczesniej uruchomiony
-  // dodać uruchamianie stencil test
 
+  if(stencilBuffer)
+  {
+    glEnable(GL_STENCIL_TEST);
+  }
+  
   glClearColor((float)clearColor.r/255.0f, 
     (float)clearColor.g/255.0f, 
     (float)clearColor.b/255.0f, 
