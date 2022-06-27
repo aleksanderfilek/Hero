@@ -15,6 +15,8 @@
 #include<utility>
 #include<iterator>
 
+#include"Hero/Graphics/Shader.hpp"
+
 namespace Editor
 {
 
@@ -76,6 +78,9 @@ void shader(const Cmd& cmd)
   newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
   newPath<<"he";
   std::ofstream output(newPath.str(), std::ios::binary);
+
+  int resourceId = Hero::Shader::GetId();
+  output.write((char*)&resourceId, sizeof(int));
 
   uint32_t uniformNumber = uniformNames.size();
   output.write((char*)&uniformNumber, sizeof(uint32_t));
