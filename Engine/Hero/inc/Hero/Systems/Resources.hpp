@@ -43,12 +43,12 @@ private:
   std::unordered_map<int, ResourceFunctions> Functions;
 
 public:
-  Resources(const Sid& sid);
-  ~Resources();
+  HERO Resources(const Sid& sid);
+  HERO ~Resources();
 
-  void init();
-  void update();
-  void close();
+  HERO void init();
+  HERO void update();
+  HERO void close();
 
   template<class T> bool RegisterResource()
   {
@@ -57,11 +57,11 @@ public:
     return Functions.insert({T::GetId(), functions}).second;
   }
 
-  bool Exists(const Sid& sid) const;
-  ResourceHandle* Get(const Sid& sid) const;
-  bool Add(const Sid& sid, std::string& path);
-  void Remove(const Sid& sid);
-  void Clear();
+  HERO bool Exists(const Sid& sid) const;
+  HERO ResourceHandle* Get(const Sid& sid) const;
+  HERO bool Add(const Sid& sid, std::string& path);
+  HERO void Remove(const Sid& sid);
+  HERO void Clear();
 };
 
 }

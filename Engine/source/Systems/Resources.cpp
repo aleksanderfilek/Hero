@@ -15,7 +15,7 @@
 namespace Hero
 {
 
-Resources::Resources(const Hero::Sid& sid)
+HERO Resources::Resources(const Hero::Sid& sid)
   :ISystem(sid)
 {
   RegisterResource<Mesh>();
@@ -29,38 +29,38 @@ Resources::Resources(const Hero::Sid& sid)
   RegisterResource<Font>();
 }
 
-Resources::~Resources()
+HERO Resources::~Resources()
 {
 
 }
 
-void Resources::init()
+HERO void Resources::init()
 {
   ISystem::init();
 }
 
-void Resources::update()
+HERO void Resources::update()
 {
 
 }
 
-void Resources::close()
+HERO void Resources::close()
 {
   ISystem::close();
 }
 
-bool Resources::Exists(const Sid& sid) const 
+HERO bool Resources::Exists(const Sid& sid) const 
 { 
   return (bank.find(sid) != bank.end()); 
 }
 
-ResourceHandle* Resources::Get(const Sid& sid) const 
+HERO ResourceHandle* Resources::Get(const Sid& sid) const 
 { 
   return bank.at(sid); 
 }
 
 
-bool Resources::Add(const Sid& sid, std::string& path)
+HERO bool Resources::Add(const Sid& sid, std::string& path)
 {
   std::ifstream file(path, std::ios::binary);
   if(!file.is_open())
@@ -86,7 +86,7 @@ bool Resources::Add(const Sid& sid, std::string& path)
   return bank.insert(std::pair<Sid, ResourceHandle*>(Sid(resourceId), resource)).second; 
 }
 
-void Resources::Remove(const Sid& sid)
+HERO void Resources::Remove(const Sid& sid)
 {
   auto resource = bank.find(sid);
   if(resource == bank.end())
@@ -95,7 +95,7 @@ void Resources::Remove(const Sid& sid)
   Functions[resource->second->id].Unload(resource->second);
 }
 
-void Resources::Clear()
+HERO void Resources::Clear()
 {
   for(auto resource: bank)
   {
