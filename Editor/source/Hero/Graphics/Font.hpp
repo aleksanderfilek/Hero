@@ -1,22 +1,36 @@
 #pragma once
 
 #include"../ThirdParty/SDL2/SDL_ttf.h"
+#include"../Systems/Resources.hpp"
+
 #include<cstdint>
+
+/*
+file format
+resourceId
+fontSize
+pathSize
+pathString
+*/
 
 namespace Hero
 {
 
-class HERO Font
+class Font : ResourceHandle
 {
     private:
-        const char* name;
         uint32_t size;
-        TTF_Font* font;
+        TTF_Font* ttfFont;
 
     public:
-        HERO Font(const char* _path, uint32_t _size);
+        HERO Font();
         HERO ~Font();
 
-        inline TTF_Font* getTTFFont() const { return font; }
+        HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
+        HERO static void Unload(ResourceHandle* resource);
+        static int GetId(){ return FONT_ID; }
+
+        inline TTF_Font* getTTFFont() const { return ttfFont; }
+        inline uint32_t GetSize() const { return size; }
 };
 } // namespace Hero

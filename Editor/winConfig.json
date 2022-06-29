@@ -4,7 +4,7 @@
     "OutputDir": "bin",
     "Compiler" : "g++",
     "LibsDir" : [
-        "lib"
+        "bin"
     ],
     "Libs" : [
         "-lhero",

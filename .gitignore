@@ -7,3 +7,4 @@
 **/.builder
 *.csv
 *.temp
+**/tmp

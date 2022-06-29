@@ -5,6 +5,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include"Hero/ThirdParty/Stb/stb_image.h"
 #include"Hero/Graphics/Texture.hpp"
+#include"Hero/Systems/Resources.hpp"
 
 #include<iostream>
 #include<fstream>
@@ -16,6 +17,8 @@
 #include<iterator>
 
 #include"Hero/Graphics/Shader.hpp"
+
+extern Hero::Resources* resources;
 
 namespace Editor
 {
@@ -372,6 +375,9 @@ void texture(const Cmd& cmd)
   output.close();
 
   delete[] encoded;
+
+  std::string newPathStr = newPath.str();
+  resources->Add(SID(newPath.str().c_str()), newPathStr);
 }
 
 }
