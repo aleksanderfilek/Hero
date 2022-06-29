@@ -1,4 +1,5 @@
 #include"Resources.hpp"
+
 #include"../Graphics/Shader.hpp"
 #include"../Graphics/Mesh.hpp"
 #include"../Graphics/Texture.hpp"
@@ -31,8 +32,6 @@ HERO Resources::Resources(const Hero::Sid& sid)
 
 HERO Resources::~Resources()
 {
-
-}
 
 HERO void Resources::init()
 {
@@ -69,9 +68,9 @@ HERO bool Resources::Add(const Sid& sid, std::string& path)
     return false;
   }
 
-  file.seekg(0, std::ios::end);
+  file.seekg(0, file.end);
   int size = file.tellg();
-
+  file.seekg(0, file.beg);
   int resourceId = 0;
   file.read((char*)&resourceId, sizeof(int)); 
   size -= sizeof(int);
@@ -80,9 +79,12 @@ HERO bool Resources::Add(const Sid& sid, std::string& path)
   file.read((char*)data, size * sizeof(uint8_t));
   file.close();
 
+  printMessage(std::to_string(size));
+
   ResourceHandle* resource = Functions[resourceId].Load(data, this);
   resource->id = resourceId;
   delete[] data;
+
   return bank.insert(std::pair<Sid, ResourceHandle*>(Sid(resourceId), resource)).second; 
 }
 

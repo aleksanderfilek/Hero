@@ -110,6 +110,7 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
     uint8_t colorSpace = ReadUint8(Data, &index);
     uint8_t flags = ReadUint8(Data, &index);;
     uint32_t ByteLength = ReadUint32(Data, &index);
+
     uint8_t* imgData = new  uint8_t[ByteLength];
     ReadPtr(Data, &index, imgData, ByteLength);
 
@@ -145,6 +146,7 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
     delete[] image;
     glBindTexture(GL_TEXTURE_2D, 0);
     glCheckError();
+    std::cout<<"ok"<<std::endl;
 
     Texture* texture = new Texture();
 
@@ -152,7 +154,8 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
     texture->size = (Int2){ width, height };
     texture->flags = flags;
     texture->channels = (channels == 3)?ColorChannel::RGB : ColorChannel::RGBA;
-    texture->colorSpace = (colorSpace == 0)?ColorSpace::SRGB : ColorSpace::Linear;
+    texture->colorSpace = (colorSpace == 0)?ColorSpace::SRGB : ColorSpace::Linear;    std::cout<<"ok"<<std::endl;
+
     return texture;
 }
 

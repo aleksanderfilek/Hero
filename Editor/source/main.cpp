@@ -3,10 +3,6 @@
 #include"Interpreter.hpp"
 #include"Assets.hpp"
 
-#include"Hero/Systems/Resources.hpp"
-
-Hero::Resources* resources = nullptr;
-
 namespace Editor
 {
 
@@ -49,7 +45,6 @@ void run()
 
 int main()
 {
-  resources = new Hero::Resources(SID("Res"));
   Editor::Interpreter interpreter;
 
   std::cout<<"Hero Text Editor"<<std::endl;
