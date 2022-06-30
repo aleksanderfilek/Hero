@@ -27,7 +27,7 @@ HERO ResourceHandle* Mesh::Load(uint8_t* Data, Resources* system)
     
     uint32_t indicesCount = ReadUint32(Data, &index);
     int* indicesArr = new int[indicesCount];
-    ReadPtr(Data, &index, indicesArr, indicesCount);
+    ReadPtr(Data, &index, (uint8_t*)indicesArr, indicesCount);
     indices.length = indicesCount;
     indices.array = indicesArr;
 
@@ -38,7 +38,7 @@ HERO ResourceHandle* Mesh::Load(uint8_t* Data, Resources* system)
         uint8_t bufferType = ReadUint8(Data, &index);
         uint32_t bufferLength = ReadUint32(Data, &index);
         float* bufferArr = new float[bufferLength];
-        ReadPtr(Data, &index, indicesArr, indicesCount);
+        ReadPtr(Data, &index, (uint8_t*)indicesArr, indicesCount);
 
         buffers.push_back((MeshBuffer<float>){(BufferType)bufferType, bufferArr, bufferLength});
     }

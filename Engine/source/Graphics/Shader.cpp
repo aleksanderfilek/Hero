@@ -29,15 +29,16 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
     uint32_t typeArr[5] = { GL_VERTEX_SHADER, GL_TESS_CONTROL_SHADER, 
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
-
     std::vector<std::string> uniformVec;
     uniformNumber = ReadUint32(Data, &index);
+
     for(int i = 0; i < uniformNumber; i++)
     {
         size = ReadUint32(Data, &index);
+
         content = new char[size+1];
         content[size]='\0';
-        ReadPtr(Data, &index, content, size);
+        ReadPtr(Data, &index, (uint8_t*)content, size);
 
         std::string uniform(content);
         uniformVec.push_back(uniform);
@@ -45,7 +46,6 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
         delete[] content;
     }
     flags = ReadUint16(Data, &index);
-
     for(int i = 0; i < 5; i++)
     {
         if(!(flags & 1<<i))
@@ -56,7 +56,7 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
         size = ReadUint32(Data, &index);
         content = new char[size+1];
         content[size]='\0';
-        ReadPtr(Data, &index, content, size);
+        ReadPtr(Data, &index, (uint8_t*)content, size);
 
         shaders[i] = glCreateShader(typeArr[i]);
         glShaderSource(shaders[i], 1, (const char**)&content, nullptr);

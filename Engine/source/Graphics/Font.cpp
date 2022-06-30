@@ -20,7 +20,7 @@ HERO ResourceHandle* Font::Load(uint8_t* Data, Resources* system)
     uint32_t fontSize = ReadUint32(Data, &index);
     uint32_t pathSize = ReadUint32(Data, &index);
     char* path = new char[pathSize];
-    ReadPtr(Data, &index, path, pathSize);
+    ReadPtr(Data, &index, (uint8_t*)path, pathSize);
 
     Font* font = new Font();
     font->size = fontSize;

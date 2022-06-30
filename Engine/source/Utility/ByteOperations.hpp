@@ -13,7 +13,7 @@ HERO void WriteUint32(uint8_t *bytes, int *currentPtr, uint32_t value);
 HERO uint32_t ReadUint32(const uint8_t *bytes, int *currentPtr);
 HERO void WriteInt(uint8_t *bytes, int *currentPtr, int value);
 HERO int ReadInt(const uint8_t *bytes, int *currentPtr);
-HERO void WritePtr(uint8_t *bytes, int *currentPtr, void* data, uint32_t byteSize);
-HERO void ReadPtr(const uint8_t *bytes, int *currentPtr, void* dest, uint32_t byteSize);
+HERO void WritePtr(uint8_t *bytes, int *currentPtr, uint8_t* data, uint32_t byteSize);
+HERO void ReadPtr(const uint8_t *bytes, int *currentPtr, uint8_t* dest, uint32_t byteSize);
 
 }

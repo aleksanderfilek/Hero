@@ -2,6 +2,10 @@
 
 #include"Interpreter.hpp"
 #include"Assets.hpp"
+#include"Hero/Systems/Resources.hpp"
+#include"Hero/Systems/Window.hpp"
+
+Hero::Resources* resources;
 
 namespace Editor
 {
@@ -43,12 +47,17 @@ void run()
 
 }
 
-int main()
+int WinMain(int argc, char *argv[])
 {
+  Hero::System::Window* window = new Hero::System::Window(SID("Window"),"Editor",64,64);
+  resources = new Hero::Resources(SID("Res"));
   Editor::Interpreter interpreter;
 
   std::cout<<"Hero Text Editor"<<std::endl;
   Editor::run();
+
+  delete resources;
+  delete window;
 
   return 0;
 }

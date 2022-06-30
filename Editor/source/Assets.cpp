@@ -16,6 +16,10 @@
 #include<iterator>
 
 #include"Hero/Graphics/Shader.hpp"
+#include"Hero/Systems/Resources.hpp"
+#include"Hero/Utility/ByteOperations.hpp"
+
+extern Hero::Resources* resources;
 
 namespace Editor
 {
@@ -74,23 +78,17 @@ void shader(const Cmd& cmd)
     shaders[i] = body;
   }
 
-  std::stringstream newPath;
-  newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
-  newPath<<"he";
-  std::ofstream output(newPath.str(), std::ios::binary);
+  int index = 0;
+  uint32_t byteSize = 0;
+  uint8_t* Data = nullptr;
 
-  int resourceId = Hero::Shader::GetId();
-  output.write((char*)&resourceId, sizeof(int));
-
-  uint32_t uniformNumber = uniformNames.size();
-  output.write((char*)&uniformNumber, sizeof(uint32_t));
+  byteSize += sizeof(uint32_t); // uniform number
   for(auto uniform: uniformNames)
   {
-    uint32_t size = uniform.length();
-    output.write((char*)&size, sizeof(uint32_t));
-    output.write(uniform.c_str(), size * sizeof(char));
+    byteSize += sizeof(uint32_t); // uniform text size
+    byteSize += uniform.length() * sizeof(char); // uniform text
   }
-
+  byteSize += sizeof(uint32_t); // flags
   uint16_t flags = 0;
   for(int i = 0; i < 5; i++)
   {
@@ -99,19 +97,53 @@ void shader(const Cmd& cmd)
       flags |= 1 << i;
     }
   }
-  output.write((char*)&flags, sizeof(uint16_t));
+  for(int i = 0; i < 5; i++)
+  {
+    if(flags & 1<<i)
+    {
+      byteSize += sizeof(uint32_t); // shader text size
+      byteSize += shaders[i].length() * sizeof(char); // shader text
+    }
+  }
 
+  Data = new uint8_t[byteSize];
+
+  uint32_t uniformNumber = uniformNames.size();
+  Hero::WriteUint32(Data, &index, uniformNumber);
+  for(auto uniform: uniformNames)
+  {
+    uint32_t size = uniform.length();
+    Hero::WriteUint32(Data, &index, size);
+    Hero::WritePtr(Data, &index, (uint8_t*)uniform.c_str(),size * sizeof(char));
+  }
+
+  Hero::WriteUint16(Data, &index, flags);
   for(int i = 0; i < 5; i++)
   {
     if(flags & 1<<i)
     {
       uint32_t size = shaders[i].length();
-      output.write((char*)&size, sizeof(uint32_t));
-      output.write(shaders[i].c_str(), size * sizeof(char));
+      Hero::WriteUint32(Data, &index, size);
+      Hero::WritePtr(Data, &index, (uint8_t*)shaders[i].c_str(), size * sizeof(char));
     }
   }
 
+  std::stringstream newPath;
+  newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
+  newPath<<"he";
+  std::ofstream output(newPath.str(), std::ios::binary);
+
+  int resourceId = Hero::Shader::GetId();
+  output.write((char*)&resourceId, sizeof(int));
+  std::cout<<"size "<<byteSize<<std::endl;
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
   output.close();
+
+  delete[] Data;
+
+  std::string pathStr = newPath.str();
+  resources->Add(SID("Shader"), pathStr);
 }
 
 static int objMesh(const std::string& path);
@@ -351,28 +383,45 @@ void texture(const Cmd& cmd)
 
   stbi_image_free(data);
 
+  uint8_t channels = (uint8_t)nrChannels;
+  uint8_t colorSpace = (uint8_t)Hero::ColorSpace::Linear;
+  uint8_t flags = (uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::MIPMAP;
+
+  uint32_t byteSize = 0;
+  byteSize += sizeof(int);
+  byteSize += sizeof(int);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += ByteLength * sizeof(uint8_t);
+
+  uint8_t* Data = new uint8_t[byteSize];
+  int index = 0;
+  Hero::WriteInt(Data, &index, width);
+  Hero::WriteInt(Data, &index, height);
+  Hero::WriteUint8(Data, &index, channels);
+  Hero::WriteUint8(Data, &index, colorSpace);
+  Hero::WriteUint8(Data, &index, flags);
+  Hero::WriteUint32(Data, &index, ByteLength);
+  Hero::WritePtr(Data, &index, encoded, ByteLength * sizeof(uint8_t));
+
+  delete[] encoded;
+
   std::stringstream newPath;
   newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
   newPath<<"he";
   std::ofstream output(newPath.str(), std::ios::binary);
 
   int ResourceId = Hero::Texture::GetId();
-  std::cout<<ResourceId<<std::endl;
-  uint8_t channels = (uint8_t)nrChannels;
-  uint8_t colorSpace = (uint8_t)Hero::ColorSpace::Linear;
-  uint8_t flags = (uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::MIPMAP;
   output.write((char*)&ResourceId, sizeof(int));
-  output.write((char*)&width, sizeof(int));
-  output.write((char*)&height, sizeof(int));
-  output.write((char*)&channels, sizeof(uint8_t));
-  output.write((char*)&colorSpace, sizeof(uint8_t));
-  output.write((char*)&flags, sizeof(uint8_t));
-  output.write((char*)&ByteLength, sizeof(uint32_t));
-  output.write((char*)encoded, ByteLength * sizeof(uint8_t));
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
 
   output.close();
 
-  delete[] encoded;
+  std::string pathStr = newPath.str();
+  resources->Add(SID("Texture"), pathStr);
 
 }
 

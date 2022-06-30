@@ -41,7 +41,7 @@ HERO Prefab::Prefab(Sid Name, class Actor* RefActor) : name(Name)
     WriteUint32(data, &currentPtr, sids[Index].id);
     int oldPtr = currentPtr;
     WriteUint32(data, &currentPtr, byteSizes[Index]);
-    WritePtr(data, &currentPtr, (void*)RefActor->GetComponent(sids[Index]), byteSizes[Index]);
+    WritePtr(data, &currentPtr, (uint8_t*)RefActor->GetComponent(sids[Index]), byteSizes[Index]);
     componentsData.insert(
       {sids[Index], std::pair<uint8_t*, uint32_t>(data + oldPtr, byteSizes[Index])});
   }

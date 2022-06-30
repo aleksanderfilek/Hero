@@ -32,6 +32,7 @@ HERO Resources::Resources(const Hero::Sid& sid)
 
 HERO Resources::~Resources()
 {
+}
 
 HERO void Resources::init()
 {
@@ -68,18 +69,15 @@ HERO bool Resources::Add(const Sid& sid, std::string& path)
     return false;
   }
 
-  file.seekg(0, file.end);
-  int size = file.tellg();
-  file.seekg(0, file.beg);
+
   int resourceId = 0;
   file.read((char*)&resourceId, sizeof(int)); 
-  size -= sizeof(int);
+  uint32_t size = 0;
+  file.read((char*)&size, sizeof(uint32_t)); 
 
   uint8_t* data = new uint8_t[size];
   file.read((char*)data, size * sizeof(uint8_t));
   file.close();
-
-  printMessage(std::to_string(size));
 
   ResourceHandle* resource = Functions[resourceId].Load(data, this);
   resource->id = resourceId;

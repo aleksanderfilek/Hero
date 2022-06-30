@@ -61,13 +61,13 @@ HERO int ReadInt(const uint8_t *bytes, int *currentPtr)
 	return a << 24 | b << 16 | c << 8 | d;
 }
 
-HERO void WritePtr(uint8_t *bytes, int *currentPtr, void* data, uint32_t byteSize)
+HERO void WritePtr(uint8_t *bytes, int *currentPtr, uint8_t* data, uint32_t byteSize)
 {
 	std::memcpy(bytes + *currentPtr, data, byteSize);
 	*currentPtr += byteSize;
 }
 
-HERO void ReadPtr(const uint8_t *bytes, int *currentPtr, void* dest, uint32_t byteSize)
+HERO void ReadPtr(const uint8_t *bytes, int *currentPtr, uint8_t* dest, uint32_t byteSize)
 {
 	std::memcpy(dest, bytes + *currentPtr, byteSize);
 	*currentPtr += byteSize;

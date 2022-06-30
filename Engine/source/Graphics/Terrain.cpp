@@ -27,8 +27,8 @@ HERO ResourceHandle* Terrain::Load(uint8_t* Data, Resources* system)
   ReadPtr(Data, &index, image, imageSize);
 
   float yScale = 0.0f, yShift = 0.0f;
-  ReadPtr(Data, &index, &yScale, sizeof(float));
-  ReadPtr(Data, &index, &yShift, sizeof(float));
+  ReadPtr(Data, &index, (uint8_t*)&yScale, sizeof(float));
+  ReadPtr(Data, &index, (uint8_t*)&yShift, sizeof(float));
 
   int k = 0;
   float* positionArray = new float[height * width * 3];
