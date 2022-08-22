@@ -12,6 +12,7 @@
 
 #include<fstream>
 #include<cstdlib>
+#include<iostream>
 
 namespace Hero
 {
@@ -78,12 +79,12 @@ HERO bool Resources::Add(const Sid& sid, std::string& path)
   uint8_t* data = new uint8_t[size];
   file.read((char*)data, size * sizeof(uint8_t));
   file.close();
-
+  
   ResourceHandle* resource = Functions[resourceId].Load(data, this);
   resource->id = resourceId;
   delete[] data;
 
-  return bank.insert(std::pair<Sid, ResourceHandle*>(Sid(resourceId), resource)).second; 
+  return bank.insert(std::pair<Sid, ResourceHandle*>(sid, resource)).second; 
 }
 
 HERO void Resources::Remove(const Sid& sid)

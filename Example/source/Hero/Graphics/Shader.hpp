@@ -1,38 +1,60 @@
 #pragma once
 
 #include"../Core/Math.hpp"
-#include"../Core/IResource.hpp"
+#include"../Systems/Resources.hpp"
+#include"../Core/Sid.hpp"
 
 #include<cstdint>
 #include<unordered_map>
-#include<string>
+
+/*
+file format
+resourceId
+uniform number
+uniformSize
+uniformString
+...
+flags
+shaderSize
+shaderString
+...
+*/
 
 namespace Hero
 {
 
-class Shader : public IResource
+union ShaderData{
+    int i;
+    float f;
+    Float3 vec;
+    Matrix4x4 mat4;
+    ShaderData(){}
+    ~ShaderData(){}
+};
+
+class Shader : public ResourceHandle
 {   
 private:
-    std::string name;
     uint32_t glId;
-    std::unordered_map<std::string, uint32_t> uniforms;
+    std::unordered_map<Sid, uint32_t, SidHashFunction> uniforms;
 
     bool isBinded = false;
 public:
     HERO Shader();
-    HERO Shader(const std::string& Name, uint32_t GlId, const std::unordered_map<std::string, uint32_t>& Uniforms);
+    HERO Shader(uint32_t GlId, const std::unordered_map<Sid, uint32_t, SidHashFunction>& Uniforms);
+    HERO ~Shader();
 
-    HERO static IResource* Load(const std::string& path);
-    HERO static void Unload(IResource* resource);
-    static int GetId(){ return 1; }
+    HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
+    HERO static void Unload(ResourceHandle* resource);
+    static int GetId(){ return SHADER_ID; }
 
     HERO void bind();
-    HERO int getUniformLocation(const std::string& _name);
+    HERO int getUniformLocation(const Sid& name);
     inline uint32_t getGlId(){ return glId; }
-    HERO void setInt(const std::string& _name, int value);
-    HERO void setFloat(const std::string& _name, float value);
-    HERO void setFloat3(const std::string& _name, const Float3& value);
-    HERO void setMatrix4f(const std::string& _name, const Matrix4x4& value);
+    HERO void setInt(const Sid& name, int value);
+    HERO void setFloat(const Sid& name, float value);
+    HERO void setFloat3(const Sid& name, const Float3& value);
+    HERO void setMatrix4f(const Sid& name, const Matrix4x4& value);
 };
 
 }

@@ -1,10 +1,11 @@
 {
     "Name" : "Editor.exe",
     "Type": "Executable",
-    "OutputDir": "bin",
+    "Extension": "cpp",
+    "OutputDir": "lib",
     "Compiler" : "g++",
     "LibsDir" : [
-        "bin"
+        "lib"
     ],
     "Libs" : [
         "-lhero",

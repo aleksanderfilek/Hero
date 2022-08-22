@@ -113,9 +113,7 @@ HERO ResourceHandle* Texture::Load(uint8_t* Data, Resources* system)
 
     uint8_t* imgData = new  uint8_t[ByteLength];
     ReadPtr(Data, &index, imgData, ByteLength);
-
     uint8_t* image = QOI::Decode(imgData, ByteLength, width, height, channels);
-
     delete[] imgData;
 
     unsigned int gl_id;

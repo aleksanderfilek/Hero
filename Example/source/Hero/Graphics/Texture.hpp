@@ -1,9 +1,20 @@
 #pragma once
 
 #include"../Core/Math.hpp"
-#include"../Core/IResource.hpp"
+#include"../Systems/Resources.hpp"
 #include "../Graphics/Color.hpp"
 
+/*
+file format
+id
+width
+height
+channels
+colorSpace
+flags
+imageSize
+imageData
+*/
 namespace Hero
 {
     class Font;
@@ -16,10 +27,9 @@ namespace Hero
         MIPMAP =  2       
     };
 
-    class Texture : public IResource
+    class Texture : public ResourceHandle
     {
-        private:
-            std::string name;
+        protected:
             uint32_t glId;
             Int2 size;
             uint8_t flags;
@@ -28,19 +38,19 @@ namespace Hero
 
         public:
             HERO Texture();
-            HERO Texture(const std::string& _name, uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace);
+            HERO Texture(uint32_t width, uint32_t height, ColorChannel channel);
+            HERO Texture(uint32_t _glId, Int2 _size, uint8_t _flags, ColorChannel _channels, ColorSpace _colorSpace);
             HERO Texture(const std::string& text, const ColorRGB& color, const Font* font, uint8_t _flags);
             HERO ~Texture();
 
-            HERO static IResource* Load(const std::string& path);
-            HERO static void Unload(IResource* resource);
-            static int GetId(){ return 3; }
+            HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
+            HERO static void Unload(ResourceHandle* resource);
+            static int GetId(){ return TEXTURE_ID; }
 
             HERO void bind();
             HERO void unbind();
 
             inline uint32_t getGlId() const { return glId; }
             inline Int2 getSize() { return size; }
-            inline std::string getName() const { return name; }
     };
 } // namespace Hero

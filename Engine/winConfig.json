@@ -1,5 +1,6 @@
 {
     "Name" : "libhero.dll",
+    "Extension": "cpp",
     "Type": "SharedLibrary",
     "OutputDir": "Hero/lib",
     "Compiler" : "g++",

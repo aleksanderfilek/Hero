@@ -395,7 +395,7 @@ void texture(const Cmd& cmd)
   byteSize += sizeof(uint8_t);
   byteSize += sizeof(uint32_t);
   byteSize += ByteLength * sizeof(uint8_t);
-
+std::cout<<"byte length "<<ByteLength<<std::endl;
   uint8_t* Data = new uint8_t[byteSize];
   int index = 0;
   Hero::WriteInt(Data, &index, width);

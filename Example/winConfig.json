@@ -1,6 +1,7 @@
 {
-    "Name" : "Example.exe",
+    "Name" : "Example",
     "Type": "Executable",
+    "Extension": "cpp",
     "OutputDir": "bin",
     "Compiler" : "g++",
     "LibsDir" : [

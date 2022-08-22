@@ -13,6 +13,7 @@
 #include"../Hero/Systems/UserInterface.hpp"
 #include"../Hero/UserInterface/Widget.hpp"
 #include"../Hero/UserInterface/Image.hpp"
+#include"../Hero/Systems/Resources.hpp"
 
 #include<iostream>
 #include<string>
@@ -36,12 +37,19 @@ void Menu::begin()
   window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
   window->setBackgroundColor((Hero::Color){255,255,255,255});
 
+  Hero::Resources* resources = Hero::Core::getSystem<Hero::Resources>(SID("resources"));
+  std::string spritebatchPath = std::string("bin/assets/spritebatch.he");  
+  std::string papajPath = std::string("bin/assets/papaj.he");
+  resources->Add(SID("spritebatch"), spritebatchPath);
+  resources->Add(SID("papaj"), papajPath);
+  spriteBatchShader = (Hero::Shader*)resources->Get(SID("spritebatch"));
+  spriteTexture = (Hero::Texture*)resources->Get(SID("papaj"));
+
   context = new Hero::ComponentContext();
   addContext(SID("Main"), context);
   context->Register(SID("Transform"), new Hero::Transform(1000, false));
   context->Register(SID("Camera"), new Hero::Camera(1));
   context->Register(SID("Player"), new Player(1));
-  spriteBatchShader = (Hero::Shader*)Hero::Shader::Load("assets/spritebatch.he");
   context->Register(SID("Sprite"), new Hero::Sprite(1000, spriteBatchShader, 100.0f, 1000, 1));
   context->Register(SID("Mover"), new Mover(1000));
 
@@ -52,47 +60,44 @@ void Menu::begin()
   actor->AddComponent(SID("Player"));
   addActor(actor);
 
-  spriteTexture = (Hero::Texture*)Hero::Texture::Load("assets/papaj.he");
-
   for(int i = 0; i < units; i++)
   {
     addActor(CreateMoverActor(context));
   }
 
-  Hero::Texture* uiTex = (Hero::Texture*)Hero::Texture::Load("assets/Bricks.he");
-
   Hero::System::UserInterface* ui = Hero::Core::getSystem<Hero::System::UserInterface>(SID("ui"));
-  ui->setShader((Hero::Shader*)Hero::Shader::Load("assets/spritebatch.he"));
+  ui->setShader(spriteBatchShader);
+
   Hero::UI::Widget* widget = new Hero::UI::Widget();
   Hero::UI::Image* image = new Hero::UI::Image();
-  image->SetRelativeTransform(Hero::Int4(50.0f, 50.0f, 50.0f, 50.0f), 
-    Hero::UI::HorizontalAnchor::STRETCH, Hero::UI::VerticalAnchor::STRETCH);
-  //image->SetPivot(Hero::Float2(1.0f, 1.0f));
-  image->setTexture(uiTex);
+  image->setTexture(spriteTexture);
+  image->SetRelativeTransform(Hero::Int4(50.0f, 100.0f, 100.0f, 100.0f), 
+    Hero::UI::HorizontalAnchor::RIGHT, Hero::UI::VerticalAnchor::STRETCH);
+  image->SetPivot(Hero::Float2(1.0f, 0.0f));
   widget->add("img", image);
   ui->add("main", widget);
 
 
-  // std::vector<std::string> path{
-  //   "assets/skybox/right.jpg",
-  //   "assets/skybox/left.jpg",
-  //   "assets/skybox/top.jpg",
-  //   "assets/skybox/bottom.jpg",
-  //   "assets/skybox/front.jpg",
-  //   "assets/skybox/back.jpg"
-  // };
+  // // std::vector<std::string> path{
+  // //   "assets/skybox/right.jpg",
+  // //   "assets/skybox/left.jpg",
+  // //   "assets/skybox/top.jpg",
+  // //   "assets/skybox/bottom.jpg",
+  // //   "assets/skybox/front.jpg",
+  // //   "assets/skybox/back.jpg"
+  // // };
 
-  // cubemap = new Hero::Cubemap(path);
-  // cubemapShader = (Hero::Shader*)Hero::Shader::Load("assets/cubemap.he");
-  //cubemapShader->bind();
-  //cubemapShader->setMatrix4f("proj", camera->projection);
+  // // cubemap = new Hero::Cubemap(path);
+  // // cubemapShader = (Hero::Shader*)Hero::Shader::Load("assets/cubemap.he");
+  // //cubemapShader->bind();
+  // //cubemapShader->setMatrix4f("proj", camera->projection);
 
-  // stone = (Hero::Mesh*)Hero::Mesh::Load("assets/stone.he");
-  // stoneShader = (Hero::Shader*)Hero::Shader::Load("assets/standard.he");
-  // stoneTexture = spriteTexture;
+  // // stone = (Hero::Mesh*)Hero::Mesh::Load("assets/stone.he");
+  // // stoneShader = (Hero::Shader*)Hero::Shader::Load("assets/standard.he");
+  // // stoneTexture = spriteTexture;
 
-  // stoneShader->bind();
-  // stoneShader->setMatrix4f("proj", camera->projection);
+  // // stoneShader->bind();
+  // // stoneShader->setMatrix4f("proj", camera->projection);
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
@@ -140,6 +145,6 @@ void Menu::close()
   // delete stoneTexture;
   // delete stoneShader;
 
-  Hero::Shader::Unload(spriteBatchShader);
-  Hero::Texture::Unload(spriteTexture);
+  // Hero::Shader::Unload(spriteBatchShader);
+  // Hero::Texture::Unload(spriteTexture);
 }

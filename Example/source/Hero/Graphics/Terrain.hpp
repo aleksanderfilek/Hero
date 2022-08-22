@@ -1,22 +1,33 @@
 #pragma once
 
-#include<string>
+#include"../Systems/Resources.hpp"
+#include"Mesh.hpp"
+
+/*
+resourceId
+width
+height
+iamgeSize
+image
+yScale
+yShift
+*/
 
 namespace Hero
 {
 
-class Mesh;
-
-class Terrain
+class Terrain : public Mesh
 {
 private:
-  Mesh* mesh;
 
 public:
-  HERO Terrain(const std::string& path, float yScale, float yShift);
+  HERO Terrain();
+  //HERO Terrain(float yScale, float yShift);
   HERO ~Terrain();
 
-  HERO void draw();
+  HERO static ResourceHandle* Load(uint8_t* Data, Resources* system);
+  HERO static void Unload(ResourceHandle* resource);
+  static int GetId(){ return TERRAIN_ID; }
 };
 
 }

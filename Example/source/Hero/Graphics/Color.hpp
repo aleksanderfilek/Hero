@@ -14,9 +14,13 @@ enum class ColorSpace : uint8_t
 
 enum class ColorChannel : uint8_t
 {
+    RED = 1,
     RGB = 3,
     RGBA = 4
 };
+
+HERO ColorChannel ConvertToColorChannel(uint8_t channel);
+HERO int ConvertColorChannelToGl(ColorChannel channel);
 
 typedef SDL_Color Color;
 
