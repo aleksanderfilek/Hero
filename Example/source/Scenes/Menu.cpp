@@ -60,10 +60,10 @@ void Menu::begin()
   actor->AddComponent(SID("Player"));
   addActor(actor);
 
-  for(int i = 0; i < units; i++)
-  {
-    addActor(CreateMoverActor(context));
-  }
+  // for(int i = 0; i < units; i++)
+  // {
+  //   addActor(CreateMoverActor(context));
+  // }
 
   Hero::System::UserInterface* ui = Hero::Core::getSystem<Hero::System::UserInterface>(SID("ui"));
   ui->setShader(spriteBatchShader);
@@ -71,26 +71,26 @@ void Menu::begin()
   Hero::UI::Widget* widget = new Hero::UI::Widget();
   Hero::UI::Image* image = new Hero::UI::Image();
   image->setTexture(spriteTexture);
-  image->SetRelativeTransform(Hero::Int4(50.0f, 100.0f, 100.0f, 100.0f), 
-    Hero::UI::HorizontalAnchor::RIGHT, Hero::UI::VerticalAnchor::STRETCH);
+  image->SetRelativeTransform(Hero::Int4(0.0f, 0.0f, 0.0f, 0.0f), 
+    Hero::UI::HorizontalAnchor::STRETCH, Hero::UI::VerticalAnchor::STRETCH);
   image->SetPivot(Hero::Float2(1.0f, 0.0f));
   widget->add("img", image);
   ui->add("main", widget);
 
 
-  // // std::vector<std::string> path{
-  // //   "assets/skybox/right.jpg",
-  // //   "assets/skybox/left.jpg",
-  // //   "assets/skybox/top.jpg",
-  // //   "assets/skybox/bottom.jpg",
-  // //   "assets/skybox/front.jpg",
-  // //   "assets/skybox/back.jpg"
-  // // };
+  // std::vector<std::string> path{
+  //   "assets/skybox/right.jpg",
+  //   "assets/skybox/left.jpg",
+  //   "assets/skybox/top.jpg",
+  //   "assets/skybox/bottom.jpg",
+  //   "assets/skybox/front.jpg",
+  //   "assets/skybox/back.jpg"
+  // };
 
-  // // cubemap = new Hero::Cubemap(path);
-  // // cubemapShader = (Hero::Shader*)Hero::Shader::Load("assets/cubemap.he");
-  // //cubemapShader->bind();
-  // //cubemapShader->setMatrix4f("proj", camera->projection);
+  // cubemap = new Hero::Cubemap(path);
+  // cubemapShader = (Hero::Shader*)Hero::Shader::Load("assets/cubemap.he");
+  // cubemapShader->bind();
+  // cubemapShader->setMatrix4f("proj", camera->projection);
 
   // // stone = (Hero::Mesh*)Hero::Mesh::Load("assets/stone.he");
   // // stoneShader = (Hero::Shader*)Hero::Shader::Load("assets/standard.he");
@@ -118,7 +118,7 @@ void Menu::update()
   Hero::System::Window::clear();
 
   // cubemapShader->bind();
-  // // cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
+  // cubemapShader->setMatrix4f("view", Hero::Matrix4x4(Hero::Matrix3x3(camera->view)));
   // cubemap->draw();
 
   // Hero::Matrix4x4 stoneModel = Hero::TRS({0.0f, 0.0f, 10.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f});

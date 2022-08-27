@@ -96,6 +96,7 @@ public:
     HERO static void clear();
     HERO static void setDepthTest(bool turnOn);
     HERO static bool isDepthTest();
+    HERO void SetDefaultFramebuffer();
 };
 
 }

@@ -1,3 +1,8 @@
+all: build package
+
+build:
+	builder winConfig.json
+
 package:
 	xcopy ".\source" ".\Hero\inc\Hero\" /s /y
 	cd Hero/inc/Hero

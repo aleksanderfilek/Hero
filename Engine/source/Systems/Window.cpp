@@ -199,5 +199,11 @@ HERO bool Window::isDepthTest()
     return depthEnabled;
 }
 
+HERO void Window::SetDefaultFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, size.x, size.y);
+}
+
 }
 }

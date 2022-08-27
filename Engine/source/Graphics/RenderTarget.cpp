@@ -5,44 +5,36 @@
 namespace Hero
 {
 
-HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, ColorChannel Channel, 
-    bool DepthBuffer, bool StencilBuffer)
- : Texture(Width, Height, Channel), depthBuffer(DepthBuffer), 
-  stencilBuffer(StencilBuffer), clearFlags(GL_COLOR_BUFFER_BIT)
+HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, uint32_t Number, RenderTargetConfig* Config)
 {
-  clearFlags |= (DepthBuffer)?GL_DEPTH_BUFFER_BIT:0;
-  clearFlags |= (StencilBuffer)?GL_STENCIL_BUFFER_BIT:0;
+  glGenFramebuffers(1, &RenderBufferId);
+  glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
 
-  glGenFramebuffers(1, &fbo);
-  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glId, 0);
-
-  if(DepthBuffer || StencilBuffer)
+  Size = { (int)Width, (int)Height };
+  Count = Number;
+  BufferIds = new uint32_t[Number];
+  
+  int format = GL_RGBA;
+  for(int i = 0; i < Number; i++)
   {
-    uint32_t storageFlag = 0;
-    uint32_t attachmentFlag = 0;
-    if(DepthBuffer && StencilBuffer)
-    {
-      storageFlag = GL_DEPTH24_STENCIL8;
-      attachmentFlag = GL_DEPTH_STENCIL_ATTACHMENT;
-    }
-    else if(DepthBuffer)
-    {
-      storageFlag = GL_DEPTH_COMPONENT24;
-      attachmentFlag = GL_DEPTH_ATTACHMENT;
-    }
-    else 
-    {
-      storageFlag = GL_STENCIL_INDEX8;
-      attachmentFlag = GL_STENCIL_ATTACHMENT;
-    }
+    format = (Config == nullptr)? GL_RGBA : ( Config->Format.size() < i) ? Config->Format[i] : format;
 
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo); 
-    glRenderbufferStorage(GL_RENDERBUFFER, storageFlag, Width, Height);  
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glGenTextures(1, &BufferIds[i]);
+    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, Width, Height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferIds[i], 0);
+  }
 
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentFlag, GL_RENDERBUFFER, rbo);
+  glDrawBuffers(Count, BufferIds);
+
+  if(Config != nullptr && Config->DepthBuffer)
+  {
+    glGenRenderbuffers(1, &DepthBufferId);
+    glBindRenderbuffer(GL_RENDERBUFFER, DepthBufferId);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, Width, Height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBufferId);
   }
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -50,42 +42,25 @@ HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, ColorChannel Ch
 
 HERO RenderTarget::~RenderTarget()
 {
-  glDeleteFramebuffers(1, &fbo);
+  glDeleteTextures(Count, BufferIds);
+  glDeleteFramebuffers(1, &RenderBufferId);
 }
 
-HERO void RenderTarget::Bind()
+HERO void RenderTarget::BindBuffers()
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+  glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
+  glViewport(0, 0, Size.x, Size.y);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glDrawBuffers(Count, BufferIds);
 }
 
-HERO void RenderTarget::Unbind()
+HERO void RenderTarget::BindTexture()
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-HERO void RenderTarget::Clear()
-{
-  if(depthBuffer)
+  for(int i = 0; i < Count; i++)
   {
-    glEnable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0 + i);
+    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
   }
-
-  if(stencilBuffer)
-  {
-    glEnable(GL_STENCIL_TEST);
-  }
-  
-  glClearColor((float)clearColor.r/255.0f, 
-    (float)clearColor.g/255.0f, 
-    (float)clearColor.b/255.0f, 
-    (float)clearColor.a/255.0f);
-
-  glClear(clearFlags);
-}
-
-HERO void RenderTarget::SetClearColor(ColorRGB ClearColor)
-{
-  clearColor = ClearColor;
 }
 
 }
