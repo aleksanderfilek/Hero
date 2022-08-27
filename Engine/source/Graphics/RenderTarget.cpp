@@ -42,6 +42,11 @@ HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, uint32_t Number
 
 HERO RenderTarget::~RenderTarget()
 {
+  if(DepthBufferId > 0)
+  {
+    glDeleteRenderbuffers(1, &DepthBufferId);
+  }
+
   glDeleteTextures(Count, BufferIds);
   glDeleteFramebuffers(1, &RenderBufferId);
 }
@@ -60,6 +65,17 @@ HERO void RenderTarget::BindTexture()
   {
     glActiveTexture(GL_TEXTURE0 + i);
     glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
+  }
+}
+
+HERO void RenderTarget::BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize)
+{
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, RenderBufferId);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, WriteBufferId);
+
+  if(DepthBufferId > 0)
+  {
+    glBlitFramebuffer(0, 0, Size.x, Size.y, 0, 0, WrtiteBufferSize.x, WrtiteBufferSize.y, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
   }
 }
 
