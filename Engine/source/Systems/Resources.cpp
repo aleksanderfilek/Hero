@@ -25,7 +25,7 @@ HERO Resources::Resources(const Hero::Sid& sid)
   RegisterResource<Texture>();
   RegisterResource<Spritesheet>();
   RegisterResource<Terrain>();
-  RegisterResource<Prefab>();
+  // RegisterResource<Prefab>();
   RegisterResource<Material>();
   RegisterResource<Cubemap>();
   RegisterResource<Font>();
