@@ -16,7 +16,7 @@
 #define PREFAB_ID       6
 #define MATERIAL_ID     7
 #define CUBEMAP_ID      8
-#define FONT_ID      9
+#define FONT_ID         9
 
 namespace Hero
 {

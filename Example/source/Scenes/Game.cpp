@@ -1,23 +1,23 @@
-#include"Menu.hpp"
+#include"Game.hpp"
 
-void Menu::begin()
+#include"../Hero/Core/Core.hpp"
+
+void Game::Start()
 {
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
   window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
-  window->setBackgroundColor((Hero::Color){255,0,0,0});
+  window->setBackgroundColor((Hero::Color){0,0,0,255});
 
 }
 
-void Menu::update()
+void Game::Update()
 {
   Hero::System::Window::clear();
 
   window->render();
-
-  IScene::update();
 }
 
-void Menu::close()
+void Game::End()
 {
 
 }
