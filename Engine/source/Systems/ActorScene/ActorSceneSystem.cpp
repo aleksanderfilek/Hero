@@ -32,7 +32,6 @@ HERO void ActorSceneSystem::update()
     NextScene = nullptr;
     
     CurrentScene->Start();
-
   }
 
   CurrentScene->Update();

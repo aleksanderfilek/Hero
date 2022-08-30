@@ -55,6 +55,7 @@ HERO void ActorScene::ClearActors()
 {
   for(Actor* actor: actors)
   {
+    actor->End();
     delete actor;
   }
   actors.clear();
