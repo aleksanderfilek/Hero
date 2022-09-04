@@ -5,6 +5,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include"Hero/ThirdParty/Stb/stb_image.h"
 #include"Hero/Graphics/Texture.hpp"
+#include"Hero/Graphics/Cubemap.hpp"
 
 #include<iostream>
 #include<fstream>
@@ -395,7 +396,7 @@ void texture(const Cmd& cmd)
   byteSize += sizeof(uint8_t);
   byteSize += sizeof(uint32_t);
   byteSize += ByteLength * sizeof(uint8_t);
-std::cout<<"byte length "<<ByteLength<<std::endl;
+
   uint8_t* Data = new uint8_t[byteSize];
   int index = 0;
   Hero::WriteInt(Data, &index, width);
@@ -420,9 +421,80 @@ std::cout<<"byte length "<<ByteLength<<std::endl;
 
   output.close();
 
+  delete[] Data;
+
   std::string pathStr = newPath.str();
   resources->Add(SID("Texture"), pathStr);
 
+}
+
+void cubemap(const Cmd& cmd)
+{
+  if(cmd.args.size() != 6)
+  {
+    std::cout<<"Too many or too few arguments. Six required!"<<std::endl;
+    return;
+  }
+
+  int width, height, channels;
+  std::vector<uint32_t> byteLengths;
+  std::vector<uint8_t*> images;
+
+  for(int i = 0; i < cmd.args.size(); i++)
+  {
+    uint32_t ByteLength = 0;
+    uint8_t *data = stbi_load(cmd.args[i].c_str(), &width, &height, &channels, 0); 
+
+    uint8_t* encoded = Hero::QOI::Encode(data, (uint32_t)width, (uint32_t)height, (uint8_t)channels, ByteLength);
+    std::cout<<ByteLength<<std::endl;
+    stbi_image_free(data);
+
+    byteLengths.push_back(ByteLength);
+    images.push_back(encoded);
+  }
+
+  uint32_t byteSize = 0;
+  byteSize += sizeof(int);
+  byteSize += sizeof(int);
+  byteSize += sizeof(uint8_t);
+  for(int i = 0; i < cmd.args.size(); i++)
+  {
+    byteSize += sizeof(uint32_t);
+    byteSize += byteLengths[i];
+  }
+
+  uint8_t* Data = new uint8_t[byteSize];
+  int index = 0;
+  Hero::WriteInt(Data, &index, width);
+  Hero::WriteInt(Data, &index, height);
+  Hero::WriteUint8(Data, &index, (uint8_t)channels);
+  for(int i = 0; i < cmd.args.size(); i++)
+  {
+    Hero::WriteUint32(Data, &index, byteLengths[i]);
+    Hero::WritePtr(Data, &index, images[i], byteLengths[i]);
+  }
+
+  std::stringstream newPath;
+  newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
+  newPath<<"he";
+  std::ofstream output(newPath.str(), std::ios::binary);
+
+  int ResourceId = Hero::Cubemap::GetId();
+  output.write((char*)&ResourceId, sizeof(int));
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
+
+  output.close();
+
+  delete[] Data;
+
+  for(int i = 0; i < cmd.args.size(); i++)
+  {
+    delete[] images[i];
+  }
+
+  std::string pathStr = newPath.str();
+  resources->Add(SID("Cubemap"), pathStr);
 }
 
 }

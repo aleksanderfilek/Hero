@@ -1,4 +1,5 @@
 #include"Interpreter.hpp"
+#include"Assets.hpp"
 
 #include<iostream>
 
@@ -30,11 +31,12 @@ Interpreter::Interpreter()
 {
   instance = this;
 
-  tokens["quit"] = CmdType::QUIT;
-  tokens["shader"] = CmdType::SHADER;
-  tokens["mesh"] = CmdType::MESH;
-  tokens["spritesheet"] = CmdType::SPRITESHEET;
-  tokens["texture"] = CmdType::TEXTURE;
+  tokens["quit"] = std::pair<CmdType,CmdFunc>(CmdType::QUIT, nullptr);
+  tokens["shader"] = std::pair<CmdType,CmdFunc>(CmdType::SHADER, shader);
+  tokens["mesh"] = std::pair<CmdType,CmdFunc>(CmdType::MESH, mesh);
+  tokens["spritesheet"] = std::pair<CmdType,CmdFunc>(CmdType::SPRITESHEET, spritesheet);
+  tokens["texture"] = std::pair<CmdType,CmdFunc>(CmdType::TEXTURE, texture);
+  tokens["cubemap"] = std::pair<CmdType,CmdFunc>(CmdType::CUBEMAP, cubemap);
 }
 
 Interpreter::~Interpreter()
@@ -54,10 +56,12 @@ Cmd Interpreter::interpret(const std::string& command)
     return cmd;
   }
 
-  cmd.type = instance->tokens[args[0]];
+  std::pair<CmdType,CmdFunc> token = instance->tokens[args[0]];
   args.erase(args.begin(), args.begin() + 1);
   cmd.args = args;
-
+  cmd.type = token.first;
+  token.second(cmd);
+  
   return cmd;
 }
 

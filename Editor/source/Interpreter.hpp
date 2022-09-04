@@ -14,7 +14,8 @@ enum class CmdType
   SHADER,
   MESH,
   SPRITESHEET,
-  TEXTURE
+  TEXTURE,
+  CUBEMAP
 };
 
 struct Cmd
@@ -23,12 +24,15 @@ struct Cmd
   std::vector<std::string> args;
 };
 
+typedef void (*CmdFunc)(const Cmd& cmd);
+
+
 class Interpreter
 {
 private:
   static Interpreter* instance;
 
-  std::unordered_map<std::string, CmdType> tokens;
+  std::unordered_map<std::string, std::pair<CmdType, CmdFunc>> tokens;
 
 public:
   Interpreter();

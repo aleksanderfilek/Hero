@@ -3,6 +3,7 @@
 #include"../ThirdParty/GL/Gl.hpp"
 #include"Mesh.hpp"
 #include"../Utility/ByteOperations.hpp"
+#include"../Utility/Qoi.hpp"
 
 #include<iostream>
 
@@ -28,12 +29,15 @@ HERO ResourceHandle* Cubemap::Load(uint8_t* Data, Resources* system)
   for(int i = 0; i < 6; i++)
   {
     uint32_t byteSize = ReadUint32(Data, &index);
-    uint8_t* image = new uint8_t[byteSize];
-    ReadPtr(Data, &index, image, byteSize);
+
+    uint8_t* imageData = new uint8_t[byteSize];
+    ReadPtr(Data, &index, imageData, byteSize);
+    uint8_t* image = QOI::Decode(imageData, byteSize, width, height, channel);
 
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
       0, glChannel, width, height, 0, glChannel, GL_UNSIGNED_BYTE, image);
 
+    delete[] imageData;
     delete[] image;
   }
 

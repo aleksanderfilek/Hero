@@ -1,31 +1,38 @@
 #pragma once
 
-#include"Texture.hpp"
+#include"../Core/Math.hpp"
+#include<vector>
 
 namespace Hero
 {
 
-class RenderTarget : public Texture
+struct RenderTargetConfig
+{
+  std::vector<int> Format;
+  bool DepthBuffer = false;
+};
+
+class RenderTarget
 {
 private:
-  uint32_t fbo;
-  uint32_t rbo;
+  Int2 Size;
+  uint32_t RenderBufferId = 0;
 
-  ColorRGB clearColor = ColorRGB(255, 255, 255);
-  uint32_t clearFlags;
-  bool depthBuffer = false;
-  bool stencilBuffer = false;
+  uint32_t Count = 0;
+  uint32_t* BufferIds;
+
+  uint32_t DepthBufferId = 0;
+
 public:
-  HERO RenderTarget(uint32_t Width, uint32_t Height, ColorChannel Channel, 
-    bool DepthBuffer = false, bool StencilBuffer = false);
+  HERO RenderTarget(uint32_t Width, uint32_t Height, uint32_t Number = 1, RenderTargetConfig* Config = nullptr);
   HERO ~RenderTarget();
 
-  HERO void Bind();
-  HERO void Unbind();
-  HERO void Clear();
+  HERO void BindBuffers();
+  HERO void BindTexture();
+  HERO void BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize);
 
-  HERO void SetClearColor(ColorRGB ClearColor);
-
+  inline uint32_t GetRenderBufferId(){ return RenderBufferId; }
+  inline Int2 GetSize(){ return Size; }
 };
 
 }

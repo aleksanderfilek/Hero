@@ -26,18 +26,6 @@ void run()
       case CmdType::QUIT:
         quit = true;
       break;
-      case CmdType::SHADER:
-        shader(cmd);
-      break;
-      case CmdType::MESH:
-        mesh(cmd);
-      break;
-      case CmdType::SPRITESHEET:
-        spritesheet(cmd);
-      break;
-      case CmdType::TEXTURE:
-        texture(cmd);
-      break;
       default:
         std::cout<<"Unknown command!"<<std::endl;
       break;

@@ -5,7 +5,6 @@
 #include"../Graphics/Texture.hpp"
 #include"../Graphics/Spritesheet.hpp"
 #include"../Graphics/Terrain.hpp"
-#include"../Components/Prefab.hpp"
 #include"../Graphics/Material.hpp"
 #include"../Graphics/Cubemap.hpp"
 #include"../Graphics/Font.hpp"
@@ -25,7 +24,6 @@ HERO Resources::Resources(const Hero::Sid& sid)
   RegisterResource<Texture>();
   RegisterResource<Spritesheet>();
   RegisterResource<Terrain>();
-  // RegisterResource<Prefab>();
   RegisterResource<Material>();
   RegisterResource<Cubemap>();
   RegisterResource<Font>();

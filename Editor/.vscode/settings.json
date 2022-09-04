@@ -53,6 +53,17 @@
         "xhash": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "ctime": "cpp",
+        "ios": "cpp",
+        "xfacet": "cpp",
+        "xlocale": "cpp",
+        "xlocinfo": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp"
     }
 }
