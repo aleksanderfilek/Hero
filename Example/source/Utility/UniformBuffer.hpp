@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Hero/Core/Sid.hpp"
+#include"../Hero/ThirdParty/GL/Gl.hpp"
+
 #include<unordered_map>
 
 class UniformBuffer
@@ -10,23 +12,21 @@ private:
   uint32_t Ubo;
 
   uint32_t Size = 0;
-  std::unordered_map<Sid, std::pair<uint32_t, uint32_t>, SidHashFunction> OffsetMap;
+  std::unordered_map<Hero::Sid, uint32_t, Hero::SidHashFunction> OffsetMap;
 
 public:
-  UniformBuffer(uint32_t NewId);
 
   template<typename T>
   void Register(const Hero::Sid& Name)
   {
-    std::pair<uint32_t,uint32_t> variable(Name, Size);
-    OffsetMap.insert(variable);
+    OffsetMap.insert({Name, Size});
     Size += sizeof(T);
   }
 
-  void Apply();
+  void Apply(uint32_t NewId);
 
   template<typename T>
-  void Set(Sid Name, T Value)
+  void Set(const Hero::Sid& Name, T Value)
   {
     if(OffsetMap.find(Name) == OffsetMap.end())
     {
