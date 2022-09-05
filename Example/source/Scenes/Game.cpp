@@ -3,6 +3,8 @@
 #include"../Hero/Core/Core.hpp"
 #include"../Actors/Player.hpp"
 #include"../Actors/Cubemap.hpp"
+#include"../Actors/Terrain.hpp"
+#include"../Actors/DirectionalSun.hpp"
 
 void Game::Start()
 {
@@ -13,6 +15,8 @@ void Game::Start()
 
   AddActor(new Cubemap(SID("Cubemap")));
   AddActor(new Player(SID("Player")));
+  AddActor(new Terrain(SID("Terrain")));
+  AddActor(new DirectionalSun(SID("Sun")));
 }
 
 void Game::Update()
