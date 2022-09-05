@@ -26,7 +26,12 @@ void main()
 
 layout (location = 0) out vec4 o_Color;
 
+layout (std140, binding = 1) uniform DirectionalSun
+{
+  vec3 LightColor;
+};
+
 void main()
 {
-  o_Color = vec4(1.0, 0.0, 0.0, 1.0);
+  o_Color = vec4(LightColor * vec3(1.0, 0.0, 0.0), 1.0);
 }

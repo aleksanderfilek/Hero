@@ -5,7 +5,7 @@
 
 #include<unordered_map>
 
-class UniformBuffer
+class UniformBlock
 {
 private:
   uint32_t Id;

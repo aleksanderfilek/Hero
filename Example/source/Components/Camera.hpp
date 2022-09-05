@@ -4,11 +4,11 @@
 #include"../Hero/Core/Math.hpp"
 
 #include"Transform.hpp"
-#include"../Utility/UniformBuffer.hpp"
+#include"../Utility/UniformBlock.hpp"
 
 struct CameraComponent : public Hero::Component
 {
-  UniformBuffer MatricesBuffer;
+  UniformBlock MatricesBuffer;
 
   Hero::Matrix4x4 view = Hero::Matrix4x4::identity();
   Hero::Matrix4x4 projection = Hero::Matrix4x4::identity();

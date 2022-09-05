@@ -1,6 +1,6 @@
-#include"UniformBuffer.hpp"
+#include"UniformBlock.hpp"
 
-void UniformBuffer::Apply(uint32_t NewId)
+void UniformBlock::Apply(uint32_t NewId)
 {
   Id = NewId; 
 
