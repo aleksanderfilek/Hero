@@ -283,41 +283,58 @@ static int objMesh(const std::string& path)
     outIndices.push_back(index);
   }
 
+  uint32_t byteSize = 0;
+  byteSize += sizeof(uint32_t);
+  byteSize += outIndices.size() * sizeof(int);
+  byteSize += sizeof(uint32_t);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += outPositions.size() * sizeof(float);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += outUVs.size() * sizeof(float);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += outNormals.size() * sizeof(float);
+
+  int Iptr = 0;
+  uint8_t* Data = new uint8_t[byteSize];
+  Hero::WriteUint32(Data, &Iptr, outIndices.size());
+  Hero::WritePtr(Data, &Iptr, (uint8_t*)outIndices.data(), outIndices.size() * sizeof(int));
+  uint32_t bufferCount = 3;
+  Hero::WriteUint32(Data, &Iptr, bufferCount);
+  uint8_t positionType = 3;
+  Hero::WriteUint8(Data, &Iptr, positionType);
+  Hero::WriteUint32(Data, &Iptr, outPositions.size() * sizeof(float));
+  Hero::WritePtr(Data, &Iptr, (uint8_t*)outPositions.data(), outPositions.size() * sizeof(float));
+  uint8_t uvType = 2;
+  Hero::WriteUint8(Data, &Iptr, uvType);
+  Hero::WriteUint32(Data, &Iptr, outUVs.size() * sizeof(float));
+  Hero::WritePtr(Data, &Iptr, (uint8_t*)outUVs.data(), outUVs.size() * sizeof(float));
+  uint8_t normalType = 3;
+  Hero::WriteUint8(Data, &Iptr, normalType);
+  Hero::WriteUint32(Data, &Iptr, outNormals.size() * sizeof(float));
+  Hero::WritePtr(Data, &Iptr, (uint8_t*)outNormals.data(), outNormals.size() * sizeof(float));
+
   std::stringstream newPath;
   newPath<<path.substr(0, path.find(".") + 1);
   newPath<<"he";
   std::ofstream output(newPath.str(), std::ios::binary);
 
-  uint32_t nameSize = name.length();
-  output.write((char*)&nameSize,sizeof(uint32_t));
-  output.write(name.c_str(), name.length() * sizeof(char));
-
-  uint32_t indicesCount = outIndices.size();
-  output.write((char*)&indicesCount, sizeof(uint32_t));
-  output.write((char*)outIndices.data(), outIndices.size() * sizeof(int));
-
-  uint32_t bufferCount = 3;
-  output.write((char*)&bufferCount, sizeof(uint32_t));
-
-  uint8_t positionType = 3;
-  output.write((char*)&positionType, sizeof(uint8_t));
-  uint32_t positionCount = outPositions.size();
-  output.write((char*)&positionCount, sizeof(uint32_t));
-  output.write((char*)outPositions.data(), outPositions.size() * sizeof(float));
-
-  uint8_t uvType = 2;
-  output.write((char*)&uvType, sizeof(uint8_t));
-  uint32_t uvsCount = outUVs.size();
-  output.write((char*)&uvsCount, sizeof(uint32_t));
-  output.write((char*)outUVs.data(), outUVs.size() * sizeof(float));
-
-  uint8_t normalType = 3;
-  output.write((char*)&normalType, sizeof(uint8_t));
-  uint32_t normalCount = outNormals.size();
-  output.write((char*)&normalCount, sizeof(uint32_t));
-  output.write((char*)outNormals.data(), outNormals.size() * sizeof(float));
+  int ResourceId = Hero::Mesh::GetId();
+  std::cout<<"ID "<<ResourceId<<std::endl;
+  output.write((char*)&ResourceId, sizeof(int));
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
 
   output.close();
+
+  delete[] Data;
+
+  std::cout<<"saved"<<std::endl;
+
+  std::string pathStr = newPath.str();
+  resources->Add(SID("mesh"), pathStr);
 
   return 0;
 }

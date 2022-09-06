@@ -21,13 +21,12 @@ HERO Mesh::Mesh(const std::vector<MeshBuffer<float>>& _buffers,
 HERO ResourceHandle* Mesh::Load(uint8_t* Data, Resources* system)
 {
     int index = 0;
-    
     std::vector<MeshBuffer<float>> buffers;
     MeshBuffer<int> indices;
-    
     uint32_t indicesCount = ReadUint32(Data, &index);
+
     int* indicesArr = new int[indicesCount];
-    ReadPtr(Data, &index, (uint8_t*)indicesArr, indicesCount);
+    ReadPtr(Data, &index, (uint8_t*)indicesArr, indicesCount * sizeof(int));
     indices.length = indicesCount;
     indices.array = indicesArr;
 
@@ -35,15 +34,16 @@ HERO ResourceHandle* Mesh::Load(uint8_t* Data, Resources* system)
 
     for(int i = 0; i < bufferCount; i++)
     {
-        uint8_t bufferType = ReadUint8(Data, &index);
-        uint32_t bufferLength = ReadUint32(Data, &index);
-        float* bufferArr = new float[bufferLength];
-        ReadPtr(Data, &index, (uint8_t*)indicesArr, indicesCount);
+        uint8_t bufferType = ReadUint8(Data, &index);    
+        uint32_t bufferLength = ReadUint32(Data, &index);    
+        float* bufferArr = new float[bufferLength/sizeof(float)];
+        ReadPtr(Data, &index, (uint8_t*)bufferArr, bufferLength);    
 
-        buffers.push_back((MeshBuffer<float>){(BufferType)bufferType, bufferArr, bufferLength});
+        buffers.push_back((MeshBuffer<float>){(BufferType)bufferType, bufferArr, bufferLength/sizeof(float)});
     }
 
     Mesh* mesh = new Mesh(buffers, indices);
+
     return mesh;
 }
 
@@ -62,6 +62,11 @@ HERO Mesh::~Mesh()
 
 HERO void Mesh::Unload(ResourceHandle* resource)
 {
+    Mesh* mesh = (Mesh*)resource;
+    for(auto buffer: mesh->buffers)
+    {
+        delete[] buffer.array;
+    }
     delete resource;
 }
 
@@ -82,6 +87,7 @@ HERO void Mesh::generate()
     {
         buffSize += buff.length;
     }
+
     glCheckError();
     glGenVertexArrays(1, &VAO);
     glCheckError();
@@ -99,7 +105,11 @@ HERO void Mesh::generate()
     for(auto& buff: buffers)
     {
         uint32_t size = buff.length * sizeof(float);
-        if(size == 0) std::cout<<"Buffer with lenght zero!"<<std::endl;
+        if(size == 0)
+        {
+            std::cout<<"Buffer with lenght zero!"<<std::endl;
+        }        
+
         glBufferSubData(GL_ARRAY_BUFFER, buffOffset, size, buff.array);
         glCheckError();
         buffOffset += size;

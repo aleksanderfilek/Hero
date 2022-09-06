@@ -4,7 +4,7 @@
 #include"../Hero/ThirdParty/SDL2/SDL.h"
 #include"../Hero/Core/Time.hpp"
 
-#define SPEED 50.0f
+#define SPEED 10.0f
 
 Player::Player(const Hero::Sid& NewId) : Hero::Actor(NewId)
 {
@@ -12,7 +12,7 @@ Player::Player(const Hero::Sid& NewId) : Hero::Actor(NewId)
   Camera.height = 720;
   Camera.fov = 70.0f;
   Camera.near = 0.1f;
-  Camera.far = 10.0f;
+  Camera.far = 1000.0f;
   CameraInit(Camera);
   CameraProjectionSet(Camera);
   CameraViewSet(Camera, Transform);

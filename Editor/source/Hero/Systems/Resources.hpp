@@ -13,7 +13,6 @@
 #define TEXTURE_ID      3
 #define SPRITESHEET_ID  4
 #define TERRAIN_ID      5
-#define PREFAB_ID       6
 #define MATERIAL_ID     7
 #define CUBEMAP_ID      8
 #define FONT_ID         9
