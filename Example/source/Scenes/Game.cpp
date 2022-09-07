@@ -12,6 +12,7 @@ void Game::Start()
 
   window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
   window->setBackgroundColor((Hero::Color){0,0,0,255});
+  window->setDepthTest(true);
 
   AddActor(new Cubemap(SID("Cubemap")));
   AddActor(new Player(SID("Player")));

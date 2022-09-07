@@ -5,6 +5,7 @@ void CameraInit(CameraComponent& Camera)
   Camera.MatricesBuffer.Register<Hero::Matrix4x4>(SID("view"));
   Camera.MatricesBuffer.Register<Hero::Matrix4x4>(SID("projection"));
   Camera.MatricesBuffer.Register<Hero::Matrix4x4>(SID("pixel"));
+  Camera.MatricesBuffer.Register<Hero::Float3>(SID("viewPos"));
   Camera.MatricesBuffer.Apply(0);
 }
 
@@ -24,4 +25,5 @@ void CameraViewSet(CameraComponent& Camera, TransformComponent& transform)
   Camera.view = Hero::lookAtMatrix(transform.position, target, Hero::Float3::up());
 
   Camera.MatricesBuffer.Set(SID("view"), Camera.view);
+  Camera.MatricesBuffer.Set(SID("viewPos"), transform.position);
 }
