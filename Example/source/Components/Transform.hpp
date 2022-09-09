@@ -19,3 +19,4 @@ Hero::Float3 TransgormUp(TransformComponent& transform);
 Hero::Float3 TransgormRight(TransformComponent& transform);
 void TransformRotationSet(TransformComponent& transform, const Hero::Float3& rotation);
 void TransformPositionSet(TransformComponent& transform, const Hero::Float3& position);
+void TransformScaleSet(TransformComponent& transform, const Hero::Float3& scale);

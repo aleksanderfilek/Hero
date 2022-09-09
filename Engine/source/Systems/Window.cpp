@@ -27,7 +27,15 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
     }
 
     id = SDL_GetWindowID(sdlWindow);
-    
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
+                        SDL_GL_CONTEXT_PROFILE_CORE);
+
+    glContext = SDL_GL_CreateContext(sdlWindow);
+
     renderer = SDL_CreateRenderer(sdlWindow, - 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(!renderer)
     {
@@ -37,14 +45,6 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
 
     size = {width, height};
     fullScreen = false;
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
-                        SDL_GL_CONTEXT_PROFILE_CORE);
-
-    glContext = SDL_GL_CreateContext(sdlWindow);
 
     SDL_GL_SetSwapInterval(1);
 

@@ -50,3 +50,9 @@ void TransformPositionSet(TransformComponent& transform, const Hero::Float3& pos
   transform.position = position;
   transform.isDirty = true;
 }
+
+void TransformScaleSet(TransformComponent& transform, const Hero::Float3& scale)
+{
+  transform.scale = scale;
+  transform.isDirty = true;
+}

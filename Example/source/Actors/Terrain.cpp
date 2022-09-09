@@ -15,6 +15,8 @@ Terrain::Terrain(const Hero::Sid& NewId) : Hero::Actor(NewId)
 
   Shader = (Hero::Shader*)resources->Get(SID("standardShader"));
   Mesh = (Hero::Mesh*)resources->Get(SID("terrain"));
+
+  TransformScaleSet(Transform, Hero::Float3(10.0f, 10.0f, 10.0f));
 }
 
 void Terrain::Start()
