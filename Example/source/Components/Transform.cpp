@@ -11,8 +11,7 @@ void TransformUpdate(TransformComponent& transform)
 
 Hero::Float3 TransgormForward(TransformComponent& transform)
 {
-  Hero::Matrix4x4 rotationMatrix = Hero::Matrix4x4::identity();
-  Hero::rotateXYZ(rotationMatrix, transform.rotation);
+  Hero::Matrix4x4 rotationMatrix = Hero::Rotation(transform.rotation);
   Hero::Float4 bigForward = rotationMatrix * Hero::Float4(0.0f, 0.0f, 1.0f, 0.0f);
   Hero::Float3 forward(bigForward);
   forward.normalize();
@@ -21,8 +20,7 @@ Hero::Float3 TransgormForward(TransformComponent& transform)
 
 Hero::Float3 TransgormUp(TransformComponent& transform)
 {
-  Hero::Matrix4x4 rotationMatrix = Hero::Matrix4x4::identity();
-  Hero::rotateXYZ(rotationMatrix, transform.rotation);
+  Hero::Matrix4x4 rotationMatrix = Hero::Rotation(transform.rotation);
   Hero::Float4 tup = rotationMatrix * Hero::Float4(0.0f, 1.0f, 0.0f, 0.0f);
   Hero::Float3 up(tup);
   up.normalize();
@@ -31,15 +29,14 @@ Hero::Float3 TransgormUp(TransformComponent& transform)
 
 Hero::Float3 TransgormRight(TransformComponent& transform)
 {
-  Hero::Matrix4x4 rotationMatrix = Hero::Matrix4x4::identity();
-  Hero::rotateXYZ(rotationMatrix, transform.rotation);
+  Hero::Matrix4x4 rotationMatrix = Hero::Rotation(transform.rotation);
   Hero::Float4 tright = rotationMatrix * Hero::Float4(1.0f, 0.0f, 0.0f, 0.0f);
   Hero::Float3 right(tright);
   right.normalize();
   return right;
 }
 
-void TransformRotationSet(TransformComponent& transform, const Hero::Float3& rotation)
+void TransformRotationSet(TransformComponent& transform, const Hero::Quaternion& rotation)
 {
   transform.rotation = rotation;
   transform.isDirty = true;

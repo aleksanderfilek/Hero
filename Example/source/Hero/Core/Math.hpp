@@ -199,6 +199,31 @@ HERO Float4 operator*(Float4 lhs, float rhs);
 HERO Float4 operator/(Float4 lhs, float rhs);
 HERO std::ostream& operator<< (std::ostream& stream, const Float4& v);
 
+struct Quaternion
+{
+    float w, x, y, z;
+
+    Quaternion():w(1.0f), x(0.0f), y(0.0f), z(0.0f){}
+    HERO Quaternion(float rotX, float rotY, float rotZ);
+    HERO Quaternion(const Float3& vector);
+    HERO Quaternion(float angle, const Float3& axis);
+
+    HERO Float3 ToEuler() const;
+
+    HERO Quaternion& operator+=(const Quaternion& rhs);
+    HERO Quaternion& operator-=(const Quaternion& rhs);
+    HERO Quaternion& operator*=(const Quaternion& rhs);
+    HERO bool operator==(const Quaternion& rhs);
+    HERO bool operator!=(const Quaternion& rhs);
+};
+
+HERO Quaternion operator~(const Quaternion& rhs);
+HERO Quaternion operator+(Quaternion lhs, const Quaternion& rhs);
+HERO Quaternion operator-(Quaternion lhs, const Quaternion& rhs);
+HERO Quaternion operator*(Quaternion lhs, const Quaternion& rhs);
+HERO Quaternion operator*(const Quaternion& lhs, const Float3& rhs);
+HERO std::ostream& operator<< (std::ostream& stream, Quaternion& q);
+
 struct Matrix2x2
 {
     Float2 col[2];
@@ -296,8 +321,10 @@ HERO void rotateX(Matrix4x4& matrix, float radians);
 HERO void rotateY(Matrix4x4& matrix, float radians);
 HERO void rotateZ(Matrix4x4& matrix, float radians);
 HERO void rotateXYZ(Matrix4x4& matrix, Float3 rotation);
+HERO Matrix4x4 Rotation(Quaternion& quaternion);
 
 HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale);
+HERO Matrix4x4 TRS(Float3 position, Quaternion& rotation, Float3 scale);
 
 HERO Matrix4x4 pixelScreenMatrix(int width, int height, float near, float far);
 HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, float far);

@@ -30,6 +30,9 @@ struct ColorRGB
 {
     public:
         uint8_t r,g,b,a;
+
+        ColorRGB():r(0), g(0), b(0), a(0){}
+
         constexpr ColorRGB(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255)
             :r(_r), g(_g), b(_b), a(_a){}
         ColorRGB(const ColorRGB& obj)

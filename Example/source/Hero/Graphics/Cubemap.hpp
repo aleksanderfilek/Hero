@@ -21,6 +21,10 @@ size3,
 texture3,
 size4
 texture4
+size5
+texture5
+size6
+texture6
 */
 
 namespace Hero

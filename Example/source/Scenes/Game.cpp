@@ -5,7 +5,7 @@
 #include"../Actors/Cubemap.hpp"
 #include"../Actors/Terrain.hpp"
 #include"../Actors/DirectionalSun.hpp"
-#include"../Physics/PhysicsManager.hpp"
+//#include"../Physics/PhysicsManager.hpp"
 
 void Game::Start()
 {
@@ -18,7 +18,7 @@ void Game::Start()
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT); 
 
-  AddActor(new PhysicsManager(SID("PhysicsManager")));
+  //AddActor(new PhysicsManager(SID("PhysicsManager")));
   AddActor(new Cubemap(SID("Cubemap")));
   AddActor(new Player(SID("Player")));
   AddActor(new Terrain(SID("Terrain")));
