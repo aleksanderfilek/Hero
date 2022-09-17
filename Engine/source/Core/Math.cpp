@@ -516,6 +516,158 @@ HERO std::ostream& operator<< (std::ostream& stream, const Float4& v)
     return stream;
 }
 
+HERO Quaternion::Quaternion(float rotX, float rotY, float rotZ)
+{
+    double cy = cos(rotZ * 0.5);
+    double sy = sin(rotZ * 0.5);
+    double cp = cos(rotY * 0.5);
+    double sp = sin(rotY * 0.5);
+    double cr = cos(rotX * 0.5);
+    double sr = sin(rotX * 0.5);
+
+    w = cr * cp * cy + sr * sp * sy;
+    x = sr * cp * cy - cr * sp * sy;
+    y = cr * sp * cy + sr * cp * sy;
+    z = cr * cp * sy - sr * sp * cy;
+}
+
+HERO Quaternion::Quaternion(const Float3& vector)
+{
+    double cy = cos(vector.z * 0.5);
+    double sy = sin(vector.z * 0.5);
+    double cp = cos(vector.y * 0.5);
+    double sp = sin(vector.y * 0.5);
+    double cr = cos(vector.x * 0.5);
+    double sr = sin(vector.x * 0.5);
+
+    w = cr * cp * cy + sr * sp * sy;
+    x = sr * cp * cy - cr * sp * sy;
+    y = cr * sp * cy + sr * cp * sy;
+    z = cr * cp * sy - sr * sp * cy;
+}
+
+HERO Quaternion::Quaternion(float angle, const Float3& axis)
+{
+    w = cosf(angle * 0.5f);
+    x = sinf(angle * 0.5f) * axis.x;
+    y = sinf(angle * 0.5f) * axis.y;
+    z = sinf(angle * 0.5f) * axis.z;
+}
+
+HERO Float3 Quaternion::ToEuler() const
+{
+    Float3 result;
+
+    double sinr_cosp = 2 *( w * x + y * z);
+    double cosr_cosp = 1 - 2 * (x * x + y * y);
+    result.x = std::atan2(sinr_cosp, cosr_cosp);
+
+    // pitch (y-axis rotation)
+    double sinp = 2 * (w * y - z * x);
+    if (std::abs(sinp) >= 1)
+        result.y = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else
+        result.y = std::asin(sinp);
+
+    // yaw (z-axis rotation)
+    double siny_cosp = 2 * (w * z + x * y);
+    double cosy_cosp = 1 - 2 * (y * y + z * z);
+    result.z = std::atan2(siny_cosp, cosy_cosp);
+
+    return result;
+}
+
+HERO Quaternion& Quaternion::operator+=(const Quaternion& rhs)
+{
+    w += rhs.w;
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z; 
+}
+
+HERO Quaternion& Quaternion::operator-=(const Quaternion& rhs)
+{
+    w -= rhs.w;
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z; 
+}
+
+HERO Quaternion& Quaternion::operator*=(const Quaternion& rhs)
+{
+    w = w*rhs.w - x*rhs.x - y*rhs.y - z*rhs.z;
+    x = w*rhs.x + x*rhs.w + y*rhs.z - z*rhs.y;
+    y = w*rhs.y - x*rhs.z + y*rhs.w + z*rhs.x;
+    z = w*rhs.z + x*rhs.y - y*rhs.x + z*rhs.w;
+}
+
+HERO bool Quaternion::operator==(const Quaternion& rhs)
+{
+    return w == rhs.w && x == rhs.x && y == rhs.y && z == rhs.z;
+}
+
+HERO bool Quaternion::operator!=(const Quaternion& rhs)
+{
+    return w != rhs.w && x != rhs.x && y != rhs.y && z != rhs.z;
+}
+
+HERO Quaternion operator~(const Quaternion& rhs)
+{
+    Quaternion q;
+    q.w = rhs.w;
+    q.x = -rhs.x;
+    q.y = -rhs.y;
+    q.z = -rhs.z;
+    return q;
+}
+
+HERO Quaternion operator+(Quaternion lhs, const Quaternion& rhs)
+{
+    Quaternion q;
+    q.w = lhs.w + rhs.w;
+    q.x = lhs.x + rhs.x;
+    q.y = lhs.y + rhs.w;
+    q.z = lhs.z + rhs.z;
+    return q;
+}
+
+HERO Quaternion operator-(Quaternion lhs, const Quaternion& rhs)
+{
+    Quaternion q;
+    q.w = lhs.w - rhs.w;
+    q.x = lhs.x - rhs.x;
+    q.y = lhs.y - rhs.w;
+    q.z = lhs.z - rhs.z;
+    return q;
+}
+
+HERO Quaternion operator*(Quaternion lhs, const Quaternion& rhs)
+{
+    Quaternion q;
+    q.w = lhs.w*rhs.w - lhs.x*rhs.x - lhs.y*rhs.y - lhs.z*rhs.z;
+    q.x = lhs.w*rhs.x + lhs.x*rhs.w + lhs.y*rhs.z - lhs.z*rhs.y;
+    q.y = lhs.w*rhs.y - lhs.x*rhs.z + lhs.y*rhs.w + lhs.z*rhs.x;
+    q.z = lhs.w*rhs.z + lhs.x*rhs.y - lhs.y*rhs.x + lhs.z*rhs.w;
+    return q;
+}
+
+HERO Quaternion operator*(const Quaternion& lhs, const Float3& rhs)
+{
+    Quaternion q = lhs;
+    Quaternion lhs2 = ~lhs;
+
+    q *= rhs;
+    q *= lhs2;
+
+    return q;
+}
+
+HERO std::ostream& operator<< (std::ostream& stream, Quaternion& q)
+{
+    stream << "{ "<<q.w<<" + "<<q.x<<"i + "<<q.y<<"j + "<<q.z<<"k }"; 
+    return stream;
+}
+
 HERO float Matrix2x2::determinant()
 {
     return (col[0].x * col[1].y) - (col[0].y * col[1].x);
@@ -946,9 +1098,36 @@ HERO void rotateXYZ(Matrix4x4& matrix, Float3 rotation)
         rotateZ(matrix, rotation.z);
 }
 
+HERO Matrix4x4 Rotation(Quaternion& quaternion)
+{
+    Matrix4x4 matrix;
+
+    matrix.col[0].x = 1.0f - 2.0f*(powf(quaternion.z, 2.0f) + powf(quaternion.y, 2.0f));
+    matrix.col[0].y = 2.0f*(quaternion.x*quaternion.y + quaternion.w*quaternion.z);
+    matrix.col[0].z = 2.0f*(quaternion.z*quaternion.x - quaternion.w*quaternion.y);
+    matrix.col[0].w = 0.0f;
+
+    matrix.col[1].x = 2.0f*(quaternion.x*quaternion.y - quaternion.w*quaternion.z);
+    matrix.col[1].y = 1.0f - 2.0f*(powf(quaternion.x, 2.0f) + powf(quaternion.z, 2.0f));
+    matrix.col[1].z = 2.0f*(quaternion.y*quaternion.z + quaternion.w*quaternion.x);
+    matrix.col[1].w = 0.0f;
+
+    matrix.col[2].x = 2.0f*(quaternion.z*quaternion.x + quaternion.w*quaternion.y);
+    matrix.col[2].y = 2.0f*(quaternion.y*quaternion.z - quaternion.w*quaternion.x);
+    matrix.col[2].z = 1.0f - 2.0f*(powf(quaternion.x, 2.0f) + powf(quaternion.y, 2.0f));
+    matrix.col[2].w = 0.0f;
+
+    matrix.col[3].x = 0.0f;
+    matrix.col[3].y = 0.0f;
+    matrix.col[3].z = 0.0f;
+    matrix.col[3].w = 1.0f;
+
+    return matrix;
+}
+
 HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale)
 {
-    Matrix4x4 matrix = Matrix4x4::identity();
+    Matrix4x4 matrix;
 
     float cosx = cosf(rotation.x);
     float sinx = sinf(rotation.x);
@@ -970,6 +1149,33 @@ HERO Matrix4x4 TRS(Float3 position, Float3 rotation, Float3 scale)
     matrix.col[2].x = scale.z*(cosx*siny*cosz+sinx*sinz);
     matrix.col[2].y = scale.z*(cosx*siny*sinz-sinx*cosz);
     matrix.col[2].z = scale.z*cosx*cosy;
+    matrix.col[2].w = 0.0f;
+
+    matrix.col[3].x = position.x;
+    matrix.col[3].y = position.y;
+    matrix.col[3].z = position.z;
+    matrix.col[3].w = 1.0f;
+
+    return matrix;
+}
+
+HERO Matrix4x4 TRS(Float3 position, Quaternion& rotation, Float3 scale)
+{
+    Matrix4x4 matrix;
+
+    matrix.col[0].x = scale.x*(1.0f - 2.0f*(powf(rotation.z, 2.0f) + powf(rotation.y, 2.0f)));
+    matrix.col[0].y = scale.x*(2.0f*(rotation.x*rotation.y + rotation.w*rotation.z));
+    matrix.col[0].z = scale.x*(2.0f*(rotation.z*rotation.x - rotation.w*rotation.y));
+    matrix.col[0].w = 0.0f;
+
+    matrix.col[1].x = scale.y*(2.0f*(rotation.x*rotation.y - rotation.w*rotation.z));
+    matrix.col[1].y = scale.y*(1.0f - 2.0f*(powf(rotation.x, 2.0f) + powf(rotation.z, 2.0f)));
+    matrix.col[1].z = scale.y*(2.0f*(rotation.y*rotation.z + rotation.w*rotation.x));
+    matrix.col[1].w = 0.0f;
+
+    matrix.col[2].x = scale.z*(rotation.z*rotation.x + rotation.w*rotation.y);
+    matrix.col[2].y = scale.z*(rotation.y*rotation.z - rotation.w*rotation.x);
+    matrix.col[2].z = scale.z*(1.0f - 2.0f*(powf(rotation.x, 2.0f) + powf(rotation.y, 2.0f)));
     matrix.col[2].w = 0.0f;
 
     matrix.col[3].x = position.x;
