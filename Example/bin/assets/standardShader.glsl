@@ -4,6 +4,8 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 uv;
 layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 tangent;
+layout (location = 4) in vec3 bitangent;  
 
 layout (std140, binding = 0) uniform Matrices
 {
@@ -18,15 +20,23 @@ out VS_OUT
   vec3 FragPos;
   vec3 Normal;
   vec3 ViewPos;
+  vec2 Uv;
+  mat3 TBN;
 } vs_out;
 
 uniform mat4 model;
 
 void main()
 {
+  vec3 T = normalize(mat3(transpose(inverse(model))) * normal);
+  vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
+  vec3 B = cross(N, T);
+  mat3 TBN = transpose(mat3(T, B, N));
+  vs_out.TBN = TBN;
   vs_out.ViewPos = viewPos;
   vs_out.Normal = mat3(transpose(inverse(model))) * normal;
   vs_out.FragPos = vec3(model * vec4(position, 1.0));
+  vs_out.Uv = vec2(uv.x, 1.0 - uv.y);
   gl_Position = projection * view * model * vec4(position, 1.0);
 }
 
@@ -52,26 +62,33 @@ in VS_OUT
   vec3 FragPos;
   vec3 Normal;
   vec3 ViewPos;
+  vec2 Uv;
+  mat3 TBN;
 } fs_in;
+
+layout(binding = 0) uniform sampler2D baseTex;
+layout(binding = 1) uniform sampler2D normalTex;
 
 void main()
 {
+  vec3 normal = texture(normalTex, fs_in.Uv).rgb;
+  normal = normal * 2.0 - 1.0;   
+  normal = normalize(normal); 
+
+  vec3 lightDir = fs_in.TBN * normalize(LightPos - fs_in.FragPos);  
+  vec3 viewDir = fs_in.TBN * normalize(fs_in.ViewPos - fs_in.FragPos);
+
   float ambientStrength = 0.1;
   vec3 ambient = ambientStrength * LightColor;
 
-  vec3 norm = normalize(fs_in.Normal);
-  vec3 lightDir = normalize(LightPos - fs_in.FragPos);  
+  float diff = max(dot(normal, lightDir), 0.0);
+  vec3 diffuse = diff * texture(baseTex, fs_in.Uv).rgb;
 
-  float diff = max(dot(norm, lightDir), 0.0);
-  vec3 diffuse = diff * LightColor;
-
-  float specularStrength = 0.5;
-  vec3 viewDir = normalize(fs_in.ViewPos - fs_in.FragPos);
-  vec3 reflectDir = reflect(-lightDir, norm); 
-
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+  float specularStrength = 0.06;
+  vec3 reflectDir = reflect(-lightDir, normal); 
+  float spec = max(pow(dot(viewDir, reflectDir), 5.0), 0.0);
   vec3 specular = specularStrength * spec * LightColor;
 
-  vec3 result = (ambient + diffuse + specular) * vec3(1.0, 1.0, 1.0);
+  vec3 result = ambient + diffuse + specular;
   o_Color = vec4(result, 1.0);
 }

@@ -1210,7 +1210,7 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
     matrix.col[1].y = 1.0f/tg;
     matrix.col[2].z = (-far - near)/(far - near);
     matrix.col[2].w = -1.0f;
-    matrix.col[3].z = (-far*near)/(far - near);
+    matrix.col[3].z = (-2.0f*far*near)/(far - near);
     matrix.col[3].w = 0.0f;
 
     return matrix;
@@ -1218,7 +1218,7 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
 
 HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 target, Float3 up)
 {
-    Float3 f = target - eye;
+    Float3 f =  target - eye;
     f.normalize();
     f *= -1.0f;
 

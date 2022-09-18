@@ -86,9 +86,9 @@ HERO Texture::~Texture()
     glCheckError();
 }
 
-HERO void Texture::bind()
+HERO void Texture::bind(int slotId)
 {
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + slotId);
     glCheckError();
     glBindTexture(GL_TEXTURE_2D, glId);
     glCheckError();

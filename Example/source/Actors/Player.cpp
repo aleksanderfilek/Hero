@@ -4,7 +4,7 @@
 #include"../Hero/ThirdParty/SDL2/SDL.h"
 #include"../Hero/Core/Time.hpp"
 
-#define SPEED 10.0f
+#define SPEED 40.0f
 
 Player::Player(const Hero::Sid& NewId) : Hero::Actor(NewId)
 {

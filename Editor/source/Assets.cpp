@@ -6,6 +6,7 @@
 #include"Hero/ThirdParty/Stb/stb_image.h"
 #include"Hero/Graphics/Texture.hpp"
 #include"Hero/Graphics/Cubemap.hpp"
+#include"Hero/Core/Math.hpp"
 
 #include<iostream>
 #include<fstream>
@@ -147,19 +148,20 @@ void shader(const Cmd& cmd)
   resources->Add(SID("Shader"), pathStr);
 }
 
-static int objMesh(const std::string& path);
+static int objMesh(const std::string& path, int tangentGen);
 void mesh(const Cmd& cmd)
 {
   size_t extPos = cmd.args[0].find_last_of(".") + 1;
   std::string ext = cmd.args[0].substr(extPos);
   if(ext.compare("obj")==0)
   {
-    objMesh(cmd.args[0]);
+    objMesh(cmd.args[0], stoi(cmd.args[1]));
   }
 }
 
-static int objMesh(const std::string& path)
+static int objMesh(const std::string& path, int tangentGen)
 {
+
   std::string name;
   std::vector<float> positions;
   std::vector<float> uvs;
@@ -283,6 +285,55 @@ static int objMesh(const std::string& path)
     outIndices.push_back(index);
   }
 
+  std::vector<float> tangent;
+  std::vector<float> bitangent;
+  if(tangentGen > 0)
+  {
+    for(int i = 0; i < faceSet.size(); i++)
+    {
+      float edge1x = outPositions[3*(i + 1) + 0] - outPositions[3*(i + 0) + 0];
+      float edge1y = outPositions[3*(i + 1) + 1] - outPositions[3*(i + 0) + 1];
+      float edge1z = outPositions[3*(i + 1) + 2] - outPositions[3*(i + 0) + 2];
+
+      float edge2x = outPositions[3*(i + 2) + 0] - outPositions[3*(i + 0) + 0];
+      float edge2y = outPositions[3*(i + 2) + 1] - outPositions[3*(i + 0) + 1];
+      float edge2z = outPositions[3*(i + 2) + 2] - outPositions[3*(i + 0) + 2];
+
+      float deltaUV1x = outUVs[2*(i + 1) + 0] - outUVs[2*(i + 0) + 0];
+      float deltaUV1y = outUVs[2*(i + 1) + 1] - outUVs[2*(i + 0) + 1];
+
+      float deltaUV2x = outUVs[2*(i + 2) + 0] - outUVs[2*(i + 0) + 0];
+      float deltaUV2y = outUVs[2*(i + 2) + 1] - outUVs[2*(i + 0) + 1];
+
+      float f = 1.0f / (deltaUV1x * deltaUV2y - deltaUV2x * deltaUV1y);
+
+      float tangentx = f * (deltaUV2y * edge1x - deltaUV1y * edge2x);
+      float tangenty = f * (deltaUV2y * edge1y - deltaUV1y * edge2y);
+      float tangentz = f * (deltaUV2y * edge1z - deltaUV1y * edge2z);
+
+      float bitangentx = f * (-deltaUV2x * edge1x + deltaUV1x * edge2x);
+      float bitangenty = f * (-deltaUV2x * edge1y + deltaUV1x * edge2y);
+      float bitangentz = f * (-deltaUV2x * edge1z + deltaUV1x * edge2z);
+
+      Hero::Float3 tangentV(tangentx,tangenty,tangentz);
+      Hero::Float3 bitangentV(bitangentx,bitangenty,bitangentz);
+
+      tangentV.normalize();
+      bitangentV.normalize();
+
+      for(int j = 0; j < 3; j++)
+      {
+        tangent.push_back(tangentV.x);
+        tangent.push_back(tangentV.x);
+        tangent.push_back(tangentV.x);
+
+        bitangent.push_back(bitangentV.x);
+        bitangent.push_back(bitangentV.y);
+        bitangent.push_back(bitangentV.z);
+      }
+    }
+  }
+
   uint32_t byteSize = 0;
   byteSize += sizeof(uint32_t);
   byteSize += outIndices.size() * sizeof(int);
@@ -296,12 +347,25 @@ static int objMesh(const std::string& path)
   byteSize += sizeof(uint8_t);
   byteSize += sizeof(uint32_t);
   byteSize += outNormals.size() * sizeof(float);
+  if(tangentGen > 0)
+  {
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += tangent.size() * sizeof(float);
+  byteSize += sizeof(uint8_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += bitangent.size() * sizeof(float);
+  }
 
   int Iptr = 0;
   uint8_t* Data = new uint8_t[byteSize];
   Hero::WriteUint32(Data, &Iptr, outIndices.size());
   Hero::WritePtr(Data, &Iptr, (uint8_t*)outIndices.data(), outIndices.size() * sizeof(int));
   uint32_t bufferCount = 3;
+  if(tangentGen > 0)
+  {
+    bufferCount += 2;
+  }
   Hero::WriteUint32(Data, &Iptr, bufferCount);
   uint8_t positionType = 3;
   Hero::WriteUint8(Data, &Iptr, positionType);
@@ -315,6 +379,17 @@ static int objMesh(const std::string& path)
   Hero::WriteUint8(Data, &Iptr, normalType);
   Hero::WriteUint32(Data, &Iptr, outNormals.size() * sizeof(float));
   Hero::WritePtr(Data, &Iptr, (uint8_t*)outNormals.data(), outNormals.size() * sizeof(float));
+  if(tangentGen > 0)
+  {
+    uint8_t tangentType = 3;
+    Hero::WriteUint8(Data, &Iptr, tangentType);
+    Hero::WriteUint32(Data, &Iptr, tangent.size() * sizeof(float));
+    Hero::WritePtr(Data, &Iptr, (uint8_t*)tangent.data(), tangent.size() * sizeof(float));
+    uint8_t bitangentType = 3;
+    Hero::WriteUint8(Data, &Iptr, bitangentType);
+    Hero::WriteUint32(Data, &Iptr, bitangent.size() * sizeof(float));
+    Hero::WritePtr(Data, &Iptr, (uint8_t*)bitangent.data(), bitangent.size() * sizeof(float));
+  }
 
   std::stringstream newPath;
   newPath<<path.substr(0, path.find(".") + 1);
