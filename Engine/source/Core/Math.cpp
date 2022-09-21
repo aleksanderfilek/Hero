@@ -1173,8 +1173,8 @@ HERO Matrix4x4 TRS(Float3 position, Quaternion& rotation, Float3 scale)
     matrix.col[1].z = scale.y*(2.0f*(rotation.y*rotation.z + rotation.w*rotation.x));
     matrix.col[1].w = 0.0f;
 
-    matrix.col[2].x = scale.z*(rotation.z*rotation.x + rotation.w*rotation.y);
-    matrix.col[2].y = scale.z*(rotation.y*rotation.z - rotation.w*rotation.x);
+    matrix.col[2].x = scale.z*(2.0f*(rotation.z*rotation.x + rotation.w*rotation.y));
+    matrix.col[2].y = scale.z*(2.0f*(rotation.y*rotation.z - rotation.w*rotation.x));
     matrix.col[2].z = scale.z*(1.0f - 2.0f*(powf(rotation.x, 2.0f) + powf(rotation.y, 2.0f)));
     matrix.col[2].w = 0.0f;
 

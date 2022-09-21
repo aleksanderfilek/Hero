@@ -24,6 +24,7 @@ private:
   {
     uint8_t id;
     ShaderData value;
+    
     DataPair(){}
     ~DataPair(){}
   };
