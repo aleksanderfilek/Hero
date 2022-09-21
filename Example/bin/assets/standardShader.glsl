@@ -68,6 +68,7 @@ in VS_OUT
 
 layout(binding = 0) uniform sampler2D baseTex;
 layout(binding = 1) uniform sampler2D normalTex;
+layout(binding = 2) uniform sampler2D roughnessTex;
 
 void main()
 {
@@ -87,7 +88,7 @@ void main()
   float specularStrength = 0.06;
   vec3 reflectDir = reflect(-lightDir, normal); 
   float spec = max(pow(dot(viewDir, reflectDir), 5.0), 0.0);
-  vec3 specular = specularStrength * spec * LightColor;
+  vec3 specular = specularStrength * spec * LightColor * texture(roughnessTex, fs_in.Uv).rgb;
 
   vec3 result = ambient + diffuse + specular;
   o_Color = vec4(result, 1.0);

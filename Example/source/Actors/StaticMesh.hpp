@@ -7,12 +7,14 @@
 #include "../Hero/Graphics/Texture.hpp"
 #include"../Components/Transform.hpp"
 
+#include<vector>
+
 class StaticMesh : public Hero::Actor
 {
 private:
   Hero::Mesh* mesh;
   Hero::Shader* shader;
-  Hero::Texture* texture[2];
+  std::vector<Hero::Texture*> texture;
 
   TransformComponent *transforms;
   uint32_t count = 0;

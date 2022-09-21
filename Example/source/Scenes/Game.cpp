@@ -5,7 +5,7 @@
 #include"../Actors/Cubemap.hpp"
 #include"../Actors/Terrain.hpp"
 #include"../Actors/DirectionalSun.hpp"
-//#include"../Physics/PhysicsManager.hpp"
+#include"../Actors/Renderer.hpp"
 #include"../Actors/StaticMesh.hpp"
 #include"../Hero/Systems/Resources.hpp"
 
@@ -35,7 +35,7 @@ void Game::Start()
   resources->Add(SID("cliffTextureRoughness"),cliffTextureRoughnessPath);
   resources->Add(SID("standardShader"),shaderPath);
 
-  //AddActor(new PhysicsManager(SID("PhysicsManager")));
+  AddActor(new Renderer(SID("Renderer")));
   AddActor(new Cubemap(SID("Cubemap")));
   AddActor(new Player(SID("Player")));
   //AddActor(new Terrain(SID("Terrain")));
@@ -46,6 +46,7 @@ void Game::Start()
   staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
   staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTexture")), 0);
   staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTextureNormal")), 1);
+  staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTextureRoughness")), 2);
   staticMesh->Load("bin/assets/cliffData.he");
   AddActor(staticMesh);
 }

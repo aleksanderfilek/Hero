@@ -17,7 +17,7 @@ void StaticMesh::Start()
 void StaticMesh::Update()
 {
   shader->bind();
-  for(int i = 0; i < 2; i++)
+  for(int i = 0; i < texture.size(); i++)
   {
     texture[i]->bind(i);
   }
@@ -46,7 +46,12 @@ void StaticMesh::SetShader(Hero::Shader* Shader)
 
 void StaticMesh::SetTexture(Hero::Texture* Texture, int id)
 {
-  texture[id] = Texture;
+  if(texture.size() > id)
+  {
+    texture[id] = Texture;
+    return;
+  }
+  texture.push_back(Texture);
 }
 
 void StaticMesh::Load(const char* path)
