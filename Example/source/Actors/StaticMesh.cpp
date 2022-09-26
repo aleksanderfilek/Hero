@@ -11,7 +11,7 @@ StaticMesh::StaticMesh(const Hero::Sid& NewId)
 
 void StaticMesh::Start()
 {
-  std::cout<<mesh->Count()<<std::endl;
+
 }
 
 void StaticMesh::Update()

@@ -24,6 +24,7 @@ private:
   {
     uint8_t id;
     ShaderData value;
+    
     DataPair(){}
     ~DataPair(){}
   };
@@ -41,6 +42,8 @@ public:
   static int GetId(){ return MATERIAL_ID; }
 
   HERO void Bind();
+
+  class Shader* GetShader(){ return shader; }
 };
 
 }

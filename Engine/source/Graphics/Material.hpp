@@ -42,6 +42,8 @@ public:
   static int GetId(){ return MATERIAL_ID; }
 
   HERO void Bind();
+
+  class Shader* GetShader(){ return shader; }
 };
 
 }

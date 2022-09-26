@@ -28,6 +28,8 @@ union ShaderData{
     float f;
     Float3 vec;
     Matrix4x4 mat4;
+    class Texture* texture;
+
     ShaderData(){}
     ~ShaderData(){}
 };
@@ -37,6 +39,7 @@ class Shader : public ResourceHandle
 private:
     uint32_t glId;
     std::unordered_map<Sid, uint32_t, SidHashFunction> uniforms;
+    std::unordered_map<Sid, uint32_t, SidHashFunction> textures;
 
     bool isBinded = false;
 public:

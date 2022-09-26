@@ -28,7 +28,7 @@ union ShaderData{
     float f;
     Float3 vec;
     Matrix4x4 mat4;
-    Texture* texture;
+    class Texture* texture;
 
     ShaderData(){}
     ~ShaderData(){}

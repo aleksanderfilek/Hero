@@ -63,8 +63,6 @@ public:
 
     HERO virtual void draw();
     HERO void generate();
-
-    inline int Count(){ return buffers.size(); }
 };
 
 } // namespace Hero
