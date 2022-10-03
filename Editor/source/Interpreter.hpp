@@ -15,7 +15,8 @@ enum class CmdType
   MESH,
   SPRITESHEET,
   TEXTURE,
-  CUBEMAP
+  CUBEMAP,
+  MATERIAL
 };
 
 struct Cmd

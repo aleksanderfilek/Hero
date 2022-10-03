@@ -17,13 +17,26 @@ data
 namespace Hero
 {
 
+union MaterialData{
+  int i;
+  float f;
+  Float3 vec3;
+  Float4 vec4;
+  Matrix3x3 mat3;
+  Matrix4x4 mat4;
+  class Texture* texture;
+
+  MaterialData(){}
+  ~MaterialData(){}
+};
+
 class Material : public ResourceHandle
 {
 private:
   struct DataPair
   {
     uint8_t id;
-    ShaderData value;
+    MaterialData value;
     
     DataPair(){}
     ~DataPair(){}

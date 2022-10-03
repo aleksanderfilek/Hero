@@ -7,6 +7,7 @@
 #include"Hero/Graphics/Texture.hpp"
 #include"Hero/Graphics/Cubemap.hpp"
 #include"Hero/Core/Math.hpp"
+#include"Hero/Graphics/Material.hpp"
 
 #include<iostream>
 #include<fstream>
@@ -43,21 +44,53 @@ void shader(const Cmd& cmd)
   input.close();
 
   std::vector<std::string> uniformNames;
+  std::vector<std::string> textureNames;
+
   size_t uniformPosition = content.find("uniform");
   const char* endOfUniform[] = {";", "[","{","\n"," "};
+  const char* acceptableUniformType[] = { "int", "float", "vec3", "vec4", "mat3", "mat4", "sampler2D" };
   while(uniformPosition != std::string::npos)
   {
     size_t spaceDelimiter = content.find(" ", uniformPosition) + 1;
-    spaceDelimiter = content.find(" ", spaceDelimiter) + 1;
-    size_t semicolonDelimiter = content.find(endOfUniform[0], spaceDelimiter);
-    for(int i = 1; i < 5; i++)
+    size_t secondSpaceDelimiter = content.find(" ", spaceDelimiter);
+    size_t semicolonDelimiter = secondSpaceDelimiter;
+    std::string type = content.substr(spaceDelimiter, secondSpaceDelimiter - spaceDelimiter);
+
+    bool accept = false;
+    bool isTexture = false;
+    for(int i = 0; i < 7; i++)
     {
-      size_t next = content.find(endOfUniform[i], spaceDelimiter);
-      if(next < semicolonDelimiter) semicolonDelimiter = next;
+      if(type.compare(acceptableUniformType[i]) == 0)
+      {
+        if(i == 6)
+        {
+          isTexture = true;
+        }
+        accept = true;
+        break;
+      }
     }
 
-    std::string name = content.substr(spaceDelimiter, semicolonDelimiter - spaceDelimiter);
-    uniformNames.push_back(name);
+    if(accept)
+    {
+      semicolonDelimiter = content.find(endOfUniform[0], secondSpaceDelimiter);
+      // for(int i = 1; i < 5; i++)
+      // {
+      //   size_t next = content.find(endOfUniform[i], secondSpaceDelimiter);
+      //   if(next < semicolonDelimiter) 
+      //     semicolonDelimiter = next;
+      // }
+
+      std::string name = content.substr(secondSpaceDelimiter, semicolonDelimiter - secondSpaceDelimiter);
+      if(isTexture)
+      {
+        textureNames.push_back(name);
+      }
+      else
+      {
+        uniformNames.push_back(name);
+      }
+    }
 
     uniformPosition = content.find("uniform", semicolonDelimiter);
   }
@@ -90,6 +123,14 @@ void shader(const Cmd& cmd)
     byteSize += sizeof(uint32_t); // uniform text size
     byteSize += uniform.length() * sizeof(char); // uniform text
   }
+
+  byteSize += sizeof(uint32_t); // texture uniform number
+  for(auto uniform: textureNames)
+  {
+    byteSize += sizeof(uint32_t); // uniform text size
+    byteSize += uniform.length() * sizeof(char); // uniform text
+  }
+
   byteSize += sizeof(uint32_t); // flags
   uint16_t flags = 0;
   for(int i = 0; i < 5; i++)
@@ -113,6 +154,15 @@ void shader(const Cmd& cmd)
   uint32_t uniformNumber = uniformNames.size();
   Hero::WriteUint32(Data, &index, uniformNumber);
   for(auto uniform: uniformNames)
+  {
+    uint32_t size = uniform.length();
+    Hero::WriteUint32(Data, &index, size);
+    Hero::WritePtr(Data, &index, (uint8_t*)uniform.c_str(),size * sizeof(char));
+  }
+
+  uint32_t textureUniformNumber = textureNames.size();
+  Hero::WriteUint32(Data, &index, textureUniformNumber);
+  for(auto uniform: textureNames)
   {
     uint32_t size = uniform.length();
     Hero::WriteUint32(Data, &index, size);
@@ -587,6 +637,210 @@ void cubemap(const Cmd& cmd)
 
   std::string pathStr = newPath.str();
   resources->Add(SID("Cubemap"), pathStr);
+}
+
+void material(const Cmd& cmd)
+{
+  if(cmd.args.size() != 1)
+  {
+    std::cout<<"Too many or too few arguments"<<std::endl;
+    return;
+  }
+
+  const std::string& path = cmd.args[0];
+
+  std::string shaderName;
+  int propertiesCount = 0;
+
+  std::ifstream input(path);
+
+  input>>shaderName;
+  input>>propertiesCount;
+
+  union MatData
+  {
+    int i;
+    float f;
+    Hero::Float3 vec3;
+    Hero::Float4 vec4;
+    Hero::Matrix3x3 mat3;
+    Hero::Matrix4x4 mat4;
+    uint32_t texture;
+
+    MatData(){}
+    ~MatData(){}
+  };
+
+  std::vector<MatData> dataArr;
+  std::vector<uint32_t> typeArr;
+  std::vector<uint32_t> nameArr;
+
+  for(int i = 0; i < propertiesCount; i++)
+  {
+    std::string type;
+    std::string name;
+    input>>type;
+    input>>name;
+
+    Hero::Sid nameSid = SID(name.c_str());
+    nameArr.push_back(nameSid.id);
+
+    if(type.compare("int")==0)
+    {
+      int value;
+      input>>value;
+      MatData data;
+      data.i = value;
+      dataArr.push_back(data);
+      typeArr.push_back(0);
+    }
+    else if(type.compare("float")==0)
+    {
+      float value;
+      input>>value;
+      MatData data;
+      data.f = value;
+      dataArr.push_back(data);
+      typeArr.push_back(1);
+    }
+    else if(type.compare("vec3")==0)
+    {
+      Hero::Float3 value;
+      input>>value.x>>value.y>>value.z;
+      MatData data;
+      data.vec3 = value;
+      dataArr.push_back(data);
+      typeArr.push_back(2);
+    }
+    else if(type.compare("vec4")==0)
+    {
+      Hero::Float4 value;
+      input>>value.x>>value.y>>value.z>>value.w;
+      MatData data;
+      data.vec4 = value;
+      dataArr.push_back(data);
+      typeArr.push_back(3);
+    }
+    else if(type.compare("mat3")==0)
+    {
+      Hero::Matrix3x3 value;
+      input>>value.col[0].x>>value.col[0].y>>value.col[0].z;
+      input>>value.col[1].z>>value.col[1].z>>value.col[1].z;
+      input>>value.col[2].z>>value.col[2].z>>value.col[2].z;
+      MatData data;
+      data.mat3 = value;
+      dataArr.push_back(data);
+      typeArr.push_back(4);
+    }
+    else if(type.compare("mat4")==0)
+    {
+      Hero::Matrix4x4 value;
+      input>>value.col[0].x>>value.col[0].y>>value.col[0].z>>value.col[0].w;
+      input>>value.col[1].z>>value.col[1].z>>value.col[1].z>>value.col[1].w;
+      input>>value.col[2].z>>value.col[2].z>>value.col[2].z>>value.col[2].w;
+      input>>value.col[3].z>>value.col[3].z>>value.col[3].z>>value.col[3].w;
+      MatData data;
+      data.mat4 = value;
+      dataArr.push_back(data);
+      typeArr.push_back(5);
+    }
+    if(type.compare("tex")==0)
+    {
+      std::string value;
+      input>>value;
+      MatData data;
+      Hero::Sid sid = SID(value.c_str());
+      data.texture = sid.id;
+      dataArr.push_back(data);
+      typeArr.push_back(6);
+    }
+  }
+
+  input.close();
+
+  uint32_t byteSize = 0;
+  byteSize += sizeof(uint32_t); // shader id
+  byteSize += sizeof(uint32_t); // properties count
+  for(int i = 0; i < dataArr.size(); i++)
+  {
+    byteSize += sizeof(uint32_t); // name
+    byteSize += sizeof(uint32_t); // type
+    switch(typeArr[i])
+    {
+      case 0:
+        byteSize += sizeof(int);
+      break;
+      case 1:
+        byteSize += sizeof(float);
+      break;
+      case 2:
+        byteSize += sizeof(Hero::Float3);
+      break;
+      case 3:
+        byteSize += sizeof(Hero::Float4);
+      break;
+      case 4:
+        byteSize += sizeof(Hero::Matrix3x3);
+      break;
+      case 5:
+        byteSize += sizeof(Hero::Matrix4x4);
+      break;
+      case 6:
+        byteSize += sizeof(uint32_t);
+      break;
+    }
+  }
+
+  uint8_t* Data = new uint8_t[byteSize];
+  int index = 0;
+
+  Hero::Sid shaderSid = SID(shaderName.c_str());
+  Hero::WriteUint32(Data, &index, shaderSid.id);
+  Hero::WriteUint32(Data, &index, (uint32_t)propertiesCount);
+
+  for(int i = 0; i < dataArr.size(); i++)
+  {
+    Hero::WriteUint32(Data, &index, nameArr[i]);
+    Hero::WriteUint32(Data, &index, typeArr[i]);
+    switch(typeArr[i])
+    {
+      case 0:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].i, sizeof(int));
+      break;
+      case 1:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].f, sizeof(float));
+      break;
+      case 2:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].vec3, sizeof(Hero::Float3));
+      break;
+      case 3:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].vec4, sizeof(Hero::Float4));
+      break;
+      case 4:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].mat3, sizeof(Hero::Matrix3x3));
+      break;
+      case 5:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].mat4, sizeof(Hero::Matrix4x4));
+      break;
+      case 6:
+        Hero::WritePtr(Data, &index, (uint8_t*)&dataArr[i].texture, sizeof(uint32_t));
+      break;
+    }
+  }
+
+  std::stringstream newPath;
+  newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
+  newPath<<"he";
+  std::ofstream output(newPath.str(), std::ios::binary);
+
+  int ResourceId = Hero::Material::GetId();
+  output.write((char*)&ResourceId, sizeof(int));
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
+
+  output.close();
+
+  delete[] Data;
 }
 
 }

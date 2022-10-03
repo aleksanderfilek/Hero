@@ -2,6 +2,7 @@
 #include"../ThirdParty/GL/Gl.hpp"
 #include"../Core/Debug.hpp"
 #include"../Utility/ByteOperations.hpp"
+#include"Texture.hpp"
 
 #include<iostream>
 #include<vector>
@@ -22,6 +23,7 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
     uint32_t program = glCreateProgram();
     
     uint32_t uniformNumber = 0;
+    uint32_t textureUniformNumber = 0;
 
     uint16_t flags = 0;
     uint32_t size = 0;
@@ -29,9 +31,9 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
     uint32_t typeArr[5] = { GL_VERTEX_SHADER, GL_TESS_CONTROL_SHADER, 
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
+
     std::vector<std::string> uniformVec;
     uniformNumber = ReadUint32(Data, &index);
-
     for(int i = 0; i < uniformNumber; i++)
     {
         size = ReadUint32(Data, &index);
@@ -45,6 +47,23 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
 
         delete[] content;
     }
+
+    std::vector<std::string> textureUniformVec;
+    textureUniformNumber = ReadUint32(Data, &index);
+    for(int i = 0; i < textureUniformNumber; i++)
+    {
+        size = ReadUint32(Data, &index);
+
+        content = new char[size+1];
+        content[size]='\0';
+        ReadPtr(Data, &index, (uint8_t*)content, size);
+
+        std::string uniform(content);
+        uniformVec.push_back(uniform);
+
+        delete[] content;
+    }
+
     flags = ReadUint16(Data, &index);
     for(int i = 0; i < 5; i++)
     {
@@ -108,6 +127,13 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
     }
     
     Shader* shader = new Shader(program, uniforms);
+
+    uint32_t textureCounter = 0;
+    for(auto uniform: textureUniformVec)
+    {
+        shader->textures.insert(std::pair<Sid,uint32_t>(SID(uniform.c_str()), textureCounter));
+    }
+
     return shader;
 }
 
@@ -148,17 +174,24 @@ HERO void Shader::setFloat3(const Sid& name, const Float3& value)
     glUniform3fv(getUniformLocation(name), 1, &value.x); 
 }
 
+HERO void Shader::setFloat4(const Sid& name, const Float4& value)
+{
+    glUniform4fv(getUniformLocation(name), 1, &value.x); 
+}
+
+HERO void Shader::setMatrix3f(const Sid& name, const Matrix3x3& value)
+{
+    glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, &value.col[0].x); 
+}
+
 HERO void Shader::setMatrix4f(const Sid& name, const Matrix4x4& value)
 {
-    int loc = getUniformLocation(name);
-    #ifdef HERO_DEBUG
-    if(loc == -1)
-    {
-        std::cout<<"Location of "<<name<<" equales "<<loc<<std::endl;
-        return;
-    }
-    #endif
     glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value.col[0].x); 
+}
+
+HERO void Shader::setTexture(const Sid& name, Texture* value)
+{
+    value->bind(textures[name]);
 }
 
 }

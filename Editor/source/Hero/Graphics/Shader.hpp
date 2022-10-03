@@ -23,20 +23,12 @@ shaderString
 namespace Hero
 {
 
-union ShaderData{
-    int i;
-    float f;
-    Float3 vec;
-    Matrix4x4 mat4;
-    ShaderData(){}
-    ~ShaderData(){}
-};
-
 class Shader : public ResourceHandle
 {   
 private:
     uint32_t glId;
     std::unordered_map<Sid, uint32_t, SidHashFunction> uniforms;
+    std::unordered_map<Sid, uint32_t, SidHashFunction> textures;
 
     bool isBinded = false;
 public:
@@ -54,7 +46,10 @@ public:
     HERO void setInt(const Sid& name, int value);
     HERO void setFloat(const Sid& name, float value);
     HERO void setFloat3(const Sid& name, const Float3& value);
+    HERO void setFloat4(const Sid& name, const Float4& value);
+    HERO void setMatrix3f(const Sid& name, const Matrix3x3& value);
     HERO void setMatrix4f(const Sid& name, const Matrix4x4& value);
+    HERO void setTexture(const Sid& name, class Texture* value);
 };
 
 }

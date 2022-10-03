@@ -47,7 +47,7 @@ namespace Hero
             HERO static void Unload(ResourceHandle* resource);
             static int GetId(){ return TEXTURE_ID; }
 
-            HERO void bind();
+            HERO void bind(int slotId = 0);
             HERO void unbind();
 
             inline uint32_t getGlId() const { return glId; }

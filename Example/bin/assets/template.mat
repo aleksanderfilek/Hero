@@ -1,0 +1,7 @@
+standardShader
+5
+tex baseTex cliffTexture
+tex normalTex cliffTextureNormal
+tex roughnessTex cliffTextureRoughness
+float ambientStrength 0.1
+float specularStrength 0.06
