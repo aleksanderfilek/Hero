@@ -59,7 +59,7 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
         ReadPtr(Data, &index, (uint8_t*)content, size);
 
         std::string uniform(content);
-        uniformVec.push_back(uniform);
+        textureUniformVec.push_back(uniform);
 
         delete[] content;
     }
@@ -132,6 +132,7 @@ HERO ResourceHandle* Shader::Load(uint8_t* Data, Resources* system)
     for(auto uniform: textureUniformVec)
     {
         shader->textures.insert(std::pair<Sid,uint32_t>(SID(uniform.c_str()), textureCounter));
+        textureCounter++;
     }
 
     return shader;
@@ -191,6 +192,7 @@ HERO void Shader::setMatrix4f(const Sid& name, const Matrix4x4& value)
 
 HERO void Shader::setTexture(const Sid& name, Texture* value)
 {
+    //std::cout<<name.id<<" - "<<textures[name]<<std::endl;
     value->bind(textures[name]);
 }
 

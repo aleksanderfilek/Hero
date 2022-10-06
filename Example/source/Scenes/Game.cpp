@@ -27,6 +27,7 @@ void Game::Start()
   std::string cliffTextureDisplacementPath("bin/assets/cliffDisplacement.he");
   std::string cliffTextureRoughnessPath("bin/assets/cliffRoughness.he");
   std::string shaderPath("bin/assets/standardShader.he");
+  std::string materialPath("bin/assets/template.he");
 
   resources->Add(SID("cliffmesh"),cliffMeshPath);
   resources->Add(SID("cliffTexture"),cliffTexturePath);
@@ -34,20 +35,20 @@ void Game::Start()
   resources->Add(SID("cliffTextureDisplacement"),cliffTextureDisplacementPath);
   resources->Add(SID("cliffTextureRoughness"),cliffTextureRoughnessPath);
   resources->Add(SID("standardShader"),shaderPath);
+  resources->Add(SID("material"), materialPath);
 
-  AddActor(new Renderer(SID("Renderer")));
+  Renderer* renderer = new Renderer(SID("Renderer"));
+  AddActor(renderer);
   AddActor(new Cubemap(SID("Cubemap")));
   AddActor(new Player(SID("Player")));
   //AddActor(new Terrain(SID("Terrain")));
   AddActor(new DirectionalSun(SID("Sun")));
 
   StaticMesh* staticMesh = new StaticMesh(SID("Stones"));
-  staticMesh->SetShader((Hero::Shader*)resources->Get(SID("standardShader")));
-  staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
-  staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTexture")), 0);
-  staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTextureNormal")), 1);
-  staticMesh->SetTexture((Hero::Texture*)resources->Get(SID("cliffTextureRoughness")), 2);
   staticMesh->Load("bin/assets/cliffData.he");
+  staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
+  staticMesh->SetMaterial((Hero::Material*)resources->Get(SID("material")));
+  staticMesh->SetRenderer(renderer);
   AddActor(staticMesh);
 }
 

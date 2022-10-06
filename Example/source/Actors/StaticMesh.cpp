@@ -1,7 +1,8 @@
 #include "StaticMesh.hpp"
+#include "Renderer.hpp"
 
-#include<iostream>
 #include<fstream>
+#include<iostream>
 
 StaticMesh::StaticMesh(const Hero::Sid& NewId)
   : Actor(NewId)
@@ -16,17 +17,7 @@ void StaticMesh::Start()
 
 void StaticMesh::Update()
 {
-  shader->bind();
-  for(int i = 0; i < texture.size(); i++)
-  {
-    texture[i]->bind(i);
-  }
 
-  for(int i = 0; i < count; i++)
-  {
-    shader->setMatrix4f(SID("model"), transforms[i].modelMatrix);
-    mesh->draw();
-  }
 }
 
 void StaticMesh::End()
@@ -34,24 +25,20 @@ void StaticMesh::End()
   delete[] transforms;
 }
 
+void StaticMesh::SetRenderer(class Renderer* renderer)
+{
+  rendererRefs = renderer;
+  renderer->Register(material, mesh, transforms, count);
+}
+
 void StaticMesh::SetMesh(Hero::Mesh* Mesh)
 {
   mesh = Mesh;
 }
 
-void StaticMesh::SetShader(Hero::Shader* Shader)
+void StaticMesh::SetMaterial(Hero::Material* Material)
 {
-  shader = Shader;
-}
-
-void StaticMesh::SetTexture(Hero::Texture* Texture, int id)
-{
-  if(texture.size() > id)
-  {
-    texture[id] = Texture;
-    return;
-  }
-  texture.push_back(Texture);
+  material = Material;
 }
 
 void StaticMesh::Load(const char* path)

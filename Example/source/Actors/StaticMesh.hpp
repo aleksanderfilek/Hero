@@ -6,15 +6,16 @@
 #include "../Hero/Graphics/Mesh.hpp"
 #include "../Hero/Graphics/Texture.hpp"
 #include"../Components/Transform.hpp"
+#include "../Hero/Graphics/Material.hpp"
 
 #include<vector>
 
 class StaticMesh : public Hero::Actor
 {
 private:
+  class Renderer* rendererRefs;
   Hero::Mesh* mesh;
-  Hero::Shader* shader;
-  std::vector<Hero::Texture*> texture;
+  Hero::Material* material;
 
   TransformComponent *transforms;
   uint32_t count = 0;
@@ -26,9 +27,9 @@ public:
   virtual void Update() override;
   virtual void End() override;
 
-  void SetMesh(Hero::Mesh* Shader);
-  void SetShader(Hero::Shader* Shader);
-  void SetTexture(Hero::Texture* Texture, int id);
+  void SetRenderer(class Renderer* renderer);
+  void SetMesh(Hero::Mesh* Mesh);
+  void SetMaterial(Hero::Material* Material);
 
   void Load(const char* path);
 };

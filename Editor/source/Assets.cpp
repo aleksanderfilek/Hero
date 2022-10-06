@@ -81,7 +81,7 @@ void shader(const Cmd& cmd)
       //     semicolonDelimiter = next;
       // }
 
-      std::string name = content.substr(secondSpaceDelimiter, semicolonDelimiter - secondSpaceDelimiter);
+      std::string name = content.substr(secondSpaceDelimiter + 1, semicolonDelimiter - secondSpaceDelimiter - 1);
       if(isTexture)
       {
         textureNames.push_back(name);

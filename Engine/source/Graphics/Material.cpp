@@ -1,6 +1,8 @@
 #include"Material.hpp"
 #include"../Utility/ByteOperations.hpp"
 
+#include<iostream>
+
 namespace Hero
 {
 
@@ -21,12 +23,11 @@ HERO ResourceHandle* Material::Load(uint8_t* Data, Resources* system)
   uint32_t shaderId = ReadUint32(Data, &index);
   Sid shaderSid(shaderId);
   material->shader = (Shader*)system->Get(shaderSid);
-
   uint32_t propertiesCount = ReadUint32(Data, &index);
   for(int i = 0; i < propertiesCount; i++)
   {
     uint32_t propertyId = ReadUint32(Data, &index);
-    uint8_t dataType = ReadUint8(Data, &index);
+    uint32_t dataType = ReadUint32(Data, &index);
     DataPair property;
     property.id = dataType;
     switch(dataType)
