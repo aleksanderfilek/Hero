@@ -1,57 +1,27 @@
-#pragma once 
+#pragma once
 
-#include"IComponent.hpp"
+#include"../Systems/ActorScene/Components.hpp"
 #include"../Core/Math.hpp"
-
-#include<vector>
 
 namespace Hero
 {
 
-struct TransformData : public IComponent
+struct TransformComponent : public Component
 {
-    Float3 position = Float3::zero();
-    Float3 rotation = Float3::zero(); // euler angles
-    Float3 scale = Float3::one();
+  Float3 position = Float3::zero();
+  Quaternion rotation;
+  Float3 scale = Float3::one();
 
-    Matrix4x4 modelMatrix = Matrix4x4::identity();
-    uint8_t isDirty = 0;
-
-    TransformData* parent = nullptr;
-    std::vector<TransformData*> children;
-
-    HERO void setPosition(Float3 newPosition);
-    HERO void setRotation(Float3 newRotation);
-    HERO void setScale(Float3 newScale);
-    inline Float3 getLocalPosition()const { return position; }
-    HERO Float3 getGlobalPosition() const;
-    inline Float3 getRotation()const { return rotation; }
-    inline Float3 getLocalScale()const { return scale; }
-    HERO Float3 getGlobalScale() const;
-    inline TransformData* getParent() const { return parent; }
-    HERO void setParent(TransformData* newParent);
-    HERO void addChild(TransformData* child, int index = -1);
-    HERO void removeChild(int index);
-    inline int getChildrenCount() const { return children.size(); }
-    inline std::vector<TransformData*> getChildren() const { return children; }
-    HERO Float3 forward();
-    HERO Float3 up();
-    HERO Float3 right();
+  Matrix4x4 modelMatrix = Matrix4x4::identity();
+  bool isDirty = false;
 };
 
-class HERO Transform : public IComponentSystem<TransformData>
-{
-public:
-    HERO Transform(uint32_t chunkSize, bool _CanUpdate = true);
-    
-    HERO void update() override;
-
-private:
-    bool CanUpdate; 
-
-    HERO void dataInit(TransformData* data) override;
-    HERO void dataUpdate(TransformData* data) override;
-    HERO void dataDestroy(TransformData* data) override;
-};
+HERO void TransformUpdate(TransformComponent& transform);
+HERO Float3 TransgormForward(TransformComponent& transform);
+HERO Float3 TransgormUp(TransformComponent& transform);
+HERO Float3 TransgormRight(TransformComponent& transform);
+HERO void TransformRotationSet(TransformComponent& transform, const Quaternion& rotation);
+HERO void TransformPositionSet(TransformComponent& transform, const Float3& position);
+HERO void TransformScaleSet(TransformComponent& transform, const Float3& scale);
 
 }

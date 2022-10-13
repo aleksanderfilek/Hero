@@ -54,7 +54,7 @@ public:
   HERO static void Unload(ResourceHandle* resource);
   static int GetId(){ return MATERIAL_ID; }
 
-  HERO void Bind();
+  HERO void Bind(bool WithShader = true);
 
   class Shader* GetShader(){ return shader; }
 };

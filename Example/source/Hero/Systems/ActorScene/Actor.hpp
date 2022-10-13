@@ -12,6 +12,9 @@ class Actor
 private:    
     Sid Id;
 
+protected:
+    class ActorScene* SceneRef = nullptr;
+
 public:
     HERO Actor(const Sid& NewId);
     HERO ~Actor();
@@ -21,6 +24,8 @@ public:
     virtual void End(){}
 
     inline Sid GetId(){ return Id; }
+
+    friend class ActorScene;
 };
 
 } 

@@ -24,7 +24,7 @@ int WinMain(int argc, char* argv[])
   core->addSystem(new Hero::System::Window(SID("Window"), "Example", 1280, 720));
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
-  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
+  //core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
   core->addSystem(new Hero::ActorSceneSystem(SID("scene"), new Game()));
   core->addSystem(new Hero::Resources(SID("resources")));
 

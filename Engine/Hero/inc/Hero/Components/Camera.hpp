@@ -1,49 +1,30 @@
-// #pragma once 
+#pragma once
 
-// #include"Transform.hpp"
-// #include"../Core/Math.hpp"
-// #include"IComponent.hpp"
+#include"../Systems/ActorScene/Components.hpp"
+#include"../Core/Math.hpp"
+#include"Transform.hpp"
+#include"../Graphics/UniformBlock.hpp"
 
-// namespace Hero
-// {
+namespace Hero
+{
 
-// enum class CameraPerspective : uint8_t
-// {
-//     Projection = 0,
-//     Orthogonal = 1
-// };
+struct CameraComponent : public Component
+{
+  UniformBlock MatricesBuffer;
 
-// struct CameraData : public IComponent
-// {
-//     TransformData* transform = nullptr;
-//     uint32_t uboMatrices;
+  Matrix4x4 view = Matrix4x4::identity();
+  Matrix4x4 projection = Matrix4x4::identity();
+  Matrix4x4 pixel = Matrix4x4::identity();
 
-//     CameraPerspective Type = CameraPerspective::Projection;
+  int width = 0;
+  int height = 0;
+  float fov = 0.0f;
+  float near = 0.0f;
+  float far = 0.0f;
+};
 
-//     Matrix4x4 view = Matrix4x4::identity();
-//     Matrix4x4 projection = Matrix4x4::identity();
-//     Matrix4x4 pixel = Matrix4x4::identity();
+HERO void CameraInit(CameraComponent& Camera);
+HERO void CameraProjectionSet(CameraComponent& Camera);
+HERO void CameraViewSet(CameraComponent& Camera, TransformComponent& transform);
 
-//     int width = 0;
-//     int height = 0;
-//     float fov = 0.0f;
-//     float near = 0.0f;
-//     float far = 0.0f;
-
-//     HERO void setFOV(float _fov);
-//     HERO void setProjection(int _width, int _height, float _fov, float _near, float _far);
-//     HERO void setOrthogonal(int _width, int _height, float _near, float _far);
-// };
-
-// class HERO Camera : public IComponentSystem<CameraData>
-// {
-// public:
-//     Camera(uint32_t chunkSize) : IComponentSystem(chunkSize){}
-
-// private:
-//     HERO void dataInit(CameraData* data) override;
-//     HERO void dataUpdate(CameraData* data) override;
-//     HERO void dataDestroy(CameraData* data) override;
-// };
-
-// } // namespace Hero
+}

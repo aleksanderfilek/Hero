@@ -2,12 +2,10 @@
 
 #include"../Hero/Core/Core.hpp"
 #include"../Actors/Player.hpp"
-#include"../Actors/Cubemap.hpp"
-#include"../Actors/Terrain.hpp"
-#include"../Actors/DirectionalSun.hpp"
-#include"../Actors/Renderer.hpp"
-#include"../Actors/StaticMesh.hpp"
+#include"../Hero/Actors/Graphics/StaticMesh.hpp"
+#include"../Hero/Actors/Systems/ForwardRenderer.hpp"
 #include"../Hero/Systems/Resources.hpp"
+#include"../Hero/Actors/Graphics/Skybox.hpp"
 
 void Game::Start()
 {
@@ -21,34 +19,34 @@ void Game::Start()
   glCullFace(GL_FRONT); 
 
   Hero::Resources* resources = Hero::Core::getSystem<Hero::Resources>(SID("resources"));
-  std::string cliffMeshPath("bin/assets/cliff.he");
-  std::string cliffTexturePath("bin/assets/cliffAlbedo.he");
-  std::string cliffTextureNormalPath("bin/assets/cliffNormal.he");
-  std::string cliffTextureDisplacementPath("bin/assets/cliffDisplacement.he");
-  std::string cliffTextureRoughnessPath("bin/assets/cliffRoughness.he");
-  std::string shaderPath("bin/assets/standardShader.he");
-  std::string materialPath("bin/assets/template.he");
 
-  resources->Add(SID("cliffmesh"),cliffMeshPath);
-  resources->Add(SID("cliffTexture"),cliffTexturePath);
-  resources->Add(SID("cliffTextureNormal"),cliffTextureNormalPath);
-  resources->Add(SID("cliffTextureDisplacement"),cliffTextureDisplacementPath);
-  resources->Add(SID("cliffTextureRoughness"),cliffTextureRoughnessPath);
-  resources->Add(SID("standardShader"),shaderPath);
-  resources->Add(SID("material"), materialPath);
+  resources->Add(SID("cliffmesh"), "bin/assets/cliff.he");
+  resources->Add(SID("cliffTexture"), "bin/assets/cliffAlbedo.he");
+  resources->Add(SID("cliffTextureNormal"), "bin/assets/cliffNormal.he");
+  resources->Add(SID("cliffTextureDisplacement"), "bin/assets/cliffDisplacement.he");
+  resources->Add(SID("cliffTextureRoughness"), "bin/assets/cliffRoughness.he");
+  resources->Add(SID("standardShader"), "bin/assets/standardShader.he");
+  resources->Add(SID("material"), "bin/assets/template.he");
+  resources->Add(SID("skyShader"), "bin/assets/cubemapShader.he");
+  resources->Add(SID("M_Skybox"), "bin/assets/skybox.he");
+  resources->Add(SID("Cubemap"), "bin/assets/cubemap.he");
 
-  Renderer* renderer = new Renderer(SID("Renderer"));
-  AddActor(renderer);
-  AddActor(new Cubemap(SID("Cubemap")));
+  AddActor(new Hero::ForwardRenderer(SID("Renderer")));
+  Hero::Skybox* sky = new Hero::Skybox(SID("Sky"));
+  sky->SetMaterial((Hero::Material*)resources->Get(SID("M_Skybox")));
+  sky->SetCubemap((Hero::Cubemap*)resources->Get(SID("Cubemap")));
+  std::cout<<(Hero::Cubemap*)resources->Get(SID("Cubemap"))<<std::endl;
+  AddActor(sky);
+
   AddActor(new Player(SID("Player")));
   //AddActor(new Terrain(SID("Terrain")));
-  AddActor(new DirectionalSun(SID("Sun")));
+  //AddActor(new DirectionalSun(this, SID("Sun")));
 
-  StaticMesh* staticMesh = new StaticMesh(SID("Stones"));
-  staticMesh->Load("bin/assets/cliffData.he");
+  Hero::StaticMesh* staticMesh = new Hero::StaticMesh(SID("Stones"));
   staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
   staticMesh->SetMaterial((Hero::Material*)resources->Get(SID("material")));
-  staticMesh->SetRenderer(renderer);
+  Hero::TransformComponent transform;
+  staticMesh->AddInstance(transform);
   AddActor(staticMesh);
 }
 

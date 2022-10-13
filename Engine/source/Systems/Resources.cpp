@@ -59,7 +59,7 @@ HERO ResourceHandle* Resources::Get(const Sid& sid) const
 }
 
 
-HERO bool Resources::Add(const Sid& sid, std::string& path)
+HERO bool Resources::Add(const Sid& sid, std::string path)
 {
   std::ifstream file(path, std::ios::binary);
   if(!file.is_open())

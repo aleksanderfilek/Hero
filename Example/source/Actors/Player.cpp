@@ -6,16 +6,17 @@
 
 #define SPEED 40.0f
 
-Player::Player(const Hero::Sid& NewId) : Hero::Actor(NewId)
+Player::Player(const Hero::Sid& NewId)
+ : Hero::Actor(NewId)
 {
   Camera.width = 1280;
   Camera.height = 720;
   Camera.fov = 70.0f;
   Camera.near = 0.1f;
   Camera.far = 1000.0f;
-  CameraInit(Camera);
-  CameraProjectionSet(Camera);
-  CameraViewSet(Camera, Transform);
+  Hero::CameraInit(Camera);
+  Hero::CameraProjectionSet(Camera);
+  Hero::CameraViewSet(Camera, Transform);
 
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
 }
@@ -27,8 +28,8 @@ void Player::Start()
 
 void Player::Update()
 {
-  TransformUpdate(Transform);
-  CameraViewSet(Camera, Transform);
+  Hero::TransformUpdate(Transform);
+  Hero::CameraViewSet(Camera, Transform);
 
   LookAndMove();
 }

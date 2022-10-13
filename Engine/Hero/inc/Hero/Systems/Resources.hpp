@@ -58,7 +58,7 @@ public:
 
   HERO bool Exists(const Sid& sid) const;
   HERO ResourceHandle* Get(const Sid& sid) const;
-  HERO bool Add(const Sid& sid, std::string& path);
+  HERO bool Add(const Sid& sid, std::string path);
   HERO void Remove(const Sid& sid);
   HERO void Clear();
 };

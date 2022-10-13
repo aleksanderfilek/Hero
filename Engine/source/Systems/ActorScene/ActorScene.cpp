@@ -26,6 +26,7 @@ HERO void ActorScene::Update()
 
 HERO void ActorScene::AddActor(Actor* actor)
 {
+  actor->SceneRef = this;
   actor->Start();
   actors.push_back(actor);
 }

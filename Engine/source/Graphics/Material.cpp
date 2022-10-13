@@ -69,9 +69,13 @@ HERO void Material::Unload(ResourceHandle* resource)
   delete resource;
 }
 
-HERO void Material::Bind()
+HERO void Material::Bind(bool WithShader)
 {
-  shader->bind();
+  if(WithShader)
+  {
+    shader->bind();
+  }
+  
   for(auto property: properties)
   {
     switch(property.second.id)

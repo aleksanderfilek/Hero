@@ -15,6 +15,8 @@ out VS_OUT
   vec3 TexCoords;
 } vs_out;
 
+uniform mat4 model;
+
 void main()
 {
   vs_out.TexCoords = position;
