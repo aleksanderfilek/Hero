@@ -44,4 +44,9 @@ HERO void StaticMesh::AddInstance(TransformComponent& transform)
   transforms.push_back(transform);
 }
 
+HERO void StaticMesh::UpdateInstance(TransformComponent& transform, int Index)
+{
+  transforms[Index] = transform;
+}
+
 }

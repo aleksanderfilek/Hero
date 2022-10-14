@@ -86,7 +86,6 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, std::vector
   materialGroup.material = material;
   MeshGroup meshGroup;
   meshGroup.mesh = mesh;
-  std::cout<<mesh<<std::endl;
   meshGroup.transforms.push_back(transforms);
   materialGroup.groups.push_back(meshGroup);
   groups.push_back(materialGroup);

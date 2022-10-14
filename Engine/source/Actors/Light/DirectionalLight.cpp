@@ -1,43 +1,50 @@
-// #include "DirectionalSun.hpp"
+#include "DirectionalLight.hpp"
 
-// DirectionalSun::DirectionalSun(class Hero::ActorScene* Scene, const Hero::Sid& NewId)
-//  : Hero::Actor(Scene, NewId)
-// {
-//   LightBuffer.Register<Hero::Float3>(SID("LightColor"));
-//   LightBuffer.Register<Hero::Float3>(SID("LightPos"));
-//   LightBuffer.Apply(1);
+namespace Hero
+{
 
-//   SetColor(Hero::ColorRGB(255,255,255,255));
+HERO DirectionalLight::DirectionalLight(const Sid& NewId)
+ : Actor(NewId)
+{
+  LightBuffer.Register<Float3>(SID("LightColor"));
+  LightBuffer.Register<Float3>(SID("LightDirection"));
+  LightBuffer.Apply(1);
+}
 
-//   Hero::Float3 position = { 0.0f, 0.0f, 0.0f };
-//   LightBuffer.Set(SID("LightPos"), position);
+HERO void DirectionalLight::Start()
+{
+  SetColor(ColorRGB(255,255,255,255));
 
-// }
+  Float3 forward = TransformRight(Transform);
+  LightBuffer.Set<Float3>(SID("LightDirection"), forward);
+}
 
-// void DirectionalSun::Start()
-// {
-  
-// }
+HERO void DirectionalLight::Update()
+{
+  if(Transform.isDirty)
+  {
+    Float3 forward = TransformRight(Transform);
+    LightBuffer.Set<Float3>(SID("LightDirection"), forward);
+  }
+  TransformUpdate(Transform);
+}
 
-// void DirectionalSun::Update()
-// {
+HERO void DirectionalLight::End()
+{
 
-// }
+}
 
-// void DirectionalSun::End()
-// {
+HERO void DirectionalLight::SetColor(ColorRGB NewColor)
+{
+  CurrentColor = NewColor;
 
-// }
+  Float3 color = { 
+    (float)CurrentColor.r/(float)255, 
+    (float)CurrentColor.g/(float)255,
+    (float)CurrentColor.b/(float)255
+    };
 
-// void DirectionalSun::SetColor(Hero::ColorRGB NewColor)
-// {
-//   CurrentColor = NewColor;
+  LightBuffer.Set<Float3>(SID("LightColor"), color);
+}
 
-//   Hero::Float3 color = { 
-//     (float)CurrentColor.r/(float)255, 
-//     (float)CurrentColor.g/(float)255,
-//     (float)CurrentColor.b/(float)255
-//     };
-
-//   LightBuffer.Set(SID("LightColor"), color);
-// }
+}

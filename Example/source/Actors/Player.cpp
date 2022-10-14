@@ -75,9 +75,9 @@ void Player::LookAndMove()
     0.0f};
   TransformRotationSet(Transform, rotation);
 
-  Hero::Float3 forward = TransgormForward(Transform);
-  Hero::Float3 right = TransgormRight(Transform);
-  Hero::Float3 up = TransgormUp(Transform);
+  Hero::Float3 forward = TransformForward(Transform);
+  Hero::Float3 right = TransformRight(Transform);
+  Hero::Float3 up = TransformUp(Transform);
 
   Hero::Float3 newPosition = Transform.position;
 

@@ -24,7 +24,7 @@ HERO void CameraProjectionSet(CameraComponent& Camera)
 
 HERO void CameraViewSet(CameraComponent& Camera, TransformComponent& transform)
 {
-  Hero::Float3 target = transform.position + TransgormForward(transform);
+  Hero::Float3 target = transform.position + TransformForward(transform);
   Camera.view = Hero::lookAtMatrix(transform.position, target, Hero::Float3::up());
 
   Camera.MatricesBuffer.Set(SID("view"), Camera.view);

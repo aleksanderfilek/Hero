@@ -9,10 +9,10 @@ HERO void TransformUpdate(TransformComponent& transform)
     return;
 
   transform.modelMatrix  = TRS(transform.position, transform.rotation, transform.scale);
-  transform.isDirty = true;
+  transform.isDirty = false;
 }
 
-HERO Float3 TransgormForward(TransformComponent& transform)
+HERO Float3 TransformForward(TransformComponent& transform)
 {
   Matrix4x4 rotationMatrix = Rotation(transform.rotation);
   Float4 bigForward = rotationMatrix * Float4(0.0f, 0.0f, 1.0f, 0.0f);
@@ -21,7 +21,7 @@ HERO Float3 TransgormForward(TransformComponent& transform)
   return forward;
 }
 
-HERO Float3 TransgormUp(TransformComponent& transform)
+HERO Float3 TransformUp(TransformComponent& transform)
 {
   Matrix4x4 rotationMatrix = Rotation(transform.rotation);
   Float4 tup = rotationMatrix * Float4(0.0f, 1.0f, 0.0f, 0.0f);
@@ -30,7 +30,7 @@ HERO Float3 TransgormUp(TransformComponent& transform)
   return up;
 }
 
-HERO Float3 TransgormRight(TransformComponent& transform)
+HERO Float3 TransformRight(TransformComponent& transform)
 {
   Matrix4x4 rotationMatrix = Rotation(transform.rotation);
   Float4 tright = rotationMatrix * Float4(1.0f, 0.0f, 0.0f, 0.0f);

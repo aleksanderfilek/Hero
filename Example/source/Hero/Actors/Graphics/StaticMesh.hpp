@@ -32,6 +32,7 @@ public:
   HERO void SetMaterial(Material* Material);
 
   HERO void AddInstance(TransformComponent& transform);
+  HERO void UpdateInstance(TransformComponent& transform, int Index);
 };
 
 }

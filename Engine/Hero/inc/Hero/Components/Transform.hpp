@@ -17,9 +17,9 @@ struct TransformComponent : public Component
 };
 
 HERO void TransformUpdate(TransformComponent& transform);
-HERO Float3 TransgormForward(TransformComponent& transform);
-HERO Float3 TransgormUp(TransformComponent& transform);
-HERO Float3 TransgormRight(TransformComponent& transform);
+HERO Float3 TransformForward(TransformComponent& transform);
+HERO Float3 TransformUp(TransformComponent& transform);
+HERO Float3 TransformRight(TransformComponent& transform);
 HERO void TransformRotationSet(TransformComponent& transform, const Quaternion& rotation);
 HERO void TransformPositionSet(TransformComponent& transform, const Float3& position);
 HERO void TransformScaleSet(TransformComponent& transform, const Float3& scale);

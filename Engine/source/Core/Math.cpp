@@ -518,12 +518,12 @@ HERO std::ostream& operator<< (std::ostream& stream, const Float4& v)
 
 HERO Quaternion::Quaternion(float rotX, float rotY, float rotZ)
 {
-    double cy = cos(rotZ * 0.5);
-    double sy = sin(rotZ * 0.5);
-    double cp = cos(rotY * 0.5);
-    double sp = sin(rotY * 0.5);
-    double cr = cos(rotX * 0.5);
-    double sr = sin(rotX * 0.5);
+    double cy = cosf(rotZ * 0.5f);
+    double sy = sinf(rotZ * 0.5f);
+    double cp = cosf(rotX * 0.5f);
+    double sp = sinf(rotX * 0.5f);
+    double cr = cosf(rotY * 0.5f);
+    double sr = sinf(rotY * 0.5f);
 
     w = cr * cp * cy + sr * sp * sy;
     x = sr * cp * cy - cr * sp * sy;

@@ -1,26 +1,30 @@
-// #pragma once 
+#pragma once 
 
-// #include "../Hero/Systems/ActorScene/Actor.hpp"
-// #include "../Hero/Core/Sid.hpp"
-// #include "../Hero/Graphics/Color.hpp"
+#include "../../Systems/ActorScene/Actor.hpp"
+#include "../../Core/Sid.hpp"
+#include "../../Graphics/Color.hpp"
+#include"../../Graphics/UniformBlock.hpp"
+#include"../../Components/Transform.hpp"
 
-// #include"../Utility/UniformBlock.hpp"
-// #include"../Components/Transform.hpp"
+namespace Hero
+{
 
-// class DirectionalSun : public Hero::Actor
-// {
-// private:
-//   UniformBlock LightBuffer;
-//   TransformComponent Transform;
+class DirectionalLight : public Actor
+{
+public:
+  UniformBlock LightBuffer;
+  TransformComponent Transform;
 
-//   Hero::ColorRGB CurrentColor;
+  ColorRGB CurrentColor;
 
-// public:
-//   DirectionalSun(class Hero::ActorScene* Scene, const Hero::Sid& NewId);
+public:
+  HERO DirectionalLight(const Sid& NewId);
 
-//   virtual void Start() override;
-//   virtual void Update() override;
-//   virtual void End() override;
+  HERO void Start() override;
+  HERO void Update() override;
+  HERO void End() override;
 
-//   void SetColor(Hero::ColorRGB NewColor);
-// };
+  HERO void SetColor(ColorRGB NewColor);
+};
+
+}

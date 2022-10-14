@@ -4,7 +4,6 @@
 #include "../../Core/Sid.hpp"
 #include "../../Components/Transform.hpp"
 #include"../../Graphics/Cubemap.hpp"
-
 #include <vector>
 
 namespace Hero

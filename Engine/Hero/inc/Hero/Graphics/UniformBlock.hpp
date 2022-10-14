@@ -4,6 +4,7 @@
 #include"../ThirdParty/GL/Gl.hpp"
 
 #include<unordered_map>
+#include<iostream>
 
 namespace Hero
 {
@@ -23,7 +24,10 @@ public:
   void Register(const Sid& Name)
   {
     OffsetMap.insert({Name, Size});
-    Size += sizeof(T);
+    int size = sizeof(T);
+    int bytes = (size / 16) * 16;
+    bytes += (size%16 > 0)? 16 : 0;
+    Size += bytes;
   }
 
   void Apply(uint32_t NewId);
