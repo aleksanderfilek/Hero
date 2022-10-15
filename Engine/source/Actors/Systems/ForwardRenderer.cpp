@@ -1,4 +1,8 @@
 #include"ForwardRenderer.hpp"
+#include "../../Graphics/RenderTarget.hpp"
+#include "../../Core/Core.hpp"
+#include "../../Systems/Window.hpp"
+#include "../../Systems/Resources.hpp"
 
 namespace Hero
 {
@@ -6,16 +10,47 @@ namespace Hero
 HERO ForwardRenderer::ForwardRenderer(const Sid& NewId)
 : Actor(NewId) 
 {
-  
+  System::Window* window = Core::getSystem<System::Window>(SID("Window"));
+  Int2 windowSize = window->getSize();
+  RenderTargetConfig config;
+  config.DepthBuffer = true;
+  renderTarget = new RenderTarget(windowSize.x, windowSize.y, 1, &config);
+
+  std::vector<MeshBuffer<float>> buffers;
+  MeshBuffer<float> positions;
+  positions.array = new float[8]{-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
+  positions.type = BufferType::vec2;
+  positions.length = 8;
+
+  MeshBuffer<float> uvs;
+  uvs.array = new float[8]{0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f};
+  uvs.type = BufferType::vec2;
+  uvs.length = 8;
+
+  buffers.push_back(positions);
+  buffers.push_back(uvs);
+
+  MeshBuffer<int> indices;
+  indices.array = new int[6]{0, 2, 1, 2, 3, 1};
+  indices.type = BufferType::single;
+  indices.length = 6;
+  quad = new Mesh(buffers, indices);
 }
 
 HERO void ForwardRenderer::Start()
 {
+  Actor::Start();
 
+  Resources* resources = Core::getSystem<Resources>(SID("resources"));
+  shader = (Shader*)resources->Get(SID("rendererShader"));
 }
 
 HERO void ForwardRenderer::Update()
 {
+  Actor::Update();
+
+  renderTarget->BindBuffers();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   currentMaterial = nullptr;
 
   for(auto materialGroup: groups)
@@ -27,25 +62,29 @@ HERO void ForwardRenderer::Update()
 
     for(auto meshGroup: materialGroup.groups)
     {
-      for(auto transformSet: meshGroup.transforms)
+      for(auto transform: meshGroup.transforms)
       {
-        int i = 0;
-        for(TransformComponent transform: *transformSet)
-        {
-          currentShader->setMatrix4f(SID("model"), transform.modelMatrix);
-          meshGroup.mesh->draw();
-        }
+        currentShader->setMatrix4f(SID("model"), transform->GetModelMatrix());
+        meshGroup.mesh->draw();
       }
     }
   }
+  renderTarget->UnbindBuffers();
+
+  shader->bind();
+  renderTarget->BindTexture();
+  quad->draw();
 }
 
 HERO void ForwardRenderer::End()
 {
+  Actor::End();
 
+  delete renderTarget;
+  delete quad;
 }
 
-HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, std::vector<TransformComponent>* transforms)
+HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* transform)
 {
   for(int i = 0; i < groups.size(); i++)
   {
@@ -57,14 +96,14 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, std::vector
         MeshGroup& meshGroup = group.groups[j];
         if(meshGroup.mesh == mesh)
         {
-          meshGroup.transforms.push_back(transforms);
+          meshGroup.transforms.push_back(transform);
           return;
         }
       }
 
       MeshGroup meshGroup;
       meshGroup.mesh = mesh;
-      meshGroup.transforms.push_back(transforms);
+      meshGroup.transforms.push_back(transform);
       group.groups.push_back(meshGroup);
       return;
     }
@@ -75,7 +114,7 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, std::vector
       materialGroup.material = material;
       MeshGroup meshGroup;
       meshGroup.mesh = mesh;
-      meshGroup.transforms.push_back(transforms);
+      meshGroup.transforms.push_back(transform);
       materialGroup.groups.push_back(meshGroup);
       groups.insert(groups.begin() + i + 1, materialGroup);
       return;
@@ -86,7 +125,7 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, std::vector
   materialGroup.material = material;
   MeshGroup meshGroup;
   meshGroup.mesh = mesh;
-  meshGroup.transforms.push_back(transforms);
+  meshGroup.transforms.push_back(transform);
   materialGroup.groups.push_back(meshGroup);
   groups.push_back(materialGroup);
 }

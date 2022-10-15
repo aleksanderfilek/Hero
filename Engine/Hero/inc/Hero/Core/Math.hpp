@@ -215,6 +215,10 @@ struct Quaternion
     HERO Quaternion& operator*=(const Quaternion& rhs);
     HERO bool operator==(const Quaternion& rhs);
     HERO bool operator!=(const Quaternion& rhs);
+
+    HERO Float3 GetForwardVector();
+    HERO Float3 GetRightVector();
+    HERO Float3 GetUpVector();
 };
 
 HERO Quaternion operator~(const Quaternion& rhs);
@@ -333,5 +337,35 @@ HERO Matrix4x4 orthographicMatrix(int width, int height, float near, float far);
 HERO Matrix4x4 lookAtMatrix(Float3 eye, Float3 forward, Float3 up, Float3 right);
 
 HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize);
+
+class Transform
+{
+private:
+    Float3 position = Float3::zero();
+    Quaternion rotation;
+    Float3 scale = Float3::one();
+
+    bool isDirty = false;
+    Matrix4x4 modelMatrix = Matrix4x4::identity();
+public:
+
+    Transform(){};
+    HERO Transform(Float3 Position, Quaternion Rotation, Float3 Scale);
+
+    Float3 GetPosition() const { return position; }
+    Quaternion GetRotation() const { return rotation; }
+    Float3 GetScale() const { return scale; }
+    HERO Matrix4x4 GetModelMatrix();
+
+    HERO void SetPosition(Float3 Position);
+    HERO void SetRotation(Quaternion Rotation);
+    HERO void SetScale(Float3 Scale);
+
+    HERO Transform& operator*=(Transform& rhs);
+
+    friend Transform operator*(Transform& lhs, Transform& rhs);
+};
+
+HERO Transform operator*(Transform& lhs, Transform& rhs);
 
 }

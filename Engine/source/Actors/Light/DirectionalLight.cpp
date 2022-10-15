@@ -13,25 +13,25 @@ HERO DirectionalLight::DirectionalLight(const Sid& NewId)
 
 HERO void DirectionalLight::Start()
 {
+  Actor::Start();
+
   SetColor(ColorRGB(255,255,255,255));
 
-  Float3 forward = TransformRight(Transform);
+  Float3 forward = GetRotation().GetRightVector();
   LightBuffer.Set<Float3>(SID("LightDirection"), forward);
 }
 
 HERO void DirectionalLight::Update()
 {
-  if(Transform.isDirty)
-  {
-    Float3 forward = TransformRight(Transform);
-    LightBuffer.Set<Float3>(SID("LightDirection"), forward);
-  }
-  TransformUpdate(Transform);
+  Actor::Update();
+
+  Float3 forward = GetRotation().GetRightVector();
+  LightBuffer.Set<Float3>(SID("LightDirection"), forward);
 }
 
 HERO void DirectionalLight::End()
 {
-
+  Actor::End();
 }
 
 HERO void DirectionalLight::SetColor(ColorRGB NewColor)

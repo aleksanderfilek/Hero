@@ -4,7 +4,7 @@
 #include"Hero/Systems/Window.hpp"
 #include"Hero/Systems/Event.hpp"
 #include"Hero/Systems/Input.hpp"
-#include"Hero/Systems/ActorScene/ActorSceneSystem.hpp"
+#include"Hero/Systems/ActorScene/SceneSystem.hpp"
 #include"Hero/Systems/UserInterface.hpp"
 #include"Hero/Systems/Resources.hpp"
 
@@ -25,7 +25,7 @@ int WinMain(int argc, char* argv[])
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
   //core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
-  core->addSystem(new Hero::ActorSceneSystem(SID("scene"), new Game()));
+  core->addSystem(new Hero::SceneSystem(SID("scene"), new Game()));
   core->addSystem(new Hero::Resources(SID("resources")));
 
   Hero::System::Event* event = core->getSystem<Hero::System::Event>(SID("event"));

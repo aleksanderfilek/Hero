@@ -7,34 +7,33 @@ namespace Hero
 
 HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, uint32_t Number, RenderTargetConfig* Config)
 {
-  glGenFramebuffers(1, &RenderBufferId);
-  glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
-
   Size = { (int)Width, (int)Height };
   Count = Number;
   BufferIds = new uint32_t[Number];
   
-  int format = GL_RGBA;
-  for(int i = 0; i < Number; i++)
+  glGenFramebuffers(1, &RenderBufferId);
+  glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
+
+  glGenTextures(1, &(BufferIds[0]));
+  glBindTexture(GL_TEXTURE_2D, BufferIds[0]);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Size.x, Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);  
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferIds[0], 0);
+ 
+  glGenRenderbuffers(1, &DepthBufferId);
+  glBindRenderbuffer(GL_RENDERBUFFER, DepthBufferId);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,  Size.x, Size.y);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBufferId);
+  
+  GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+  glDrawBuffers(1, DrawBuffers);
+
+  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
   {
-    format = (Config == nullptr)? GL_RGBA : ( Config->Format.size() < i) ? Config->Format[i] : format;
-
-    glGenTextures(1, &BufferIds[i]);
-    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
-    glTexImage2D(GL_TEXTURE_2D, 0, format, Width, Height, 0, GL_RGBA, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferIds[i], 0);
-  }
-
-  glDrawBuffers(Count, BufferIds);
-
-  if(Config != nullptr && Config->DepthBuffer)
-  {
-    glGenRenderbuffers(1, &DepthBufferId);
-    glBindRenderbuffer(GL_RENDERBUFFER, DepthBufferId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, Width, Height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBufferId);
+    std::cout<<"RenderTarget error\n";
   }
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -49,23 +48,30 @@ HERO RenderTarget::~RenderTarget()
 
   glDeleteTextures(Count, BufferIds);
   glDeleteFramebuffers(1, &RenderBufferId);
+  delete[] BufferIds;
 }
 
 HERO void RenderTarget::BindBuffers()
 {
   glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
   glViewport(0, 0, Size.x, Size.y);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glDrawBuffers(Count, BufferIds);
+}
+
+HERO void RenderTarget::UnbindBuffers()
+{
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glViewport(0, 0, Size.x, Size.y);
 }
 
 HERO void RenderTarget::BindTexture()
 {
-  for(int i = 0; i < Count; i++)
-  {
-    glActiveTexture(GL_TEXTURE0 + i);
-    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
-  }
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, BufferIds[0]);
+  // for(int i = 0; i < Count; i++)
+  // {
+  //   glActiveTexture(GL_TEXTURE0 + i);
+  //   glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
+  // }
 }
 
 HERO void RenderTarget::BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize)
@@ -73,10 +79,9 @@ HERO void RenderTarget::BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSi
   glBindFramebuffer(GL_READ_FRAMEBUFFER, RenderBufferId);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, WriteBufferId);
 
-  if(DepthBufferId > 0)
-  {
-    glBlitFramebuffer(0, 0, Size.x, Size.y, 0, 0, WrtiteBufferSize.x, WrtiteBufferSize.y, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-  }
+  glBlitFramebuffer(0, 0, Size.x, Size.y, 0, 0, WrtiteBufferSize.x, WrtiteBufferSize.y, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 }

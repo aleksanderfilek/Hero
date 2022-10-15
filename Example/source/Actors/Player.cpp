@@ -3,40 +3,37 @@
 #include"../Hero/Core/Core.hpp"
 #include"../Hero/ThirdParty/SDL2/SDL.h"
 #include"../Hero/Core/Time.hpp"
+#include "../Hero/Components/Camera.hpp"
 
 #define SPEED 40.0f
 
 Player::Player(const Hero::Sid& NewId)
  : Hero::Actor(NewId)
 {
-  Camera.width = 1280;
-  Camera.height = 720;
-  Camera.fov = 70.0f;
-  Camera.near = 0.1f;
-  Camera.far = 1000.0f;
-  Hero::CameraInit(Camera);
-  Hero::CameraProjectionSet(Camera);
-  Hero::CameraViewSet(Camera, Transform);
-
   input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
 }
 
 void Player::Start()
 {
+  Hero::Actor::Start();
 
+  Hero::Camera* camera = new Hero::Camera();
+  camera->SetSize({1280,720});
+  camera->SetFov(70.0f);
+  camera->SetNearFarPlane(0.1f, 1000.0f);
+  AddComponent(camera);
 }
 
 void Player::Update()
 {
-  Hero::TransformUpdate(Transform);
-  Hero::CameraViewSet(Camera, Transform);
+  Hero::Actor::Update();
 
   LookAndMove();
 }
 
 void Player::End()
 {
-
+  Hero::Actor::End();
 }
 
 void Player::LookAndMove()
@@ -70,16 +67,16 @@ void Player::LookAndMove()
 
 
   Hero::Float3 rotation = {
-    Hero::deg2rad(pitch),
     Hero::deg2rad(yaw),
+    Hero::deg2rad(pitch),
     0.0f};
-  TransformRotationSet(Transform, rotation);
+  SetRotation(Hero::Quaternion(rotation));
 
-  Hero::Float3 forward = TransformForward(Transform);
-  Hero::Float3 right = TransformRight(Transform);
-  Hero::Float3 up = TransformUp(Transform);
+  Hero::Float3 forward = GetRotation().GetForwardVector();
+  Hero::Float3 right = GetRotation().GetRightVector();
+  Hero::Float3 up = GetRotation().GetUpVector();
 
-  Hero::Float3 newPosition = Transform.position;
+  Hero::Float3 newPosition = GetPosition();
 
   if(input->keyPressed(Hero::System::Input::KeyCode::W))
   {
@@ -108,5 +105,5 @@ void Player::LookAndMove()
     newPosition -= up * SPEED * Hero::Time::getDeltaTime();
   }
 
-  TransformPositionSet(Transform, newPosition);
+  SetPosition(newPosition);
 }

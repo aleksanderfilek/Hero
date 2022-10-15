@@ -1,4 +1,4 @@
-#include"ActorScene.hpp"
+#include"Scene.hpp"
 #include"Actor.hpp"
 
 #include<fstream>
@@ -6,17 +6,17 @@
 namespace Hero
 {
 
-HERO ActorScene::ActorScene()
+HERO Scene::Scene()
 {
   
 }
 
-HERO ActorScene::~ActorScene()
+HERO Scene::~Scene()
 {
   ClearActors();
 }
 
-HERO void ActorScene::Update()
+HERO void Scene::Update()
 {
   for(Actor* actor: actors)
   {
@@ -24,14 +24,14 @@ HERO void ActorScene::Update()
   }
 }
 
-HERO void ActorScene::AddActor(Actor* actor)
+HERO void Scene::AddActor(Actor* actor)
 {
   actor->SceneRef = this;
   actor->Start();
   actors.push_back(actor);
 }
 
-HERO void ActorScene::RemoveActor(const Sid& Id)
+HERO void Scene::RemoveActor(const Sid& Id)
 {
   int index = -1;
   for(index = 0; index < actors.size(); index++)
@@ -52,17 +52,16 @@ HERO void ActorScene::RemoveActor(const Sid& Id)
   actors.erase(actors.begin() + index);
 }
 
-HERO void ActorScene::ClearActors()
+HERO void Scene::ClearActors()
 {
   for(Actor* actor: actors)
   {
-    actor->End();
     delete actor;
   }
   actors.clear();
 }
 
-HERO Actor* ActorScene::GetActor(const Sid& Id)
+HERO Actor* Scene::GetActor(const Sid& Id)
 {
   int index = -1;
   for(index = 0; index < actors.size(); index++)

@@ -3,9 +3,8 @@
 #include"../../Core/Core.hpp"
 #include"../../Systems/Resources.hpp"
 #include "../../Graphics/Material.hpp"
-#include "../../Graphics/Cubemap.hpp"
 #include "../Systems/ForwardRenderer.hpp"
-#include "../../Systems/ActorScene/ActorScene.hpp"
+#include "../../Systems/ActorScene/Scene.hpp"
 
 #include<iostream>
 
@@ -20,23 +19,23 @@ HERO Skybox::Skybox(const Sid& NewId)
 
 HERO void Skybox::Start()
 {
-  ForwardRenderer* renderer = (ForwardRenderer*)SceneRef->GetActor(SID("Renderer"));
+  Actor::Start();
+
+  ForwardRenderer* renderer = (ForwardRenderer*)GetScene()->GetActor(SID("Renderer"));
   if(!renderer)
     return;
 
-  TransformComponent startTransform;
-  transform.push_back(startTransform);
-  renderer->Register(material, cubemap, &transform);
+  renderer->Register(material, cubemap, GetTransformRef());
 }
 
 HERO void Skybox::Update()
 {
-
+  Actor::Update();
 }
 
 HERO void Skybox::End()
 {
-
+  Actor::End();
 }
 
 HERO void Skybox::SetMaterial(class Material* Material)

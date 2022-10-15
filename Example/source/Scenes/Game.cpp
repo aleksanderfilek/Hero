@@ -2,7 +2,7 @@
 
 #include"../Hero/Core/Core.hpp"
 #include"../Actors/Player.hpp"
-#include"../Hero/Actors/Graphics/StaticMesh.hpp"
+#include"../Hero/Components/StaticMesh.hpp"
 #include"../Hero/Actors/Systems/ForwardRenderer.hpp"
 #include"../Hero/Systems/Resources.hpp"
 #include"../Hero/Actors/Graphics/Skybox.hpp"
@@ -11,10 +11,10 @@
 #include"../Hero/Core/Time.hpp"
 
 Hero::DirectionalLight* light;
-Hero::StaticMesh* arrow;
+
 void Game::Start()
 {
-  ActorScene::Start();
+  Scene::Start();
 
   window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
   window->setBackgroundColor((Hero::Color){0,0,0,255});
@@ -38,6 +38,7 @@ void Game::Start()
   resources->Add(SID("simpleShader"), "bin/assets/simpleShader.he");
   resources->Add(SID("simple"), "bin/assets/simple.he");
   resources->Add(SID("arrow"), "bin/assets/arrow.he");
+  resources->Add(SID("rendererShader"), "bin/assets/rendererShader.he");
 
   AddActor(new Hero::ForwardRenderer(SID("Renderer")));
   Hero::Skybox*sky = new Hero::Skybox(SID("Sky"));
@@ -46,50 +47,35 @@ void Game::Start()
   AddActor(sky);
 
   AddActor(new Player(SID("Player")));
-  std::cout<<"Size: "<<sizeof(Hero::Float3)<<std::endl;
+
   light = new Hero::DirectionalLight(SID("Sun"));
   light->SetColor(Hero::ColorRGB(255,0,0,255));
-  Hero::TransformRotationSet(light->Transform, Hero::Quaternion(Hero::deg2rad(0.0f), Hero::deg2rad(0.0f), Hero::deg2rad(0.0f)));
   AddActor(light);
 
-  Hero::StaticMesh* staticMesh = new Hero::StaticMesh(SID("Stones"));
+  Hero::Actor* cliff = new Hero::Actor(SID("Cliff"));
+  Hero::StaticMesh* staticMesh = new Hero::StaticMesh();
   staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
   staticMesh->SetMaterial((Hero::Material*)resources->Get(SID("material")));
-  Hero::TransformComponent transform;
-  Hero::TransformPositionSet(transform, Hero::Float3(0.0f, 0.0f, 50.0f));
-  Hero::TransformUpdate(transform);
-  staticMesh->AddInstance(transform);
-  AddActor(staticMesh);
+  cliff->SetPosition(Hero::Float3(0.0f, 0.0f, 50.0f));
+  cliff->AddComponent(staticMesh);
+  AddActor(cliff);
 
-  arrow = new Hero::StaticMesh(SID("arrow"));
-  arrow->SetMesh((Hero::Mesh*)resources->Get(SID("arrow")));
-  arrow->SetMaterial((Hero::Material*)resources->Get(SID("simple")));
-  Hero::TransformComponent transform2;
-  arrow->AddInstance(transform2);
-  AddActor(arrow);
 }
 
-double timer = 0.0;
 float angle = 0.0f;
 void Game::Update()
 {
   Hero::System::Window::clear();
 
-
   angle += 30.0f * Hero::Time::getDeltaTime();
-  Hero::TransformRotationSet(light->Transform, Hero::Quaternion(Hero::deg2rad(angle), Hero::deg2rad(0.0f), Hero::deg2rad(0.0f)));
-  Hero::TransformComponent transform2;
-  Hero::TransformRotationSet(transform2, Hero::Quaternion(Hero::deg2rad(angle), Hero::deg2rad(0.0f), Hero::deg2rad(0.0f)));
-  Hero::TransformScaleSet(transform2, Hero::Float3(5.0f, 5.0f, 5.0f));
-  Hero::TransformUpdate(transform2);
-  arrow->UpdateInstance(transform2, 0);
+  light->SetRotation(Hero::Quaternion(Hero::deg2rad(angle), Hero::deg2rad(0.0f), Hero::deg2rad(0.0f)));
 
-  ActorScene::Update();
+  Scene::Update();
 
   window->render();
 }
 
 void Game::End()
 {
-  ActorScene::End();
+  Scene::End();
 }

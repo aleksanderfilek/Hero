@@ -1,11 +1,11 @@
 #pragma once
 
-#include"../Hero/Systems/ActorScene/ActorScene.hpp"
+#include"../Hero/Systems/ActorScene/Scene.hpp"
 #include"../Hero/Systems/Window.hpp"
 #include"../Hero/Graphics/Shader.hpp"
 #include"../Hero/Graphics/Mesh.hpp"
 
-class Game : public Hero::ActorScene
+class Game : public Hero::Scene
 {
 private:
   Hero::System::Window* window;

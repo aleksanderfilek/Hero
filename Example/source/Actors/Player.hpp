@@ -2,15 +2,11 @@
 
 #include "../Hero/Systems/ActorScene/Actor.hpp"
 #include "../Hero/Core/Sid.hpp"
-#include "../Hero/Components/Camera.hpp"
-#include "../Hero/Components/Transform.hpp"
 #include "../Hero/Systems/Input.hpp"
 
 class Player : public Hero::Actor
 {
 private:
-  Hero::CameraComponent Camera;
-  Hero::TransformComponent Transform;
   Hero::System::Input* input;
   
   float yaw = 0.0f;

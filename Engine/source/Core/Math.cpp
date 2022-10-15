@@ -535,10 +535,10 @@ HERO Quaternion::Quaternion(const Float3& vector)
 {
     double cy = cos(vector.z * 0.5);
     double sy = sin(vector.z * 0.5);
-    double cp = cos(vector.y * 0.5);
-    double sp = sin(vector.y * 0.5);
-    double cr = cos(vector.x * 0.5);
-    double sr = sin(vector.x * 0.5);
+    double cp = cos(vector.x * 0.5);
+    double sp = sin(vector.x * 0.5);
+    double cr = cos(vector.y * 0.5);
+    double sr = sin(vector.y * 0.5);
 
     w = cr * cp * cy + sr * sp * sy;
     x = sr * cp * cy - cr * sp * sy;
@@ -609,6 +609,33 @@ HERO bool Quaternion::operator==(const Quaternion& rhs)
 HERO bool Quaternion::operator!=(const Quaternion& rhs)
 {
     return w != rhs.w && x != rhs.x && y != rhs.y && z != rhs.z;
+}
+
+HERO Float3 Quaternion::GetForwardVector()
+{
+  Matrix4x4 rotationMatrix = Rotation(*this);
+  Float4 bigForward = rotationMatrix * Float4(0.0f, 0.0f, 1.0f, 0.0f);
+  Float3 forward(bigForward);
+  forward.normalize();
+  return forward;
+}
+
+HERO Float3 Quaternion::GetRightVector()
+{
+  Matrix4x4 rotationMatrix = Rotation(*this);
+  Float4 tright = rotationMatrix * Float4(1.0f, 0.0f, 0.0f, 0.0f);
+  Float3 right(tright);
+  right.normalize();
+  return right;
+}
+
+HERO Float3 Quaternion::GetUpVector()
+{
+  Matrix4x4 rotationMatrix = Rotation(*this);
+  Float4 tup = rotationMatrix * Float4(0.0f, 1.0f, 0.0f, 0.0f);
+  Float3 up(tup);
+  up.normalize();
+  return up;
 }
 
 HERO Quaternion operator~(const Quaternion& rhs)
@@ -1278,6 +1305,96 @@ HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize)
         return false;
 
     return true;
+}
+
+HERO Transform::Transform(Float3 Position, Quaternion Rotation, Float3 Scale)
+{
+    position = Position;
+    rotation = Rotation;
+    scale = Scale;
+    modelMatrix = TRS(position, rotation, scale);
+}
+
+HERO void Transform::SetPosition(Float3 Position)
+{
+    position = Position;
+    isDirty = true;
+}
+
+HERO void Transform::SetRotation(Quaternion Rotation)
+{
+    rotation = Rotation;
+    isDirty = true;
+}
+
+HERO void Transform::SetScale(Float3 Scale)
+{
+    scale = Scale;
+    isDirty = true;
+}
+
+HERO Matrix4x4 Transform::GetModelMatrix()
+{
+    if(isDirty)
+    {
+        modelMatrix = TRS(position, rotation, scale);
+        isDirty = false;
+    }
+
+    return modelMatrix;
+}
+
+HERO Transform& Transform::operator*=(Transform& rhs)
+{
+    if(isDirty)
+    {
+        modelMatrix = TRS(position, rotation, scale);
+        isDirty = false;
+    }
+
+    if(rhs.isDirty)
+    {
+        rhs.modelMatrix = TRS(rhs.position, rhs.rotation, rhs.scale);
+        rhs.isDirty = false;
+    }
+
+    Float4 tempPosition = rhs.modelMatrix * Float4(position);
+    position = Float3(tempPosition);
+
+    rotation *= rhs.rotation;
+
+    scale.x *= rhs.scale.x;
+    scale.y *= rhs.scale.y;
+    scale.z *= rhs.scale.z;
+
+    modelMatrix = modelMatrix * rhs.modelMatrix;
+}
+
+HERO Transform operator*(Transform& lhs, Transform& rhs)
+{
+    if(lhs.isDirty)
+    {
+        lhs.modelMatrix = TRS(lhs.position, lhs.rotation, lhs.scale);
+        lhs.isDirty = false;
+    }
+
+    if(rhs.isDirty)
+    {
+        rhs.modelMatrix = TRS(rhs.position, rhs.rotation, rhs.scale);
+        rhs.isDirty = false;
+    }
+
+    Transform result;
+    Float4 tempPosition = lhs.modelMatrix * Float4(rhs.position);
+    result.position = Float3(tempPosition);
+    result.rotation = lhs.rotation * rhs.rotation;
+    result.scale.x = lhs.scale.x * rhs.scale.x;
+    result.scale.y = lhs.scale.y * rhs.scale.y;
+    result.scale.z = lhs.scale.z * rhs.scale.z;
+    result.modelMatrix = TRS(result.position, result.rotation, result.scale);
+
+    return result;
+
 }
 
 }

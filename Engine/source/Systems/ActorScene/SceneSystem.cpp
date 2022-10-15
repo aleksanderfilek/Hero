@@ -1,25 +1,25 @@
-#include"ActorSceneSystem.hpp"
-#include"ActorScene.hpp"
+#include"SceneSystem.hpp"
+#include"Scene.hpp"
 
 namespace Hero
 {
 
-HERO ActorSceneSystem::ActorSceneSystem(const Sid& sid, ActorScene* StartScene) : ISystem(sid)
+HERO SceneSystem::SceneSystem(const Sid& sid, Scene* StartScene) : ISystem(sid)
 {
   NextScene = StartScene;
 }
 
-HERO ActorSceneSystem::~ActorSceneSystem()
+HERO SceneSystem::~SceneSystem()
 {
 
 }
 
-HERO void ActorSceneSystem::init()
+HERO void SceneSystem::init()
 {
   ISystem::init();
 }
 
-HERO void ActorSceneSystem::update()
+HERO void SceneSystem::update()
 {    
   if(NextScene != nullptr)
   {
@@ -37,7 +37,7 @@ HERO void ActorSceneSystem::update()
   CurrentScene->Update();
 }
 
-HERO void ActorSceneSystem::close()
+HERO void SceneSystem::close()
 {
   ISystem::close();
 
@@ -53,7 +53,7 @@ HERO void ActorSceneSystem::close()
   }
 }
 
-HERO void ActorSceneSystem::ChangeScene(ActorScene* NewScene)
+HERO void SceneSystem::ChangeScene(Scene* NewScene)
 {
   NextScene = NewScene;
 }

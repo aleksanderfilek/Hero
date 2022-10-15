@@ -28,6 +28,7 @@ public:
   HERO ~RenderTarget();
 
   HERO void BindBuffers();
+  HERO void UnbindBuffers();
   HERO void BindTexture();
   HERO void BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize);
 

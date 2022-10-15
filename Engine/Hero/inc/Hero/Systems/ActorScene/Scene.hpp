@@ -9,14 +9,14 @@ namespace Hero
 
 class Actor;
 
-class ActorScene
+class Scene
 {
 private:
     std::vector<Actor*> actors;
 
 public:
-    HERO ActorScene();
-    HERO ~ActorScene();
+    HERO Scene();
+    HERO ~Scene();
 
     virtual void Start(){}
     HERO virtual void Update();
