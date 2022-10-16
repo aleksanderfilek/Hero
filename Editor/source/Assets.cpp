@@ -336,7 +336,6 @@ static int objMesh(const std::string& path, int tangentGen)
   }
 
   std::vector<float> tangent;
-  std::vector<float> bitangent;
   if(tangentGen > 0)
   {
     for(int i = 0; i < faceSet.size(); i++)
@@ -361,25 +360,22 @@ static int objMesh(const std::string& path, int tangentGen)
       float tangenty = f * (deltaUV2y * edge1y - deltaUV1y * edge2y);
       float tangentz = f * (deltaUV2y * edge1z - deltaUV1y * edge2z);
 
-      float bitangentx = f * (-deltaUV2x * edge1x + deltaUV1x * edge2x);
-      float bitangenty = f * (-deltaUV2x * edge1y + deltaUV1x * edge2y);
-      float bitangentz = f * (-deltaUV2x * edge1z + deltaUV1x * edge2z);
-
       Hero::Float3 tangentV(tangentx,tangenty,tangentz);
-      Hero::Float3 bitangentV(bitangentx,bitangenty,bitangentz);
 
+      if(tangentV.length() == 0.0f)
+      {
+        std::cout<<"tangent error\n";
+        std::cout<<"\tdeltaUV2y "<<deltaUV2y<<" deltaUV1y "<<deltaUV1y<<std::endl;
+        std::cout<<"\tedge1 "<<edge1x<<" "<<edge1y<<" "<<edge1z<<std::endl;
+        std::cout<<"\tedge2 "<<edge2x<<" "<<edge2y<<" "<<edge2z<<std::endl;
+      }
       tangentV.normalize();
-      bitangentV.normalize();
 
       for(int j = 0; j < 3; j++)
       {
         tangent.push_back(tangentV.x);
         tangent.push_back(tangentV.x);
         tangent.push_back(tangentV.x);
-
-        bitangent.push_back(bitangentV.x);
-        bitangent.push_back(bitangentV.y);
-        bitangent.push_back(bitangentV.z);
       }
     }
   }
@@ -402,9 +398,6 @@ static int objMesh(const std::string& path, int tangentGen)
   byteSize += sizeof(uint8_t);
   byteSize += sizeof(uint32_t);
   byteSize += tangent.size() * sizeof(float);
-  byteSize += sizeof(uint8_t);
-  byteSize += sizeof(uint32_t);
-  byteSize += bitangent.size() * sizeof(float);
   }
 
   int Iptr = 0;
@@ -414,7 +407,7 @@ static int objMesh(const std::string& path, int tangentGen)
   uint32_t bufferCount = 3;
   if(tangentGen > 0)
   {
-    bufferCount += 2;
+    bufferCount += 1;
   }
   Hero::WriteUint32(Data, &Iptr, bufferCount);
   uint8_t positionType = 3;
@@ -435,10 +428,6 @@ static int objMesh(const std::string& path, int tangentGen)
     Hero::WriteUint8(Data, &Iptr, tangentType);
     Hero::WriteUint32(Data, &Iptr, tangent.size() * sizeof(float));
     Hero::WritePtr(Data, &Iptr, (uint8_t*)tangent.data(), tangent.size() * sizeof(float));
-    uint8_t bitangentType = 3;
-    Hero::WriteUint8(Data, &Iptr, bitangentType);
-    Hero::WriteUint32(Data, &Iptr, bitangent.size() * sizeof(float));
-    Hero::WritePtr(Data, &Iptr, (uint8_t*)bitangent.data(), bitangent.size() * sizeof(float));
   }
 
   std::stringstream newPath;

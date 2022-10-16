@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../../Core/Sid.hpp"
+#include "../../Core/Math.hpp"
 
 #include<vector>
 
@@ -23,9 +24,12 @@ public:
     virtual void End(){}
 
     HERO void AddActor(Actor* actor);
-    HERO void RemoveActor(const Sid& Id);
+    HERO void RemoveActor(const Sid& Name);
     HERO void ClearActors();
-    HERO Actor* GetActor(const Sid& Id);
+    HERO Actor* GetActor(const Sid& Name);
+    HERO Actor* GetActor(uint32_t Id);
+
+    HERO Actor* GetActorUnderCursor(Int2 MousePosition);
 };
 
 }

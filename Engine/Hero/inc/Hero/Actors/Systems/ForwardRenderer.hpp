@@ -17,6 +17,7 @@ struct MeshGroup
 {
   Mesh* mesh = nullptr;
   std::vector<Transform*> transforms;
+  std::vector<uint32_t> ids;
 };
 
 struct MaterialGroup
@@ -35,15 +36,19 @@ private:
   Material* currentMaterial = nullptr;
 
   std::vector<MaterialGroup> groups;
+  int currentVisibleBudder = 0;
 
 public:
-  HERO ForwardRenderer(const Sid& NewId);
+  HERO ForwardRenderer(const Sid& Name);
 
   HERO void Start() override;
   HERO void Update() override;
   HERO void End() override;
 
-  HERO void Register(Material* material, Mesh* mesh, Transform* transform);
+  HERO void Register(Material* material, Mesh* mesh, Transform* transform, uint32_t id);
+  HERO void SetCurrentVisibleBuffer(int Id);
+
+  HERO int GetIdOnPosition(Int2 Position);
 };
 
 }

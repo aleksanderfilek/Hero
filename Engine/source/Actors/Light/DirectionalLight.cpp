@@ -3,8 +3,8 @@
 namespace Hero
 {
 
-HERO DirectionalLight::DirectionalLight(const Sid& NewId)
- : Actor(NewId)
+HERO DirectionalLight::DirectionalLight(const Sid& Name)
+ : Actor(Name)
 {
   LightBuffer.Register<Float3>(SID("LightColor"));
   LightBuffer.Register<Float3>(SID("LightDirection"));

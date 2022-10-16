@@ -12,7 +12,7 @@ out VS_OUT
 void main()
 {
     vs_out.TexCoords = texCoords;
-    gl_Position = vec4(position, 0.0, 1.0);
+    gl_Position = vec4(position, 0.1, 1.0);
 }
 
 #tessControl
@@ -26,7 +26,10 @@ void main()
 
 layout (location=0) out vec4 o_Color;
 
-uniform sampler2D baseTex;
+layout(binding = 0) uniform sampler2D colorTex;
+layout(binding = 1) uniform sampler2D idTex;
+
+uniform int id;
 
 in VS_OUT
 {
@@ -35,5 +38,12 @@ in VS_OUT
 
 void main()
 {
-    o_Color = texture(baseTex, fs_in.TexCoords);
+    if(id == 0)
+    {
+        o_Color = texture(colorTex, fs_in.TexCoords);
+    }
+    else
+    {
+        o_Color = texture(idTex, fs_in.TexCoords);
+    }
 }

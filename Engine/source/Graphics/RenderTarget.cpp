@@ -10,26 +10,30 @@ HERO RenderTarget::RenderTarget(uint32_t Width, uint32_t Height, uint32_t Number
   Size = { (int)Width, (int)Height };
   Count = Number;
   BufferIds = new uint32_t[Number];
-  
+  GLenum* DrawBuffers = new GLenum[Count];
+
   glGenFramebuffers(1, &RenderBufferId);
   glBindFramebuffer(GL_FRAMEBUFFER, RenderBufferId);
 
-  glGenTextures(1, &(BufferIds[0]));
-  glBindTexture(GL_TEXTURE_2D, BufferIds[0]);
+  for(int i = 0; i < Count; i++)
+  {
+    glGenTextures(1, &(BufferIds[i]));
+    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Size.x, Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Size.x, Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);  
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferIds[0], 0);
- 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);  
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, BufferIds[i], 0);
+    DrawBuffers[i] = GL_COLOR_ATTACHMENT0 + i;
+  }
+
   glGenRenderbuffers(1, &DepthBufferId);
   glBindRenderbuffer(GL_RENDERBUFFER, DepthBufferId);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,  Size.x, Size.y);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBufferId);
   
-  GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-  glDrawBuffers(1, DrawBuffers);
+  glDrawBuffers(Count, DrawBuffers);
 
   if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
   {
@@ -65,13 +69,11 @@ HERO void RenderTarget::UnbindBuffers()
 
 HERO void RenderTarget::BindTexture()
 {
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, BufferIds[0]);
-  // for(int i = 0; i < Count; i++)
-  // {
-  //   glActiveTexture(GL_TEXTURE0 + i);
-  //   glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
-  // }
+  for(int i = 0; i < Count; i++)
+  {
+    glActiveTexture(GL_TEXTURE0 + i);
+    glBindTexture(GL_TEXTURE_2D, BufferIds[i]);
+  }
 }
 
 HERO void RenderTarget::BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize)

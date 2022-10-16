@@ -15,7 +15,7 @@ public:
   ColorRGB CurrentColor;
 
 public:
-  HERO DirectionalLight(const Sid& NewId);
+  HERO DirectionalLight(const Sid& Name);
 
   HERO void Start() override;
   HERO void Update() override;

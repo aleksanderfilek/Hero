@@ -1,4 +1,8 @@
 #include"Input.hpp"
+#include "../Core/Core.hpp"
+#include "Window.hpp"
+
+#include<iostream>
 
 namespace Hero
 {
@@ -46,15 +50,19 @@ HERO void Input::close()
     ISystem::close();
 }
 
-HERO void Input::getMousePosition(int *x,int *y)
+HERO Int2 Input::getMousePosition()
 {
-    if(x != NULL) *x = mouse_position_X;
-    if(y != NULL) *y = mouse_position_Y; 
+    if(!relativeMode)
+        return {mouse_position_X , mouse_position_Y};
+
+    Int2 size = Core::getSystem<System::Window>(SID("Window"))->getSize();
+    return { size.x / 2, size.y / 2};
 }
-HERO void Input::setMousePosition(int x, int y)
+
+HERO void Input::setMousePosition(Int2 position)
 {
-    mouse_position_X = x;
-    mouse_position_Y = y; 
+    mouse_position_X = position.x;
+    mouse_position_Y = position.y; 
 }
 
 HERO uint8_t Input::getMouseState(Mouse button)
@@ -67,24 +75,29 @@ HERO uint8_t Input::getMouseState(Mouse button)
     return state;
 }
 
-HERO void Input::getMouseDeltaPosition(int& x, int& y)
+HERO Int2 Input::getMouseDeltaPosition()
 {
+    Int2 result;
     if(relativeMode == false)
     {
-        x = mouse_position_X - previousMousePositionX;
-        y = mouse_position_Y - previousMousePositionY;
+        result = {
+            mouse_position_X - previousMousePositionX,
+            mouse_position_Y - previousMousePositionY
+        };
     }
     else
     {
-        x = mouse_position_X;
-        y = mouse_position_Y;
+        result = { mouse_position_X , mouse_position_Y};
     }
+    return result;
 }
 
 HERO void Input::setRelativeMode(bool enable)
 {
     relativeMode = enable;
     SDL_SetRelativeMouseMode((enable == true)? SDL_TRUE : SDL_FALSE);
+    mouse_position_X = 0;
+    mouse_position_Y = 0;
 }
 
 }

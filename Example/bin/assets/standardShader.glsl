@@ -4,8 +4,6 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 uv;
 layout (location = 2) in vec3 normal;
-layout (location = 3) in vec3 tangent;
-layout (location = 4) in vec3 bitangent;  
 
 layout (std140, binding = 0) uniform Matrices
 {
@@ -24,9 +22,11 @@ layout (std140, binding = 1) uniform DirectionalSun
 out VS_OUT
 {
   vec2 Uv;
-  vec3 TangentLightDir;
-  vec3 TangentViewDir;
   vec3 vLightColor;
+  vec3 Normal;
+  mat4 ModelMat;
+  vec3 LightDir;
+  vec3 Position;
 } vs_out;
 
 uniform mat4 model;
@@ -34,20 +34,11 @@ uniform mat4 model;
 void main()
 {
   vs_out.vLightColor = LightColor;
-
-  vec3 T = normalize(mat3(transpose(inverse(model))) * normal);
-  vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
-  T = normalize(T - dot(T, N) * N);
-  vec3 B = cross(N, T);
-  mat3 TBN = transpose(mat3(T, B, N));
-
-  vs_out.TangentLightDir = TBN * normalize(-LightDirection);
-
-  vec3 fragPos = vec3(model * vec4(position, 1.0));
-  vs_out.TangentViewDir  = TBN * normalize(viewPos - fragPos);
-
   vs_out.Uv = vec2(uv.x, 1.0 - uv.y);
-
+  vs_out.Normal = normal;
+  vs_out.ModelMat = model;
+  vs_out.LightDir = -LightDirection;
+  vs_out.Position = position;
   gl_Position = projection * view * model * vec4(position, 1.0);
 }
 
@@ -56,11 +47,80 @@ void main()
 #tessEvaluation
 
 #geometry
+#version 450
+layout (triangles) in;
+layout (triangle_strip, max_vertices = 3) out;
+
+layout (std140, binding = 0) uniform Matrices
+{
+  mat4 view;
+  mat4 projection;
+  mat4 pixel;
+  vec3 viewPos;
+};
+
+in VS_OUT
+{
+  vec2 Uv;
+  vec3 vLightColor;
+  vec3 Normal;
+  mat4 ModelMat;
+  vec3 LightDir;
+  vec3 Position;
+} gs_in[3];
+
+out VS_OUT
+{
+  vec2 Uv;
+  vec3 TangentLightDir;
+  vec3 TangentViewDir;
+  vec3 vLightColor;
+} gs_out;
+
+void Generate(int index, vec3 tangent)
+{
+
+  vec3 T = normalize(vec3(gs_in[index].ModelMat * vec4(tangent, 0.0)));
+  vec3 N = normalize(vec3(gs_in[index].ModelMat * vec4(gs_in[index].Normal, 0.0)));
+  T = normalize(T - dot(T, N) * N);
+  vec3 B = cross(N, T);
+  mat3 TBN = transpose(mat3(T, B, N));
+
+  gs_out.TangentLightDir = TBN * normalize(gs_in[index].LightDir);
+
+  vec3 fragPos = vec3(gs_in[index].ModelMat * vec4(gs_in[index].Position, 1.0));
+  gs_out.TangentViewDir  = TBN * normalize(viewPos - fragPos);
+
+  gl_Position = gl_in[index].gl_Position;
+  gs_out.Uv = gs_in[index].Uv;
+  gs_out.vLightColor = gs_in[index].vLightColor;
+  EmitVertex();
+}
+
+void main()
+{
+  vec3 edge1 = gs_in[1].Position - gs_in[0].Position;
+  vec3 edge2 = gs_in[2].Position - gs_in[0].Position;
+  vec2 deltaUV1 = gs_in[1].Uv - gs_in[0].Uv;
+  vec2 deltaUV2 = gs_in[2].Uv - gs_in[0].Uv;
+  float f = 1.0 / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+  float tangentx = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+  float tangenty = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+  float tangentz = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+
+  vec3 tangent = vec3(tangentx, tangenty, tangentz);
+
+  Generate(0, tangent);
+  Generate(1, tangent);
+  Generate(2, tangent);
+}
 
 #fragment
 #version 450
 
 layout (location = 0) out vec4 o_Color;
+layout (location = 1) out vec4 o_Id;
 
 in VS_OUT
 {
@@ -75,6 +135,8 @@ layout(binding = 1) uniform sampler2D normalTex;
 layout(binding = 2) uniform sampler2D roughnessTex;
 uniform float ambientStrength;
 uniform float specularStrength;
+
+uniform vec4 id;
 
 void main()
 {
@@ -99,4 +161,5 @@ void main()
 
   vec3 result = ambient + diffuse + specular;
   o_Color = vec4(result, 1.0);
+  o_Id = id;
 }

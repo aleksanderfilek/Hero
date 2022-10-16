@@ -1,6 +1,7 @@
 #pragma once
 #include"../Core/ISystem.hpp"
 #include"../ThirdParty/SDL2/SDL.h"
+#include"../Core/Math.hpp"
 
 #include<cstdint>
 
@@ -20,7 +21,7 @@ private:
     int mouse_position_Y = 0;
     int previousMousePositionX = 0;
     int previousMousePositionY = 0;
-    bool relativeMode = true;
+    bool relativeMode = false;
 
 public:
     enum Mouse : std::uint8_t;
@@ -45,11 +46,12 @@ public:
         return current_mouse_state&SDL_BUTTON(button) && !previous_mouse_state&SDL_BUTTON(button); }
     inline bool mouseButtonUp(Mouse button){
         return !current_mouse_state&SDL_BUTTON(button) && previous_mouse_state&SDL_BUTTON(button); }
-    HERO void getMousePosition(int *x,int *y);
-    HERO void setMousePosition(int x, int y);
+    HERO Int2 getMousePosition();
+    HERO void setMousePosition(Int2 position);
     HERO uint8_t getMouseState(Mouse button);
-    HERO void getMouseDeltaPosition(int& x, int& y);
+    HERO Int2 getMouseDeltaPosition();
     HERO void setRelativeMode(bool enable = true);
+    inline bool isInRelativeMode() { return relativeMode; }
 
     enum Mouse : uint8_t
     {

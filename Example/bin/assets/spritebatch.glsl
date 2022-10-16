@@ -9,9 +9,10 @@ layout (location = 4) in float layer;
 
 layout (std140, binding = 0) uniform Matrices
 {
-    mat4 view;
-    mat4 projection;
-    mat4 pixel;
+  mat4 view;
+  mat4 projection;
+  mat4 pixel;
+  vec3 viewPos;
 };
 
 out VS_OUT

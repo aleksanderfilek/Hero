@@ -14,7 +14,7 @@ private:
   class Material* material;
   
 public:
-  HERO Skybox(const Sid& NewId);
+  HERO Skybox(const Sid& Name);
 
   HERO void Start() override;
   HERO void Update() override;

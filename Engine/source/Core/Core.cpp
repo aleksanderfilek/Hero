@@ -109,7 +109,7 @@ HERO bool Core::addSystem(ISystem* newSystem)
     int index;
     for(index = 0; index < systems.size(); index++)
     {
-        if(newSystem->getPriority() <= systems[index]->getPriority())
+        if(newSystem->getPriority() < systems[index]->getPriority())
         {
             break;
         }

@@ -11,6 +11,7 @@
 #include"../Hero/Core/Time.hpp"
 
 Hero::DirectionalLight* light;
+Hero::ForwardRenderer* renderer;
 
 void Game::Start()
 {
@@ -19,6 +20,8 @@ void Game::Start()
   window = Hero::Core::getSystem<Hero::System::Window>(SID("Window"));
   window->setBackgroundColor((Hero::Color){0,0,0,255});
   window->setDepthTest(true);
+
+  input = Hero::Core::getSystem<Hero::System::Input>(SID("input"));
 
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT); 
@@ -40,7 +43,9 @@ void Game::Start()
   resources->Add(SID("arrow"), "bin/assets/arrow.he");
   resources->Add(SID("rendererShader"), "bin/assets/rendererShader.he");
 
-  AddActor(new Hero::ForwardRenderer(SID("Renderer")));
+  renderer = new Hero::ForwardRenderer(SID("Renderer"));
+  AddActor(renderer);
+
   Hero::Skybox*sky = new Hero::Skybox(SID("Sky"));
   sky->SetMaterial((Hero::Material*)resources->Get(SID("M_Skybox")));
   sky->SetCubemap((Hero::Cubemap*)resources->Get(SID("Cubemap")));
@@ -63,13 +68,13 @@ void Game::Start()
 }
 
 float angle = 0.0f;
+
 void Game::Update()
 {
-  Hero::System::Window::clear();
-
   angle += 30.0f * Hero::Time::getDeltaTime();
   light->SetRotation(Hero::Quaternion(Hero::deg2rad(angle), Hero::deg2rad(0.0f), Hero::deg2rad(0.0f)));
 
+  Hero::System::Window::clear();
   Scene::Update();
 
   window->render();

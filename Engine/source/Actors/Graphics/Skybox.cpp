@@ -11,8 +11,8 @@
 namespace Hero
 {
 
-HERO Skybox::Skybox(const Sid& NewId)
- : Actor(NewId)
+HERO Skybox::Skybox(const Sid& Name)
+ : Actor(Name)
 {
 
 }
@@ -25,7 +25,7 @@ HERO void Skybox::Start()
   if(!renderer)
     return;
 
-  renderer->Register(material, cubemap, GetTransformRef());
+  renderer->Register(material, cubemap, GetTransformRef(), GetId());
 }
 
 HERO void Skybox::Update()

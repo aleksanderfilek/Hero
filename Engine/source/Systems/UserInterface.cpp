@@ -33,8 +33,7 @@ HERO void UserInterface::init()
 
 HERO void UserInterface::update()
 {
-  Int2 mousePosition;
-  input->getMousePosition(&mousePosition.x, &mousePosition.y);
+  Int2 mousePosition = input->getMousePosition();
   uint8_t buttonState = input->getMouseState(Input::Mouse::Left);
 
   for(auto it: widgets)

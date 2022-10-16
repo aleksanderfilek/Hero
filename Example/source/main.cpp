@@ -9,6 +9,7 @@
 #include"Hero/Systems/Resources.hpp"
 
 #include"Scenes/Game.hpp"
+#include"Systems/Editor.hpp"
 
 Hero::Core* core;
 
@@ -24,9 +25,10 @@ int WinMain(int argc, char* argv[])
   core->addSystem(new Hero::System::Window(SID("Window"), "Example", 1280, 720));
   core->addSystem(new Hero::System::Event(SID("event")));
   core->addSystem(new Hero::System::Input(SID("input")));
-  //core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
   core->addSystem(new Hero::SceneSystem(SID("scene"), new Game()));
+  core->addSystem(new Hero::System::UserInterface(SID("ui"),SID("Window"),SID("input")));
   core->addSystem(new Hero::Resources(SID("resources")));
+  core->addSystem(new Editor(SID("Editor")));
 
   Hero::System::Event* event = core->getSystem<Hero::System::Event>(SID("event"));
   Hero::System::Window* window = core->getSystem<Hero::System::Window>(SID("Window"));

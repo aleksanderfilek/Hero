@@ -16,7 +16,7 @@ HERO StaticMesh::StaticMesh()
 HERO void StaticMesh::Start()
 {
   renderer = (ForwardRenderer*)GetOwner()->GetScene()->GetActor(SID("Renderer"));
-  renderer->Register(material, mesh, GetOwner()->GetTransformRef());
+  renderer->Register(material, mesh, GetOwner()->GetTransformRef(), GetOwner()->GetId());
 }
 
 HERO void StaticMesh::SetMesh(Mesh* Mesh)

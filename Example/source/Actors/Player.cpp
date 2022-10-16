@@ -5,6 +5,8 @@
 #include"../Hero/Core/Time.hpp"
 #include "../Hero/Components/Camera.hpp"
 
+#include<iostream>
+
 #define SPEED 40.0f
 
 Player::Player(const Hero::Sid& NewId)
@@ -40,14 +42,12 @@ void Player::LookAndMove()
 {
   if(input->keyDown(Hero::System::Input::KeyCode::ESCAPE))
   {
-    SDL_SetRelativeMouseMode((SDL_GetRelativeMouseMode() == SDL_TRUE)?SDL_FALSE:SDL_TRUE);
+    input->setRelativeMode(!input->isInRelativeMode());
   }
 
-  int x=0, y=0;
-  SDL_GetRelativeMouseState(&x, &y);
-
-  float xpos = (float)x;
-  float ypos = (float)y;
+  Hero::Int2 delta = input->getMouseDeltaPosition();
+  float xpos = (float)delta.x;
+  float ypos = (float)delta.y;
 
   float xoffset = xpos/320.0f;
   float yoffset = ypos/240.0f; // reversed since y-coordinates go from bottom to top
