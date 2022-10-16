@@ -23,7 +23,7 @@ public:
     HERO void close();
 
     HERO void ChangeScene(Scene* NewScene);
-    
+
     inline Scene* GetCurrentScene() { return CurrentScene; }
 };
 

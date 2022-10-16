@@ -64,6 +64,10 @@ HERO void ForwardRenderer::Update()
     {
       for(int i = 0; i < meshGroup.transforms.size(); i++)
       {
+        if(*meshGroup.visibility[i] == false)
+        {
+          continue;
+        }
         currentShader->setMatrix4f(SID("model"), meshGroup.transforms[i]->GetModelMatrix());
         uint32_t id = meshGroup.ids[i];
         uint8_t r = (id & 0x000000FF) >>  0;
@@ -91,7 +95,7 @@ HERO void ForwardRenderer::End()
   delete quad;
 }
 
-HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* transform, uint32_t id)
+HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* transform, uint32_t id, bool* visibility)
 {
   for(int i = 0; i < groups.size(); i++)
   {
@@ -104,6 +108,8 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* 
         if(meshGroup.mesh == mesh)
         {
           meshGroup.transforms.push_back(transform);
+          meshGroup.ids.push_back(id);
+          meshGroup.visibility.push_back(visibility);
           return;
         }
       }
@@ -112,6 +118,7 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* 
       meshGroup.mesh = mesh;
       meshGroup.transforms.push_back(transform);
       meshGroup.ids.push_back(id);
+      meshGroup.visibility.push_back(visibility);
       group.groups.push_back(meshGroup);
       return;
     }
@@ -124,6 +131,7 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* 
       meshGroup.mesh = mesh;
       meshGroup.transforms.push_back(transform);
       meshGroup.ids.push_back(id);
+      meshGroup.visibility.push_back(visibility);
       materialGroup.groups.push_back(meshGroup);
       groups.insert(groups.begin() + i + 1, materialGroup);
       return;
@@ -136,6 +144,7 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* 
   meshGroup.mesh = mesh;
   meshGroup.transforms.push_back(transform);
   meshGroup.ids.push_back(id);
+  meshGroup.visibility.push_back(visibility);
   materialGroup.groups.push_back(meshGroup);
   groups.push_back(materialGroup);
 }

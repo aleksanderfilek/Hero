@@ -14,6 +14,7 @@ private:
   class ForwardRenderer* renderer;
   class Mesh* mesh;
   class Material* material;
+  bool visible = true;
 
 public:
   HERO StaticMesh();
@@ -22,6 +23,7 @@ public:
 
   HERO void SetMesh(class Mesh* Mesh);
   HERO void SetMaterial(class Material* Material);
+  HERO void SetVisibility(bool Visible);
 };
 
 }

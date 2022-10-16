@@ -16,7 +16,7 @@ HERO StaticMesh::StaticMesh()
 HERO void StaticMesh::Start()
 {
   renderer = (ForwardRenderer*)GetOwner()->GetScene()->GetActor(SID("Renderer"));
-  renderer->Register(material, mesh, GetOwner()->GetTransformRef(), GetOwner()->GetId());
+  renderer->Register(material, mesh, GetOwner()->GetTransformRef(), GetOwner()->GetId(), &visible);
 }
 
 HERO void StaticMesh::SetMesh(Mesh* Mesh)
@@ -27,6 +27,11 @@ HERO void StaticMesh::SetMesh(Mesh* Mesh)
 HERO void StaticMesh::SetMaterial(Material* Material)
 {
   material = Material;
+}
+
+HERO void StaticMesh::SetVisibility(bool Visible)
+{
+  visible = Visible;
 }
 
 }

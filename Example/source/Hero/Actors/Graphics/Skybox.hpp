@@ -12,6 +12,7 @@ class Skybox : public Actor
 private:
   Cubemap* cubemap;
   class Material* material;
+  bool visible = true;
   
 public:
   HERO Skybox(const Sid& Name);

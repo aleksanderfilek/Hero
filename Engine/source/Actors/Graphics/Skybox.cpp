@@ -25,7 +25,7 @@ HERO void Skybox::Start()
   if(!renderer)
     return;
 
-  renderer->Register(material, cubemap, GetTransformRef(), GetId());
+  renderer->Register(material, cubemap, GetTransformRef(), GetId(), &visible);
 }
 
 HERO void Skybox::Update()

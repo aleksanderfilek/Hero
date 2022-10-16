@@ -18,6 +18,7 @@ struct MeshGroup
   Mesh* mesh = nullptr;
   std::vector<Transform*> transforms;
   std::vector<uint32_t> ids;
+  std::vector<bool*> visibility;
 };
 
 struct MaterialGroup
@@ -45,7 +46,7 @@ public:
   HERO void Update() override;
   HERO void End() override;
 
-  HERO void Register(Material* material, Mesh* mesh, Transform* transform, uint32_t id);
+  HERO void Register(Material* material, Mesh* mesh, Transform* transform, uint32_t id, bool* visibility);
   HERO void SetCurrentVisibleBuffer(int Id);
 
   HERO int GetIdOnPosition(Int2 Position);
