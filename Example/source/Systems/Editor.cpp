@@ -139,7 +139,10 @@ void Editor::update()
 
         if(input->keyDown(Hero::System::Input::KeyCode::RETURN))
         {
-            selectedActor = sceneSystem->GetCurrentScene()->Spawn<Cliff>(SID("New"));
+            static int spawnedNum = 0;
+            spawnedNum++;
+            std::string name = "Cliff_" + std::to_string(spawnedNum);
+            selectedActor = sceneSystem->GetCurrentScene()->Spawn<Cliff>(SID(name.c_str()));
             sceneSystem->GetCurrentScene()->AddActor(selectedActor);
         }
     }

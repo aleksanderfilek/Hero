@@ -53,7 +53,7 @@ void Game::Start()
   light->SetColor(Hero::ColorRGB(255,0,0,255));
   AddActor(light);
 
-  AddActor(Spawn<Cliff>(SID("Cliff_1"),
+  AddActor(Spawn<Cliff>(SID("Cliff_0"),
     Hero::Transform(
       Hero::Float3(0.0f, 0.0f, 50.0f), 
       Hero::Quaternion(), 

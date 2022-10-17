@@ -62,6 +62,11 @@ HERO ResourceHandle* Resources::Get(const Sid& sid) const
 
 HERO bool Resources::Add(const Sid& sid, std::string path)
 {
+  if(bank.find(sid) != bank.end())
+  {
+    return;
+  }
+
   std::ifstream file(path, std::ios::binary);
   if(!file.is_open())
   {
