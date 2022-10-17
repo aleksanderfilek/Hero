@@ -22,10 +22,7 @@ HERO void Skybox::Start()
   Actor::Start();
 
   ForwardRenderer* renderer = (ForwardRenderer*)GetScene()->GetActor(SID("Renderer"));
-  if(!renderer)
-    return;
-
-  renderer->Register(material, cubemap, GetTransformRef(), GetId(), &visible);
+  renderer->Add(material, cubemap, GetTransformRef(), GetId(), &visible);
 }
 
 HERO void Skybox::Update()
@@ -36,6 +33,9 @@ HERO void Skybox::Update()
 HERO void Skybox::End()
 {
   Actor::End();
+  ForwardRenderer* renderer = (ForwardRenderer*)GetScene()->GetActor(SID("Renderer"));
+  if(!renderer) return;
+  renderer->Remove(material, cubemap, GetTransformRef());
 }
 
 HERO void Skybox::SetMaterial(class Material* Material)

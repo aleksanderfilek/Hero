@@ -1,6 +1,7 @@
 #include "Actor.hpp"
 #include "ActorComponent.hpp"
 #include "../../Utility/ByteOperations.hpp"
+#include "Scene.hpp"
 
 namespace Hero
 {
@@ -11,9 +12,9 @@ HERO Actor::Actor(const Sid& Name)
   
 }
 
-HERO Actor::~Actor()
+HERO void Actor::Destroy()
 {
-  End();
+    SceneRef->RemoveActor(GetName());
 }
 
 HERO void Actor::Start()
@@ -89,11 +90,11 @@ HERO void Actor::Deserialize(uint8_t* bytes, uint32_t size)
     ReadPtr(bytes, &index, (uint8_t*)&transform, size);
 }
 
-HERO Actor* Actor::Clone()
-{
-    Actor* actor = new Actor(GetName());
-    actor->SetTransform(actor->GetTransform());
-    return actor;
-}
+// HERO Actor* Actor::Clone()
+// {
+//     Actor* actor = new Actor(GetName());
+//     actor->SetTransform(actor->GetTransform());
+//     return actor;
+// }
 
 }

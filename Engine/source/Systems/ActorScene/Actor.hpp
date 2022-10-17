@@ -11,7 +11,7 @@
 namespace Hero
 {
 
-class Actor : public ISerializable, public ICloneable
+class Actor : public ISerializable
 {
     friend class Scene;
 
@@ -26,7 +26,8 @@ private:
 
 public:
     HERO Actor(const Sid& Name);
-    HERO ~Actor();
+
+    HERO void Destroy();
 
     HERO virtual void Start();
     HERO virtual void Update();
@@ -53,7 +54,7 @@ public:
 
     HERO virtual uint32_t Serialize(uint8_t*& bytes) override;
     HERO virtual void Deserialize(uint8_t* bytes, uint32_t size) override;
-    HERO virtual Actor* Clone() override;
+    //HERO virtual Actor* Clone() override;
 
 };
 

@@ -2,13 +2,16 @@
 
 #include "../../Core/Sid.hpp"
 #include "../../Core/Math.hpp"
+#include "ISerializable.hpp"
+#include "ICloneable.hpp"
 
-#include<vector>
+#include <vector>
+#include <typeinfo>
 
 namespace Hero
 {
 
-class Actor
+class Actor : public ISerializable
 {
     friend class Scene;
 
@@ -18,13 +21,13 @@ private:
     Transform transform;
     std::vector<class ActorComponent*> components;
     class Scene* SceneRef = nullptr;
-    Actor* parent = nullptr;
 
     bool started = false;
 
 public:
     HERO Actor(const Sid& Name);
-    HERO ~Actor();
+
+    HERO void Destroy();
 
     HERO virtual void Start();
     HERO virtual void Update();
@@ -32,6 +35,7 @@ public:
 
     inline Sid GetName(){ return name; }
     inline uint32_t GetId(){ return name.id; }
+    inline Sid GetType(){ return SID(typeid(*this).name()); };
 
     HERO void SetPosition(const Float3& Position);
     HERO void SetRotation(const Quaternion& Rotation);
@@ -48,6 +52,8 @@ public:
 
     HERO void AddComponent(class ActorComponent* Component);
 
+    HERO virtual uint32_t Serialize(uint8_t*& bytes) override;
+    HERO virtual void Deserialize(uint8_t* bytes, uint32_t size) override;
 };
 
 } 

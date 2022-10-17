@@ -26,7 +26,8 @@ private:
 
 public:
     HERO Actor(const Sid& Name);
-    HERO ~Actor();
+
+    HERO void Destroy();
 
     HERO virtual void Start();
     HERO virtual void Update();

@@ -95,14 +95,14 @@ HERO void ForwardRenderer::End()
   delete quad;
 }
 
-HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* transform, uint32_t id, bool* visibility)
+HERO void ForwardRenderer::Add(Material* material,  Mesh* mesh, Transform* transform, uint32_t id, bool* visibility)
 {
   for(int i = 0; i < groups.size(); i++)
   {
     MaterialGroup& group = groups[i];
     if(group.material == material)
     {
-      for(int j = 0; j < group.groups.size() - j; j++)
+      for(int j = 0; j < group.groups.size(); j++)
       {
         MeshGroup& meshGroup = group.groups[j];
         if(meshGroup.mesh == mesh)
@@ -147,6 +147,34 @@ HERO void ForwardRenderer::Register(Material* material,  Mesh* mesh, Transform* 
   meshGroup.visibility.push_back(visibility);
   materialGroup.groups.push_back(meshGroup);
   groups.push_back(materialGroup);
+}
+
+HERO void ForwardRenderer::Remove(Material* material, Mesh* mesh, Transform* transform)
+{
+  for(int i = 0; i < groups.size(); i++)
+  {
+    MaterialGroup& materialGroup = groups[i];
+    if(materialGroup.material == material)
+    {
+      for(int j = 0; j < materialGroup.groups.size() - j; j++)
+      {
+        MeshGroup& meshGroup = materialGroup.groups[j];
+        if(meshGroup.mesh == mesh)
+        {
+          for(int k = 0; k < meshGroup.transforms.size(); k++)
+          {
+            if(meshGroup.transforms[k] == transform)
+            {
+              meshGroup.transforms.erase(k + meshGroup.transforms.begin());
+              return;
+            }
+          }
+          return;
+        }
+      }
+      return;
+    }
+  }
 }
 
 HERO void ForwardRenderer::SetCurrentVisibleBuffer(int Id)

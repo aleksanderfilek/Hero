@@ -558,21 +558,22 @@ HERO Float3 Quaternion::ToEuler() const
 {
     Float3 result;
 
-    double sinr_cosp = 2 *( w * x + y * z);
-    double cosr_cosp = 1 - 2 * (x * x + y * y);
-    result.x = std::atan2(sinr_cosp, cosr_cosp);
+    // roll
+    double sinr_cosp = 2 *( w * z + x * y);
+    double cosr_cosp = 1 - 2 * (z * z + x * x);
+    result.z = std::atan2(sinr_cosp, cosr_cosp);
 
     // pitch (y-axis rotation)
-    double sinp = 2 * (w * y - z * x);
+    double sinp = 2 * (w * x - y * z);
     if (std::abs(sinp) >= 1)
-        result.y = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+        result.x = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
     else
-        result.y = std::asin(sinp);
+        result.x = std::asin(sinp);
 
     // yaw (z-axis rotation)
-    double siny_cosp = 2 * (w * z + x * y);
-    double cosy_cosp = 1 - 2 * (y * y + z * z);
-    result.z = std::atan2(siny_cosp, cosy_cosp);
+    double siny_cosp = 2 * (w * y + z * x);
+    double cosy_cosp = 1 - 2 * (x * x + y * y);
+    result.y = std::atan2(siny_cosp, cosy_cosp);
 
     return result;
 }

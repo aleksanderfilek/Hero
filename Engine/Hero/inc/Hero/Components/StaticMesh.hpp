@@ -20,6 +20,7 @@ public:
   HERO StaticMesh();
 
   HERO void Start() override;
+  HERO void End() override;
 
   HERO void SetMesh(class Mesh* Mesh);
   HERO void SetMaterial(class Material* Material);

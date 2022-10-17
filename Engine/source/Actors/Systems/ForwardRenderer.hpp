@@ -46,7 +46,9 @@ public:
   HERO void Update() override;
   HERO void End() override;
 
-  HERO void Register(Material* material, Mesh* mesh, Transform* transform, uint32_t id, bool* visibility);
+  HERO void Add(Material* material, Mesh* mesh, Transform* transform, uint32_t id, bool* visibility);
+  HERO void Remove(Material* material, Mesh* mesh, Transform* transform);
+  
   HERO void SetCurrentVisibleBuffer(int Id);
 
   HERO int GetIdOnPosition(Int2 Position);
