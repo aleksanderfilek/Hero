@@ -107,3 +107,10 @@ void Player::LookAndMove()
 
   SetPosition(newPosition);
 }
+
+Hero::Actor* Player::Clone()
+{
+    Hero::Actor* actor = new Player(GetName());
+    actor->SetTransform(actor->GetTransform());
+    return actor;
+}

@@ -6,6 +6,7 @@
 #include "../Hero/Systems/Resources.hpp"
 #include "../Hero/Graphics/Shader.hpp"
 #include "../Hero/Core/Math.hpp"
+#include "../Actors/Cliff.hpp"
 
 #include <iostream>
 
@@ -134,6 +135,12 @@ void Editor::update()
         if(input->keyDown(Hero::System::Input::KeyCode::KP_0))
         {
             selectedActor->SetTransform(Hero::Transform());
+        }
+
+        if(input->keyDown(Hero::System::Input::KeyCode::RETURN))
+        {
+            selectedActor = sceneSystem->GetCurrentScene()->Spawn<Cliff>(SID("New"));
+            sceneSystem->GetCurrentScene()->AddActor(selectedActor);
         }
     }
 }

@@ -20,4 +20,6 @@ public:
   virtual void End() override;
 
   void LookAndMove();
+
+  Hero::Actor* Clone() override;
 };

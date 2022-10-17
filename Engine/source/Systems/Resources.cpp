@@ -46,6 +46,7 @@ HERO void Resources::update()
 HERO void Resources::close()
 {
   ISystem::close();
+  Clear();
 }
 
 HERO bool Resources::Exists(const Sid& sid) const 
@@ -67,7 +68,6 @@ HERO bool Resources::Add(const Sid& sid, std::string path)
     printMessage("Could not load resource");
     return false;
   }
-
 
   int resourceId = 0;
   file.read((char*)&resourceId, sizeof(int)); 

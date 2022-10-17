@@ -11,7 +11,13 @@
 namespace Hero
 {
 
-class Actor : public ISerializable
+template<class T>
+Sid GetType()
+{ 
+    return SID(typeid(T).name()); 
+};
+
+class Actor : public ISerializable, public ICloneable
 {
     friend class Scene;
 
@@ -34,8 +40,8 @@ public:
     HERO virtual void End();
 
     inline Sid GetName(){ return name; }
+    void SetName(const Sid& Name){ name = Name; }
     inline uint32_t GetId(){ return name.id; }
-    inline Sid GetType(){ return SID(typeid(*this).name()); };
 
     HERO void SetPosition(const Float3& Position);
     HERO void SetRotation(const Quaternion& Rotation);
@@ -54,6 +60,8 @@ public:
 
     HERO virtual uint32_t Serialize(uint8_t*& bytes) override;
     HERO virtual void Deserialize(uint8_t* bytes, uint32_t size) override;
+    HERO virtual Actor* Clone() override;
+
 };
 
 } 

@@ -90,11 +90,11 @@ HERO void Actor::Deserialize(uint8_t* bytes, uint32_t size)
     ReadPtr(bytes, &index, (uint8_t*)&transform, size);
 }
 
-// HERO Actor* Actor::Clone()
-// {
-//     Actor* actor = new Actor(GetName());
-//     actor->SetTransform(actor->GetTransform());
-//     return actor;
-// }
+HERO Actor* Actor::Clone()
+{
+    Actor* actor = new Actor(GetName());
+    actor->SetTransform(actor->GetTransform());
+    return actor;
+}
 
 }

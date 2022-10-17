@@ -2,13 +2,13 @@
 
 #include"../Hero/Core/Core.hpp"
 #include"../Actors/Player.hpp"
-#include"../Hero/Components/StaticMesh.hpp"
 #include"../Hero/Actors/Systems/ForwardRenderer.hpp"
 #include"../Hero/Systems/Resources.hpp"
 #include"../Hero/Actors/Graphics/Skybox.hpp"
 #include"../Hero/Actors/Light/DirectionalLight.hpp"
 #include"../Hero/Core/Math.hpp"
 #include"../Hero/Core/Time.hpp"
+#include "../Actors/Cliff.hpp"
 
 Hero::DirectionalLight* light;
 Hero::ForwardRenderer* renderer;
@@ -28,13 +28,7 @@ void Game::Start()
 
   Hero::Resources* resources = Hero::Core::getSystem<Hero::Resources>(SID("resources"));
 
-  resources->Add(SID("cliffmesh"), "bin/assets/cliff.he");
-  resources->Add(SID("cliffTexture"), "bin/assets/cliffAlbedo.he");
-  resources->Add(SID("cliffTextureNormal"), "bin/assets/cliffNormal.he");
-  resources->Add(SID("cliffTextureDisplacement"), "bin/assets/cliffDisplacement.he");
-  resources->Add(SID("cliffTextureRoughness"), "bin/assets/cliffRoughness.he");
   resources->Add(SID("standardShader"), "bin/assets/standardShader.he");
-  resources->Add(SID("material"), "bin/assets/template.he");
   resources->Add(SID("skyShader"), "bin/assets/cubemapShader.he");
   resources->Add(SID("M_Skybox"), "bin/assets/skybox.he");
   resources->Add(SID("Cubemap"), "bin/assets/cubemap.he");
@@ -42,6 +36,8 @@ void Game::Start()
   resources->Add(SID("simple"), "bin/assets/simple.he");
   resources->Add(SID("arrow"), "bin/assets/arrow.he");
   resources->Add(SID("rendererShader"), "bin/assets/rendererShader.he");
+
+  AddReflection<Cliff>();
 
   renderer = new Hero::ForwardRenderer(SID("Renderer"));
   AddActor(renderer);
@@ -57,13 +53,12 @@ void Game::Start()
   light->SetColor(Hero::ColorRGB(255,0,0,255));
   AddActor(light);
 
-  Hero::Actor* cliff = new Hero::Actor(SID("Cliff"));
-  Hero::StaticMesh* staticMesh = new Hero::StaticMesh();
-  staticMesh->SetMesh((Hero::Mesh*)resources->Get(SID("cliffmesh")));
-  staticMesh->SetMaterial((Hero::Material*)resources->Get(SID("material")));
-  cliff->SetPosition(Hero::Float3(0.0f, 0.0f, 50.0f));
-  cliff->AddComponent(staticMesh);
-  AddActor(cliff);
+  AddActor(Spawn<Cliff>(SID("Cliff_1"),
+    Hero::Transform(
+      Hero::Float3(0.0f, 0.0f, 50.0f), 
+      Hero::Quaternion(), 
+      Hero::Float3::one()
+    )));
 
 }
 
