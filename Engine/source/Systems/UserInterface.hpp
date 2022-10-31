@@ -3,8 +3,10 @@
 #include"../Core/ISystem.hpp"
 #include"../UserInterface/Widget.hpp"
 #include"../Graphics/Spritebatch.hpp"
+#include"../Core/Events.hpp"
 
 #include<map>
+#include<vector>
 #include<string>
 
 namespace Hero
@@ -12,16 +14,22 @@ namespace Hero
 namespace System
 { 
 
+HERO event(OnResize);
+
 class Window;
 class Input;
 
 class UserInterface : public ISystem
 {
+// events
+friend void OnResize(void* object, void* args, int argc);
+
 private:
   Window* window = nullptr;
   Input* input = nullptr;
 
-  std::map<std::string, UI::Widget*> widgets;
+  std::map<std::string, UI::Widget*> widgetsMap;
+  std::vector<UI::Widget*> widgets;
 
   Shader* shader = nullptr;
   Spritebatch* spritebatch = nullptr;

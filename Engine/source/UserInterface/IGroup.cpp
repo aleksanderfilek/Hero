@@ -11,7 +11,7 @@ HERO IGroup::~IGroup()
 {
   for(auto& child: children)
   {
-    delete child.second;
+    delete child;
   }
 }
 
@@ -27,7 +27,7 @@ HERO void IGroup::update(Int2 mousePosition, uint8_t buttonState)
 
   for(auto it: children)
   {
-    it.second->update(mousePosition, buttonState);
+    it->update(mousePosition, buttonState);
   } 
   IElement::update(mousePosition, buttonState);
 
@@ -40,13 +40,13 @@ HERO void IGroup::draw(Spritebatch* spritebatch)
 
   for(auto it: children)
   {
-    it.second->draw(spritebatch);
+    it->draw(spritebatch);
   }
 }
 
 HERO bool IGroup::add(const std::string& name, IElement* element)
 {
-  auto result = children.insert({name, element});  
+  auto result = childMap.insert({name, element});  
 
   if(result.second == false)
   {
@@ -57,6 +57,7 @@ HERO bool IGroup::add(const std::string& name, IElement* element)
     return false;
   }
 
+  children.push_back(element);
   element->parent = this;
   element->UpdateAbsoluteTransform();
   
@@ -65,7 +66,9 @@ HERO bool IGroup::add(const std::string& name, IElement* element)
 
 HERO bool IGroup::remove(const std::string& name)
 {
-  auto result = children.erase(name);
+  IElement* element = childMap[name];
+  auto result = childMap.erase(name);
+
   if(result == 0)
   {
     #ifdef HERO_DEBUG
@@ -74,6 +77,18 @@ HERO bool IGroup::remove(const std::string& name)
     #endif
     return false;
   }
+
+  int index;
+  for(index = 0; index < children.size(); index++)
+  {
+    if(children[index] == element)
+    {
+      break;
+    }
+  }
+
+  children.erase(children.begin() + index);
+
   return true;
 }
 

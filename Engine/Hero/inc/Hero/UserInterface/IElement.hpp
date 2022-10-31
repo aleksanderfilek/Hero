@@ -55,7 +55,7 @@ public:
   HERO Int4 GetRelativeTransform() const;
   HERO Int2 GetAbsolutePosition() const;
   HERO Int2 GetAbsoluteSize() const;
-  HERO void UpdateAbsoluteTransform();
+  HERO virtual void UpdateAbsoluteTransform();
 
   inline void setVisibility(bool _visible){ visible = _visible; }
   inline bool isVisible(){ return visible; }

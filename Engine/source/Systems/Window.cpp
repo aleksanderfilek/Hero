@@ -123,14 +123,11 @@ HERO void Window::handleEvents(SDL_Event* event)
             events[(int)WindowEventType::MOVED].invoke(this, nullptr, 0);
             break;
         case SDL_WINDOWEVENT_RESIZED: {
-            size = (Int2){ event->window.data1, event->window.data2 };
-            void* args[2] = {
-                (void*)&size.x,
-                (void*)&size.y
-            };
-            glViewport(0,0,size.x, size.y);
+            size = { event->window.data1, event->window.data2 };
+            Int2 argSize = size;
+            glViewport(0, 0, size.x, size.y);
 
-            events[(int)WindowEventType::RESIZED].invoke(this, args, 2);
+            events[(int)WindowEventType::RESIZED].invoke(this, (void*)&argSize, 1);
         } break;
         case SDL_WINDOWEVENT_SIZE_CHANGED: {
             size = (Int2){ event->window.data1, event->window.data2 };

@@ -13,6 +13,16 @@ namespace Hero
 namespace System
 {
 
+HERO event(OnResize)
+{
+  Hero::System::UserInterface* ui = Hero::Core::getSystem<Hero::System::UserInterface>(SID("Ui"));
+  Int2 size = *(Int2*)args;
+  for(auto widget: ui->widgets)
+  {
+    widget->SetRelativeTransform(Int4(0, 0, size.x, size.y));
+  }
+}
+
 HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid, 
   const Sid& inputSid) : ISystem(sid)
 {
@@ -24,6 +34,7 @@ HERO UserInterface::UserInterface(const Sid& sid, const Sid& windowSid,
 
 HERO UserInterface::~UserInterface()
 {
+
 }
 
 HERO void UserInterface::init()
@@ -38,7 +49,7 @@ HERO void UserInterface::update()
 
   for(auto it: widgets)
   {
-    it.second->update(mousePosition, buttonState);
+    it->update(mousePosition, buttonState);
   }
 
   if(shader == nullptr) return;
@@ -47,7 +58,7 @@ HERO void UserInterface::update()
   spritebatch->begin();
   for(auto it: widgets)
   {
-    it.second->draw(spritebatch);
+    it->draw(spritebatch);
   }
   spritebatch->end();
   window->render();
@@ -56,17 +67,16 @@ HERO void UserInterface::update()
 HERO void UserInterface::close()
 {
   ISystem::close();
-  delete shader;
-  delete spritebatch;
   for(auto widget: widgets)
   {
-    delete widget.second;
+    delete widget;
   }
+  delete spritebatch;
 }
 
 HERO bool UserInterface::add(const std::string& name, UI::Widget* widget)
 {
-  auto result = widgets.insert({name, widget});  
+  auto result = widgetsMap.insert({name, widget});  
 
   if(result.second == false)
   {
@@ -78,12 +88,16 @@ HERO bool UserInterface::add(const std::string& name, UI::Widget* widget)
     #endif
     return false;
   }
+
+  widgets.push_back(widget);
+
   return true;
 }
 
 HERO bool UserInterface::remove(const std::string& name)
 {
-  auto result = widgets.erase(name);
+  UI::Widget* element = widgetsMap[name];
+  auto result = widgetsMap.erase(name);
   if(result == 0)
   {
     #ifdef HERO_DEBUG
@@ -94,13 +108,25 @@ HERO bool UserInterface::remove(const std::string& name)
     #endif
     return false;
   }
+
+  int index;
+  for(index = 0; index < widgets.size(); index++)
+  {
+    if(widgets[index] == element)
+    {
+      break;
+    }
+  }
+
+  widgets.erase(widgets.begin() + index);
+
   return true;
 }
 
 HERO UI::Widget* UserInterface::get(const std::string& name)
 {
-  auto result = widgets.find(name);
-  if(result == widgets.end())
+  auto result = widgetsMap.find(name);
+  if(result == widgetsMap.end())
   {
     #ifdef HERO_DEBUG
     std::stringstream message;

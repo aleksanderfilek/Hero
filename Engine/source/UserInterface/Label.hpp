@@ -24,7 +24,6 @@ private:
   Alligment alligment = Alligment::LEFT_TOP;
   Font* font = nullptr;
   ColorRGB color = ColorRGB::white();
-  bool free;
 
   HERO void calculateAlligment();
 
@@ -33,10 +32,11 @@ public:
 
   HERO void draw(Spritebatch* spritebatch) override;
   HERO void setAlligment(Alligment _alligment);
-  HERO void setFont(Font* _font, bool _free = true);
+  HERO void setFont(Font* _font);
   HERO void setColor(const ColorRGB& _color);
   HERO void setText(const std::string& _text);
   HERO void apply();
+  HERO void UpdateAbsoluteTransform() override;
 
   inline std::string getText(){ return text; }
 };

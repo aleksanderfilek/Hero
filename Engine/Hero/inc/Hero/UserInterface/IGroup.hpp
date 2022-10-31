@@ -4,6 +4,7 @@
 #include"../Core/Math.hpp"
 
 #include<map>
+#include<vector>
 #include<string>
 
 namespace Hero
@@ -15,7 +16,8 @@ class HERO IGroup : public IElement
 {
   friend class IElement;
 protected:
-  std::map<std::string, IElement*> children;
+  std::map<std::string, IElement*> childMap;
+  std::vector<IElement*> children;
   
   Int4 rect;
 
@@ -33,8 +35,8 @@ public:
   T* get(const std::string& path)
   {
     size_t namePos = path.find("/");
-    auto it = children.find(path.substr(0, namePos));
-    if(it == children.end())
+    auto it = childMap.find(path.substr(0, namePos));
+    if(it == childMap.end())
     {
       return nullptr;
     }

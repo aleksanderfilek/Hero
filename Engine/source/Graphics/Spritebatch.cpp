@@ -3,6 +3,7 @@
 #include"Shader.hpp"
 #include"../ThirdParty/GL/Gl.hpp"
 #include"../Core/Sid.hpp"
+#include<iostream>
 
 namespace Hero
 {
@@ -100,7 +101,6 @@ HERO void Spritebatch::end()
     GLsizeiptr size = (uint8_t*)quadBufferPtr - (uint8_t*)quadBuffer;
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, quadBuffer);
-
     for(int i = 0; i < textureSlotIndex; i++)
     {
         glBindTextureUnit(i, textureSlots[i]->getGlId());
@@ -112,8 +112,7 @@ HERO void Spritebatch::end()
 
 HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position, int layer, const Int2& size, Float4 rect)
 {
-    if(indexCount >= maxIndexCount || 
-        textureSlotIndex > maxTextureSlots)
+    if(indexCount >= maxIndexCount || textureSlotIndex >= maxTextureSlots)
     {
         end();
         begin();
@@ -130,7 +129,7 @@ HERO void Spritebatch::drawTexture(const Texture* texture, const Int2& position,
         }
     }
 
-    // // add texture if not registered
+    // add texture if not registered
     if(textureIndex == -1.0f)
     {
         textureIndex = textureSlotIndex;

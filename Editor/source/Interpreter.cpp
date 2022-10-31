@@ -38,6 +38,7 @@ Interpreter::Interpreter()
   tokens["texture"] = std::pair<CmdType,CmdFunc>(CmdType::TEXTURE, texture);
   tokens["cubemap"] = std::pair<CmdType,CmdFunc>(CmdType::CUBEMAP, cubemap);
   tokens["material"] = std::pair<CmdType,CmdFunc>(CmdType::MATERIAL, material);
+  tokens["font"] = std::pair<CmdType,CmdFunc>(CmdType::FONT, font);
 }
 
 Interpreter::~Interpreter()

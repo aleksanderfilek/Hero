@@ -8,6 +8,7 @@
 #include"Hero/Graphics/Cubemap.hpp"
 #include"Hero/Core/Math.hpp"
 #include"Hero/Graphics/Material.hpp"
+#include"Hero/Graphics/Font.hpp"
 
 #include<iostream>
 #include<fstream>
@@ -193,9 +194,6 @@ void shader(const Cmd& cmd)
   output.close();
 
   delete[] Data;
-
-  std::string pathStr = newPath.str();
-  resources->Add(SID("Shader"), pathStr);
 }
 
 static int objMesh(const std::string& path, int tangentGen);
@@ -447,9 +445,6 @@ static int objMesh(const std::string& path, int tangentGen)
 
   std::cout<<"saved"<<std::endl;
 
-  std::string pathStr = newPath.str();
-  resources->Add(SID("mesh"), pathStr);
-
   return 0;
 }
 
@@ -553,10 +548,6 @@ void texture(const Cmd& cmd)
   output.close();
 
   delete[] Data;
-
-  std::string pathStr = newPath.str();
-  resources->Add(SID("Texture"), pathStr);
-
 }
 
 void cubemap(const Cmd& cmd)
@@ -623,9 +614,6 @@ void cubemap(const Cmd& cmd)
   {
     delete[] images[i];
   }
-
-  std::string pathStr = newPath.str();
-  resources->Add(SID("Cubemap"), pathStr);
 }
 
 void material(const Cmd& cmd)
@@ -823,6 +811,52 @@ void material(const Cmd& cmd)
   std::ofstream output(newPath.str(), std::ios::binary);
 
   int ResourceId = Hero::Material::GetId();
+  output.write((char*)&ResourceId, sizeof(int));
+  output.write((char*)&byteSize, sizeof(uint32_t));
+  output.write((char*)Data, byteSize * sizeof(uint8_t));
+
+  output.close();
+
+  delete[] Data;
+}
+
+void font(const Cmd& cmd)
+{
+  if(cmd.args.size() != 1)
+  {
+    std::cout<<"Too many or too few arguments"<<std::endl;
+    return;
+  }
+
+  const std::string& path = cmd.args[0];
+
+  std::string fontPath;
+  int fontSize = 0;
+
+  std::ifstream input(path);
+
+  input>>fontSize>>fontPath;
+
+  input.close();
+
+  uint32_t byteSize = 0;
+  byteSize += sizeof(uint32_t);
+  byteSize += sizeof(uint32_t);
+  byteSize += fontPath.length() * sizeof(uint8_t);
+
+  int index = 0;
+  uint8_t* Data = new uint8_t[byteSize];
+  Hero::WriteUint32(Data, &index, fontSize);
+  Hero::WriteUint32(Data, &index, fontPath.length() * sizeof(uint8_t));
+  Hero::WritePtr(Data, &index, (uint8_t*)fontPath.c_str(), fontPath.length() * sizeof(uint8_t));
+
+
+  std::stringstream newPath;
+  newPath<<cmd.args[0].substr(0, cmd.args[0].find(".") + 1);
+  newPath<<"he";
+  std::ofstream output(newPath.str(), std::ios::binary);
+
+  int ResourceId = Hero::Font::GetId();
   output.write((char*)&ResourceId, sizeof(int));
   output.write((char*)&byteSize, sizeof(uint32_t));
   output.write((char*)Data, byteSize * sizeof(uint8_t));

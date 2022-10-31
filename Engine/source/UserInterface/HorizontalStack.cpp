@@ -39,12 +39,12 @@ HERO void HorizontalStack::SetChildAnchors(VerticalAnchor ChildVerticalAnchor)
 
   for(auto& element: children)
   {
-    Int4 Transform = element.second->GetRelativeTransform();
+    Int4 Transform = element->GetRelativeTransform();
 
     Transform.y = OffsetY;
     Transform.x = OffsetX;
 
-    element.second->SetRelativeTransform(Transform, HorizontalAnchor::LEFT, childVerticalAnchor);
+    element->SetRelativeTransform(Transform, HorizontalAnchor::LEFT, childVerticalAnchor);
 
     OffsetX += Transform.z + spacing;
   }

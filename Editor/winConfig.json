@@ -1,5 +1,5 @@
 {
-    "Name" : "Editor.exe",
+    "Name" : "Hero.exe",
     "Type": "Executable",
     "Extension": "cpp",
     "OutputDir": "lib",

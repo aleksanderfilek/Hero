@@ -80,7 +80,7 @@ HERO void IElement::UpdateAbsoluteTransform()
     {
       int PivotPoint = relativeTransform.x + pivot.x * relativeTransform.z;
 
-      absoluteTransform.x = anchor.x * ParentSize.x - PivotPoint;
+      absoluteTransform.x = anchor.x * ParentSize.x + PivotPoint;
       absoluteTransform.z = relativeTransform.z;
       }  break;
     case HorizontalAnchor::STRETCH:
@@ -97,7 +97,7 @@ HERO void IElement::UpdateAbsoluteTransform()
     {
       int PivotPoint = relativeTransform.y + pivot.y * relativeTransform.w;
 
-      absoluteTransform.y = anchor.y * ParentSize.y - PivotPoint;
+      absoluteTransform.y = anchor.y * ParentSize.y + PivotPoint;
       absoluteTransform.w = relativeTransform.w;
       }  break;
     case VerticalAnchor::STRETCH:
@@ -108,8 +108,6 @@ HERO void IElement::UpdateAbsoluteTransform()
 
   absoluteTransform.x += ParentPosition.x;
   absoluteTransform.y += ParentPosition.y;
-
-  std::cout<<absoluteTransform<<std::endl;
 }
 
 HERO void IElement::SetPivot(Float2 Pivot)
