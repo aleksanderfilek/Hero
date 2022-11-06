@@ -414,7 +414,7 @@ HERO Float4::Float4(const Float3& vector)
     x = vector.x;
     y = vector.y;
     z = vector.z;
-    w = 0.0f;
+    w = 1.0f;
 }
 
 HERO float Float4::length()
@@ -679,7 +679,7 @@ HERO Quaternion operator*(Quaternion lhs, const Quaternion& rhs)
     return q;
 }
 
-HERO Quaternion operator*(const Quaternion& lhs, const Float3& rhs)
+HERO Float3 operator*(const Quaternion& lhs, const Float3& rhs)
 {
     Quaternion q = lhs;
     Quaternion lhs2 = ~lhs;
@@ -687,8 +687,19 @@ HERO Quaternion operator*(const Quaternion& lhs, const Float3& rhs)
     q *= rhs;
     q *= lhs2;
 
-    return q;
+    return Float3(q.x, q.y, q.z);
 }
+
+// HERO Float3 operator*(const Quaternion& lhs, const Float3& rhs)
+// {
+//     Float3 u(lhs.x, lhs.y, lhs.z);
+
+//     float s = lhs.w;
+
+//     return 2.0f * dotProduct(u, rhs) * u + 
+//         (s*s - dotProduct(u,u)) * rhs +
+//         2.0f * s * crossProduct(u, v);
+// }
 
 HERO std::ostream& operator<< (std::ostream& stream, Quaternion& q)
 {
@@ -957,7 +968,184 @@ HERO Matrix4x4 Matrix4x4::tansponed()
 
 HERO Matrix4x4 Matrix4x4::inverted()
 {
-    return Matrix4x4::identity();
+    float m[16] = {
+        col[0].x, col[0].y, col[0].z, col[0].w, 
+        col[1].x, col[1].y, col[1].z, col[1].w, 
+        col[2].x, col[2].y, col[2].z, col[2].w, 
+        col[3].x, col[3].y, col[3].z, col[3].w, 
+    };
+    // float m[16] = {
+    //     col[0].x, col[1].x, col[2].x, col[3].x, 
+    //     col[0].y, col[1].y, col[2].y, col[3].y, 
+    //     col[0].z, col[1].z, col[2].z, col[3].z, 
+    //     col[0].w, col[1].w, col[2].w, col[3].w, 
+    // };
+    float inv[16], det;
+    int i;
+
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    if (det == 0.0f)
+        return Matrix4x4::identity();
+
+    det = 1.0f / det;
+    for(int i = 0; i < 16; i++)
+        inv[i] *= det;
+
+    Matrix4x4 invMat;
+    invMat.col[0].x = inv[0];
+    invMat.col[0].y = inv[1];
+    invMat.col[0].z = inv[2];
+    invMat.col[0].w = inv[3];
+
+    invMat.col[1].x = inv[4];
+    invMat.col[1].y = inv[5];
+    invMat.col[1].z = inv[6];
+    invMat.col[1].w = inv[7];
+
+    invMat.col[2].x = inv[8];
+    invMat.col[2].y = inv[9];
+    invMat.col[2].z = inv[10];
+    invMat.col[2].w = inv[11];
+
+    invMat.col[3].x = inv[12];
+    invMat.col[3].y = inv[13];
+    invMat.col[3].z = inv[14];
+    invMat.col[3].w = inv[15];
+
+    // invMat.col[0].x = inv[0];
+    // invMat.col[0].y = inv[4];
+    // invMat.col[0].z = inv[8];
+    // invMat.col[0].w = inv[12];
+
+    // invMat.col[1].x = inv[1];
+    // invMat.col[1].y = inv[5];
+    // invMat.col[1].z = inv[9];
+    // invMat.col[1].w = inv[13];
+
+    // invMat.col[2].x = inv[2];
+    // invMat.col[2].y = inv[6];
+    // invMat.col[2].z = inv[10];
+    // invMat.col[2].w = inv[14];
+
+    // invMat.col[3].x = inv[3];
+    // invMat.col[3].y = inv[7];
+    // invMat.col[3].z = inv[11];
+    // invMat.col[3].w = inv[15];
+
+    return invMat;
 }
 
 HERO Matrix4x4& Matrix4x4::operator*=(float rhs)
@@ -1306,96 +1494,6 @@ HERO bool pointBoxIntersection(Int2 point, Int2 boxPosition, Int2 boxSize)
         return false;
 
     return true;
-}
-
-HERO Transform::Transform(Float3 Position, Quaternion Rotation, Float3 Scale)
-{
-    position = Position;
-    rotation = Rotation;
-    scale = Scale;
-    modelMatrix = TRS(position, rotation, scale);
-}
-
-HERO void Transform::SetPosition(Float3 Position)
-{
-    position = Position;
-    isDirty = true;
-}
-
-HERO void Transform::SetRotation(Quaternion Rotation)
-{
-    rotation = Rotation;
-    isDirty = true;
-}
-
-HERO void Transform::SetScale(Float3 Scale)
-{
-    scale = Scale;
-    isDirty = true;
-}
-
-HERO Matrix4x4 Transform::GetModelMatrix()
-{
-    if(isDirty)
-    {
-        modelMatrix = TRS(position, rotation, scale);
-        isDirty = false;
-    }
-
-    return modelMatrix;
-}
-
-HERO Transform& Transform::operator*=(Transform& rhs)
-{
-    if(isDirty)
-    {
-        modelMatrix = TRS(position, rotation, scale);
-        isDirty = false;
-    }
-
-    if(rhs.isDirty)
-    {
-        rhs.modelMatrix = TRS(rhs.position, rhs.rotation, rhs.scale);
-        rhs.isDirty = false;
-    }
-
-    Float4 tempPosition = rhs.modelMatrix * Float4(position);
-    position = Float3(tempPosition);
-
-    rotation *= rhs.rotation;
-
-    scale.x *= rhs.scale.x;
-    scale.y *= rhs.scale.y;
-    scale.z *= rhs.scale.z;
-
-    modelMatrix = modelMatrix * rhs.modelMatrix;
-}
-
-HERO Transform operator*(Transform& lhs, Transform& rhs)
-{
-    if(lhs.isDirty)
-    {
-        lhs.modelMatrix = TRS(lhs.position, lhs.rotation, lhs.scale);
-        lhs.isDirty = false;
-    }
-
-    if(rhs.isDirty)
-    {
-        rhs.modelMatrix = TRS(rhs.position, rhs.rotation, rhs.scale);
-        rhs.isDirty = false;
-    }
-
-    Transform result;
-    Float4 tempPosition = lhs.modelMatrix * Float4(rhs.position);
-    result.position = Float3(tempPosition);
-    result.rotation = lhs.rotation * rhs.rotation;
-    result.scale.x = lhs.scale.x * rhs.scale.x;
-    result.scale.y = lhs.scale.y * rhs.scale.y;
-    result.scale.z = lhs.scale.z * rhs.scale.z;
-    result.modelMatrix = TRS(result.position, result.rotation, result.scale);
-
-    return result;
-
 }
 
 }

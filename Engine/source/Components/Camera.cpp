@@ -36,11 +36,13 @@ HERO void Camera::UpdateProjection()
 HERO void Camera::UpdateView()
 {
   Transform transform = GetOwner()->GetTransform();
-  Float3 target = transform.GetPosition() + transform.GetRotation().GetForwardVector();
-  view = lookAtMatrix(transform.GetPosition(), target, Float3::up());
+  Float3 position = transform.GetWorldPosition();
+
+  Float3 target = position + transform.GetWorldRotation().GetForwardVector();
+  view = lookAtMatrix(position, target, Float3::up());
 
   MatricesBuffer.Set(SID("view"), view);
-  MatricesBuffer.Set(SID("viewPos"), transform.GetPosition());
+  MatricesBuffer.Set(SID("viewPos"), position);
 }
 
 HERO void Camera::SetSize(Int2 Size)

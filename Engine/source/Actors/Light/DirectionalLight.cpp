@@ -17,7 +17,7 @@ HERO void DirectionalLight::Start()
 
   SetColor(ColorRGB(255,255,255,255));
 
-  Float3 forward = GetRotation().GetRightVector();
+  Float3 forward = GetTransformRef()->GetWorldRotation().GetRightVector();
   LightBuffer.Set<Float3>(SID("LightDirection"), forward);
 }
 
@@ -25,7 +25,7 @@ HERO void DirectionalLight::Update()
 {
   Actor::Update();
 
-  Float3 forward = GetRotation().GetRightVector();
+  Float3 forward = GetTransformRef()->GetWorldRotation().GetRightVector();
   LightBuffer.Set<Float3>(SID("LightDirection"), forward);
 }
 

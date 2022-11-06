@@ -41,8 +41,8 @@ HERO void ForwardRenderer::Start()
 {
   Actor::Start();
 
-  Resources* resources = Core::getSystem<Resources>(SID("resources"));
-  shader = (Shader*)resources->Get(SID("rendererShader"));
+  Resources* resources = Core::getSystem<Resources>(SID("Resources"));
+  shader = (Shader*)resources->Get(SID("RendererShader"));
 }
 
 HERO void ForwardRenderer::Update()
@@ -68,7 +68,7 @@ HERO void ForwardRenderer::Update()
         {
           continue;
         }
-        currentShader->setMatrix4f(SID("model"), meshGroup.transforms[i]->GetModelMatrix());
+        currentShader->setMatrix4f(SID("model"), meshGroup.transforms[i]->GetWorldModelMatrix());
         uint32_t id = meshGroup.ids[i];
         uint8_t r = (id & 0x000000FF) >>  0;
         uint8_t g = (id & 0x0000FF00) >>  8;

@@ -33,6 +33,10 @@ public:
   HERO void SetSize(Int2 Size);
   HERO void SetFov(float FOV);
   HERO void SetNearFarPlane(float Near, float Far);
+
+  inline Matrix4x4 GetViewMatrix() { return view; }
+  inline Matrix4x4 GetProjectionMatrix() { return projection; }
+  inline Matrix4x4 GetPixelMatrix() { return pixel; }
 };
 
 }

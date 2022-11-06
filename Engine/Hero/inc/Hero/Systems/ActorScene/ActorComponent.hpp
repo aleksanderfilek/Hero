@@ -1,5 +1,9 @@
 #pragma once
 
+#include "../../Core/Sid.hpp"
+
+#include <typeinfo>
+
 namespace Hero
 {
 
@@ -16,6 +20,8 @@ public:
     virtual void End(){}
 
     class Actor* GetOwner() const { return owner; }
+
+    Sid GetType() { return SID(typeid(*this).name()); }
 };
 
 }

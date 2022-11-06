@@ -4,6 +4,7 @@
 #include "../../Core/Math.hpp"
 #include "Reflection.hpp"
 #include "Actor.hpp"
+#include "../../Components/Transform.hpp"
 
 #include<vector>
 
@@ -41,7 +42,7 @@ public:
     {
         Actor* actor = reflection.Spawn(GetType<T>());
         actor->SetName(Name);
-        actor->SetTransform(transform);
+        *actor->GetTransformRef() = transform;
         return actor;
     }
 };

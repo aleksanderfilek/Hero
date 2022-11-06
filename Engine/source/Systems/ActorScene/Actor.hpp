@@ -4,8 +4,10 @@
 #include "../../Core/Math.hpp"
 #include "ISerializable.hpp"
 #include "ICloneable.hpp"
+#include "../../Components/Transform.hpp"
 
 #include <vector>
+#include <unordered_map>
 #include <typeinfo>
 
 namespace Hero
@@ -24,9 +26,14 @@ class Actor : public ISerializable, public ICloneable
 private:    
     Sid name;
 
-    Transform transform;
     std::vector<class ActorComponent*> components;
+    std::unordered_map<Sid, class ActorComponent*, SidHashFunction> componentsLut;
+    class Transform* transform;
+
     class Scene* SceneRef = nullptr;
+
+    Actor* parent = nullptr;
+    std::vector<Actor*> children;
 
     bool started = false;
 
@@ -42,19 +49,16 @@ public:
     inline Sid GetName(){ return name; }
     void SetName(const Sid& Name){ name = Name; }
     inline uint32_t GetId(){ return name.id; }
+    Sid GetType() { return SID(typeid(*this).name()); }
 
-    HERO void SetPosition(const Float3& Position);
-    HERO void SetRotation(const Quaternion& Rotation);
-    HERO void SetScale(const Float3& Scale);
-    HERO void SetTransform(const Transform& Transform);
-
-    Float3 GetPosition() const { return transform.GetPosition(); }
-    Quaternion GetRotation() const { return transform.GetRotation(); }
-    Float3 GetScale() const { return transform.GetScale(); }
-    Transform GetTransform() const { return transform; }
-    Transform* GetTransformRef() { return &transform; }
+    Transform GetTransform() const { return *transform; }
+    Transform* GetTransformRef() { return transform; }
     
     class Scene* GetScene(){ return SceneRef; }
+    Actor* GetParent(){ return parent; }
+
+    HERO void AddChild(Actor* Child);
+    HERO Actor* GetChild(uint32_t index);
 
     HERO void AddComponent(class ActorComponent* Component);
 

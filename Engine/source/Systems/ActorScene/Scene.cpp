@@ -28,8 +28,8 @@ HERO void Scene::Update()
 HERO void Scene::AddActor(Actor* actor)
 {
   actor->SceneRef = this;
-  actor->Start();
   actors.push_back(actor);
+  actor->Start();
 }
 
 HERO void Scene::RemoveActor(const Sid& Name)
