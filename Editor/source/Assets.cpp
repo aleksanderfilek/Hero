@@ -514,6 +514,11 @@ void texture(const Cmd& cmd)
   uint8_t colorSpace = (uint8_t)Hero::ColorSpace::Linear;
   uint8_t flags = (uint8_t)Hero::TextureFlag::LINEAR | (uint8_t)Hero::TextureFlag::MIPMAP;
 
+  if(cmd.args.size() > 1)
+  {
+    flags = (uint8_t)stoi(cmd.args[1]);
+  }
+
   uint32_t byteSize = 0;
   byteSize += sizeof(int);
   byteSize += sizeof(int);
@@ -548,6 +553,8 @@ void texture(const Cmd& cmd)
   output.close();
 
   delete[] Data;
+
+  std::cout<<"Saved\n";
 }
 
 void cubemap(const Cmd& cmd)

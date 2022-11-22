@@ -533,12 +533,17 @@ HERO Quaternion::Quaternion(float rotX, float rotY, float rotZ)
 
 HERO Quaternion::Quaternion(const Float3& vector)
 {
-    double cy = cos(vector.z * 0.5);
-    double sy = sin(vector.z * 0.5);
-    double cp = cos(vector.x * 0.5);
-    double sp = sin(vector.x * 0.5);
-    double cr = cos(vector.y * 0.5);
-    double sr = sin(vector.y * 0.5);
+    double cy = cos(vector.x * 0.5);
+    double sy = sin(vector.x * 0.5);
+    double cp = cos(vector.y * 0.5);
+    double sp = sin(vector.y * 0.5);
+    double cr = cos(vector.z * 0.5);
+    double sr = sin(vector.z * 0.5);
+
+    // w = sqrtf(1.0f + cy*cp + cy*cr - sy*sp*sr + cp*cr)/2.0f;
+    // x = (cp*sr + cy*sr + sy*sp*cr) / (4.0f * w);
+    // y = (sy*cp + sy*cr + cy*sp*sr) / (4.0f * w);
+    // z = (-sp*sr + cy*sp*cr + sp) / (4.0f * w);
 
     w = cr * cp * cy + sr * sp * sy;
     x = sr * cp * cy - cr * sp * sy;
@@ -1318,17 +1323,17 @@ HERO Matrix4x4 Rotation(Quaternion& quaternion)
 {
     Matrix4x4 matrix;
 
-    matrix.col[0].x = 1.0f - 2.0f*(powf(quaternion.z, 2.0f) + powf(quaternion.y, 2.0f));
+    matrix.col[0].x = 1.0f - 2.0f*(powf(quaternion.y, 2.0f) + powf(quaternion.z, 2.0f));
     matrix.col[0].y = 2.0f*(quaternion.x*quaternion.y + quaternion.w*quaternion.z);
     matrix.col[0].z = 2.0f*(quaternion.z*quaternion.x - quaternion.w*quaternion.y);
     matrix.col[0].w = 0.0f;
 
-    matrix.col[1].x = 2.0f*(quaternion.x*quaternion.y - quaternion.w*quaternion.z);
+    matrix.col[1].x = 2.0f*(quaternion.x*quaternion.y - quaternion.z*quaternion.w);
     matrix.col[1].y = 1.0f - 2.0f*(powf(quaternion.x, 2.0f) + powf(quaternion.z, 2.0f));
     matrix.col[1].z = 2.0f*(quaternion.y*quaternion.z + quaternion.w*quaternion.x);
     matrix.col[1].w = 0.0f;
 
-    matrix.col[2].x = 2.0f*(quaternion.z*quaternion.x + quaternion.w*quaternion.y);
+    matrix.col[2].x = 2.0f*(quaternion.x*quaternion.z + quaternion.y*quaternion.w);
     matrix.col[2].y = 2.0f*(quaternion.y*quaternion.z - quaternion.w*quaternion.x);
     matrix.col[2].z = 1.0f - 2.0f*(powf(quaternion.x, 2.0f) + powf(quaternion.y, 2.0f));
     matrix.col[2].w = 0.0f;
@@ -1393,6 +1398,20 @@ HERO Matrix4x4 TRS(Float3 position, Quaternion& rotation, Float3 scale)
     matrix.col[2].y = scale.z*(2.0f*(rotation.y*rotation.z - rotation.w*rotation.x));
     matrix.col[2].z = scale.z*(1.0f - 2.0f*(powf(rotation.x, 2.0f) + powf(rotation.y, 2.0f)));
     matrix.col[2].w = 0.0f;
+    // matrix.col[0].x = scale.x*(2.0f*(powf(rotation.w, 2.0f) + powf(rotation.x, 2.0f)) - 1.0f);
+    // matrix.col[0].y = scale.x*(2.0f*(rotation.x*rotation.y + rotation.w*rotation.z));
+    // matrix.col[0].z = scale.x*(2.0f*(rotation.x*rotation.z - rotation.w*rotation.y));
+    // matrix.col[0].w = 0.0f;
+
+    // matrix.col[1].x = scale.y*(2.0f*(rotation.x*rotation.y - rotation.w*rotation.z));
+    // matrix.col[1].y = scale.y*(2.0f*(powf(rotation.w, 2.0f) + powf(rotation.y, 2.0f)) - 1.0f);
+    // matrix.col[1].z = scale.y*(2.0f*(rotation.y*rotation.z + rotation.w*rotation.x));
+    // matrix.col[1].w = 0.0f;
+
+    // matrix.col[2].x = scale.z*(2.0f*(rotation.x*rotation.z + rotation.w*rotation.y));
+    // matrix.col[2].y = scale.z*(2.0f*(rotation.y*rotation.z - rotation.w*rotation.x));
+    // matrix.col[2].z = scale.z*(2.0f*(powf(rotation.w, 2.0f) + powf(rotation.z, 2.0f)) - 1.0f);
+    // matrix.col[2].w = 0.0f;
 
     matrix.col[3].x = position.x;
     matrix.col[3].y = position.y;
@@ -1426,7 +1445,7 @@ HERO Matrix4x4 projectionMatrix(int width, int height, float FOV, float near, fl
     matrix.col[1].y = 1.0f/tg;
     matrix.col[2].z = (-far - near)/(far - near);
     matrix.col[2].w = -1.0f;
-    matrix.col[3].z = (-2.0f*far*near)/(far - near);
+    matrix.col[3].z = (-far*near)/(far - near);
     matrix.col[3].w = 0.0f;
 
     return matrix;
