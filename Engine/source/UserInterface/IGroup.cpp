@@ -93,5 +93,15 @@ HERO bool IGroup::remove(const std::string& name)
 }
 
 
+HERO void IGroup::UpdateAbsoluteTransform()
+{
+  std::cout<<"group\n";
+  IElement::UpdateAbsoluteTransform();
+  for(auto it: children)
+  {
+    it->UpdateAbsoluteTransform();
+  }
+}
+
 }
 }

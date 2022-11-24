@@ -20,7 +20,8 @@ private:
 public:
     HERO Scene();
     HERO ~Scene();
-
+    
+    virtual void Load(){}
     virtual void Start(){}
     HERO virtual void Update();
     virtual void End(){}

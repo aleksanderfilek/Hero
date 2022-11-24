@@ -1,20 +1,29 @@
 #include"ForwardRenderer.hpp"
-#include "../../Graphics/RenderTarget.hpp"
 #include "../../Core/Core.hpp"
 #include "../../Systems/Window.hpp"
 #include "../../Systems/Resources.hpp"
+#include "../../Systems/ActorScene/SceneSystem.hpp"
+#include "../../Systems/ActorScene/Scene.hpp"
 
 namespace Hero
 {
+
+HERO event(ForwardRendererOnResize)
+{
+  Hero::SceneSystem* sceneSystem = Hero::Core::getSystem<Hero::SceneSystem>(SID("Scene"));
+  Hero::Scene* scene = sceneSystem->GetCurrentScene();
+  ((ForwardRenderer*)scene->GetActor(SID("Renderer")))->Resize(*(Int2*)args);
+}
 
 HERO ForwardRenderer::ForwardRenderer(const Sid& Name)
 : Actor(Name) 
 {
   System::Window* window = Core::getSystem<System::Window>(SID("Window"));
-  Int2 windowSize = window->getSize();
-  RenderTargetConfig config;
+  window->setEvent(Hero::System::WindowEventType::RESIZED, ForwardRendererOnResize);
+
+  size = window->getSize();
   config.DepthBuffer = true;
-  renderTarget = new RenderTarget(windowSize.x, windowSize.y, 2, &config);
+  renderTarget = new RenderTarget(size.x, size.y, 2, &config);
 
   std::vector<MeshBuffer<float>> buffers;
   MeshBuffer<float> positions;
@@ -48,6 +57,13 @@ HERO void ForwardRenderer::Start()
 HERO void ForwardRenderer::Update()
 {
   Actor::Update();
+
+  if(resize)
+  {
+    delete renderTarget;
+    renderTarget = new RenderTarget(size.x, size.y, 2, &config);
+    resize = false;
+  }
 
   renderTarget->BindBuffers();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -198,6 +214,12 @@ HERO int ForwardRenderer::GetIdOnPosition(Int2 Position)
   renderTarget->UnbindBuffers();
 
   return pickedID;
+}
+
+HERO void ForwardRenderer::Resize(Hero::Int2 Size)
+{
+  resize = true;
+  size = Size;
 }
 
 }

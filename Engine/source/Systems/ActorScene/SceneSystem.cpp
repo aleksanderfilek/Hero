@@ -30,7 +30,7 @@ HERO void SceneSystem::update()
     }
     CurrentScene = NextScene;
     NextScene = nullptr;
-    
+    CurrentScene->Load();
     CurrentScene->Start();
   }
 

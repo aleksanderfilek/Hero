@@ -135,7 +135,7 @@ HERO void Window::handleEvents(SDL_Event* event)
                 (void*)&size.x,
                 (void*)&size.y
             };
-            glViewport(0,0,size.x, size.y);
+            glViewport(0, 0, size.x, size.y);
 
             events[(int)WindowEventType::SIZE_CHANGED].invoke(this, args, 2);
         } break;

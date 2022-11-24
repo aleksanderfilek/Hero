@@ -45,6 +45,8 @@ public:
   }
 
   inline uint32_t getChildrenCount(){ return children.size(); }
+
+  HERO virtual void UpdateAbsoluteTransform() override;
 };
 
 }

@@ -6,12 +6,16 @@
 #include "../../Graphics/Material.hpp"
 #include "../../Graphics/Mesh.hpp"
 #include "../../Core/Math.hpp"
+#include "../../Graphics/RenderTarget.hpp"
+#include"../../Core/Events.hpp"
 
 #include<vector>
 #include<utility>
 
 namespace Hero
 {
+
+HERO event(ForwardRendererOnResize);
 
 struct MeshGroup
 {
@@ -30,6 +34,10 @@ struct MaterialGroup
 class ForwardRenderer : public Actor
 {
 private:
+  bool resize = false;
+  Hero::Int2 size;
+
+  RenderTargetConfig config;
   class RenderTarget* renderTarget;
   class Mesh* quad;
   class Shader* shader;
@@ -52,6 +60,8 @@ public:
   HERO void SetCurrentVisibleBuffer(int Id);
 
   HERO int GetIdOnPosition(Int2 Position);
+
+  HERO void Resize(Hero::Int2 Size);
 };
 
 }
