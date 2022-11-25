@@ -64,7 +64,6 @@ HERO void IElement::update(Int2 mousePosition, uint8_t buttonState)
 
 HERO void IElement::UpdateAbsoluteTransform()
 {
-  std::cout<<"wow\n";
   Int2 ParentPosition = Int2::zero();
   Int2 ParentSize = Int2::zero();
   if(parent)
@@ -109,8 +108,6 @@ HERO void IElement::UpdateAbsoluteTransform()
 
   absoluteTransform.x += ParentPosition.x;
   absoluteTransform.y += ParentPosition.y;
-
-  std::cout<<absoluteTransform<<std::endl;
 }
 
 HERO void IElement::SetPivot(Float2 Pivot)

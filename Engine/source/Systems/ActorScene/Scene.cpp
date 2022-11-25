@@ -56,10 +56,10 @@ HERO void Scene::RemoveActor(const Sid& Name)
 
 HERO void Scene::ClearActors()
 {
-  for(Actor* actor: actors)
+  for(int i = actors.size() - 1; i >= 0; i--)
   {
-    actor->End();
-    delete actor;
+    actors[i]->End();
+    delete actors[i];
   }
   actors.clear();
 }
