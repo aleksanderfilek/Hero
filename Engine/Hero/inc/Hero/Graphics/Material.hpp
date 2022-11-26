@@ -8,6 +8,7 @@
 file format
 resource id
 shader id
+depth test
 properties count
 property id
 data type
@@ -45,6 +46,7 @@ private:
   class Shader* shader;
 
   std::unordered_map<Sid, DataPair, SidHashFunction> properties;
+  bool depthTest = false;
 
 public:
   HERO Material();

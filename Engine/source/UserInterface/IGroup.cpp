@@ -38,15 +38,15 @@ HERO void IGroup::draw(Spritebatch* spritebatch)
 {
   if(!visible) return;
 
-  for(int i = children.size()-1; i >= 0; i--)
-  {
-    children[i]->draw(spritebatch);
-  }
-
-  // for(auto it: children)
+  // for(int i = children.size()-1; i >= 0; i--)
   // {
-  //   it->draw(spritebatch);
+  //   children[i]->draw(spritebatch);
   // }
+
+  for(auto it: children)
+  {
+    it->draw(spritebatch);
+  }
 }
 
 HERO bool IGroup::add(const std::string& name, IElement* element)

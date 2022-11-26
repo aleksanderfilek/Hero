@@ -56,6 +56,7 @@ HERO void UserInterface::update()
 
   shader->bind();
   spritebatch->begin();
+  glDisable(GL_DEPTH_TEST);
   for(auto it: widgets)
   {
     it->draw(spritebatch);

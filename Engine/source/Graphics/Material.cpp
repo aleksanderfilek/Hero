@@ -1,5 +1,6 @@
 #include"Material.hpp"
 #include"../Utility/ByteOperations.hpp"
+#include"../Core/Debug.hpp"
 
 #include<iostream>
 
@@ -23,6 +24,9 @@ HERO ResourceHandle* Material::Load(uint8_t* Data, Resources* system)
   uint32_t shaderId = ReadUint32(Data, &index);
   Sid shaderSid(shaderId);
   material->shader = (Shader*)system->Get(shaderSid);
+
+  material->depthTest = ReadUint8(Data, &index);
+
   uint32_t propertiesCount = ReadUint32(Data, &index);
   for(int i = 0; i < propertiesCount; i++)
   {
@@ -75,6 +79,11 @@ HERO void Material::Bind(bool WithShader)
   {
     shader->bind();
   }
+
+  if(depthTest) 
+    glEnable(GL_DEPTH_TEST);  
+  else 
+    glDisable(GL_DEPTH_TEST);
   
   for(auto property: properties)
   {

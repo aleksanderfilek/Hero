@@ -635,11 +635,21 @@ void material(const Cmd& cmd)
 
   std::string shaderName;
   int propertiesCount = 0;
+  char depthTest = 'f';
+  std::string buffer;
 
   std::ifstream input(path);
 
+  if(!input.is_open())
+  {
+    std::cout<<"Could not open file: "<<path<<std::endl;
+    return;
+  }
+
   input>>shaderName;
+  input>>buffer>>depthTest;
   input>>propertiesCount;
+  std::cout<<shaderName<<" "<<buffer<<" "<<depthTest<<" "<<propertiesCount<<std::endl;
 
   union MatData
   {
@@ -744,6 +754,7 @@ void material(const Cmd& cmd)
 
   uint32_t byteSize = 0;
   byteSize += sizeof(uint32_t); // shader id
+  byteSize += sizeof(uint8_t); // shader id
   byteSize += sizeof(uint32_t); // properties count
   for(int i = 0; i < dataArr.size(); i++)
   {
@@ -780,6 +791,7 @@ void material(const Cmd& cmd)
 
   Hero::Sid shaderSid = SID(shaderName.c_str());
   Hero::WriteUint32(Data, &index, shaderSid.id);
+  Hero::WriteUint8(Data, &index, (depthTest=='t')?1:0);
   Hero::WriteUint32(Data, &index, (uint32_t)propertiesCount);
 
   for(int i = 0; i < dataArr.size(); i++)
