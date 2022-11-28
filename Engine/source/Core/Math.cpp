@@ -234,6 +234,11 @@ HERO bool Float2::operator!=(const Float2& rhs)
     return !(*this == rhs); 
 }
 
+HERO Float2::operator Int2()
+{
+    return Int2((int)x, (int)y);
+}
+
 HERO Float2 operator+(const Float2& lhs, const Float2& rhs)
 { 
     return (Float2){ lhs.x + rhs.x, lhs.y + rhs.y }; 
@@ -514,6 +519,15 @@ HERO std::ostream& operator<< (std::ostream& stream, const Float4& v)
 { 
     stream << "{"<<v.x<<","<<v.y<<","<<v.z<<","<<v.w<<"}"; 
     return stream;
+}
+
+HERO bool Float4::Contains(const Hero::Float4& Rect)
+{
+    if(Rect.x < x || Rect.y < y)
+        return false;
+
+    if(Rect.x + Rect.z > x + z || Rect.y + Rect.w > y + w)
+        return false;
 }
 
 HERO Quaternion::Quaternion(float rotX, float rotY, float rotZ)

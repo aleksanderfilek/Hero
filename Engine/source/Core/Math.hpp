@@ -118,6 +118,8 @@ struct Float2
     HERO Float2& operator/=(float rhs);
     HERO bool operator==(const Float2& rhs);
     HERO bool operator!=(const Float2& rhs);
+
+    HERO operator Int2();
 };
 
 HERO Float2 operator+(const Float2& lhs, const Float2& rhs);
@@ -191,6 +193,8 @@ struct Float4
     HERO Float4& operator/=(float rhs);
     HERO bool operator==(const Float4& rhs);
     HERO bool operator!=(const Float4& rhs);
+
+    HERO bool Contains(const Hero::Float4& Rect);
 };
 
 HERO Float4 operator+(Float4 lhs, const Float4& rhs);
