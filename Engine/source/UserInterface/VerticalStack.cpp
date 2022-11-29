@@ -5,6 +5,11 @@ namespace Hero
 namespace UI
 {
 
+HERO VerticalStack::VerticalStack()
+{
+  
+}
+
 HERO bool VerticalStack::add(const std::string& name, IElement* element)
 {
   bool result = IGroup::add(name, element);

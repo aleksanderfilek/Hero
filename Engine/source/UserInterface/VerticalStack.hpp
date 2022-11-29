@@ -15,6 +15,9 @@ private:
   HorizontalAnchor childHorizontalAnchor = HorizontalAnchor::LEFT;
 
 public:
+  HERO VerticalStack();
+  ~VerticalStack() = default;
+
   HERO bool add(const std::string& name, IElement* element) override;
 
   HERO void SetChildAnchors(HorizontalAnchor ChildHorizontalAnchor);
