@@ -44,6 +44,27 @@ HERO void UserInterface::init()
 
 HERO void UserInterface::update()
 {
+  while(widgetsToAdd.size() > 0)
+  {
+    std::pair<std::string, UI::Widget*> widget = widgetsToAdd[widgetsToAdd.size() - 1];
+    widgetsToAdd.pop_back();
+
+    auto result = widgetsMap.insert({widget.first, widget.second});  
+
+    if(result.second == false)
+    {
+      #ifdef HERO_DEBUG
+      std::stringstream message;
+      message<<"Could not add widget with name: "<<widget.first
+        <<". Widget with this name already exists."<<std::endl;
+      printMessage(message.str());
+      #endif
+      continue;
+    }
+
+    widgets.push_back(widget.second);
+  }
+
   Int2 mousePosition = input->getMousePosition();
   uint8_t buttonState = input->getMouseState(Input::Mouse::Left);
 
@@ -68,29 +89,13 @@ HERO void UserInterface::update()
 HERO void UserInterface::close()
 {
   ISystem::close();
-  for(auto widget: widgets)
-  {
-    delete widget;
-  }
+  Clear();
   delete spritebatch;
 }
 
 HERO bool UserInterface::add(const std::string& name, UI::Widget* widget)
 {
-  auto result = widgetsMap.insert({name, widget});  
-
-  if(result.second == false)
-  {
-    #ifdef HERO_DEBUG
-    std::stringstream message;
-    message<<"Could not add widget with name: "<<name
-      <<". Widget with this name already exists."<<std::endl;
-    printMessage(message.str());
-    #endif
-    return false;
-  }
-
-  widgets.push_back(widget);
+  widgetsToAdd.push_back(std::pair<std::string, UI::Widget*>(name, widget));
 
   return true;
 }
@@ -138,6 +143,16 @@ HERO UI::Widget* UserInterface::get(const std::string& name)
     return nullptr;
   }
   return result->second;
+}
+
+HERO void UserInterface::Clear()
+{
+  for(auto widget: widgets)
+  {
+    delete widget;
+  }
+  widgets.clear();
+  widgetsMap.clear();
 }
 
 HERO void UserInterface::setShader(Shader* _shader)

@@ -23,15 +23,18 @@ HERO void SceneSystem::update()
 {    
   if(NextScene != nullptr)
   {
-    if(CurrentScene != nullptr)
-    {
-      CurrentScene->End();
-      delete CurrentScene;
-    }
+    Scene* previous = CurrentScene;
+
     CurrentScene = NextScene;
     NextScene = nullptr;
     CurrentScene->Load();
     CurrentScene->Start();
+
+    if(previous != nullptr)
+    {
+      previous->End();
+      delete previous;
+    }
   }
 
   CurrentScene->Update();

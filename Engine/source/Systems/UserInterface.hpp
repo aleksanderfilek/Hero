@@ -30,6 +30,8 @@ private:
 
   std::map<std::string, UI::Widget*> widgetsMap;
   std::vector<UI::Widget*> widgets;
+  
+  std::vector<std::pair<std::string, UI::Widget*>> widgetsToAdd;
 
   Shader* shader = nullptr;
   Spritebatch* spritebatch = nullptr;
@@ -45,6 +47,7 @@ public:
     HERO bool add(const std::string& name, UI::Widget* widget);
     HERO bool remove(const std::string& name);
     HERO UI::Widget* get(const std::string& name);
+    HERO void Clear();
 
     HERO void setShader(Shader* _shader);
 };
