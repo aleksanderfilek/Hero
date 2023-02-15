@@ -41,4 +41,9 @@ HERO void StaticMesh::SetVisibility(bool Visible)
   visible = Visible;
 }
 
+bool StaticMesh::IsVisible() const
+{
+  return visible;
+}
+
 }

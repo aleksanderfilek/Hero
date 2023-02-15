@@ -59,7 +59,7 @@ public:
   
   HERO void SetCurrentVisibleBuffer(int Id);
 
-  HERO int GetIdOnPosition(Int2 Position);
+  HERO uint32_t GetIdOnPosition(Int2 Position);
 
   HERO void Resize(Hero::Int2 Size);
 };

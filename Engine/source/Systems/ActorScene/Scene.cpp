@@ -83,7 +83,7 @@ HERO Actor* Scene::GetActor(uint32_t Id)
   int index = -1;
   for(index = 0; index < actors.size(); index++)
   {
-    if(actors[index]->GetId() == Id)
+    if((actors[index]->GetId() & 0x00FFFFFF) == (Id&0x00FFFFFF))//hack
     {
       return actors[index];
     }
@@ -95,7 +95,7 @@ HERO Actor* Scene::GetActor(uint32_t Id)
 HERO Actor* Scene::GetActorUnderCursor(Int2 MousePosition)
 {
   ForwardRenderer* renderer = (ForwardRenderer*)GetActor(SID("Renderer"));
-  int id = renderer->GetIdOnPosition(MousePosition);
+  uint32_t id = renderer->GetIdOnPosition(MousePosition);
   return GetActor(id);
 }
 

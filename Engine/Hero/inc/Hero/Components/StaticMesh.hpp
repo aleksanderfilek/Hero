@@ -25,6 +25,7 @@ public:
   HERO void SetMesh(class Mesh* Mesh);
   HERO void SetMaterial(class Material* Material);
   HERO void SetVisibility(bool Visible);
+  HERO bool IsVisible() const;
 };
 
 }

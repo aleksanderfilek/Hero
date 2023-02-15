@@ -47,7 +47,7 @@ struct Sid
 
             Sid sid;
             sid.id = hash;
-
+            // sid.id &= 0x00FFFFFF;
             #ifdef HERO_DEBUG
             sid.text = text;
             #endif

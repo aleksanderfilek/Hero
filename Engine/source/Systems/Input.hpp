@@ -41,11 +41,11 @@ public:
     inline bool keyUp(KeyCode key){
         return !current_keyboard_state[key] && previous_keyboard_state[key]; }
     inline bool mouseButtonPressed(Mouse button){
-        return current_mouse_state&SDL_BUTTON(button) && previous_mouse_state&SDL_BUTTON(button); }
+        return current_mouse_state&SDL_BUTTON((uint8_t)button) && previous_mouse_state&SDL_BUTTON((uint8_t)button); }
     inline bool mouseButtonDown(Mouse button){
-        return current_mouse_state&SDL_BUTTON(button) && !previous_mouse_state&SDL_BUTTON(button); }
+        return current_mouse_state&SDL_BUTTON((uint8_t)button) && !(previous_mouse_state&SDL_BUTTON((uint8_t)button)); }
     inline bool mouseButtonUp(Mouse button){
-        return !current_mouse_state&SDL_BUTTON(button) && previous_mouse_state&SDL_BUTTON(button); }
+        return !(current_mouse_state&SDL_BUTTON((uint8_t)button)) && previous_mouse_state&SDL_BUTTON((uint8_t)button); }
     HERO Int2 getMousePosition();
     HERO void setMousePosition(Int2 position);
     HERO uint8_t getMouseState(Mouse button);

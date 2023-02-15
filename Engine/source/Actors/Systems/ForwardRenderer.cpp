@@ -89,7 +89,7 @@ HERO void ForwardRenderer::Update()
         uint8_t r = (id & 0x000000FF) >>  0;
         uint8_t g = (id & 0x0000FF00) >>  8;
         uint8_t b = (id & 0x00FF0000) >>  16;
-        uint8_t a = (id & 0xFF000000) >>  24;
+        uint8_t a = 255;
         currentShader->setFloat4(SID("id"), Float4((float)r/255.0f, (float)g/255.0f, (float)b/255.0f, (float)a/255.0f));
         meshGroup.mesh->draw();
       }
@@ -198,7 +198,7 @@ HERO void ForwardRenderer::SetCurrentVisibleBuffer(int Id)
   currentVisibleBudder = Id;
 }
 
-HERO int ForwardRenderer::GetIdOnPosition(Int2 Position)
+HERO uint32_t ForwardRenderer::GetIdOnPosition(Int2 Position)
 {
   glFlush();
   glFinish(); 
@@ -210,7 +210,7 @@ HERO int ForwardRenderer::GetIdOnPosition(Int2 Position)
   uint8_t data[4];
   glReadPixels(Position.x, Position.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-  int pickedID = data[0] + data[1] * 256 + data[2] * 256*256 + data[3] * 256*256*256;
+  uint32_t pickedID = data[0] + data[1] * 256 + data[2] * 256*256 + data[3] * 256*256*256;
   renderTarget->UnbindBuffers();
 
   return pickedID;
