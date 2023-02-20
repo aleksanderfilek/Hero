@@ -19,6 +19,18 @@ HERO Scene::~Scene()
 
 HERO void Scene::Update()
 {
+  if(actorsToRemove.size() > 0)
+  {
+    for(int actorId: actorsToRemove)
+    {
+      Actor* actor = actors[actorId];
+      actor->End();
+      delete actor;
+      actors.erase(actors.begin() + actorId);
+    }
+    actorsToRemove.clear();
+  }
+
   for(Actor* actor: actors)
   {
     actor->Update();
@@ -48,10 +60,26 @@ HERO void Scene::RemoveActor(const Sid& Name)
     return;
   }
 
-  Actor* actor = actors[index];
-  actor->End();
-  delete actor;
-  actors.erase(actors.begin() + index);
+  actorsToRemove.push_back(index);
+}
+
+HERO void Scene::RemoveActor(Actor* actor)
+{
+  int index = -1;
+  for(index = 0; index < actors.size(); index++)
+  {
+    if(actors[index] == actor)
+    {
+        break;
+    }
+  }
+
+  if(index >= actors.size())
+  {
+    return;
+  }
+
+  actorsToRemove.push_back(index);
 }
 
 HERO void Scene::ClearActors()

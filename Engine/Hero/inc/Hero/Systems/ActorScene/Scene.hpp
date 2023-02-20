@@ -17,6 +17,8 @@ private:
     std::vector<Actor*> actors;
     Reflection reflection;
 
+    std::vector<int> actorsToRemove;
+
 public:
     HERO Scene();
     HERO ~Scene();
@@ -28,6 +30,7 @@ public:
 
     HERO void AddActor(Actor* actor);
     HERO void RemoveActor(const Sid& Name);
+    HERO void RemoveActor(Actor* actor);
     HERO void ClearActors();
     HERO Actor* GetActor(const Sid& Name);
     HERO Actor* GetActor(uint32_t Id);
