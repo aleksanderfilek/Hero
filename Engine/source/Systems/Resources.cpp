@@ -70,7 +70,7 @@ HERO bool Resources::Add(const Sid& sid, std::string path)
   std::ifstream file(path, std::ios::binary);
   if(!file.is_open())
   {
-    printMessage("Could not load resource");
+    printMessage("Could not load resource, path: " + path);
     return false;
   }
 
