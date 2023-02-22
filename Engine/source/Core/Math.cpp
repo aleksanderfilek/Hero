@@ -25,7 +25,7 @@ HERO float clamp(float value, float min, float max)
     return (value < min)? min : (value > max)? max : value;
 }
 
-HERO float lerpF(float a, float b, float t)
+HERO float lerp(float a, float b, float t)
 {
     return (1 - t)*a + t*b;
 }
