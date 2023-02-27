@@ -68,6 +68,13 @@ HERO std::ostream& operator<< (std::ostream& stream, const Int2& v)
     return stream; 
 }
 
+HERO Int2 FromString(const std::string& str)
+{
+    Int2 result;
+    sscanf(str.c_str(), "{%d;%d}", &result.x, &result.y);
+    return result;
+}
+
 HERO int dotProduct(Int2 A, Int2 B)
 {
     return (A.x * B.x) + (A.y * B.y);

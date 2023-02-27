@@ -3,6 +3,7 @@
 #include<cstdint>
 #include<iostream>
 #include<cmath>
+#include<string>
 
 namespace Hero
 {
@@ -49,6 +50,7 @@ struct Int2
 HERO Int2 operator+(const Int2& lhs, const Int2& rhs);
 HERO Int2 operator-(const Int2& lhs, const Int2& rhs);
 HERO std::ostream& operator<< (std::ostream& stream, const Int2& v);
+HERO Int2 FromString(const std::string& str);
 
 HERO int dotProduct(Int2 A, Int2 B);
 HERO float distance(Int2 A, Int2 B);
