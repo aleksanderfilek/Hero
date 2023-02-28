@@ -11,7 +11,7 @@ namespace Hero
 class Reflection
 {
 private:
-    std::unordered_map<Sid, class Actor*, SidHashFunction> prototypes;
+    std::unordered_map<Sid, class ICloneable*, SidHashFunction> prototypes;
 
 public:
 
@@ -21,11 +21,11 @@ public:
     void Add()
     {
         Sid Type = GetType<T>();
-        class Actor* actor = new T(Type);
+        class ICloneable* actor = new T(Type);
         prototypes.insert({Type, actor});
     }
 
-    HERO class Actor* Spawn(const Sid& Type);
+    HERO class ICloneable* Spawn(const Sid& Type);
 
 };
 

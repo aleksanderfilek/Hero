@@ -12,7 +12,7 @@ HERO Reflection::~Reflection()
     // }
 }
 
-HERO class Actor* Reflection::Spawn(const Sid& Type)
+HERO class ICloneable* Reflection::Spawn(const Sid& Type)
 {
     return prototypes[Type]->Clone();
 }

@@ -76,7 +76,7 @@ public:
 
     HERO virtual uint32_t Serialize(uint8_t*& bytes) override;
     HERO virtual void Deserialize(uint8_t* bytes, uint32_t size) override;
-    HERO virtual Actor* Clone() override;
+    HERO virtual ICloneable* Clone() override;
 
 };
 

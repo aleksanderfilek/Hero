@@ -101,7 +101,7 @@ HERO void Actor::Deserialize(uint8_t* bytes, uint32_t size)
     //ReadPtr(bytes, &index, (uint8_t*)&transform, size);
 }
 
-HERO Actor* Actor::Clone()
+HERO ICloneable* Actor::Clone()
 {
     Actor* actor = new Actor(GetName());
     *actor->GetTransformRef() = *transform;
