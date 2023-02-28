@@ -57,11 +57,11 @@ HERO Window::Window(const Sid& sid, const char *title, int width, int height, in
 
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 
-    // if(TTF_Init() < 0)
-    // {
-    //     std::cout<<"["<<sid.getName()<<"] SDL_ttf could not be initialize! SDL_ttf Error: "<<TTF_GetError()<<std::endl;
-    //     return;
-    // }
+    if(TTF_Init() < 0)
+    {
+        std::cout<<"["<<sid.getName()<<"] SDL_ttf could not be initialize! SDL_ttf Error: "<<TTF_GetError()<<std::endl;
+        return;
+    }
 }
 
 HERO Window::~Window()
