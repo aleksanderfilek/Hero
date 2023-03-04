@@ -129,6 +129,7 @@ HERO Float2 operator-(const Float2& lhs, const Float2& rhs);
 HERO Float2 operator*(const Float2& lhs, float rhs);
 HERO Float2 operator/(const Float2& lhs, float rhs);
 HERO std::ostream& operator<< (std::ostream& stream, const Float2& v);
+HERO Float2 Float2FromString(const std::string& str);
 
 HERO float dotProduct(Float2 A,Float2 B);
 HERO float distance(Float2 A, Float2 B);

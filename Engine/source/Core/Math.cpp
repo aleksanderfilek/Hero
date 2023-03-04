@@ -272,6 +272,13 @@ HERO std::ostream& operator<< (std::ostream& stream, const Float2& v)
     return stream; 
 }
 
+HERO Float2 Float2FromString(const std::string& str)
+{
+    Float2 result;
+    sscanf(str.c_str(), "{%f;%f}", &result.x, &result.y);
+    return result;
+}
+
 HERO float dotProduct(Float2 A, Float2 B)
 {
     return (A.x * B.x) + (A.y * B.y);
