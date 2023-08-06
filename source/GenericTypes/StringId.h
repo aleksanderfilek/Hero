@@ -25,6 +25,7 @@ public:
 
     static StringId None() { return StringId((uint32_t)0);}
 
+    uint32_t operator *(){ return id; }
     operator String();
     bool operator==(const StringId& Other);
 };

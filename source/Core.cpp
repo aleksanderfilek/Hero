@@ -21,7 +21,7 @@ void Core::Start()
     state = CoreState::Started;
     while(state == CoreState::Started)
     {
-
+        subsystemManager.Update();
     }
 
     subsystemManager.Shutdown();
