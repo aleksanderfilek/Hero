@@ -2,6 +2,9 @@
     "files.associations": {
         "system_error": "cpp",
         "xutility": "cpp",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "iosfwd": "cpp",
+        "string": "cpp",
+        "cstdio": "cpp"
     }
 }

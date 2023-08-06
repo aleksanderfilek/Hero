@@ -2,14 +2,23 @@
 
 #include "../Subsystem.h"
 #include "../../Containers/Array.h"
-#include "WindowObject.h"
+#include "../../GenericTypes/String.h"
+#include "../../Math/Int2.h"
+#include "../../Graphics/Color.h"
+
+struct WindowConfiguration
+{
+    String Title;
+    Int2 Size;
+    Color BackgroundColor;
+};
 
 class HERO_API WindowSubsystem : public Subsystem
 {
 private:
     static WindowSubsystem* instance;
 
-    Array<WindowObject*> windowObjects;
+    Array<class WindowObject*> windowObjects;
 
 public:
     static WindowSubsystem& Get() { return *instance; }
@@ -17,6 +26,6 @@ public:
     WindowSubsystem();
     ~WindowSubsystem();
 
-    void CreateWindow(const WindowConfiguration& WindowConfig);
-    void CloseWindow(WindowObject* Window);
+    class WindowObject* CreateWindow(const WindowConfiguration& WindowConfig);
+    void CloseWindow(class WindowObject* Window);
 };

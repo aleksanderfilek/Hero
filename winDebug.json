@@ -1,5 +1,5 @@
 {
-    "Name" : "hero.dll",
+    "Name" : "Hero.dll",
     "Type": "SharedLibrary",
     "OutputDir": "lib",
     "Compiler" : "g++",
@@ -8,6 +8,11 @@
         "lib"
     ],
     "Libs" : [
+        "-lSDL2main",
+        "-lSDL2",
+        "-lopengl32",
+        "-lglu32",
+        "-lm"
     ],
     "CompilerDefines" : [
         "HERO_EXPORTS",
