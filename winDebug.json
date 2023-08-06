@@ -1,0 +1,16 @@
+{
+    "Name" : "hero.dll",
+    "Type": "SharedLibrary",
+    "OutputDir": "lib",
+    "Compiler" : "g++",
+    "Extension" : ".cpp",
+    "LibsDir" : [
+        "lib"
+    ],
+    "Libs" : [
+    ],
+    "CompilerDefines" : [
+        "HERO_EXPORTS",
+        "DEBUG"
+    ]
+}

@@ -1,0 +1,291 @@
+#pragma once
+
+#include <cstring>
+#include <iterator>
+
+template<typename ElementType>
+struct ArrayIterator
+{
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = ElementType;
+    using pointer           = ElementType*;
+    using reference         = ElementType&;
+
+    ArrayIterator(ElementType* Data, int Length, int Index) 
+        : data(Data), length(Length), index(Index) {}
+
+    reference operator*() const { return data[index]; }
+    pointer operator->() { return &data[index]; }
+
+    // Prefix increment.
+    ArrayIterator& operator++() 
+    { 
+        index++;
+        return *this;
+    }  
+
+    // Postfix increment.
+    ArrayIterator operator++(int) 
+    { 
+        ArrayIterator tmp(data, length, index); 
+        index++;
+        return tmp; 
+    }
+
+    friend bool operator== (const ArrayIterator& a, const ArrayIterator& b) { return a.index == b.index; }
+    friend bool operator!= (const ArrayIterator& a, const ArrayIterator& b) { return a.index != b.index; };
+
+    private:
+        ElementType* data = nullptr;
+        int length = 0;
+        int index = 0;
+};
+
+template<typename ElementType>
+class Array
+{
+private:
+    int capacity = 0;
+    int length = 0;
+    int offsetSize = 1;
+
+    ElementType* data = nullptr;
+
+public:
+    /**
+     * @brief Default constructor with not initialized memory.
+     */
+    Array(){}
+
+    /**
+     * @brief Parameterized constructor.
+     * 
+     * @param Capacity The number of the array elements.
+     * @param OffsetSize The number of elements to be added when length equals capacity.
+     */
+    Array(int Capacity, int OffsetSize = 1) : capacity(Capacity), offsetSize(OffsetSize)
+    {
+        data = new ElementType[Capacity];
+        std::memset(data, 0, capacity * sizeof(ElementType));
+    }
+
+    /**
+     * @brief Constructor copying one array to another.
+     * 
+     * @param Other The array to copy from.
+     */
+    Array(const Array& Other)
+    {
+        if(data)
+        {
+            delete[] data;
+        }
+
+        length = Other.length;
+        capacity = Other.length;
+
+        data = new ElementType[capacity];
+        std::memcpy(data, Other.data, length * sizeof(ElementType));
+    }
+
+    /**
+     * @brief Constructor copying simple array elements.
+     * 
+     * @param Data The array to copy from.
+     * @param Length The lengh of the array.
+     */
+    Array(ElementType* Data, int Length)
+    {
+        if(data)
+        {
+            delete[] data;
+        }
+
+        length = Length;
+        capacity = Length;
+
+        data = new ElementType[capacity];
+        std::memcpy(data, Data, length * sizeof(ElementType));
+    }
+
+    /**
+     * @brief Destructor
+     * 
+     */
+    ~Array()
+    {
+        delete[] data;
+    }
+
+    /**
+     * @brief Function adding new elment to array. If lenght equals capacity, allocated array is enlarged by offset size.
+     * 
+     * @param Value Element to be added to array.
+     * @return int Index of added element;
+     */
+    int Add(const ElementType& Value)
+    {
+        if(length == capacity)
+        {
+            ElementType* oldData = data;
+            capacity += offsetSize;
+            data = new ElementType[capacity];
+            std::memcpy(data, oldData, length * sizeof(ElementType));
+            delete[] oldData;
+        }
+
+        int index = length;
+        data[index] = Value;
+        length++;
+        return index;
+    }
+
+    /**
+     * @brief The function tries to delete an element from array by iterating through all elements. The array capacity is not changed.
+     * 
+     * @param Value The element to be removed.
+     * @return true The element was found and removed.
+     * @return false The elmeent wasn't find.
+     */
+    bool Remove(const ElementType& Value)
+    {
+        for(int i = 0; i < length; i++)
+        {
+            if(data[i] != Value)
+            {
+                continue;
+            }
+
+            int elementsNumberToMove = length - i - 1;
+            std::memcpy(data + i, data + i + 1, elementsNumberToMove * sizeof(ElementType));
+            length--;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @brief The function tries to delete an element from array on index. The array capacity is not changed.
+     * 
+     * @param Index The index of element to be deleted.
+     * @return true The element was removed.
+     * @return false The element wasn't removed, index exceeds range <0, length).
+     */
+    bool RemoveAt(int Index)
+    {
+        if(Index < 0 || Index >= length)
+        {
+            return false;
+        }
+
+        int elementsNumberToMove = length - Index - 1;
+        std::memcpy(data + Index, data + Index + 1, elementsNumberToMove * sizeof(ElementType));
+        length--;
+        return true;
+    }
+
+    /**
+     * @brief Checks if element is in array.
+     * 
+     * @param Value Element to look for.
+     * @param Index Pointer to index with index of found element.
+     * @return true Array contains element.
+     * @return false Array doesn't contain element.
+     */
+    bool Contains(const ElementType& Value, int* Index = nullptr)
+    {
+        for(int i = 0; i < length; i++)
+        {
+            if(data[i] != Value)
+            {
+                continue;
+            }
+
+            if(Index)
+                *Index = i;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @brief Sets array memory and lenght to 0. 
+     * 
+     */
+    void Clear()
+    {
+        std::memset(data, 0, length * sizeof(ElementType));
+        length = 0;
+    }
+
+    /**
+     * @brief Reduces array size to length number elements. Lenght = Capacity.
+     * 
+     */
+    void Shrink()
+    {
+        ElementType* oldData = data;
+        data = new ElementType[length];
+        std::memcpy(data, oldData, length * sizeof(ElementType));
+        delete[] oldData;
+        capacity = length;
+    }
+
+    /**
+     * @brief Gets array length.
+     * 
+     * @return int Array lenght.
+     */
+    int Length() const
+    {
+        return length;
+    }
+
+    /**
+     * @brief Gets capacity.
+     * 
+     * @return int Array capacity.
+     */
+    int Capacity() const
+    {
+        return capacity;
+    }
+
+    /**
+     * @brief Set the Offset Size
+     * 
+     * @param OffsetSize Number of elements to enlarge array memory when length equals capacity.
+     */
+    void SetOffsetSize(int OffsetSize)
+    {
+        offsetSize = OffsetSize;
+    }
+
+    /**
+     * @brief Gets offset size.
+     * 
+     * @return int Offset size.
+     */
+    int OffsetSize() const
+    {
+        return offsetSize;
+    }
+
+    /**
+     * @brief Get reference to array element.
+     * 
+     * @param Index Index of element to get.
+     * @return ElementType& Reference to element.
+     */
+    ElementType& operator[](int Index)
+    {
+        return data[Index];
+    }
+
+    ArrayIterator<ElementType> begin() { return ArrayIterator<ElementType>(data, length, 0); }
+    ArrayIterator<ElementType> end()   { return ArrayIterator<ElementType>(data, length, length); }
+};
