@@ -4,7 +4,7 @@
 
 class HERO_API Subsystem
 {
-private:
+protected:
     bool updateEnabled = false;
 
 public:

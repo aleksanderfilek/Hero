@@ -1,4 +1,4 @@
-debug: buildDebug packDebug
+debug: clean buildDebug packDebug
 
 buildDebug:
 	builder winDebug.json
@@ -10,7 +10,7 @@ packDebug:
 	del /q /s .\.\x64\Debug\inc\*.cpp
 	xcopy ".\lib" ".\x64\Debug\bin\" /s /y
 
-release: buildRelease packRelease
+release: clean buildRelease packRelease
 
 buildRelease:
 	builder winRelease.json
@@ -21,3 +21,8 @@ packRelease:
 	cd x64\Release\inc
 	del /q /s .\.\x64\Release\inc\*.cpp
 	xcopy ".\lib" ".\x64\Release\bin\" /s /y
+
+clean:
+	if exist .builder\obj rmdir .builder\obj /s /q
+	if exist .builder\tmp rmdir .builder\tmp /s /q
+	if exist lib\Hero.dll del lib\Hero.dll /s /q

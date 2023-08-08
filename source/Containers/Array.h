@@ -131,8 +131,11 @@ public:
             ElementType* oldData = data;
             capacity += offsetSize;
             data = new ElementType[capacity];
-            std::memcpy(data, oldData, length * sizeof(ElementType));
-            delete[] oldData;
+            if(oldData)
+            {
+                std::memcpy(data, oldData, length * sizeof(ElementType));
+                delete[] oldData;
+            }
         }
 
         int index = length;

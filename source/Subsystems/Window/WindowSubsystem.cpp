@@ -8,6 +8,8 @@ WindowSubsystem* WindowSubsystem::instance = nullptr;
 
 WindowSubsystem::WindowSubsystem()
 {
+    instance = this;
+
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {
         
