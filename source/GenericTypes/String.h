@@ -10,8 +10,8 @@
 class HERO_API String
 {
 private:
-    char* str = nullptr;
     int length = 0;
+    char* str = nullptr;
 
 public:
     String();

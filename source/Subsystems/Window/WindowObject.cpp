@@ -3,6 +3,7 @@
 WindowObject::WindowObject(const WindowConfiguration& WindowConfig, WindowSubsystem* WindowSubsystem)
     : configuration(WindowConfig), windowSubsystem(WindowSubsystem)
 {
+    
     sdlWindow = SDL_CreateWindow(*configuration.Title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, configuration.Size.X, configuration.Size.Y, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
     if (!sdlWindow) {
@@ -26,7 +27,9 @@ WindowObject::WindowObject(const WindowConfiguration& WindowConfig, WindowSubsys
 
 WindowObject::~WindowObject()
 {
-
+    SDL_GL_DeleteContext(glContext);
+    SDL_DestroyRenderer(sdlRenderer);
+    SDL_DestroyWindow(sdlWindow);
 }
 
 void WindowObject::Close()

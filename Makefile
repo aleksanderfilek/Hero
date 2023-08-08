@@ -1,6 +1,6 @@
-debug: clean buildDebug packDebug
+debug: buildDebug packDebug
 
-buildDebug:
+buildDebug: clean
 	builder winDebug.json
 
 packDebug:
@@ -10,9 +10,9 @@ packDebug:
 	del /q /s .\.\x64\Debug\inc\*.cpp
 	xcopy ".\lib" ".\x64\Debug\bin\" /s /y
 
-release: clean buildRelease packRelease
+release: buildRelease packRelease
 
-buildRelease:
+buildRelease: clean
 	builder winRelease.json
 
 packRelease:

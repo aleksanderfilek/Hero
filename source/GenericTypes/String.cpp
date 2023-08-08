@@ -1,5 +1,5 @@
 #include "String.h"
-
+#include <iostream>
 String::String()
 {
 
@@ -8,13 +8,17 @@ String::String()
 String::String(const String& Other)
 {
     str = strdup(Other.str);
-    length = strlen(str);
+    length = strlen(Other.str);
+    // str = new char[length + 1]{0};
+    // strncpy(str, Other.str, length);
 }
 
 String::String(const char* Str)
 {
     str = strdup(Str);
-    length = strlen(str);
+    length = strlen(Str);
+    // str = new char[length + 1]{0};    
+    // strncpy(str, Str, length);
 }
 
 String::~String()
@@ -22,6 +26,7 @@ String::~String()
     if(str)
     {
         delete[] str;
+        str = nullptr;
     }
 }
 

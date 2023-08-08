@@ -45,12 +45,6 @@ Int2 Int2::operator-(const Int2& Other)
     return { X - Other.X, Y - Other.Y };
 }
 
-std::ostream& operator<< (std::ostream& stream, const Int2& Value)
-{
-    stream << "{" << Value.X << "," << Value.Y << "}";
-    return stream;
-}
-
 int Int2::DotProduct(const Int2& Other)
 {
     return (X * Other.X) + (Y * Other.Y);

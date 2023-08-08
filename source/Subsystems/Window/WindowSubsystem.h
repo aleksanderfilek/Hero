@@ -5,6 +5,7 @@
 #include "../../GenericTypes/String.h"
 #include "../../Math/Int2.h"
 #include "../../Graphics/Color.h"
+#include<iostream>
 
 struct WindowConfiguration
 {
@@ -24,7 +25,9 @@ public:
     static WindowSubsystem& Get() { return *instance; }
 
     WindowSubsystem();
-    ~WindowSubsystem();
+
+    virtual void Startup() override;
+    virtual void Shutdown() override;
 
     class WindowObject* CreateWindow(const WindowConfiguration& WindowConfig);
     void CloseWindow(class WindowObject* Window);

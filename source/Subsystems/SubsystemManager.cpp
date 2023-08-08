@@ -1,5 +1,6 @@
 #include "SubsystemManager.h"
 #include "Subsystem.h"
+#include <iostream>
 
 void SubsystemManager::AddSubsystem(Subsystem* Subsystem, bool Startup)
 {

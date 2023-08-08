@@ -9,10 +9,12 @@ WindowSubsystem* WindowSubsystem::instance = nullptr;
 WindowSubsystem::WindowSubsystem()
 {
     instance = this;
+}
 
+void WindowSubsystem::Startup()
+{
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
     {
-        
         exit(-1);
     }
 
@@ -28,11 +30,11 @@ WindowSubsystem::WindowSubsystem()
     glewInit();
 }
 
-WindowSubsystem::~WindowSubsystem()
+void WindowSubsystem::Shutdown()
 {
     for(WindowObject* window: windowObjects)
     {
-        delete[] window;
+        delete window;
     }
 
     SDL_Quit();

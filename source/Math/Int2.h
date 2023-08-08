@@ -28,6 +28,11 @@ struct HERO_API Int2
 
     int DotProduct(const Int2& Other);
     float Distance(const Int2& Other);
-};
 
-std::ostream& operator<< (std::ostream& Stream, const Int2& Value);
+    friend std::ostream& operator<<(std::ostream& Stream, const Int2& Value)
+    {
+        Stream << "{" << Value.X << "," << Value.Y << "}";
+        return Stream;
+    }
+
+};
