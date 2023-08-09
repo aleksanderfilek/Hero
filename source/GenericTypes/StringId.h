@@ -4,6 +4,7 @@
 #include <cstdint>
 #include "String.h"
 #include "../Containers/Map.h"
+#include <functional>
 
 uint32_t HashCrc32(const char* str);
 
@@ -25,7 +26,20 @@ public:
 
     static StringId None() { return StringId((uint32_t)0);}
 
-    uint32_t operator *(){ return id; }
+    uint32_t operator *() const { return id; }
     operator String();
-    bool operator==(const StringId& Other);
+    bool operator==(const StringId& Other) const;
+    bool operator<(const StringId& Other) const;
 };
+
+namespace std
+{
+    template <>
+    struct hash<StringId>
+    {
+        size_t operator()(const StringId& Key) const
+        {
+            return hash<uint32_t>()(*Key);
+        }
+    };
+}

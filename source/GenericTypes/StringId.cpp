@@ -64,7 +64,12 @@ StringId::operator String()
     return StringId::None();
 }
 
-bool StringId::operator==(const StringId& Other)
+bool StringId::operator==(const StringId& Other) const
 {
     return id == Other.id;
+}
+
+bool StringId::operator<(const StringId& Other) const
+{
+    return id < Other.id;
 }

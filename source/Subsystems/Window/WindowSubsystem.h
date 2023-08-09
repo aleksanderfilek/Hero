@@ -3,9 +3,9 @@
 #include "../Subsystem.h"
 #include "../../Containers/Array.h"
 #include "../../GenericTypes/String.h"
+#include "../../GenericTypes/StringId.h"
 #include "../../Math/Int2.h"
 #include "../../Graphics/Color.h"
-#include<iostream>
 
 struct WindowConfiguration
 {
@@ -20,6 +20,9 @@ private:
     static WindowSubsystem* instance;
 
     Array<class WindowObject*> windowObjects;
+
+    StringId inputEventId = StringId("Input");
+    void HandleEvent(void* Data);
 
 public:
     static WindowSubsystem& Get() { return *instance; }

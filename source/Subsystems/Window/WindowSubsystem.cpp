@@ -3,6 +3,7 @@
 #include "../../ThirdParty/GL/Gl.h"
 #include "../../ThirdParty/SDL2/SDL_opengl.h"
 #include "WindowObject.h"
+#include "../../Core.h"
 
 WindowSubsystem* WindowSubsystem::instance = nullptr;
 
@@ -28,6 +29,8 @@ void WindowSubsystem::Startup()
     glewExperimental = GL_TRUE;
 
     glewInit();
+
+    GetSubsystemManager()->GetEvent(inputEventId).AddEvent(this, &WindowSubsystem::HandleEvent);
 }
 
 void WindowSubsystem::Shutdown()
@@ -55,5 +58,29 @@ void WindowSubsystem::CloseWindow(class WindowObject* Window)
         return;
     }
 
-    delete[] Window;
+    if(Window->GetId() == 1)
+    {
+        Core::Get().Stop();
+    }
+
+    delete Window;
+}
+
+void WindowSubsystem::HandleEvent(void* Data)
+{
+    SDL_Event* event = (SDL_Event*)Data;
+
+    if(event->type != SDL_WINDOWEVENT)
+    {
+        return;
+    } 
+
+    for(WindowObject* window: windowObjects)
+    {
+        if(event->window.windowID == window->GetId())
+        {
+            window->HandleEvent(event);
+            return;
+        }
+    }
 }

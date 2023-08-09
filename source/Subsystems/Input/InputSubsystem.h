@@ -7,6 +7,8 @@ class HERO_API InputSubsystem : public Subsystem
 private:
     static InputSubsystem* instance;
 
+    StringId inputEventId = StringId("Input");
+
 public:
     static InputSubsystem& Get() { return *instance; }
 

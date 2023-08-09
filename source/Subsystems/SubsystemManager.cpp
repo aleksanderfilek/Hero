@@ -4,6 +4,7 @@
 
 void SubsystemManager::AddSubsystem(Subsystem* Subsystem, bool Startup)
 {
+    Subsystem->subsystemManager = this;
     subsystems.Add(Subsystem);
 
     if(Subsystem->UpdateEnabled())
@@ -39,4 +40,18 @@ void SubsystemManager::Update()
     {
         subsystem->Update();
     }
+}
+
+SubsystemEvent& SubsystemManager::GetEvent(const StringId& Id)
+{
+    return subsystemEventsMap[Id];
+}
+
+void SubsystemManager::BroadcastEvent(const StringId& Id, void* Data)
+{
+    if(!subsystemEventsMap.Contains(Id))
+    {
+        return;
+    }
+    subsystemEventsMap[Id].Broadcast(Data);
 }

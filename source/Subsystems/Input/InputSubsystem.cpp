@@ -31,6 +31,9 @@ void InputSubsystem::Update()
         if(event.type == SDL_QUIT )
         {
             Core::Get().Stop();
+            return;
         }
+
+        GetSubsystemManager()->BroadcastEvent(inputEventId, &event);
     }
 }
