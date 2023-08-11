@@ -6,7 +6,6 @@ TimeSubsystem* TimeSubsystem::instance = nullptr;
 TimeSubsystem::TimeSubsystem()
 {
     instance = this;
-
     updateEnabled = true;
 }
 

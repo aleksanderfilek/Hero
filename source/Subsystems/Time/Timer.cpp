@@ -1,5 +1,6 @@
 #include "Timer.h"
 #include "TimeSubsystem.h"
+#include <iostream>
 
 void Timer::Update(float DeltaTime)
 {
@@ -7,6 +8,7 @@ void Timer::Update(float DeltaTime)
         return;
 
     currentTime += DeltaTime;
+    std::cout<<currentTime<<std::endl;
     if(currentTime >= period)
     {
         onTimer.Broadcast();

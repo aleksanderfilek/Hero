@@ -42,6 +42,7 @@ public:
         timer->period = period;
         timer->loop = loop;
         timer->onTimer.AddEvent(object, methodPtr);
+        timers.Add(timer);
     }
 
     void RemoveTimer(Timer* Timer);
