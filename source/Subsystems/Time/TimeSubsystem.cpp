@@ -12,6 +12,11 @@ TimeSubsystem::TimeSubsystem()
 
 void TimeSubsystem::Startup()
 {
+    if (SDL_InitSubSystem(SDL_INIT_TIMER) < 0)
+    {
+        exit(-1);
+    }
+
     startupTime = SDL_GetTicks();
 }
 
@@ -21,6 +26,8 @@ void TimeSubsystem::Shutdown()
     {
         delete timer;
     }
+
+    SDL_Quit();
 }
 
 void TimeSubsystem::Update()
