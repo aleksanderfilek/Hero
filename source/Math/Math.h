@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MathConstants.h"
 #include "Int2.h"
 #include "Int3.h"
 #include "Int4.h"

@@ -18,21 +18,30 @@ struct HERO_API Int2
     constexpr static inline Int2 Right(){ return Int2(1, 0); }
     constexpr static inline Int2 Up()   { return Int2(0, 1); }
 
-    void operator+=(const Int2& Other);
-    void operator-=(const Int2& Other);
-    bool operator==(const Int2& Other);
-    bool operator!=(const Int2& Other);
+    float Length() const;
+
+    Int2& operator+=(const Int2& Other);
+    Int2& operator-=(const Int2& Other);
+    Int2& operator*=(int Scalar);
+    Int2& operator/=(int Scalar);
 
     Int2 operator+(const Int2& Other);
     Int2 operator-(const Int2& Other);
+    Int2 operator*(int Scalar);
+    Int2 operator/(int Scalar);
 
-    int DotProduct(const Int2& Other);
-    float Distance(const Int2& Other);
+    bool operator==(const Int2& Other) const;
+    bool operator!=(const Int2& Other) const;
+
+    int DotProduct(const Int2& Other) const;
+    int CrossProduct(const Int2& Other) const;
+
+    float DistanceSquared(const Int2& Other) const;
+    float Distance(const Int2& Other) const;
 
     friend std::ostream& operator<<(std::ostream& Stream, const Int2& Value)
     {
         Stream << "{" << Value.X << "," << Value.Y << "}";
         return Stream;
     }
-
 };
