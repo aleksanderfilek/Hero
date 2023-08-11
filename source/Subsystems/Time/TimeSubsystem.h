@@ -12,11 +12,11 @@ private:
 
     uint32_t startupTime = 0;
     uint32_t timerTick = 0;
-    double deltaTime = 0.0;
-    double timeScale = 1.0;
-    double scaledTime = 0.0;
+    float deltaTime = 0.0;
+    float timeScale = 1.0;
+    float scaledDeltaTime = 0.0;
 
-    void SetDeltaTime(double Value);
+    void SetDeltaTime(float Value);
 
 public:
     static TimeSubsystem& Get() { return *instance; }
@@ -27,7 +27,7 @@ public:
     virtual void Shutdown() override;
     virtual void Update() override;
 
-    void SetScale(double Value);
+    void SetScale(float Value);
 
 private:
     Array<class Timer*> timers;
@@ -37,9 +37,12 @@ public:
     Timer* AddTimer(UserClass* object, void (UserClass::*methodPtr)(), float period = 1.0f, bool loop = false)
     {
         Timer* timer = new Timer();
+        timer->timeSubsystem = this;
         timer->currentTime = 0.0;
         timer->period = period;
         timer->loop = loop;
-        timer->onTimer.addEvent(object, methodPtr);
+        timer->onTimer.AddEvent(object, methodPtr);
     }
+
+    void RemoveTimer(Timer* Timer);
 };

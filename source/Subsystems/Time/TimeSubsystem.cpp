@@ -17,23 +17,37 @@ void TimeSubsystem::Startup()
 
 void TimeSubsystem::Shutdown()
 {
-
+    for(Timer* timer: timers)
+    {
+        delete timer;
+    }
 }
 
 void TimeSubsystem::Update()
 {
-    SetDeltaTime((double)(SDL_GetTicks() - timerTick) / 1000.0);
+    for(Timer* timer: timers)
+    {
+        timer->Update(scaledDeltaTime);
+    }
+
+    SetDeltaTime((float)(SDL_GetTicks() - timerTick) / 1000.0f);
     timerTick = SDL_GetTicks();
 }
 
-void TimeSubsystem::SetDeltaTime(double Value)
+void TimeSubsystem::SetDeltaTime(float Value)
 {
     deltaTime = Value;
-    scaledTime = Value * timeScale;
+    scaledDeltaTime = Value * timeScale;
 }
 
-void TimeSubsystem::SetScale(double Value)
+void TimeSubsystem::SetScale(float Value)
 {
     timeScale = Value;
-    scaledTime = Value * deltaTime;
+    scaledDeltaTime = Value * deltaTime;
+}
+
+void TimeSubsystem::RemoveTimer(Timer* Timer)
+{
+    timers.Remove(Timer);
+    delete Timer;
 }
