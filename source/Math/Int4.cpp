@@ -105,3 +105,12 @@ float Int4::Distance(const Int4& Other) const
 {
     return sqrtf(DistanceSquared(Other));
 }
+
+Int4 Int4::Lerp(const Int4& From, const Int4& To, float Alpha)
+{
+    int x = (1.0f - Alpha) * From.X + Alpha * To.X;
+    int y = (1.0f - Alpha) * From.Y + Alpha * To.Y;
+    int z = (1.0f - Alpha) * From.Z + Alpha * To.Z;
+    int w = (1.0f - Alpha) * From.Z + Alpha * To.Z;
+    return { x, y, z, w };    
+}

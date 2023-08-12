@@ -109,3 +109,11 @@ float Float3::Distance(const Float3& Other) const
 {
     return sqrtf(DistanceSquared(Other));
 }
+
+Float3 Float3::Lerp(const Float3& From, const Float3& To, float Alpha)
+{
+    float x = (1.0f - Alpha) * From.X + Alpha * To.X;
+    float y = (1.0f - Alpha) * From.Y + Alpha * To.Y;
+    float z = (1.0f - Alpha) * From.Z + Alpha * To.Z;
+    return { x, y, z };    
+}

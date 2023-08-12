@@ -45,4 +45,6 @@ struct HERO_API Int3
         Stream << "{" << Value.X << "," << Value.Y<< "," << Value.Z << "}";
         return Stream;
     }
+
+    static Int3 Lerp(const Int3& From, const Int3& To, float Alpha);
 };

@@ -98,3 +98,10 @@ float Float2::Distance(const Float2& Other) const
 {
     return sqrtf(DistanceSquared(Other));
 }
+
+Float2 Float2::Lerp(const Float2& From, const Float2& To, float Alpha)
+{
+    float x = (1.0f - Alpha) * From.X + Alpha * To.X;
+    float y = (1.0f - Alpha) * From.Y + Alpha * To.Y;
+    return { x, y };
+}
