@@ -19,6 +19,16 @@ float Float2::Length() const
     return sqrtf(powf(X, 2.0f) + powf(Y, 2.0f));
 }
 
+void Float2::Normalize()
+{
+    *this /= Length();
+}
+
+Float2 Float2::Normalized() const
+{
+    return *this / Length();
+}
+
 Float2& Float2::operator+=(const Float2& Other)
 {
     X += Other.X;
@@ -47,22 +57,22 @@ Float2& Float2::operator/=(float Scalar)
     return *this;
 }
 
-Float2 Float2::operator+(const Float2& Other)
+Float2 Float2::operator+(const Float2& Other) const
 {
     return { X + Other.X, Y + Other.Y };
 }
 
-Float2 Float2::operator-(const Float2& Other)
+Float2 Float2::operator-(const Float2& Other) const
 {
     return { X - Other.X, Y - Other.Y };
 }
 
-Float2 Float2::operator*(float Scalar)
+Float2 Float2::operator*(float Scalar) const
 {
     return { X * Scalar, Y * Scalar };
 }
 
-Float2 Float2::operator/(float Scalar)
+Float2 Float2::operator/(float Scalar) const
 {
     return { X / Scalar, Y / Scalar };
 }

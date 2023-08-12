@@ -51,22 +51,22 @@ Int3& Int3::operator/=(int Scalar)
     return *this;
 }
 
-Int3 Int3::operator+(const Int3& Other)
+Int3 Int3::operator+(const Int3& Other) const
 {
     return { X + Other.X, Y + Other.Y, Z + Other.Z };
 }
 
-Int3 Int3::operator-(const Int3& Other)
+Int3 Int3::operator-(const Int3& Other) const
 {
     return { X - Other.X, Y - Other.Y, Z - Other.Z };
 }
 
-Int3 Int3::operator*(int Scalar)
+Int3 Int3::operator*(int Scalar) const
 {
     return { X * Scalar, Y * Scalar, Z * Scalar };
 }
 
-Int3 Int3::operator/(int Scalar)
+Int3 Int3::operator/(int Scalar) const
 {
     return { X / Scalar, Y / Scalar, Z / Scalar };
 }

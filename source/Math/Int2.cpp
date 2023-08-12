@@ -46,22 +46,22 @@ Int2& Int2::operator/=(int Scalar)
     return *this;
 }
 
-Int2 Int2::operator+(const Int2& Other)
+Int2 Int2::operator+(const Int2& Other) const
 {
     return { X + Other.X, Y + Other.Y };
 }
 
-Int2 Int2::operator-(const Int2& Other)
+Int2 Int2::operator-(const Int2& Other) const
 {
     return { X - Other.X, Y - Other.Y };
 }
 
-Int2 Int2::operator*(int Scalar)
+Int2 Int2::operator*(int Scalar) const
 {
     return { X * Scalar, Y * Scalar };
 }
 
-Int2 Int2::operator/(int Scalar)
+Int2 Int2::operator/(int Scalar) const
 {
     return { X / Scalar, Y / Scalar };
 }

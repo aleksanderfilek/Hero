@@ -13,13 +13,23 @@ Float4::Float4(const Float4& Other)
 
 Float4::Float4(const String& Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%d,%d,%d,%d}", &X, &Y, &Z, &W);
+    sscanf(*const_cast<String&>(Str), "{%f,%f,%f,%f}", &X, &Y, &Z, &W);
 }
 
 float Float4::Length() const
 {
     return sqrtf(powf(X, 2.0f) + powf(Y, 2.0f) + 
         powf(Z, 2.0f) + powf(W, 2.0f));
+}
+
+void Float4::Normalize()
+{
+    *this /= Length();
+}
+
+Float4 Float4::Normalized() const
+{
+    return *this / Length();
 }
 
 Float4& Float4::operator+=(const Float4& Other)
@@ -58,22 +68,22 @@ Float4& Float4::operator/=(float Scalar)
     return *this;
 }
 
-Float4 Float4::operator+(const Float4& Other)
+Float4 Float4::operator+(const Float4& Other) const
 {
     return { X + Other.X, Y + Other.Y, Z + Other.Z, W + Other.W };
 }
 
-Float4 Float4::operator-(const Float4& Other)
+Float4 Float4::operator-(const Float4& Other) const
 {
     return { X - Other.X, Y - Other.Y, Z - Other.Z, W - Other.W };
 }
 
-Float4 Float4::operator*(float Scalar)
+Float4 Float4::operator*(float Scalar) const
 {
     return { X * Scalar, Y * Scalar, Z * Scalar, W * Scalar };
 }
 
-Float4 Float4::operator/(float Scalar)
+Float4 Float4::operator/(float Scalar) const
 {
     return { X / Scalar, Y / Scalar, Z / Scalar, W / Scalar };
 }

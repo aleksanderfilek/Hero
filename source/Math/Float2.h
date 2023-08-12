@@ -19,16 +19,18 @@ struct HERO_API Float2
     constexpr static inline Float2 Up()   { return Float2(0.0f, 1.0f); }
 
     float Length() const;
+    void Normalize();
+    Float2 Normalized() const;
 
     Float2& operator+=(const Float2& Other);
     Float2& operator-=(const Float2& Other);
     Float2& operator*=(float Scalar);
     Float2& operator/=(float Scalar);
 
-    Float2 operator+(const Float2& Other);
-    Float2 operator-(const Float2& Other);
-    Float2 operator*(float Scalar);
-    Float2 operator/(float Scalar);
+    Float2 operator+(const Float2& Other) const;
+    Float2 operator-(const Float2& Other) const;
+    Float2 operator*(float Scalar) const;
+    Float2 operator/(float Scalar) const;
 
     bool operator==(const Float2& Other) const;
     bool operator!=(const Float2& Other) const;

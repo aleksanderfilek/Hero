@@ -17,16 +17,18 @@ struct HERO_API Float4
     constexpr static inline Float4 One()      { return Float4(1.0f, 1.0f, 1.0f, 1.0f); }
 
     float Length() const;
+    void Normalize();
+    Float4 Normalized() const;
 
     Float4& operator+=(const Float4& Other);
     Float4& operator-=(const Float4& Other);
     Float4& operator*=(float Scalar);
     Float4& operator/=(float Scalar);
 
-    Float4 operator+(const Float4& Other);
-    Float4 operator-(const Float4& Other);
-    Float4 operator*(float Scalar);
-    Float4 operator/(float Scalar);
+    Float4 operator+(const Float4& Other) const;
+    Float4 operator-(const Float4& Other) const;
+    Float4 operator*(float Scalar) const;
+    Float4 operator/(float Scalar) const;
 
     bool operator==(const Float4& Other) const;
     bool operator!=(const Float4& Other) const;

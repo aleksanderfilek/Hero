@@ -20,6 +20,16 @@ float Float3::Length() const
     return sqrtf(powf(X, 2.0f) + powf(Y, 2.0f) + powf(Z, 2.0f));
 }
 
+void Float3::Normalize()
+{
+    *this /= Length();
+}
+
+Float3 Float3::Normalized() const
+{
+    return *this / Length();
+}
+
 Float3& Float3::operator+=(const Float3& Other)
 {
     X += Other.X;
@@ -52,22 +62,22 @@ Float3& Float3::operator/=(float Scalar)
     return *this;
 }
 
-Float3 Float3::operator+(const Float3& Other)
+Float3 Float3::operator+(const Float3& Other) const
 {
     return { X + Other.X, Y + Other.Y, Z + Other.Z };
 }
 
-Float3 Float3::operator-(const Float3& Other)
+Float3 Float3::operator-(const Float3& Other) const
 {
     return { X - Other.X, Y - Other.Y, Z - Other.Z };
 }
 
-Float3 Float3::operator*(float Scalar)
+Float3 Float3::operator*(float Scalar) const
 {
     return { X * Scalar, Y * Scalar, Z * Scalar };
 }
 
-Float3 Float3::operator/(float Scalar)
+Float3 Float3::operator/(float Scalar) const
 {
     return { X / Scalar, Y / Scalar, Z / Scalar };
 }

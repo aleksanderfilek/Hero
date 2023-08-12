@@ -23,10 +23,10 @@ struct HERO_API Int4
     Int4& operator*=(int Scalar);
     Int4& operator/=(int Scalar);
 
-    Int4 operator+(const Int4& Other);
-    Int4 operator-(const Int4& Other);
-    Int4 operator*(int Scalar);
-    Int4 operator/(int Scalar);
+    Int4 operator+(const Int4& Other) const;
+    Int4 operator-(const Int4& Other) const;
+    Int4 operator*(int Scalar) const;
+    Int4 operator/(int Scalar) const;
 
     bool operator==(const Int4& Other) const;
     bool operator!=(const Int4& Other) const;

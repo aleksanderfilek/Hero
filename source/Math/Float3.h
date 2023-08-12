@@ -20,16 +20,18 @@ struct HERO_API Float3
     constexpr static inline Float3 Up()       { return Float3(0.0f, 0.0f, 1.0f); }
 
     float Length() const;
+    void Normalize();
+    Float3 Normalized() const;
 
     Float3& operator+=(const Float3& Other);
     Float3& operator-=(const Float3& Other);
     Float3& operator*=(float Scalar);
     Float3& operator/=(float Scalar);
 
-    Float3 operator+(const Float3& Other);
-    Float3 operator-(const Float3& Other);
-    Float3 operator*(float Scalar);
-    Float3 operator/(float Scalar);
+    Float3 operator+(const Float3& Other) const;
+    Float3 operator-(const Float3& Other) const;
+    Float3 operator*(float Scalar) const;
+    Float3 operator/(float Scalar) const;
 
     bool operator==(const Float3& Other) const;
     bool operator!=(const Float3& Other) const;

@@ -25,10 +25,10 @@ struct HERO_API Int2
     Int2& operator*=(int Scalar);
     Int2& operator/=(int Scalar);
 
-    Int2 operator+(const Int2& Other);
-    Int2 operator-(const Int2& Other);
-    Int2 operator*(int Scalar);
-    Int2 operator/(int Scalar);
+    Int2 operator+(const Int2& Other) const;
+    Int2 operator-(const Int2& Other) const;
+    Int2 operator*(int Scalar) const;
+    Int2 operator/(int Scalar) const;
 
     bool operator==(const Int2& Other) const;
     bool operator!=(const Int2& Other) const;

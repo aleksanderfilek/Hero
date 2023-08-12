@@ -26,10 +26,10 @@ struct HERO_API Int3
     Int3& operator*=(int Scalar);
     Int3& operator/=(int Scalar);
 
-    Int3 operator+(const Int3& Other);
-    Int3 operator-(const Int3& Other);
-    Int3 operator*(int Scalar);
-    Int3 operator/(int Scalar);
+    Int3 operator+(const Int3& Other) const;
+    Int3 operator-(const Int3& Other) const;
+    Int3 operator*(int Scalar) const;
+    Int3 operator/(int Scalar) const;
 
     bool operator==(const Int3& Other) const;
     bool operator!=(const Int3& Other) const;

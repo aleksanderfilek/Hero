@@ -57,22 +57,22 @@ Int4& Int4::operator/=(int Scalar)
     return *this;
 }
 
-Int4 Int4::operator+(const Int4& Other)
+Int4 Int4::operator+(const Int4& Other) const
 {
     return { X + Other.X, Y + Other.Y, Z + Other.Z, W + Other.W };
 }
 
-Int4 Int4::operator-(const Int4& Other)
+Int4 Int4::operator-(const Int4& Other) const
 {
     return { X - Other.X, Y - Other.Y, Z - Other.Z, W - Other.W };
 }
 
-Int4 Int4::operator*(int Scalar)
+Int4 Int4::operator*(int Scalar) const
 {
     return { X * Scalar, Y * Scalar, Z * Scalar, W * Scalar };
 }
 
-Int4 Int4::operator/(int Scalar)
+Int4 Int4::operator/(int Scalar) const
 {
     return { X / Scalar, Y / Scalar, Z / Scalar, W / Scalar };
 }
