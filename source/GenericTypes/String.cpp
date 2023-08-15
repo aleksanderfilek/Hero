@@ -30,7 +30,7 @@ String::~String()
     }
 }
 
-const char* String::operator *()
+const char* String::operator *() const
 {
     return str;
 }

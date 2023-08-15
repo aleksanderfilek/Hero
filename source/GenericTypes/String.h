@@ -31,7 +31,7 @@ public:
 
     int Length() const { return length; }
 
-    const char* operator *();
+    const char* operator *() const;
     bool operator==(const String& Rhs);
 
     friend std::ostream& operator<<(std::ostream& stream, const String& rhs)
