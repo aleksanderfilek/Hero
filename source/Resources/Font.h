@@ -1,19 +1,18 @@
 #pragma once
 
-// #include "../Defaults.h"
-// #include "ResourceSubsystem.h"
-// #include "../Core/StringId.h"
+#include "../Definitions.h"
+#include "ResourceHandle.h"
+#include "../GenericTypes/String.h"
 
-// class HERO_API Font : public ResourceHandle
-// {
-// private:
-//     struct stbtt_fontinfo* mFontInfo;
-//     uint8_t* buffer;
+class HERO_API Font : public ResourceHandle
+{
+private:
+    struct stbtt_fontinfo* info;
+    uint8_t* buffer;
 
-// public:
-//     static ResourceHandle* load(const uint8_t* Data, ResourceSubsystem* subsystem);
-//     static void unload(ResourceHandle* resource);
-//     static int getId() { return FONT_ID; }
+public:
+    Font(struct stbtt_fontinfo* Info, uint8_t* Buffer);
+    ~Font();
 
-//     class Texture* createTexture(const char* text, uint32_t size);
-// };
+    class Texture* CreateTexture(const String& Text, uint32_t Size);
+};

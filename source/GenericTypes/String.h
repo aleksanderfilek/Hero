@@ -32,7 +32,8 @@ public:
     int Length() const { return length; }
 
     const char* operator *() const;
-    bool operator==(const String& Rhs);
+    bool operator==(const String& Rhs) const;
+    char operator[](int Index) const;
 
     friend std::ostream& operator<<(std::ostream& stream, const String& rhs)
     {

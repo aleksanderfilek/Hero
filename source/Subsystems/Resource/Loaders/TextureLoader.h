@@ -2,7 +2,7 @@
 
 #include "IResourceLoader.h"
 
-class TextureLoader : public IResourceLoader
+class HERO_API TextureLoader : public IResourceLoader
 {
 public:
     virtual StringId GetName() override { return StringId("Texture"); } 
