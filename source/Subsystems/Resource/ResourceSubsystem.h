@@ -15,7 +15,7 @@ public:
 	virtual void Startup() override;
 	virtual void Shutdown() override;
 
-	template<class LoaderClass> bool RegisterResource()
+	template<class LoaderClass> bool RegisterResourceLoader()
 	{
 		LoaderClass* loader = new LoaderClass();
 		StringId key = loader->GetName();
@@ -28,6 +28,6 @@ public:
 	class ResourceHandle* Get(StringId Id);
 	bool Contains(StringId Id) const;
 
-// protected:
-// 	void RegisterEngineResources();
+protected:
+	void RegisterEngineResourceLoaders();
 };

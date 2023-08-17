@@ -1,76 +1,63 @@
-// #pragma once
+#pragma once
 
-// #include "../Defaults.h"
-// #include "ResourceSubsystem.h"
-// #include "../Core/Math.h"
-// #include "../Graphics/Color.h"
+#include "../Definitions.h"
+#include "../Math/Int2.h"
+#include "../Math/Float4.h"
+#include "../Graphics/Color.h"
+#include "ResourceHandle.h"
 
-// #include <cstdint>
+#include <cstdint>
 
-// enum class TextureFlag : uint8_t
-// {
-//     NEAREST = 0,
-//     LINEAR = 1,
-//     NO_MIPMAP = 0,
-//     MIPMAP = 2
-// };
+enum class TextureFilterMethod : uint8_t
+{
+    NEAREST =   0,
+    LINEAR =    1
+};
 
-// class HERO_API Texture : public ResourceHandle
-// {
-// private:
-//     uint32_t mGlId;
-//     Int2 mSize;
-//     uint8_t mFlags;
-//     ColorChannel mChannels;
-//     ColorSpace mColorSpace;
-//     Int2 mAtlasSize;
+enum class TextureWrapMethod : uint8_t
+{
+    REPEAT =                0,
+    CLAMP_TO_EDGE =         1,
+    CLAMP_TO_BORDER =       2,
+    MIRRORED_REPEAT =       3,
+    MIRROR_CLAMP_TO_EDGE =  4
+};
 
-// protected:
-//     friend void setGlIdValue(Texture* texture, uint32_t value)
-//     {
-//         texture->mGlId = value;
-//     }
+struct TextureConfiguration
+{
+    Int2 Size;
+    ColorChannel Channels;
+    ColorSpace ColorSpace;
+    TextureFilterMethod FilterMethod;
+    TextureWrapMethod WrapMethod;
+    bool GenerateMipmaps = false;
+    Int2 AtlasSize;
+};
 
-//     friend void setFlagValue(Texture* texture, uint8_t value)
-//     {
-//         texture->mFlags = value;
-//     }
+class HERO_API Texture : public ResourceHandle
+{
+private:
+    uint32_t glId = 0;
+    TextureConfiguration configuration;
 
-//     friend void setColorChannelValue(Texture* texture, ColorChannel value)
-//     {
-//         texture->mChannels = value;
-//     }
+public:
+    Texture();
+    Texture(const uint8_t* Pixels, const TextureConfiguration& Coniguration);
+    Texture(uint32_t GlId, const TextureConfiguration& Coniguration);
+    ~Texture();
 
-//     friend void setColorChannelValue(Texture* texture, ColorSpace value)
-//     {
-//         texture->mColorSpace = value;
-//     }
+    void Bind(int SlotId = 0);
+    void Unbind();
 
-//     friend void setAtlasSizeValue(Texture* texture, Int2 value)
-//     {
-//         texture->mAtlasSize = value;
-//     }
+    uint32_t GetGlId() const { return glId; }
+    Int2 GetSize() const { return configuration.Size; }
+    TextureFilterMethod GetFilterMethod() const { return configuration.FilterMethod; }
+    TextureWrapMethod GetWrapMethod() const { return configuration.WrapMethod; }
+    ColorChannel GetColorChannel() const { return configuration.Channels; }
+    ColorSpace GetColorSpace() const { return configuration.ColorSpace; }
+    bool GetGenerateMipmap() const { return configuration.GenerateMipmaps; }
 
-// public:
-//     Texture();
-//     Texture(uint32_t width, uint32_t height, ColorChannel channel);
-//     Texture(uint32_t glId, Int2 size, uint8_t flags, ColorChannel channel, ColorSpace colorSpace);
-//     ~Texture();
-
-//     static ResourceHandle* load(const uint8_t* Data, ResourceSubsystem* subsystem);
-//     static void unload(ResourceHandle* resource);
-//     static int getId() { return TEXTURE_ID; }
-
-//     void bind(int slotId = 0);
-//     void unbind();
-
-//     inline uint32_t getGlId() const { return mGlId; }
-//     inline Int2 getSize() const { return mSize; }
-//     inline uint8_t getFlags() const { return mFlags; }
-//     inline ColorChannel getColorChannel() const { return mChannels; }
-//     inline ColorSpace getColorSpace() const { return mColorSpace; }
-
-//     void setAtlasSize(const Int2& AtlasSize);
-//     Int2 getAtlasSize() const { return mAtlasSize; }
-//     Float4 getSpriteRect(int index);
-// };
+    void SetAtlasSize(const Int2& AtlasSize);
+    Int2 GetAtlasSize() const { return configuration.AtlasSize; }
+    Float4 GetSpriteRect(int Index);
+};

@@ -2,7 +2,7 @@
 #include "../../Resources/ResourceHandle.h"
 #include "../../Utility/Path.h"
 #include "../../Core.h"
-// #include "Texture.h"
+#include "Loaders/TextureLoader.h"
 // #include "Shader.h"
 // #include "Mesh.h"
 // #include "Font.h"
@@ -44,7 +44,7 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsA
     file.read((char*)data, size * sizeof(uint8_t));
     file.close();
 
-    ResourceHandle* resource = loaders[resourceId]->Load(data);
+    ResourceHandle* resource = loaders[resourceId]->Load(data, this);
     resource->id = resourceId;
     delete[] data;
 
@@ -83,10 +83,10 @@ bool ResourceSubsystem::Contains(StringId Id) const
     return resources.Contains(Id);
 }
 
-// void ResourceSubsystem::RegisterEngineResources()
-// {
-//     // RegisterResource<Texture>();
-//     // RegisterResource<Shader>();
-//     // RegisterResource<Mesh>();
-//     // RegisterResource<Font>();
-// }
+void ResourceSubsystem::RegisterEngineResourceLoaders()
+{
+    RegisterResourceLoader<TextureLoader>();
+    // RegisterResource<Shader>();
+    // RegisterResource<Mesh>();
+    // RegisterResource<Font>();
+}

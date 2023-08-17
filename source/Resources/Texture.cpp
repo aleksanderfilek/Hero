@@ -1,150 +1,154 @@
-// #include "Texture.h"
-// #include "../Core/Debug.h"
-// #include "../Utilities/Qoi.h"
-// #include "../Utilities/ByteOperations.h"
-// #include "../ThirdParty/GL/Gl.h"
+#include "Texture.h"
+#include "../Utility/ByteOperations.h"
+#include "../ThirdParty/GL/Gl.h"
 
-// #include<iostream>
-// #include<cstdlib>
+#include<iostream>
+#include<cstdlib>
 
-// Texture::Texture()
-// {}
+static int ConvertFilterToGL(TextureFilterMethod Method);
+static int ConvertWraplToGl(TextureWrapMethod Method);
+static int ConvertColorChannelToGl(ColorChannel Channel);
 
-// Texture::Texture(uint32_t width, uint32_t height, ColorChannel channel)
-// {
-//     uint32_t texture;
-//     glGenTextures(1, &texture);
-//     glBindTexture(GL_TEXTURE_2D, texture);
+Texture::Texture()
+{}
 
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//     glCheckError();
+Texture::Texture(const uint8_t* Pixels, const TextureConfiguration& Coniguration)
+    :configuration(Coniguration)
+{
+    glGenTextures(1, &glId);
+    glBindTexture(GL_TEXTURE_2D, glId);
 
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//     glCheckError();
+    int glFilter = ConvertFilterToGL(configuration.FilterMethod);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glFilter);
+    GlCheckError();
 
-//     int format = convertColorChannelToGl(channel);
-//     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+    int glWrap = ConvertWraplToGl(configuration.WrapMethod);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glWrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glWrap);
+    GlCheckError();
 
-//     glBindTexture(GL_TEXTURE_2D, 0);
-//     glCheckError();
+    int glChannel = ConvertColorChannelToGl(configuration.Channels);
+    glTexImage2D(GL_TEXTURE_2D, 0, glChannel, configuration.Size.X, 
+        configuration.Size.Y, 0, glChannel, GL_UNSIGNED_BYTE, Pixels);
 
-//     mGlId = texture;
-//     mSize = { (int)width, (int)height };
-//     mFlags = (uint8_t)TextureFlag::NEAREST | (uint8_t)TextureFlag::NO_MIPMAP;
-//     mChannels = channel;
-//     mColorSpace = ColorSpace::LINEAR;
-//     mAtlasSize = { (int)width, (int)height };
-// }
+    if (configuration.GenerateMipmaps) 
+    {
+        glGenerateMipmap(GL_TEXTURE_2D);
+        GlCheckError();
+    }
 
-// Texture::Texture(uint32_t glId, Int2 size, uint8_t flags, ColorChannel channels, ColorSpace colorSpace)
-//     : mGlId(glId), mSize(size), mFlags(flags), mChannels(channels), mColorSpace(colorSpace)
-// {
-//     mAtlasSize = size;
-// }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    GlCheckError();
+}
 
-// Texture::~Texture()
-// {
-//     glDeleteTextures(1, &mGlId);
-//     glCheckError();
-// }
+Texture::Texture(uint32_t GlId, const TextureConfiguration& Coniguration)
+    : glId(GlId), configuration(Coniguration)
+{
+    
+}
 
-// void Texture::bind(int slotId)
-// {
-//     glActiveTexture(GL_TEXTURE0 + slotId);
-//     glCheckError();
-//     glBindTexture(GL_TEXTURE_2D, mGlId);
-//     glCheckError();
-// }
+Texture::~Texture()
+{
+    glDeleteTextures(1, &glId);
+    GlCheckError();
+}
 
-// void Texture::unbind()
-// {
-//     glDisable(GL_TEXTURE_2D);
-//     glCheckError();
-// }
+void Texture::Bind(int SlotId)
+{
+    glActiveTexture(GL_TEXTURE0 + SlotId);
+    GlCheckError();
+    glBindTexture(GL_TEXTURE_2D, glId);
+    GlCheckError();
+}
 
-// ResourceHandle* Texture::load(const uint8_t* Data, ResourceSubsystem* subsystem)
-// {
-//     int index = 0;
+void Texture::Unbind()
+{
+    glDisable(GL_TEXTURE_2D);
+    GlCheckError();
+}
 
-//     int width = readUint32(Data, &index);
-//     int height = readUint32(Data, &index);
-//     uint8_t channels = readUint8(Data, &index);
-//     uint8_t colorSpace = readUint8(Data, &index);
-//     uint8_t flags = readUint8(Data, &index);
-//     uint32_t atlasWidth = readUint32(Data, &index);
-//     uint32_t atlasHeigh = readUint32(Data, &index);
-//     uint32_t ByteLength = readUint32(Data, &index);
+void Texture::SetAtlasSize(const Int2& AtlasSize)
+{
+    configuration.AtlasSize = AtlasSize;
+}
 
-//     uint8_t* imgData = new  uint8_t[ByteLength];
-//     readPtr(Data, &index, imgData, ByteLength);
-//     uint8_t* image = QOI::decode(imgData, ByteLength, width, height, channels);
-//     delete[] imgData;
+Float4 Texture::GetSpriteRect(int Index)
+{
+    int horizontalSpriteCount = configuration.Size.X / configuration.AtlasSize.X;
+    int verticalSpriteCount = configuration.Size.Y / configuration.AtlasSize.Y;
 
-//     unsigned int gl_id;
-//     glGenTextures(1, &gl_id);
-//     glCheckError();
-//     glBindTexture(GL_TEXTURE_2D, gl_id);
-//     glCheckError();
+    int xCoord = Index % horizontalSpriteCount;
+    int yCoord = Index / horizontalSpriteCount;
 
-//     int param = (flags & 1) ? GL_LINEAR : GL_NEAREST;
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, param);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, param);
-//     glCheckError();
+    Float4 result;
+    result.Z = 1.0f / (horizontalSpriteCount + 1);
+    result.W = 1.0f / (verticalSpriteCount + 1);
+    result.X = result.Z * xCoord;
+    result.Y = result.W * yCoord;
 
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//     glCheckError();
+    return result;
+}
 
-//     int glChannel = convertColorChannelToGl(convertToColorChannel(channels));
-//     glTexImage2D(GL_TEXTURE_2D, 0, glChannel, width, height, 0,
-//         glChannel, GL_UNSIGNED_BYTE, image);
-//     glCheckError();
+int ConvertFilterToGL(TextureFilterMethod Method)
+{
+    int gl = 0;
 
-//     if (flags & 2) {
-//         glGenerateMipmap(GL_TEXTURE_2D);
-//         glCheckError();
-//     }
+    switch (Method)
+    {
+    case TextureFilterMethod::NEAREST:
+        gl = GL_NEAREST;
+        break;
+    case TextureFilterMethod::LINEAR:
+        gl = GL_LINEAR;
+        break;
+    }
 
-//     delete[] image;
-//     glBindTexture(GL_TEXTURE_2D, 0);
-//     glCheckError();
+    return gl;
+}
 
-//     Texture* texture = new Texture();
+int ConvertWraplToGl(TextureWrapMethod Method)
+{
+    int gl = 0;
 
-//     texture->mGlId = gl_id;
-//     texture->mSize = { width, height };
-//     texture->mFlags = flags;
-//     texture->mChannels = (channels == 3) ? ColorChannel::RGB : ColorChannel::RGBA;
-//     texture->mColorSpace = (colorSpace == 0) ? ColorSpace::SRGB : ColorSpace::LINEAR;
-//     texture->setAtlasSize(Int2(atlasWidth, atlasHeigh));
-//     return texture;
-// }
+    switch (Method)
+    {
+    case TextureWrapMethod::REPEAT:
+        gl = GL_REPEAT;
+        break;
+    case TextureWrapMethod::CLAMP_TO_EDGE:
+        gl = GL_CLAMP_TO_EDGE;
+        break;
+    case TextureWrapMethod::CLAMP_TO_BORDER:
+        gl = GL_CLAMP_TO_BORDER;
+        break;
+    case TextureWrapMethod::MIRRORED_REPEAT:
+        gl = GL_MIRRORED_REPEAT;
+        break;
+    case TextureWrapMethod::MIRROR_CLAMP_TO_EDGE:
+        gl = GL_MIRROR_CLAMP_TO_EDGE;
+        break;
+    }
 
-// void Texture::unload(ResourceHandle* resource)
-// {
-//     delete resource;
-// }
+    return gl;
+}
 
-// void Texture::setAtlasSize(const Int2& AtlasSize)
-// {
-//     mAtlasSize = AtlasSize;
-// }
+int ConvertColorChannelToGl(ColorChannel Channel)
+{
+    int gl = 0;
 
-// Float4 Texture::getSpriteRect(int index)
-// {
-//     int horizontalSpriteCount = mSize.x / mAtlasSize.x;
-//     int verticalSpriteCount = mSize.y / mAtlasSize.y;
+    switch (Channel)
+    {
+    case ColorChannel::RED:
+        gl = GL_RED;
+        break;
+    case ColorChannel::RGB:
+        gl = GL_RGB;
+        break;
+    case ColorChannel::RGBA:
+        gl = GL_RGBA;
+        break;
+    }
 
-//     int xCoord = index % horizontalSpriteCount;
-//     int yCoord = index / horizontalSpriteCount;
-
-//     Float4 result;
-//     result.z = 1.0f / (horizontalSpriteCount + 1);
-//     result.w = 1.0f / (verticalSpriteCount + 1);
-//     result.x = result.z * xCoord;
-//     result.y = result.w * yCoord;
-
-//     return result;
-// }
+    return gl;
+}
