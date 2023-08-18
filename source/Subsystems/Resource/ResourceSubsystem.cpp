@@ -3,7 +3,7 @@
 #include "../../Utility/Path.h"
 #include "../../Core.h"
 #include "Loaders/TextureLoader.h"
-// #include "Shader.h"
+#include "Loaders/ShaderLoader.h"
 // #include "Mesh.h"
 // #include "Font.h"
 
@@ -86,7 +86,7 @@ bool ResourceSubsystem::Contains(StringId Id) const
 void ResourceSubsystem::RegisterEngineResourceLoaders()
 {
     RegisterResourceLoader<TextureLoader>();
-    // RegisterResource<Shader>();
+    RegisterResourceLoader<ShaderLoader>();
     // RegisterResource<Mesh>();
     // RegisterResource<Font>();
 }
