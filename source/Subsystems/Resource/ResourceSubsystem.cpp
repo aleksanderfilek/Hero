@@ -4,15 +4,14 @@
 #include "../../Core.h"
 #include "Loaders/TextureLoader.h"
 #include "Loaders/ShaderLoader.h"
-// #include "Mesh.h"
-// #include "Font.h"
-
+#include "Loaders/FontLoader.h"
+#include "Loaders/MaterialLoader.h"
 #include <iostream>
 #include <fstream>
 
 void ResourceSubsystem::Startup()
 {
-    // RegisterEngineResources();
+    RegisterEngineResourceLoaders();
 }
 
 void ResourceSubsystem::Shutdown()
@@ -87,6 +86,6 @@ void ResourceSubsystem::RegisterEngineResourceLoaders()
 {
     RegisterResourceLoader<TextureLoader>();
     RegisterResourceLoader<ShaderLoader>();
-    // RegisterResource<Mesh>();
-    // RegisterResource<Font>();
+    RegisterResourceLoader<FontLoader>();
+    RegisterResourceLoader<MaterialLoader>();
 }
