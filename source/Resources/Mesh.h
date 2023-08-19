@@ -1,4 +1,4 @@
-// #pragma once
+#pragma once
 
 // #include "../Defaults.h"
 // #include "ResourceSubsystem.h"
@@ -6,45 +6,46 @@
 // #include<string>
 // #include<vector>
 
-// enum class BufferType : uint8_t
-// {
-//     single = 1,
-//     vec2 = 2,
-//     vec3 = 3
-// };
+#include "../Definitions.h"
+#include "ResourceHandle.h"
+#include "../Containers/Array.h"
+#include <cstdint>
 
-// template<typename T>
-// struct MeshBuffer
-// {
-//     BufferType type = BufferType::single;
-//     T* array = nullptr;
-//     uint32_t length = 0;
+enum class BufferType
+{
+    SINGLE =    1,
+    VEC2 =      2,
+    VEC3 =      3
+};
 
-//     void clear()
-//     {
-//         delete[] array;
-//         array = nullptr;
-//         length = 0;
-//     }
-// };
+template<typename T>
+struct MeshBuffer
+{
+    BufferType Type = BufferType::SINGLE;
+    T* Array = nullptr;
+    int Length = 0;
 
-// class HERO_API Mesh : public ResourceHandle
-// {
-// protected:
-//     uint32_t mVAO, mVBO, mEBO;
-//     std::vector<MeshBuffer<float>> mBuffers;
-//     MeshBuffer<int> mIndices;
+    void Clear()
+    {
+        delete[] Array;
+        Array = nullptr;
+        Length = 0;
+    }
+};
 
-// public:
-//     Mesh();
-//     Mesh(const std::vector<MeshBuffer<float>>& buffers,
-//         const MeshBuffer<int>& indices);
-//     ~Mesh();
+class HERO_API Mesh : public ResourceHandle
+{
+protected:
+    uint32_t vao, vbo, ebo;
+    Array<MeshBuffer<float>> buffers;
+    MeshBuffer<int> indices;
 
-//     static ResourceHandle* load(const uint8_t* Data, ResourceSubsystem* subsystem);
-//     static void unload(ResourceHandle* resource);
-//     static int getId() { return MESH_ID; }
+    void Generate();
 
-//     virtual void draw();
-//     void generate();
-// };
+public:
+    Mesh(const Array<MeshBuffer<float>>& Buffers,
+        const MeshBuffer<int>& Indices);
+    ~Mesh();
+
+    virtual void Draw();
+};

@@ -6,6 +6,7 @@
 #include "Loaders/ShaderLoader.h"
 #include "Loaders/FontLoader.h"
 #include "Loaders/MaterialLoader.h"
+#include "Loaders/MeshLoader.h"
 #include <iostream>
 #include <fstream>
 
@@ -88,4 +89,5 @@ void ResourceSubsystem::RegisterEngineResourceLoaders()
     RegisterResourceLoader<ShaderLoader>();
     RegisterResourceLoader<FontLoader>();
     RegisterResourceLoader<MaterialLoader>();
+    RegisterResourceLoader<MeshLoader>();
 }

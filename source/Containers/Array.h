@@ -225,6 +225,13 @@ public:
         length = 0;
     }
 
+    void Reset()
+    {
+        delete[] data;
+        length = 0;
+        capacity = 0;
+    }
+
     /**
      * @brief Reduces array size to length number elements. Lenght = Capacity.
      * 
