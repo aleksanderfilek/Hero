@@ -9,6 +9,7 @@
 #include "Loaders/MeshLoader.h"
 #include "Converters/TextureConverter.h"
 #include "Converters/ShaderConverter.h"
+#include "Converters/FontConverter.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -147,4 +148,5 @@ void ResourceSubsystem::RegisterEngineResourceConverters()
 {
     RegisterResrouceConverter<TextureConverter>();
     RegisterResrouceConverter<ShaderConverter>();
+    RegisterResrouceConverter<FontConverter>();
 }
