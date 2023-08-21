@@ -8,6 +8,7 @@
 #include "Loaders/MaterialLoader.h"
 #include "Loaders/MeshLoader.h"
 #include "Converters/TextureConverter.h"
+#include "Converters/ShaderConverter.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -145,4 +146,5 @@ bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
 void ResourceSubsystem::RegisterEngineResourceConverters()
 {
     RegisterResrouceConverter<TextureConverter>();
+    RegisterResrouceConverter<ShaderConverter>();
 }

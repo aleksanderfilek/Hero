@@ -67,7 +67,7 @@ void TextureConverter::Convert(const String& FilePath)
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);
 
-	uint32_t ResourceId = *StringId("Texture");
+	uint32_t ResourceId = *GetName();
 	output.write((char*)&ResourceId, sizeof(uint32_t));
 	output.write((char*)&byteSize, sizeof(uint32_t));
 	output.write((char*)Data, byteSize * sizeof(uint8_t));
