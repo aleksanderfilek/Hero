@@ -31,7 +31,7 @@ public:
             return;
         }
 
-        data.remove(search);
+        data.erase(Key);
     }
 
     void Clear()
@@ -39,7 +39,7 @@ public:
         data.clear();
     }
 
-    bool Contains(KeyType Key)
+    bool Contains(KeyType Key) const
     {
         return data.find(Key) != data.end();
     }
@@ -50,4 +50,7 @@ public:
     {
         return data[Key];
     }
+
+    typename std::unordered_map<KeyType, ValueType>::iterator begin(){ return data.begin(); }
+    typename std::unordered_map<KeyType, ValueType>::iterator end(){ return data.end(); }
 };

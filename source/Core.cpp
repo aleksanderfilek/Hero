@@ -1,10 +1,12 @@
 #include "Core.h"
+#include "Utility/Platform.h"
 
 Core* Core::instance = nullptr;
 
 Core::Core()
 {
     instance = this;
+    startupDirectory = Platform::GetAbsoluteDirectory();
 
     state = CoreState::NotStarted;
 }
@@ -36,3 +38,4 @@ void Core::AddSubsystem(class Subsystem* Subsystem)
 {
   subsystemManager.AddSubsystem(Subsystem, state == CoreState::Started);
 }
+

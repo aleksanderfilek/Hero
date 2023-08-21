@@ -30,12 +30,12 @@ String::~String()
     }
 }
 
-const char* String::operator *()
+const char* String::operator *() const
 {
     return str;
 }
 
-bool String::operator==(const String& Rhs)
+bool String::operator==(const String& Rhs) const
 {
     if(length != Rhs.length)
     {
@@ -51,4 +51,14 @@ bool String::operator==(const String& Rhs)
     }
 
     return true;
+}
+
+char String::operator[](int Index) const
+{
+    if(Index >= Length())
+    {
+        return 0;
+    }
+
+    return str[Index];
 }
