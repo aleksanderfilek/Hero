@@ -11,6 +11,7 @@
 #include "Converters/ShaderConverter.h"
 #include "Converters/FontConverter.h"
 #include "Converters/MeshConverter.h"
+#include "Converters/MaterialConverter.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -151,4 +152,5 @@ void ResourceSubsystem::RegisterEngineResourceConverters()
     RegisterResrouceConverter<ShaderConverter>();
     RegisterResrouceConverter<FontConverter>();
     RegisterResrouceConverter<MeshConverter>();
+    RegisterResrouceConverter<MaterialConverter>();
 }

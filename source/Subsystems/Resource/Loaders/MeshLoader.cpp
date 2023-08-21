@@ -24,7 +24,7 @@ ResourceHandle* MeshLoader::Load(const uint8_t* Data, class ResourceSubsystem* S
         float* bufferArr = new float[bufferLength / sizeof(float)];
         ByteOperations::ReadPtr(Data, &index, (uint8_t*)bufferArr, bufferLength);
 
-        MeshBuffer<float> buffer = { (BufferType)bufferType, bufferArr, bufferLength / sizeof(float) };
+        MeshBuffer<float> buffer = { (BufferType)bufferType, bufferArr, bufferLength / (uint32_t)sizeof(float) };
         buffers.Add(buffer);
     }
 
