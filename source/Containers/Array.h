@@ -298,4 +298,6 @@ public:
 
     ArrayIterator<ElementType> begin() { return ArrayIterator<ElementType>(data, length, 0); }
     ArrayIterator<ElementType> end()   { return ArrayIterator<ElementType>(data, length, length); }
+
+    ElementType* Data() const { return data; }
 };
