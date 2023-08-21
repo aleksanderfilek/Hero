@@ -7,8 +7,10 @@
 #include "Loaders/FontLoader.h"
 #include "Loaders/MaterialLoader.h"
 #include "Loaders/MeshLoader.h"
+#include "Converters/TextureConverter.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 void ResourceSubsystem::Startup()
 {
@@ -35,8 +37,8 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsA
         return nullptr;
     }
 
-    int resourceId = 0;
-    file.read((char*)&resourceId, sizeof(int));
+    uint32_t resourceId = 0;
+    file.read((char*)&resourceId, sizeof(uint32_t));
     uint32_t size = 0;
     file.read((char*)&size, sizeof(uint32_t));
 
@@ -45,7 +47,14 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsA
     file.close();
 
     ResourceHandle* resource = loaders[resourceId]->Load(data, this);
+    if(!resource)
+    {
+        delete[] data;
+        return nullptr;
+    }
+
     resource->id = resourceId;
+    resource->resourceSubsystem = this;
     delete[] data;
 
     resources.Add(Id, resource);
@@ -90,4 +99,50 @@ void ResourceSubsystem::RegisterEngineResourceLoaders()
     RegisterResourceLoader<FontLoader>();
     RegisterResourceLoader<MaterialLoader>();
     RegisterResourceLoader<MeshLoader>();
+}
+
+bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
+{
+    std::string path = *Path;
+    String extension(path.substr(path.find_last_of(".") + 1).c_str());
+
+    IResourceConverter* converter = nullptr;
+    for(auto& converterPair: converters)
+    {
+        bool found = false;
+
+        Array<String> extensions;
+        converterPair.second->GetAcceptableExtensions(extensions);
+        for(const String& ext: extensions)
+        {
+            if(ext == extension)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(found)
+        {
+            converter = converterPair.second;
+        }
+    }
+
+    if(!converter)
+    {
+        return false;
+    }
+
+    String absolutePath = Path;
+    if(!IsAbsolutePath)
+    {
+        absolutePath = Path::Combine(Core::Get().GetStartupDirectory(), Path);
+    }
+
+    converter->Convert(absolutePath);
+}
+
+void ResourceSubsystem::RegisterEngineResourceConverters()
+{
+    RegisterResrouceConverter<TextureConverter>();
 }
