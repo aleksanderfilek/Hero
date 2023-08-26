@@ -39,13 +39,12 @@ void InputSubsystem::Shutdown()
 void InputSubsystem::Update()
 {
     SDL_Event event;
-    while(SDL_PollEvent(&event) != 0 )
+    while(SDL_PollEvent(&event) != 0)
     {
-        switch(event.type)
+        if(event.type == SDL_QUIT)
         {
-            case SDL_QUIT:
-                Core::Get().Stop();
-                return;
+            Core::Get().Stop();
+            return;
         }
 
         for(IInputDevice* device: devices)
