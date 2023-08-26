@@ -1,6 +1,11 @@
 #include "InputSubsystem.h"
 #include "../../ThirdParty/SDL2/SDL.h"
 #include "../../Core.h"
+#include "ControlMap.h"
+#include "ControlScheme.h"
+#include "Devices/IInputDevice.h"
+#include "Devices/KeyboardDevice.h"
+#include "Devices/MouseDevice.h"
 
 InputSubsystem* InputSubsystem::instance = nullptr;
 
@@ -16,10 +21,18 @@ void InputSubsystem::Startup()
     {
         exit(-1);
     }
+
+    devices.Add(new KeyboardDevice());
+    devices.Add(new MouseDevice());
 }
 
 void InputSubsystem::Shutdown()
 {
+    for(IInputDevice* device: devices)
+    {
+        delete device;
+    }
+
     SDL_Quit();
 }
 
@@ -28,12 +41,78 @@ void InputSubsystem::Update()
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0 )
     {
-        if(event.type == SDL_QUIT )
+        switch(event.type)
         {
-            Core::Get().Stop();
-            return;
+            case SDL_QUIT:
+                Core::Get().Stop();
+                return;
+        }
+
+        for(IInputDevice* device: devices)
+        {
+            InputAction action;
+            if(device->ProcessEvent(&event, action))
+            {
+                if(!controlMap)
+                    return;
+
+                StringId actionId = controlMap->GetId(action);
+                for(int i = controlSchemes.Length() - 1; i >= 0; i--)
+                {
+                    if(controlSchemes[i]->ProcessAction(actionId, action))
+                    {
+                        return;
+                    }
+                }
+                break;
+            }
         }
 
         GetSubsystemManager()->BroadcastEvent(inputEventId, &event);
     }
+}
+
+IInputDevice* InputSubsystem::GetDevice(StringId Id)
+{
+    for(IInputDevice* device: devices)
+    {
+        if(device->GetId() == Id)
+        {
+            return device;
+        }
+    }
+    return nullptr;
+}
+
+void InputSubsystem::SetContolMap(class ControlMap* ControlMap)
+{
+    controlMap = ControlMap;
+}
+
+void InputSubsystem::PushContext(class ControlScheme* Scheme)
+{
+    controlSchemes.Add(Scheme);
+}
+
+class ControlScheme* InputSubsystem::PopContext()
+{
+    if(controlSchemes.Length() == 0)
+    {
+        return nullptr;
+    }
+
+    class ControlScheme* lastScheme = controlSchemes[controlSchemes.Length() - 1];
+    controlSchemes.RemoveAt(controlSchemes.Length() - 1);
+    return lastScheme;
+}
+
+void InputSubsystem::ToggleCursor(bool Show)
+{
+    showCursor = Show;
+    SDL_ShowCursor(showCursor);
+}
+
+bool InputSubsystem::IsCursorVisible() const
+{
+    return showCursor;
 }

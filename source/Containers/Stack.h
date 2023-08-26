@@ -71,4 +71,12 @@ public:
         return data.Length();
     }
 
+    ElementType* Top()
+    {
+        if(Size() == 0)
+            return nullptr;
+            
+        return &data[Size() - 1];
+    }
+
 };

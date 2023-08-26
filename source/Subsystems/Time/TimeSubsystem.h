@@ -34,14 +34,14 @@ private:
 
 public:
     template<class UserClass>
-    Timer* AddTimer(UserClass* object, void (UserClass::*methodPtr)(), float period = 1.0f, bool loop = false)
+    Timer* AddTimer(UserClass* Object, void (UserClass::*MethodPtr)(), float period = 1.0f, bool loop = false)
     {
         Timer* timer = new Timer();
         timer->timeSubsystem = this;
         timer->currentTime = 0.0;
         timer->period = period;
         timer->loop = loop;
-        timer->onTimer.AddEvent(object, methodPtr);
+        timer->onTimer.AddEvent(Object, MethodPtr);
         timers.Add(timer);
     }
 
