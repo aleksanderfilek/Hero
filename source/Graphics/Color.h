@@ -12,6 +12,8 @@ struct HERO_API Color
 		R(R), G(G), B(B), A(A){}
 };
 
+#define COLOR_WHITE (Color){ 0xFF, 0xFF, 0xFF, 0xFF }
+
 enum class ColorSpace : uint8_t
 {
 	SRGB = 0,
