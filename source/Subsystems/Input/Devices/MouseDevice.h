@@ -6,6 +6,7 @@
 
 EVENT_DISPATCHER(MouseMotionEvent, const Int2&, const Int2&);
 EVENT_DISPATCHER(MouseWheelEvent, float);
+EVENT_DISPATCHER(MouseClickEvent, MouseCode, InputActionState);
 
 class HERO_API MouseDevice : public IInputDevice
 {
@@ -14,5 +15,6 @@ public:
     virtual bool ProcessEvent(void* Event, InputAction& Action) override;
 
     MouseMotionEvent OnMouseMotion;
-    MouseWheelEvent OnMouseWheelEvent;
+    MouseWheelEvent OnMouseWheel;
+    MouseClickEvent OnMouseClick;
 };

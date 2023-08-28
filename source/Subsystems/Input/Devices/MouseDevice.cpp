@@ -22,12 +22,14 @@ bool MouseDevice::ProcessEvent(void* Event, InputAction& Action)
                 action.Key = event->button.button;
                 action.State = (InputActionState)(event->type - SDL_MOUSEBUTTONDOWN);
                 Action = action;
+
+                OnMouseClick.Broadcast(event->button.button)
                 return true;
             }break;
         case SDL_MOUSEWHEEL:
             {
                 float y = event->wheel.preciseY;
-                OnMouseWheelEvent.Broadcast(y);
+                OnMouseWheel.Broadcast(y);
                 return true;
             }break;
     };
