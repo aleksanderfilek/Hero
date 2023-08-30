@@ -79,3 +79,11 @@ bool Canvas::_InternalUpdateButtonClicks(MouseCode Code)
 
     return Control::_InternalUpdateButtonClicks(Code);
 }
+
+void Canvas::Draw(class MultiTextureSpritebatch* Spritebatch)
+{
+    for(Control* control: children)
+    {
+        control->Draw(Spritebatch);
+    }
+}

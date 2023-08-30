@@ -28,4 +28,7 @@ private:
 public:
     void AddWidget(class Widget* Widget);
     void RemoveWidget(class Widget* Widget);
+
+private:
+    class MultiTextureSpritebatch* spritebatch = nullptr;
 };

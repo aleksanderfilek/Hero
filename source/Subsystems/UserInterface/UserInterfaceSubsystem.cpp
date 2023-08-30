@@ -3,6 +3,9 @@
 #include "../Input/InputSubsystem.h"
 #include "../Input/Devices/MouseDevice.h"
 #include "../Time/TimeSubsystem.h"
+#include "../../Graphics/MultiTextureSpritebatch.h"
+#include "../Resource/ResourceSubsystem.h"
+#include "../../Resources/Shader.h"
 
 UserInterfaceSubsystem* UserInterfaceSubsystem::instance = nullptr;
 
@@ -18,6 +21,9 @@ void UserInterfaceSubsystem::Startup()
     MouseDevice* mouseDevice = (MouseDevice*)InputSubsystem::Get().GetDevice(StringId("Mouse"));
     mouseDevice->OnMouseMotion.AddEvent(this, &UserInterfaceSubsystem::ReactToMouseMotion);
     mouseDevice->OnMouseClick.AddEvent(this, &UserInterfaceSubsystem::ReactToMouseClick);
+
+    spritebatch = new MultiTextureSpritebatch(100, 32);
+    spritebatch->SetShader((Shader*)ResourceSubsystem::Get().Add(StringId("UI_Shader"), "Content/UI/UI_DefaultShader.he"));
 }
 
 void UserInterfaceSubsystem::Shutdown()
@@ -26,6 +32,8 @@ void UserInterfaceSubsystem::Shutdown()
     {
         delete widget;
     }
+    
+    delete spritebatch;
 }
 
 void UserInterfaceSubsystem::Update()
@@ -35,6 +43,13 @@ void UserInterfaceSubsystem::Update()
     {
         widget->Update(deltaTime);
     }
+
+    spritebatch->Begin();
+    for(Widget* widget: widgets)
+    {
+        widget->Draw(spritebatch);
+    }
+    spritebatch->End();
 }
 
 void UserInterfaceSubsystem::ReactToMouseMotion(const Int2& Position, const Int2& MotionVector)

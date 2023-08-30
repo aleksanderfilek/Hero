@@ -38,3 +38,8 @@ void Widget::Update(float DeltaTime)
         control->Update(DeltaTime);
     }
 }
+
+void Widget::Draw(class MultiTextureSpritebatch* Spritebatch)
+{
+    canvas.Draw(Spritebatch);
+}

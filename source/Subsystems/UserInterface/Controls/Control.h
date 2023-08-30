@@ -94,4 +94,7 @@ private:
 public:
     void SetUpdateEnabled(bool Enable);
     virtual void Update(float DeltaTime){}
+
+public:
+    virtual void Draw(class MultiTextureSpritebatch* Spritebatch){}
 };

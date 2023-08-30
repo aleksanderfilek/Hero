@@ -21,4 +21,6 @@ public:
     virtual void _InternalUpdateHoverState(const Int2& MousePosition) override;
     virtual void SetHover(bool Hovered) override;
     virtual bool _InternalUpdateButtonClicks(MouseCode Code) override;
+
+    virtual void Draw(class MultiTextureSpritebatch* Spritebatch) override;
 };

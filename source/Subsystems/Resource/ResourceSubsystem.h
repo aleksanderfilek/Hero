@@ -9,10 +9,16 @@
 class HERO_API ResourceSubsystem : public Subsystem
 {
 private:
+	static ResourceSubsystem* instance;
+
 	Map<StringId, class ResourceHandle*> resources;
 	Map<StringId, IResourceLoader*> loaders;
 
 public:
+	ResourceSubsystem();
+
+	static ResourceSubsystem& Get() { return *instance; }
+
 	virtual void Startup() override;
 	virtual void Shutdown() override;
 

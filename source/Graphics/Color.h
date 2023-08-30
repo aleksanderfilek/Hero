@@ -7,7 +7,7 @@ struct HERO_API Color
 {
     uint8_t R, G, B, A;
 
-	Color():R(0), G(0), B(0), A(255){}
+	Color():R(255), G(255), B(255), A(255){}
 	Color(uint8_t R, uint8_t G, uint8_t B, uint8_t A = 255):
 		R(R), G(G), B(B), A(A){}
 };

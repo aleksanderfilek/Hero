@@ -23,5 +23,5 @@ public:
     void AddControlToUpdate(Control* Control);
     void RemoveControlFromUpdate(Control* Control);
     virtual void Update(float DeltaTime);
-
+    void Draw(class MultiTextureSpritebatch* Spritebatch);
 };

@@ -16,6 +16,13 @@
 #include <fstream>
 #include <string>
 
+ResourceSubsystem* ResourceSubsystem::instance = nullptr;
+
+ResourceSubsystem::ResourceSubsystem()
+{
+    instance = this;
+}
+
 void ResourceSubsystem::Startup()
 {
     RegisterEngineResourceLoaders();
