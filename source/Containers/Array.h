@@ -221,6 +221,9 @@ public:
      */
     void Clear()
     {
+        if(length == 0)
+            return;
+
         std::memset(data, 0, length * sizeof(ElementType));
         length = 0;
     }

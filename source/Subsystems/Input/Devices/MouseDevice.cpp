@@ -17,13 +17,15 @@ bool MouseDevice::ProcessEvent(void* Event, InputAction& Action)
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
             {
+                InputActionState state  = (InputActionState)(event->type - SDL_MOUSEBUTTONDOWN);
+
                 InputAction action;
                 action.Category = InputCategory::MOUSE;
                 action.Key = event->button.button;
-                action.State = (InputActionState)(event->type - SDL_MOUSEBUTTONDOWN);
+                action.State = state;
                 Action = action;
 
-                OnMouseClick.Broadcast(event->button.button)
+                OnMouseClick.Broadcast((MouseCode)event->button.button, state);
                 return true;
             }break;
         case SDL_MOUSEWHEEL:

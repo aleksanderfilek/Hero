@@ -4,6 +4,7 @@
 #include "../../../Math/Int2.h"
 #include "../../../GenericTypes/Event.h"
 #include "../../../Math/Float2.h"
+#include "../../Input/InputKeys.h"
 
 EVENT_DISPATCHER(ControlEvent);
 
@@ -32,6 +33,7 @@ enum class VisibilityState
 class HERO_API Control
 {
 private:
+    class Widget* widget = nullptr;
     Control* parent = nullptr;
 
     Int2 position;
@@ -44,6 +46,9 @@ private:
     Int2 absoluteSize;    
 
 public:
+    virtual void _InternalSetWidget(class Widget* Widget);
+    class Widget* GetWidget() const;
+
     void AttachToControl(Control* ControlToAttachTo);
     Control* GetParent() const;
 
@@ -77,16 +82,16 @@ public:
     ControlEvent OnHoverEnter;
     ControlEvent OnHoverExit;
 
-    void _InternalUpdateHoverState(const Int2& MousePosition);
+    virtual void _InternalUpdateHoverState(const Int2& MousePosition);
     bool IsHovered() const;
     virtual void SetHover(bool Hovered);
 
-    void _InternalUpdateButtonClicks(bool LeftClicked, bool RightClicked);
+    virtual bool _InternalUpdateButtonClicks(MouseCode Code);
 
 private:
     bool updateEnabled = false;
 
 public:
     void SetUpdateEnabled(bool Enable);
-    virtual void Update(float ElapsedTime){}
+    virtual void Update(float DeltaTime){}
 };

@@ -1,5 +1,15 @@
 #include "Canvas.h"
 
+void Canvas::_InternalSetWidget(class Widget* Widget)
+{
+    Control::_InternalSetWidget(Widget);
+
+    for(Control* control: children)
+    {
+        delete control;
+    }
+}
+
 void Canvas::Add(Control* Child)
 {
     if(children.Contains(Child))
@@ -33,6 +43,18 @@ void Canvas::GetChildren(Array<Control*>& Children)
     Children = children;
 }
 
+void Canvas::_InternalUpdateHoverState(const Int2& MousePosition)
+{
+    Control::_InternalUpdateHoverState(MousePosition);
+    if(!IsHovered())
+        return;
+
+    for(Control* control: children)
+    {
+        control->_InternalUpdateHoverState(MousePosition);
+    }
+}
+
 void Canvas::SetHover(bool Hovered)
 {
     Control::SetHover(Hovered);
@@ -41,4 +63,19 @@ void Canvas::SetHover(bool Hovered)
     {
         control->SetHover(Hovered);
     }
+}
+
+bool Canvas::_InternalUpdateButtonClicks(MouseCode Code)
+{
+    if(!IsHovered())
+        return false;
+
+    for(int i = GetChildrenCount() - 1; i >= 0; i--)
+    {
+        bool result = children[i]->_InternalUpdateButtonClicks(Code);
+        if(result)
+            return true;
+    }
+
+    return Control::_InternalUpdateButtonClicks(Code);
 }

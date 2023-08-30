@@ -2,6 +2,8 @@
 
 #include "../Subsystem.h"
 #include "../../Containers/Array.h"
+#include "../../Math/Int2.h"
+#include "../Input/InputKeys.h"
 
 class HERO_API UserInterfaceSubsystem : public Subsystem
 {
@@ -21,6 +23,7 @@ private:
     Array<class Widget*> widgets;
 
     void ReactToMouseMotion(const Int2& Position, const Int2& MotionVector);
+    void ReactToMouseClick(MouseCode Code, InputActionState State);
 
 public:
     void AddWidget(class Widget* Widget);

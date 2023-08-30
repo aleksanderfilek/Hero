@@ -1,9 +1,21 @@
 #include "Control.h"
 #include "../../../Math/Intersections.h"
+#include "../Widget.h"
+
+void Control::_InternalSetWidget(class Widget* Widget)
+{
+    widget = Widget;
+}
+
+class Widget* Control::GetWidget() const
+{
+    return widget;
+}
 
 void Control::AttachToControl(Control* ControlToAttachTo)
 {
     parent = ControlToAttachTo;
+    _InternalSetWidget(parent->GetWidget());
 
     _InternalUpdateTransforms();
 }
@@ -204,19 +216,35 @@ void Control::SetHover(bool Hovered)
         OnHoverExit.Broadcast();
 }
 
-void Control::_InternalUpdateButtonClicks(bool LeftClicked, bool RightClicked)
+bool Control::_InternalUpdateButtonClicks(MouseCode Code)
 {
-    if(!hovered)
-        return;
+    if(!IsHovered())
+        return false;
 
-    if(LeftClicked)
-        OnLeftClick.Broadcast();
+    switch (Code)
+    {
+        case MouseCode::LEFT:
+            OnLeftClick.Broadcast();
+            return OnLeftClick.size() > 0;
+            break;
+        case MouseCode::RIGHT:
+            OnRightClick.Broadcast();
+            return OnRightClick.size() > 0;
+            break;
+    }
 
-    if(RightClicked)
-        OnRightClick.Broadcast();
+    return false;
 }
 
 void Control::SetUpdateEnabled(bool Enable)
 {
+    if(updateEnabled == Enable)
+        return;
+
     updateEnabled = Enable;
+
+    if(updateEnabled)
+        widget->AddControlToUpdate(this);
+    else
+        widget->RemoveControlFromUpdate(this);
 }

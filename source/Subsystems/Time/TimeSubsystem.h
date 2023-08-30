@@ -28,6 +28,7 @@ public:
     virtual void Update() override;
 
     void SetScale(float Value);
+    float GetDeltaTime() const;
 
 private:
     Array<class Timer*> timers;

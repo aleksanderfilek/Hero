@@ -52,6 +52,11 @@ void TimeSubsystem::SetScale(float Value)
     scaledDeltaTime = Value * deltaTime;
 }
 
+float TimeSubsystem::GetDeltaTime() const
+{
+    return scaledDeltaTime;
+}
+
 void TimeSubsystem::RemoveTimer(Timer* Timer)
 {
     timers.Remove(Timer);
