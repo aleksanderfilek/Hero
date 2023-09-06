@@ -8,8 +8,8 @@ class HERO_API RenderTarget
 {
 private:
 	Int2 size;
-	uint32_t renderBufferId = 0;
-	uint32_t bufferId = 0;
+	uint32_t renderBufferId;
+	uint32_t bufferId;
 
     bool depthBufferEnabled = false;
 	uint32_t depthBufferId = 0;
@@ -20,9 +20,11 @@ public:
 
 	void BindBuffers();
 	void UnbindBuffers();
-	void BindTexture();
+	void BindTexture(int Slot = 0);
 	void BlitToBuffer(uint32_t WriteBufferId, Int2 WrtiteBufferSize);
 
 	uint32_t GetRenderBufferId() const { return renderBufferId; }
 	Int2 GetSize() const { return size; }
+
+	void Clear();
 };

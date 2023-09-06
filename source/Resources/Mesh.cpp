@@ -41,7 +41,6 @@ void Mesh::Generate()
         buffSize += buff.Length;
     }
 
-    GlCheckError();
     glGenVertexArrays(1, &vao);
     GlCheckError();
     glGenBuffers(1, &vbo);

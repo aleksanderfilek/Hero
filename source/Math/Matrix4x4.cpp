@@ -491,11 +491,8 @@ Matrix4x4 Matrix4x4::PixelScreenMatrix(const Int2& Size, float Near, float Far)
     Matrix4x4 Matrix = Matrix4x4::Identity();
     Matrix.Column[0].X = 2.0f / Size.X;
     Matrix.Column[1].Y = -2.0f / Size.Y;
-    Matrix.Column[2].Z = 1.0f;
     Matrix.Column[3].X = -1;
     Matrix.Column[3].Y = 1;
-    Matrix.Column[3].Z = 0.0f;
-    Matrix.Column[3].W = 1;
     return Matrix;
 }
 

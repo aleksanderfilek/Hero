@@ -30,6 +30,13 @@ String::~String()
     }
 }
 
+String& String::operator =(const String& Other)
+{
+    str = strdup(Other.str);
+    length = strlen(str);
+    return *this;
+}
+
 const char* String::operator *() const
 {
     return str;

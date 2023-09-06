@@ -43,8 +43,9 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsA
 
     std::ifstream file(*absolutePath, std::ios::binary);
     if (!file.is_open())
-    {
-        std::cout << "Could not load resource, path: " << Path << std::endl;
+    {   
+        std::cout<<"Eror\n";
+        //std::cout << "Could not load resource, path: " << Path << std::endl;
         return nullptr;
     }
 
@@ -71,6 +72,11 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsA
     resources.Add(Id, resource);
 
     return resource;
+}
+
+void ResourceSubsystem::Add(StringId Id, class ResourceHandle* Resource)
+{
+    resources.Add(Id, Resource);
 }
 
 void ResourceSubsystem::Remove(StringId Id)
@@ -136,6 +142,7 @@ bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
         if(found)
         {
             converter = converterPair.second;
+            break;
         }
     }
 
@@ -151,6 +158,7 @@ bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
     }
 
     converter->Convert(absolutePath);
+    return true;
 }
 
 void ResourceSubsystem::RegisterEngineResourceConverters()

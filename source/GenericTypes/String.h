@@ -31,6 +31,7 @@ public:
 
     int Length() const { return length; }
 
+    String& operator =(const String& Other);
     const char* operator *() const;
     bool operator==(const String& Rhs) const;
     char operator[](int Index) const;

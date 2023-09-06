@@ -45,6 +45,8 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp"
     }
 }

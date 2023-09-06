@@ -13,4 +13,6 @@ private:
 
 public:
     class ResourceSubsystem* GetResourceSubsystem() const { return resourceSubsystem; }
+
+    virtual ~ResourceHandle(){}
 };

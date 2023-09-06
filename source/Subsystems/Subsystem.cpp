@@ -2,7 +2,7 @@
 
 void Subsystem::Startup()
 {
-
+    started = true;
 }
 
 void Subsystem::Shutdown()

@@ -299,8 +299,8 @@ public:
         return data[Index];
     }
 
-    ArrayIterator<ElementType> begin() { return ArrayIterator<ElementType>(data, length, 0); }
-    ArrayIterator<ElementType> end()   { return ArrayIterator<ElementType>(data, length, length); }
+    ArrayIterator<ElementType> begin() const { return ArrayIterator<ElementType>(data, length, 0); }
+    ArrayIterator<ElementType> end() const { return ArrayIterator<ElementType>(data, length, length); }
 
     ElementType* Data() const { return data; }
 };

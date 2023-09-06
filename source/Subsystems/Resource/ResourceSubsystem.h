@@ -30,12 +30,13 @@ public:
 	}
 
 	class ResourceHandle* Add(StringId Id, const String& Path, bool IsAbsolutePath = false);
+	void Add(StringId Id, class ResourceHandle* Resource);
 	void Remove(StringId Id);
 	void Clear();
 	class ResourceHandle* Get(StringId Id);
 	bool Contains(StringId Id) const;
 
-protected:
+public:
 	void RegisterEngineResourceLoaders();
 
 

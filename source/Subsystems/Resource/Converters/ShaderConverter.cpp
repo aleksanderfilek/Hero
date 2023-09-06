@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 void ShaderConverter::GetAcceptableExtensions(Array<String>& Extensions)
 {
@@ -12,6 +13,7 @@ void ShaderConverter::GetAcceptableExtensions(Array<String>& Extensions)
 void ShaderConverter::Convert(const String& FilePath)
 {
     std::ifstream input(*FilePath);
+
     std::stringstream stream;
     stream << input.rdbuf();
     std::string content = stream.str();

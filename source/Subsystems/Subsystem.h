@@ -9,6 +9,7 @@ friend class SubsystemManager;
 
 private: 
     class SubsystemManager* subsystemManager = nullptr;
+    bool started = false;
 
 protected:
     bool updateEnabled = false;
@@ -20,4 +21,6 @@ public:
 
     bool UpdateEnabled() const { return updateEnabled; }
     class SubsystemManager* GetSubsystemManager(){ return subsystemManager; }
+
+    bool IsStarted() const { return started; }
 };

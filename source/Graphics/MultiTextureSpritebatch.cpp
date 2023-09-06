@@ -111,6 +111,7 @@ void MultiTextureSpritebatch::End()
 
 void MultiTextureSpritebatch::DrawTexture(const Texture* Texture, const Int2& Position, const Int2& Size, Float4 Rect, const Color& Color)
 {
+    return;
     if(indexCount >= maxIndexCount || textureSlotIndex >= maxTextureSlots)
     {
         End();
