@@ -30,6 +30,7 @@ public:
     ~String();
 
     int Length() const { return length; }
+    bool IsEmpty() const { return str == nullptr; }
 
     String& operator =(const String& Other);
     const char* operator *() const;

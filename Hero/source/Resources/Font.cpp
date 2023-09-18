@@ -18,106 +18,112 @@ Font::~Font()
 	delete info;
 }
 
-Texture* Font::CreateTexture(const String& Text, uint32_t Size)
+Texture* Font::CreateTexture(const String& Text, uint32_t Height)
 {
-	float fontScale = stbtt_ScaleForPixelHeight(info, (float)(Size));
+	int width = GetTextWidth(Text, Height);
+
+	/* create a bitmap for the phrase */
+	unsigned char* bitmap = new unsigned char[width * Height] {0};
+
+	/* calculate font scaling */
+	float scale = stbtt_ScaleForPixelHeight(info, Height);
+
+	int x = 0;
 
 	int ascent, descent, lineGap;
 	stbtt_GetFontVMetrics(info, &ascent, &descent, &lineGap);
 
-	ascent = roundf(ascent * fontScale);
+	ascent = roundf(ascent * scale);
+	descent = roundf(descent * scale);
 
-	int width = 0, height = 0;
-	int prevGlyph = 0;
-	float dWidth = 0.0;
-	for (int i = 0; i < Text.Length(); i++) 
-	{
-		float kern = 0;
-		int glyph = 0;
-		int advance, lsb;
-		glyph = stbtt_FindGlyphIndex(info, Text[i]);
-		if (prevGlyph && glyph) 
-		{
-			// If both the current and previous glyph are valid, get the kerning
-			kern = stbtt_GetCodepointKernAdvance(info, prevGlyph, glyph);
-		}
-		else {
-			kern = 0;
-		}
-		// Get the advance and bounding box for the current glyph
-		stbtt_GetGlyphHMetrics(info, glyph, &advance, &lsb);
-		// Add the advance, kerning, and horizontal offset to the width
-		dWidth += (advance * fontScale + kern);
-		// Move to the next character
-		prevGlyph = glyph;
-	}
-	width = ceilf(dWidth);
-	width += (width % 2 == 0) ? 0 : 1;
-	height = Size;
-	height += (height % 2 == 0) ? 0 : 1;
-	int totalSize = width * height + 64;
-	uint8_t* bitmap = new uint8_t[totalSize];
-	memset(bitmap, 0, totalSize);
-
-	int x = 0;
 	int i;
 	for (i = 0; i < Text.Length(); ++i)
 	{
+		/* how wide is this character */
 		int ax;
 		int lsb;
 		stbtt_GetCodepointHMetrics(info, Text[i], &ax, &lsb);
+		/* (Note that each Codepoint call has an alternative Glyph version which caches the work required to lookup the character word[i].) */
 
+		/* get bounding box for character (may be offset to account for chars that dip above or below the line) */
 		int c_x1, c_y1, c_x2, c_y2;
-		stbtt_GetCodepointBitmapBox(info, Text[i], fontScale, fontScale, &c_x1, &c_y1, &c_x2, &c_y2);
+		stbtt_GetCodepointBitmapBox(info, Text[i], scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
 
+		/* compute y (different characters have different heights) */
 		int y = ascent + c_y1;
 
-		int byteOffset = x + ceilf(lsb * fontScale) + (y * width);
-		stbtt_MakeCodepointBitmap(info, bitmap + byteOffset, c_x2 - c_x1, c_y2 - c_y1, width, fontScale, fontScale, Text[i]);
+		/* render character (stride and offset is important here) */
+		int byteOffset = x + roundf(lsb * scale) + (y * width);
+		stbtt_MakeCodepointBitmap(info, bitmap + byteOffset, c_x2 - c_x1, c_y2 - c_y1, width, scale, scale, Text[i]);
 
-		x += ceilf(ax * fontScale);
+		/* advance x */
+		x += roundf(ax * scale);
 
+		/* add kerning */
 		int kern;
 		kern = stbtt_GetCodepointKernAdvance(info, Text[i], Text[i + 1]);
-		x += ceilf(kern * fontScale);
+		x += roundf(kern * scale);
 	}
 
-	uint8_t* rgbaBitmap = new uint8_t[totalSize * 4];
-	memset(rgbaBitmap, 0, totalSize * 4);
-	for (int i = 0; i < height; i++)
+	uint8_t* rgbaBitmap = new uint8_t[width * Height * 4];
+	for (int i = 0; i < Height; i++)
 	{
 		for (int j = 0; j < width; j++)
 		{
 			int index = i * width + j;
-			rgbaBitmap[index * 4 + 0] = 255;
-			rgbaBitmap[index * 4 + 1] = 255;
-			rgbaBitmap[index * 4 + 2] = 255;
-			rgbaBitmap[index * 4 + 3] = bitmap[index];
+			rgbaBitmap[index * 4 + 0] = (uint8_t)255;
+			rgbaBitmap[index * 4 + 1] = (uint8_t)255;
+			rgbaBitmap[index * 4 + 2] = (uint8_t)255;
+			rgbaBitmap[index * 4 + 3] = (uint8_t)bitmap[index];
 		}
 	}
-	
 
 	GLuint glId = 0;
 	glGenTextures(1, &glId);
 	glBindTexture(GL_TEXTURE_2D, glId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaBitmap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaBitmap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	delete[] rgbaBitmap;
-	delete[] bitmap;
-
 	TextureConfiguration configuration;
-	configuration.Size = Int2(width, height);
-	configuration.Channels = ColorChannel::RGBA;
+	configuration.Size = Int2(width, Height);
+	configuration.Channels = ColorChannel::RED;
 	configuration.ColorSpace = ColorSpace::LINEAR;
 	configuration.FilterMethod = TextureFilterMethod::LINEAR;
 	configuration.WrapMethod = TextureWrapMethod::CLAMP_TO_BORDER;
 	configuration.GenerateMipmaps = false;
-	configuration.AtlasSize = Int2(width, height);
+	configuration.AtlasSize = Int2(width, Height);
+
+	delete[] bitmap;
+	delete[] rgbaBitmap;
 
 	return new Texture(glId, configuration);
+}
+
+int Font::GetTextWidth(const String& Text, uint32_t Height) const
+{
+	float scale = stbtt_ScaleForPixelHeight(info, (float)(Height));
+	int width = 0;
+
+	for (const char* c = *Text; *c; ++c)
+	{
+		int glyphIndex = stbtt_FindGlyphIndex(info, *c);
+		int lsb, rsb;
+		stbtt_GetGlyphHMetrics(info, glyphIndex, &lsb, &rsb);
+		int advanceWidth = ceilf(lsb * scale) + ceilf(rsb * scale);
+
+		// Apply kerning if available
+		if (c[1] != '\0') // Check if there is a next character
+		{
+			int nextGlyphIndex = stbtt_FindGlyphIndex(info, c[1]);
+			int kerning = stbtt_GetGlyphKernAdvance(info, glyphIndex, nextGlyphIndex);
+			advanceWidth += ceilf(kerning * scale);
+		}
+
+		width += advanceWidth;
+	}
+	return width;
 }

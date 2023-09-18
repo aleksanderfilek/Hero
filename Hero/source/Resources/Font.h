@@ -14,5 +14,6 @@ public:
     Font(struct stbtt_fontinfo* Info, uint8_t* Buffer);
     ~Font();
 
-    class Texture* CreateTexture(const String& Text, uint32_t Size);
+    class Texture* CreateTexture(const String& Text, uint32_t Height);
+    int GetTextWidth(const String& Text, uint32_t Height) const;
 };

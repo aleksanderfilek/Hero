@@ -6,10 +6,10 @@
 ResourceHandle* FontLoader::Load(const uint8_t* Data, class ResourceSubsystem* Subsystem)
 {
     int index = 0;
-	uint32_t size = ByteOperations::ReadUint32(Data, &index);
+	uint32_t bufferSize = ByteOperations::ReadUint32(Data, &index);
 
-	uint8_t* buffer = new uint8_t[size];
-	ByteOperations::ReadPtr(Data, &index, buffer, size);
+	uint8_t* buffer = new uint8_t[bufferSize];
+	ByteOperations::ReadPtr(Data, &index, buffer, bufferSize);
 
     stbtt_fontinfo* info = new stbtt_fontinfo();
     stbtt_InitFont(info, buffer, 0);

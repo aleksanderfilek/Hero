@@ -6,30 +6,31 @@
 
 void FontConverter::GetAcceptableExtensions(Array<String>& Extensions)
 {
-    Extensions.Add("font");
+    Extensions.Add("ttf");
 }
 
 void FontConverter::Convert(const String& FilePath)
 {
-    std::string fontPath;
-    int fontSize = 0;
+    long size;
+    unsigned char* fontBuffer;
 
-    std::ifstream input(*FilePath);
+    std::ifstream file(*FilePath, std::ios_base::binary);
+    file.seekg(0, std::ios::end);
+    size = file.tellg();
+    file.seekg(0, std::ios::beg);
 
-    input>>fontSize>>fontPath;
-
-    input.close();
+    fontBuffer = new unsigned char[size]{0};
+    file.read((char*)fontBuffer, size);
+    file.close();
 
     uint32_t byteSize = 0;
     byteSize += sizeof(uint32_t);
-    byteSize += sizeof(uint32_t);
-    byteSize += fontPath.length() * sizeof(uint8_t);
+    byteSize += size;
 
     int index = 0;
     uint8_t* Data = new uint8_t[byteSize];
-    ByteOperations::WriteUint32(Data, &index, fontSize);
-    ByteOperations::WriteUint32(Data, &index, fontPath.length() * sizeof(uint8_t));
-    ByteOperations::WritePtr(Data, &index, (uint8_t*)fontPath.c_str(), fontPath.length() * sizeof(uint8_t));
+    ByteOperations::WriteUint32(Data, &index, size);
+    ByteOperations::WritePtr(Data, &index, (uint8_t*)fontBuffer, size);
 
 	std::stringstream outputPath;
     std::string path = *FilePath;
@@ -45,4 +46,5 @@ void FontConverter::Convert(const String& FilePath)
     output.close();
 
     delete[] Data;
+    delete[] fontBuffer;
 }
