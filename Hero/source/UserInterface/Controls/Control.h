@@ -6,7 +6,7 @@
 #include "../../Math/Float2.h"
 #include "../../Subsystems/Input/InputKeys.h"
 
-EVENT_DISPATCHER(ControlEvent);
+EVENT_DISPATCHER(ControlEvent, class Control*);
 
 enum class HorizontalAlligment
 {

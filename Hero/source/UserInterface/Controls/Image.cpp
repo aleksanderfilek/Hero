@@ -13,7 +13,7 @@ void Image::SetTextureRect(const Float4& TextureRect)
 
 void Image::SetColor(const Color& Color)
 {
-    color = color;
+    color = Color;
 }
 
 void Image::Draw(class ISpriteRenderer* SpriteRenderer)

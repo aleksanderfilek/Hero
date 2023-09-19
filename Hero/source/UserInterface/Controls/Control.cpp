@@ -211,9 +211,9 @@ void Control::SetHover(bool Hovered)
 
     hovered = Hovered;
     if(hovered)
-        OnHoverEnter.Broadcast();
+        OnHoverEnter.Broadcast(this);
     else
-        OnHoverExit.Broadcast();
+        OnHoverExit.Broadcast(this);
 }
 
 bool Control::_InternalUpdateButtonClicks(MouseCode Code)
@@ -224,11 +224,11 @@ bool Control::_InternalUpdateButtonClicks(MouseCode Code)
     switch (Code)
     {
         case MouseCode::LEFT:
-            OnLeftClick.Broadcast();
+            OnLeftClick.Broadcast(this);
             return OnLeftClick.size() > 0;
             break;
         case MouseCode::RIGHT:
-            OnRightClick.Broadcast();
+            OnRightClick.Broadcast(this);
             return OnRightClick.size() > 0;
             break;
     }
