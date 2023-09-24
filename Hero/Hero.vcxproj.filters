@@ -528,12 +528,6 @@
     <ClInclude Include="source\UserInterface\Controls\Label.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\UserInterface\Controls\StackBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\UserInterface\Controls\TextInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\UserInterface\UserInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -550,6 +544,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Utility\QOI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\UserInterface\Controls\VerticalStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\UserInterface\Controls\HorizontalStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -716,12 +716,6 @@
     <ClCompile Include="source\UserInterface\Controls\Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UserInterface\Controls\StackBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\UserInterface\Controls\TextInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\UserInterface\UserInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -741,6 +735,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Graphics\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UserInterface\Controls\VerticalStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UserInterface\Controls\HorizontalStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

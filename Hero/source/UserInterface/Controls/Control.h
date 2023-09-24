@@ -73,6 +73,7 @@ private:
 
 public:
     void SetVisibility(VisibilityState Visibility);
+    VisibilityState GetVisibility() const { return visibilityState; }
 
 private:
     bool hovered = false;
