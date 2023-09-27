@@ -57,14 +57,14 @@ void InputSubsystem::Update()
             if(device->ProcessEvent(&event, action))
             {
                 if(!controlMap)
-                    return;
+                    break;
 
                 StringId actionId = controlMap->GetId(action);
                 for(int i = controlSchemes.Length() - 1; i >= 0; i--)
                 {
                     if(controlSchemes[i]->ProcessAction(actionId, action))
                     {
-                        return;
+                        break;
                     }
                 }
                 break;

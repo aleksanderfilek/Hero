@@ -99,7 +99,6 @@ const char* fragmentShaderContent =
     "} fs_in;\n"
     "void main()\n"
     "{\n"
-    "   o_Color = vec4(0.0, 1.0, 0.0, 1.0);\n"
     "	o_Color = texture(baseTexture, fs_in.TexCoords) * fs_in.Color;\n"
     "}\n\0";
 

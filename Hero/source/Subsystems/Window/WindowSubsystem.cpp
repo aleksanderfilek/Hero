@@ -56,14 +56,10 @@ void WindowSubsystem::Shutdown()
 void WindowSubsystem::Update()
 {
     Subsystem::Update();
-
-    glEnable(GL_BLEND); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
     for(WindowObject* window: windowObjects)
     {
         window->Render();
     }
-    glDisable(GL_BLEND); 
 }
 
 void WindowSubsystem::ReactToWindowFocusGained(class WindowObject* Window)
@@ -115,18 +111,18 @@ void WindowSubsystem::HandleEvent(void* Data)
 {
     SDL_Event* event = (SDL_Event*)Data;
 
-    if(event->type != SDL_WINDOWEVENT)
-    {
-        return;
-    } 
+    //if(event->type != SDL_WINDOWEVENT)
+    //{
+    //    return;
+    //} 
 
     for(WindowObject* window: windowObjects)
     {
-        if(event->window.windowID == window->GetIdentifier())
-        {
+        /*if(event->window.windowID == window->GetIdentifier())
+        {*/
             window->HandleEvent(event);
             return;
-        }
+        //}
     }
 }
 

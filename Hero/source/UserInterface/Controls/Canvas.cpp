@@ -6,6 +6,15 @@ Canvas::~Canvas()
     ClearChildren();
 }
 
+void Canvas::_InternalSetUserInterface(class UserInterface* UserInterface)
+{
+    Control::_InternalSetUserInterface(UserInterface);
+    for (Control* control : children)
+    {
+        control->_InternalSetUserInterface(UserInterface);
+    }
+}
+
 void Canvas::_InternalSetWidget(class Widget* Widget)
 {
     Control::_InternalSetWidget(Widget);

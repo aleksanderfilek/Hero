@@ -125,6 +125,7 @@ void WindowObject::HandleEvent(SDL_Event* Event)
         Close();
         break;
     }
+    OnWindowEventCustom.Broadcast(Event);
 }
 
 void WindowObject::ResizeRenderTarget(const Int2& Size)
@@ -229,6 +230,8 @@ void WindowObject::Render()
 
     // render buffers to combined buffer
     combinedRenderTarget->BindBuffers();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // clear combined buffer
     glClearColor(
         (float)configuration.BackgroundColor.R/255.0f,
@@ -244,6 +247,7 @@ void WindowObject::Render()
         windowRenderTarget.RenderTarget->BindTexture();
         windowSubsystem->GetScreenMesh()->Draw();
     }
+    glDisable(GL_BLEND);
     combinedRenderTarget->UnbindBuffers();
     
     // blit combined buffer to default buffer

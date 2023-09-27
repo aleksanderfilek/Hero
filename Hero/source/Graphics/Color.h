@@ -15,7 +15,8 @@ struct HERO_API Color
 	Float4 ToFloat4() const;
 };
 
-#define COLOR_WHITE (Color){ 0xFF, 0xFF, 0xFF, 0xFF }
+#define COLOR_WHITE { 0xFF, 0xFF, 0xFF, 0xFF }
+#define COLOR_BLACK { 0x00, 0x00, 0x00, 0xFF }
 
 enum class ColorSpace : uint8_t
 {

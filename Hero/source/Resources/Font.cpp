@@ -108,17 +108,18 @@ int Font::GetTextWidth(const String& Text, uint32_t Height) const
 	float scale = stbtt_ScaleForPixelHeight(info, (float)(Height));
 	int width = 0;
 
-	for (const char* c = *Text; *c; ++c)
+	for (int i = 0; i < Text.Length(); i++)
 	{
-		int glyphIndex = stbtt_FindGlyphIndex(info, *c);
+		char c = Text[i];
+		int glyphIndex = stbtt_FindGlyphIndex(info, c);
 		int lsb, rsb;
 		stbtt_GetGlyphHMetrics(info, glyphIndex, &lsb, &rsb);
 		int advanceWidth = ceilf(lsb * scale) + ceilf(rsb * scale);
 
 		// Apply kerning if available
-		if (c[1] != '\0') // Check if there is a next character
+		if (Text[i+1] != '\0') // Check if there is a next character
 		{
-			int nextGlyphIndex = stbtt_FindGlyphIndex(info, c[1]);
+			int nextGlyphIndex = stbtt_FindGlyphIndex(info, Text[i + 1]);
 			int kerning = stbtt_GetGlyphKernAdvance(info, glyphIndex, nextGlyphIndex);
 			advanceWidth += ceilf(kerning * scale);
 		}

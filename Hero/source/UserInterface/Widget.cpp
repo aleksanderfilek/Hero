@@ -4,6 +4,7 @@
 
 void Widget::Construct()
 {
+    canvas._InternalSetUserInterface(userInterface);
     canvas._InternalSetWidget(this);
     canvas.SetSize(userInterface->GetWindow()->GetConfiguration().Size);
     canvas._InternalUpdateTransforms();

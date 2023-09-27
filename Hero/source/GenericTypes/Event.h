@@ -51,7 +51,7 @@ public:
 	void _InternalRemoveEvent(UserClass* object, StringId methodName)
 	{
 		int i = 0;
-		for (i = 0; i < mDelegates.Size(); i++)
+		for (i = 0; i < mDelegates.Length(); i++)
 		{
 			IDelegate<ParamTypes...>* delegate = mDelegates[i];
 			if (delegate->methodName == methodName)

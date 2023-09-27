@@ -21,6 +21,9 @@ void Image::Draw(class ISpriteRenderer* SpriteRenderer)
     if (!texture)
         return;
 
+    if (GetVisibility() == VisibilityState::HIDDEN)
+        return;
+
     SpriteRenderer->DrawTextureEx(texture, GetAbsolutePosition(),
         GetAbsoluteSize(), textureRect, color);
 }

@@ -44,6 +44,8 @@ void UserInterface::Update(float DeltaTime)
     }
 
     windowRenderTarget->RenderTarget->BindBuffers();
+    glEnable(GL_BLEND);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     windowRenderTarget->RenderTarget->Clear();
     spriteRenderer->Start(windowSize);
@@ -51,6 +53,7 @@ void UserInterface::Update(float DeltaTime)
     {
         widget->Draw(spriteRenderer);
     }
+    glDisable(GL_BLEND);
     spriteRenderer->End();
     windowRenderTarget->RenderTarget->UnbindBuffers();
 }

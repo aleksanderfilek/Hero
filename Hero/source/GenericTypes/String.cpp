@@ -9,16 +9,12 @@ String::String(const String& Other)
 {
     str = _strdup(Other.str);
     length = strlen(Other.str);
-    // str = new char[length + 1]{0};
-    // strncpy(str, Other.str, length);
 }
 
 String::String(const char* Str)
 {
     str = _strdup(Str);
     length = strlen(Str);
-    // str = new char[length + 1]{0};    
-    // strncpy(str, Str, length);
 }
 
 String::~String()
@@ -28,6 +24,19 @@ String::~String()
         delete[] str;
         str = nullptr;
     }
+}
+
+String& String::operator +=(char Character)
+{
+    char* newStr = (char*)realloc(str, sizeof(char) * (length + 2));
+    if (!newStr)
+        return *this;
+
+    str = newStr;
+    str[length] = Character;
+    str[length + 1] = '\0';
+    length += 1;
+    return *this;
 }
 
 String& String::operator =(const String& Other)
@@ -62,10 +71,16 @@ bool String::operator==(const String& Rhs) const
 
 char String::operator[](int Index) const
 {
-    if(Index >= Length())
-    {
-        return 0;
-    }
-
     return str[Index];
+}
+
+void String::SetChar(int Position, char Character)
+{
+    str[Position] = Character;
+}
+
+void String::PopBack()
+{
+    SetChar(length - 1, '\0');
+    length--;
 }

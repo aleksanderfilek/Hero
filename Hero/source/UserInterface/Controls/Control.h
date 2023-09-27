@@ -33,6 +33,7 @@ enum class VisibilityState
 class HERO_API Control
 {
 private:
+    class UserInterface* userInterface = nullptr;
     class Widget* widget = nullptr;
     Control* parent = nullptr;
 
@@ -47,6 +48,8 @@ private:
 
 public:
     virtual ~Control(){}
+    virtual void _InternalSetUserInterface(class UserInterface* UserInterface);
+    class UserInterface* GetUserInterface() const;
     virtual void _InternalSetWidget(class Widget* Widget);
     class Widget* GetWidget() const;
 

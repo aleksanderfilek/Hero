@@ -40,6 +40,11 @@ void Label::SetTextSize(uint32_t Size)
 
 void Label::Apply()
 {
+    if (!font)
+    {
+        return;
+    }
+
     if (texture)
     {
         delete texture;

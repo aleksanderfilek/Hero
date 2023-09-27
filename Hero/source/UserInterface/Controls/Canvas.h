@@ -11,7 +11,7 @@ protected:
 
 public:
     virtual ~Canvas() override;
-
+    virtual void _InternalSetUserInterface(class UserInterface* UserInterface) override;
     virtual void _InternalSetWidget(class Widget* Widget) override;
     virtual void _InternalUpdateTransforms() override;
 

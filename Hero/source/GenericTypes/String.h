@@ -30,12 +30,15 @@ public:
     ~String();
 
     int Length() const { return length; }
-    bool IsEmpty() const { return str == nullptr; }
+    bool IsEmpty() const { return length == 0; }
 
+    String& operator +=(char Character);
     String& operator =(const String& Other);
     const char* operator *() const;
     bool operator==(const String& Rhs) const;
     char operator[](int Index) const;
+    void SetChar(int Position, char Character);
+    void PopBack();
 
     friend std::ostream& operator<<(std::ostream& stream, const String& rhs)
     {

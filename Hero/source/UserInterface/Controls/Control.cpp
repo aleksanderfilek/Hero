@@ -2,6 +2,16 @@
 #include "../../Math/Intersections.h"
 #include "../Widget.h"
 
+void Control::_InternalSetUserInterface(class UserInterface* UserInterface)
+{
+    userInterface = UserInterface;
+}
+
+class UserInterface* Control::GetUserInterface() const
+{
+    return userInterface;
+}
+
 void Control::_InternalSetWidget(class Widget* Widget)
 {
     widget = Widget;
@@ -15,6 +25,7 @@ class Widget* Control::GetWidget() const
 void Control::AttachToControl(Control* ControlToAttachTo)
 {
     parent = ControlToAttachTo;
+    _InternalSetUserInterface(parent->GetUserInterface());
     _InternalSetWidget(parent->GetWidget());
 
     _InternalUpdateTransforms();

@@ -22,6 +22,7 @@ EVENT_DISPATCHER(WindowEventLeave, class WindowObject*)
 EVENT_DISPATCHER(WindowEventFocusGained, class WindowObject*)
 EVENT_DISPATCHER(WindowEventFocusLost, class WindowObject*)
 EVENT_DISPATCHER(WindowEventClose, class WindowObject*)
+EVENT_DISPATCHER(WindowEventCustom, const void*)
 
 class WindowRenderTarget
 {
@@ -82,6 +83,7 @@ public:
     WindowEventFocusGained OnWindowEventFocusGained;
     WindowEventFocusLost OnWindowEventFocusLost;
     WindowEventClose OnWindowEventClose;
+    WindowEventCustom OnWindowEventCustom;
 
 private:
     class RenderTarget* combinedRenderTarget = nullptr;

@@ -552,6 +552,9 @@
     <ClInclude Include="source\UserInterface\Controls\HorizontalStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\UserInterface\Controls\TextInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Core.cpp">
@@ -741,6 +744,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\UserInterface\Controls\HorizontalStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UserInterface\Controls\TextInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
