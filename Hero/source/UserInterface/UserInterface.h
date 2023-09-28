@@ -22,6 +22,8 @@ public:
 
 private:
     Array<class Widget*> widgets;
+    Array<class Widget*> widgetsToAdd;
+    Array<class Widget*> widgetsToRemove;
 
     void ReactToWindowResized(class WindowObject* Window, Int2 Size);
     void ReactToMouseMotion(const Int2& Position, const Int2& MotionVector);

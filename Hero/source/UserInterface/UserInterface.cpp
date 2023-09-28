@@ -38,6 +38,18 @@ UserInterface::~UserInterface()
 
 void UserInterface::Update(float DeltaTime)
 {
+    for (class Widget* widget : widgetsToRemove)
+    {
+        widgets.Remove(widget);
+    }
+    widgetsToRemove.Clear();
+
+    for (class Widget* widget : widgetsToAdd)
+    {
+        widgets.Add(widget);
+    }
+    widgetsToAdd.Clear();
+
     for(Widget* widget: widgets)
     {
         widget->Update(DeltaTime);
@@ -91,12 +103,12 @@ void UserInterface::ReactToMouseClick(MouseCode Code, InputActionState State)
 
 void UserInterface::AddWidget(Widget* Widget)
 {
-    widgets.Add(Widget);
     Widget->userInterface = this;
     Widget->Construct();
+    widgetsToAdd.Add(Widget);
 }
 
 void UserInterface::RemoveWidget(Widget* Widget)
 {
-    widgets.Remove(Widget);
+    widgetsToRemove.Remove(Widget);
 }
