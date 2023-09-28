@@ -191,6 +191,7 @@
     <ClInclude Include="source\UserInterface\Controls\HorizontalStack.h" />
     <ClInclude Include="source\UserInterface\Controls\Image.h" />
     <ClInclude Include="source\UserInterface\Controls\Label.h" />
+    <ClInclude Include="source\UserInterface\Controls\Switcher.h" />
     <ClInclude Include="source\UserInterface\Controls\TextInput.h" />
     <ClInclude Include="source\UserInterface\Controls\VerticalStack.h" />
     <ClInclude Include="source\UserInterface\UserInterface.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="source\UserInterface\Controls\HorizontalStack.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Image.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Label.cpp" />
+    <ClCompile Include="source\UserInterface\Controls\Switcher.cpp" />
     <ClCompile Include="source\UserInterface\Controls\TextInput.cpp" />
     <ClCompile Include="source\UserInterface\Controls\VerticalStack.cpp" />
     <ClCompile Include="source\UserInterface\UserInterface.cpp" />
