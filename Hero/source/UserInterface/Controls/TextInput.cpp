@@ -7,19 +7,13 @@
 
 TextInput::TextInput()
 {
-	//UserInterfaceSubsystem* uiSubsystem = (UserInterfaceSubsystem*)Core::get().getSubsystem(sid("UserInterface"));
-	//uiSubsystem->OnCancel.addEvent(this, &TextInput::OnCancel);
-
 	background = new Image();
-	//mBackground->setTexture(uiSubsystem->defaultTexture);
 	background->SetHorizontalAlligment(HorizontalAlligment::STRETCH);
 	background->SetVerticalAlligment(VerticalAlligment::STRETCH);
-	//background->setHoverColor({ 0.6f, 0.6f, 0.6f, 1.0f });
-	//background->setNormalColor({ 0.7f, 0.7f, 0.7f, 1.0f });
+
 	Add(background);
 
 	label = new Label();
-	//label->setFont(uiSubsystem->defaultFont);
 	label->SetHorizontalAlligment(HorizontalAlligment::STRETCH);
 	label->SetVerticalAlligment(VerticalAlligment::STRETCH);
 	label->SetAlligment(TextAlligment::LEFT);
@@ -82,8 +76,8 @@ void TextInput::OnInputText(const void* Event)
 
 	if (render)
 	{
-		cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0 });
 		label->SetText(*text);
+		cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0 });
 		label->Apply();
 	}
 }
@@ -101,8 +95,6 @@ void TextInput::OnClick(class Control* Control)
 	cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0 });
 
 	GetUserInterface()->GetWindow()->OnWindowEventCustom.AddEvent(this, &TextInput::OnInputText);
-
-	//mBackground->setNormalColor({ 0.6f, 0.6f, 0.6f, 1.0f });
 }
 
 void TextInput::SetText(const String& Text)
@@ -120,7 +112,6 @@ void TextInput::Cancel()
 
 	GetUserInterface()->GetWindow()->OnWindowEventCustom.RemoveEvent(this, &TextInput::OnInputText);
 	OnTextInputFinished.Broadcast(text);
-	//background->SetNormalColor({ 0.7f, 0.7f, 0.7f, 1.0f });
 }
 
 void TextInput::OnCancel(class Control* context)
