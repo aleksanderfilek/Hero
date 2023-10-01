@@ -4,6 +4,13 @@
 #include "../../Graphics/Color.h"
 #include "../../Math/Float4.h"
 
+struct ImageStyle
+{
+    class Texture* Texture = nullptr;
+    Float4 Rect = { 0.0f, 0.0f, 1.0f, 1.0f };
+    Color Color = COLOR_WHITE;
+};
+
 class HERO_API Image : public Control
 {
 protected:
@@ -17,4 +24,8 @@ public:
     void SetColor(const Color& Color);
 
     virtual void Draw(class ISpriteRenderer* SpriteRenderer) override;
+
+public:
+    void SetImageStyle(ImageStyle& Style);
+    ImageStyle GetImageStyle() const;
 };

@@ -15,6 +15,14 @@ enum class TextAlligment
     RIGHT_BOTTOM,
 };
 
+struct LabelStyle
+{
+    class Font* Font = nullptr;
+    TextAlligment Alligment = TextAlligment::LEFT;
+    uint32_t Size = 24;
+    Color Color;
+};
+
 class HERO_API Label : public Image
 {
 private:
@@ -41,4 +49,8 @@ public:
 
     virtual void Draw(class ISpriteRenderer* SpriteRenderer) override;
     virtual void _InternalUpdateTransforms() override;
+
+public:
+    void SetLabelStyle(LabelStyle& Style);
+    LabelStyle GetLabelStyle() const;
 };

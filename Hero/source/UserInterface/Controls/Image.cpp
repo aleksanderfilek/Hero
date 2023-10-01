@@ -27,3 +27,15 @@ void Image::Draw(class ISpriteRenderer* SpriteRenderer)
     SpriteRenderer->DrawTextureEx(texture, GetAbsolutePosition(),
         GetAbsoluteSize(), textureRect, color);
 }
+
+void Image::SetImageStyle(ImageStyle& Style)
+{
+    texture = Style.Texture;
+    textureRect = Style.Rect;
+    color = Style.Color;
+}
+
+ImageStyle Image::GetImageStyle() const
+{
+    return { texture, textureRect, color };
+}

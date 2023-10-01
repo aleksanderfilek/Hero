@@ -145,3 +145,17 @@ void Label::Draw(class ISpriteRenderer* SpriteRenderer)
     SpriteRenderer->DrawTextureEx(texture,texturePosition,
         textureSize, textureRect, color);
 }
+
+void Label::SetLabelStyle(LabelStyle& Style)
+{
+    font = Style.Font;
+    alligment = Style.Alligment;
+    textSize = Style.Size;
+    color = Style.Color;
+    Apply();
+}
+
+LabelStyle Label::GetLabelStyle() const
+{
+    return { font, alligment, textSize, color };
+}
