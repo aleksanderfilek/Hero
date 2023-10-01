@@ -188,6 +188,7 @@
     <ClInclude Include="source\ThirdParty\Stb\stb_truetype.h" />
     <ClInclude Include="source\UserInterface\Controls\Canvas.h" />
     <ClInclude Include="source\UserInterface\Controls\Control.h" />
+    <ClInclude Include="source\UserInterface\Controls\Dropdown.h" />
     <ClInclude Include="source\UserInterface\Controls\HorizontalStack.h" />
     <ClInclude Include="source\UserInterface\Controls\Image.h" />
     <ClInclude Include="source\UserInterface\Controls\Label.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="source\ThirdParty\GL\glew.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Canvas.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Control.cpp" />
+    <ClCompile Include="source\UserInterface\Controls\Dropdown.cpp" />
     <ClCompile Include="source\UserInterface\Controls\HorizontalStack.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Image.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Label.cpp" />

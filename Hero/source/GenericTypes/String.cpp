@@ -21,7 +21,7 @@ String::~String()
 {
     if(str)
     {
-        delete[] str;
+        free(str);
         str = nullptr;
     }
 }
@@ -76,7 +76,7 @@ char String::operator[](int Index) const
 
 void String::SetChar(int Position, char Character)
 {
-    str[Position] = Character;
+    *(str + Position) = Character;
 }
 
 void String::PopBack()

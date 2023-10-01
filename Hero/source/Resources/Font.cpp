@@ -116,7 +116,7 @@ int Font::GetTextWidth(const String& Text, uint32_t Height) const
 
 		// Apply kerning if available
 		int kerning = stbtt_GetCodepointKernAdvance(info, Text[i], Text[i+1]);
-		//advanceWidth += kerning;
+		advanceWidth += kerning;
 
 		width += advanceWidth;
 	}

@@ -41,6 +41,7 @@ void UserInterface::Update(float DeltaTime)
     for (class Widget* widget : widgetsToRemove)
     {
         widgets.Remove(widget);
+        delete widget;
     }
     widgetsToRemove.Clear();
 
@@ -110,5 +111,5 @@ void UserInterface::AddWidget(Widget* Widget)
 
 void UserInterface::RemoveWidget(Widget* Widget)
 {
-    widgetsToRemove.Remove(Widget);
+    widgetsToRemove.Add(Widget);
 }

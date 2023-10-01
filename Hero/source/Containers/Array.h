@@ -133,7 +133,10 @@ public:
             data = new ElementType[capacity];
             if(oldData)
             {
-                std::memcpy(data, oldData, length * sizeof(ElementType));
+                for (int i = 0; i < length; i++)
+                {
+                    data[i] = oldData[i];
+                }
                 delete[] oldData;
             }
         }
@@ -294,7 +297,7 @@ public:
      * @param Index Index of element to get.
      * @return ElementType& Reference to element.
      */
-    ElementType& operator[](int Index)
+    ElementType& operator[](int Index) const
     {
         return data[Index];
     }

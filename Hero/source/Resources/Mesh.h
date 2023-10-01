@@ -19,7 +19,7 @@ enum class BufferType
 };
 
 template<typename T>
-struct MeshBuffer
+struct HERO_API MeshBuffer
 {
     BufferType Type = BufferType::SINGLE;
     T* Array = nullptr;

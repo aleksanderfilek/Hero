@@ -74,7 +74,7 @@ void Mesh::Generate()
     buffOffset = 0;
     for (int i = 0; i < buffers.Length(); i++)
     {
-        MeshBuffer<float>& buff = buffers[i];
+        const MeshBuffer<float>& buff = buffers[i];
         glEnableVertexAttribArray(i);
         glVertexAttribPointer(i, (uint32_t)buff.Type, GL_FLOAT, GL_FALSE, (uint32_t)buff.Type * sizeof(float), (void*)(buffOffset));
         GlCheckError();
