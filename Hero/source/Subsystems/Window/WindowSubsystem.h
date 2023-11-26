@@ -2,7 +2,6 @@
 
 #include "../Subsystem.h"
 #include "../../Containers/Array.h"
-#include "../../GenericTypes/String.h"
 #include "../../GenericTypes/StringId.h"
 #include "../../Math/Int2.h"
 #include "../../Graphics/Color.h"
@@ -10,7 +9,7 @@
 
 struct WindowConfiguration
 {
-    String Title;
+    const char* Title;
     Int2 Size;
     Color BackgroundColor;
 };

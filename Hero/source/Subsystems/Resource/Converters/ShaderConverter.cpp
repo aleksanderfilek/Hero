@@ -5,14 +5,14 @@
 #include <string>
 #include <iostream>
 
-void ShaderConverter::GetAcceptableExtensions(Array<String>& Extensions)
+void ShaderConverter::GetAcceptableExtensions(Array<const char*>& Extensions)
 {
     Extensions.Add("glsl");
 }
 
-void ShaderConverter::Convert(const String& FilePath)
+void ShaderConverter::Convert(const char* FilePath)
 {
-    std::ifstream input(*FilePath);
+    std::ifstream input(FilePath);
 
     std::stringstream stream;
     stream << input.rdbuf();
@@ -152,7 +152,7 @@ void ShaderConverter::Convert(const String& FilePath)
     }
 
 	std::stringstream outputPath;
-    std::string path = *FilePath;
+    std::string path = FilePath;
 	outputPath << path.substr(0, path.find(".") + 1);
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);

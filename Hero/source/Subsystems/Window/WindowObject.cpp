@@ -11,7 +11,7 @@
 WindowObject::WindowObject(const StringId& Id, const WindowConfiguration& WindowConfig, WindowSubsystem* WindowSubsystem)
     : id(Id), configuration(WindowConfig), windowSubsystem(WindowSubsystem)
 {
-    sdlWindow = SDL_CreateWindow(*configuration.Title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, configuration.Size.X, configuration.Size.Y, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+    sdlWindow = SDL_CreateWindow(configuration.Title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, configuration.Size.X, configuration.Size.Y, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
     if (!sdlWindow) {
         //std::cout << "[" << getSidString(id) << "] Window could not be created! SDL Error: " << SDL_GetError() << std::endl;

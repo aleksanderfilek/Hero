@@ -8,19 +8,19 @@
 #include <sstream>
 #include <string>
 
-void MaterialConverter::GetAcceptableExtensions(Array<String>& Extensions)
+void MaterialConverter::GetAcceptableExtensions(Array<const char*>& Extensions)
 {
     Extensions.Add("mat");
 }
 
-void MaterialConverter::Convert(const String& FilePath)
+void MaterialConverter::Convert(const char* FilePath)
 {
     std::string shaderName;
     int propertiesCount = 0;
     char depthTest = 'f';
     std::string buffer;
 
-    std::ifstream input(*FilePath);
+    std::ifstream input(FilePath);
 
     if(!input.is_open())
     {
@@ -205,7 +205,7 @@ void MaterialConverter::Convert(const String& FilePath)
     }
 
 	std::stringstream outputPath;
-    std::string path = *FilePath;
+    std::string path = FilePath;
 	outputPath << path.substr(0, path.find(".") + 1);
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);

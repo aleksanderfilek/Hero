@@ -7,22 +7,22 @@
 #include <string>
 #include <set>
 
-void MeshConverter::GetAcceptableExtensions(Array<String>& Extensions)
+void MeshConverter::GetAcceptableExtensions(Array<const char*>& Extensions)
 {
     Extensions.Add("obj");
 }
 
-void MeshConverter::Convert(const String& FilePath)
+void MeshConverter::Convert(const char* FilePath)
 {
-    std::string path = *FilePath;
-    String extension(path.substr(path.find_last_of(".") + 1).c_str());
+    std::string path = FilePath;
+    std::string extension = path.substr(path.find_last_of(".") + 1);
     if(extension == "obj")
     {
         ConvertObj(FilePath);
     }
 }
 
-void MeshConverter::ConvertObj(const String& FilePath)
+void MeshConverter::ConvertObj(const char* FilePath)
 {
     std::string name;
     Array<float> positions;
@@ -38,7 +38,7 @@ void MeshConverter::ConvertObj(const String& FilePath)
     size_t startPos = 0;
     std::string cell;
 
-    std::ifstream input(*FilePath);
+    std::ifstream input(FilePath);
     ssContent << input.rdbuf();
     input.close();
 
@@ -243,7 +243,7 @@ void MeshConverter::ConvertObj(const String& FilePath)
     //}
 
 	std::stringstream outputPath;
-    std::string path = *FilePath;
+    std::string path = FilePath;
 	outputPath << path.substr(0, path.find(".") + 1);
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);

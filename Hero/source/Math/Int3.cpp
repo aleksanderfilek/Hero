@@ -9,9 +9,9 @@ Int3::Int3(const Int3& Other)
     Z = Other.Z;
 }
 
-Int3::Int3(const String& Str)
+Int3::Int3(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%d,%d,%d}", &X, &Y, &Z);
+    sscanf(Str, "{%d,%d,%d}", &X, &Y, &Z);
 }
 
 float Int3::Length() const

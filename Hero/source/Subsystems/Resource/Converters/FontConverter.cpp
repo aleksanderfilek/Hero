@@ -4,17 +4,17 @@
 #include <sstream>
 #include <string>
 
-void FontConverter::GetAcceptableExtensions(Array<String>& Extensions)
+void FontConverter::GetAcceptableExtensions(Array<const char*>& Extensions)
 {
     Extensions.Add("ttf");
 }
 
-void FontConverter::Convert(const String& FilePath)
+void FontConverter::Convert(const char* FilePath)
 {
     long size;
     unsigned char* fontBuffer;
 
-    std::ifstream file(*FilePath, std::ios_base::binary);
+    std::ifstream file(FilePath, std::ios_base::binary);
     file.seekg(0, std::ios::end);
     size = file.tellg();
     file.seekg(0, std::ios::beg);
@@ -33,7 +33,7 @@ void FontConverter::Convert(const String& FilePath)
     ByteOperations::WritePtr(Data, &index, (uint8_t*)fontBuffer, size);
 
 	std::stringstream outputPath;
-    std::string path = *FilePath;
+    std::string path = FilePath;
 	outputPath << path.substr(0, path.find(".") + 1);
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);

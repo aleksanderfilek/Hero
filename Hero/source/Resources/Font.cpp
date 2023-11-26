@@ -18,7 +18,7 @@ Font::~Font()
 	delete info;
 }
 
-Texture* Font::CreateTexture(const String& Text, uint32_t Height)
+Texture* Font::CreateTexture(const char* Text, uint32_t Height)
 {
 	int width = GetTextWidth(Text, Height);
 
@@ -37,7 +37,7 @@ Texture* Font::CreateTexture(const String& Text, uint32_t Height)
 	descent = roundf(descent * scale);
 
 	int i;
-	for (i = 0; i < Text.Length(); ++i)
+	for (i = 0; i < strlen(Text); ++i)
 	{
 		/* how wide is this character */
 		int ax;
@@ -103,12 +103,12 @@ Texture* Font::CreateTexture(const String& Text, uint32_t Height)
 	return new Texture(glId, configuration);
 }
 
-int Font::GetTextWidth(const String& Text, uint32_t Height) const
+int Font::GetTextWidth(const char* Text, uint32_t Height) const
 {
 	float scale = stbtt_ScaleForPixelHeight(info, (float)(Height));
 	float width = 0;
 
-	for (int i = 0; i < Text.Length(); i++)
+	for (int i = 0; i < strlen(Text); i++)
 	{
 		int lsb, rsb;
 		stbtt_GetCodepointHMetrics(info, Text[i], &lsb, &rsb);

@@ -10,9 +10,9 @@ Float3::Float3(const Float3& Other)
     Z = Other.Z;
 }
 
-Float3::Float3(const String& Str)
+Float3::Float3(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%f,%f,%f}", &X, &Y, &Z);
+    sscanf(Str, "{%f,%f,%f}", &X, &Y, &Z);
 }
 
 float Float3::Length() const

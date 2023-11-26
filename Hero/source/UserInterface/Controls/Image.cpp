@@ -28,7 +28,7 @@ void Image::Draw(class ISpriteRenderer* SpriteRenderer)
         GetAbsoluteSize(), textureRect, color);
 }
 
-void Image::SetImageStyle(ImageStyle& Style)
+void Image::SetImageStyle(const ImageStyle& Style)
 {
     texture = Style.Texture;
     textureRect = Style.Rect;

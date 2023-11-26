@@ -10,9 +10,9 @@ Int4::Int4(const Int4& Other)
     W = Other.W;
 }
 
-Int4::Int4(const String& Str)
+Int4::Int4(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%d,%d,%d,%d}", &X, &Y, &Z, &W);
+    sscanf(Str, "{%d,%d,%d,%d}", &X, &Y, &Z, &W);
 }
 
 float Int4::Length() const

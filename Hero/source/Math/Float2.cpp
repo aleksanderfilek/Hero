@@ -9,9 +9,9 @@ Float2::Float2(const Float2& Other)
     Y = Other.Y;
 }
 
-Float2::Float2(const String& Str)
+Float2::Float2(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%f,%f}", &X, &Y);
+    sscanf(Str, "{%f,%f}", &X, &Y);
 }
 
 float Float2::Length() const

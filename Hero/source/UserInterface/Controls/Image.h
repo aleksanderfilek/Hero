@@ -26,6 +26,6 @@ public:
     virtual void Draw(class ISpriteRenderer* SpriteRenderer) override;
 
 public:
-    void SetImageStyle(ImageStyle& Style);
+    void SetImageStyle(const ImageStyle& Style);
     ImageStyle GetImageStyle() const;
 };

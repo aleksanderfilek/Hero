@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include <iostream>
 #include "Float4.h"
 #include "Float3.h"

@@ -2,6 +2,8 @@
 
 #include <cstring>
 #include <iterator>
+#include <algorithm>
+#include <cstdlib>
 
 template<typename ElementType>
 struct HERO_API ArrayIterator
@@ -36,6 +38,13 @@ struct HERO_API ArrayIterator
     friend bool operator== (const ArrayIterator& a, const ArrayIterator& b) { return a.index == b.index; }
     friend bool operator!= (const ArrayIterator& a, const ArrayIterator& b) { return a.index != b.index; };
 
+    ArrayIterator operator-(int Value)
+    {
+        ArrayIterator tmp = *this;
+        tmp.index - 1;
+        return tmp;
+    }
+
     private:
         ElementType* data = nullptr;
         int length = 0;
@@ -66,8 +75,7 @@ public:
      */
     Array(int Capacity, int OffsetSize = 1) : capacity(Capacity), offsetSize(OffsetSize)
     {
-        data = new ElementType[Capacity];
-        std::memset(data, 0, capacity * sizeof(ElementType));
+        data = (ElementType*)calloc(Capacity, sizeof(ElementType));;
     }
 
     /**
@@ -79,14 +87,16 @@ public:
     {
         if(data)
         {
-            delete[] data;
+            free(data);
         }
 
         length = Other.length;
         capacity = Other.length;
 
-        data = new ElementType[capacity];
-        std::memcpy(data, Other.data, length * sizeof(ElementType));
+        data = (ElementType*)malloc(capacity * sizeof(ElementType));
+        std::memcpy(data, Other.data, capacity * sizeof(ElementType));
+        //std::copy(Other.begin(), Other.end() - 1, begin());
+        //std::memcpy(data, Other.data, length * sizeof(ElementType));
     }
 
     /**
@@ -99,13 +109,13 @@ public:
     {
         if(data)
         {
-            delete[] data;
+            free(data);
         }
 
         length = Length;
         capacity = Length;
 
-        data = new ElementType[capacity];
+        data = (ElementType*)malloc(capacity * sizeof(ElementType));
         std::memcpy(data, Data, length * sizeof(ElementType));
     }
 
@@ -115,8 +125,11 @@ public:
      */
     ~Array()
     {
-        delete[] data;
+        free(data);
     }
+
+    ArrayIterator<ElementType> begin() const { return ArrayIterator<ElementType>(data, length, 0); }
+    ArrayIterator<ElementType> end() const { return ArrayIterator<ElementType>(data, length, length); }
 
     /**
      * @brief Function adding new elment to array. If lenght equals capacity, allocated array is enlarged by offset size.
@@ -130,14 +143,12 @@ public:
         {
             ElementType* oldData = data;
             capacity += offsetSize;
-            data = new ElementType[capacity];
-            if(oldData)
+            data = (ElementType*)malloc(capacity * sizeof(ElementType));
+
+            if (oldData)
             {
-                for (int i = 0; i < length; i++)
-                {
-                    data[i] = oldData[i];
-                }
-                delete[] oldData;
+                std::memcpy(data, oldData, length * sizeof(ElementType));
+                free(oldData);
             }
         }
 
@@ -233,22 +244,9 @@ public:
 
     void Reset()
     {
-        delete[] data;
+        free(data);
         length = 0;
         capacity = 0;
-    }
-
-    /**
-     * @brief Reduces array size to length number elements. Lenght = Capacity.
-     * 
-     */
-    void Shrink()
-    {
-        ElementType* oldData = data;
-        data = new ElementType[length];
-        std::memcpy(data, oldData, length * sizeof(ElementType));
-        delete[] oldData;
-        capacity = length;
     }
 
     /**
@@ -301,9 +299,6 @@ public:
     {
         return data[Index];
     }
-
-    ArrayIterator<ElementType> begin() const { return ArrayIterator<ElementType>(data, length, 0); }
-    ArrayIterator<ElementType> end() const { return ArrayIterator<ElementType>(data, length, length); }
 
     ElementType* Data() const { return data; }
 };

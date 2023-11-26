@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include <iostream>
 
 struct HERO_API Int2
@@ -11,7 +10,7 @@ struct HERO_API Int2
     constexpr Int2() : X(0), Y(0) {}
     constexpr Int2(int X, int Y) : X(X), Y(Y) {}
     Int2(const Int2& Other);
-    Int2(const String& Str);
+    Int2(const char* Str);
 
     constexpr static inline Int2 Zero() { return Int2(0, 0); }
     constexpr static inline Int2 One()  { return Int2(1, 1); }

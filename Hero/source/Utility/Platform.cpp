@@ -13,21 +13,19 @@
 
 #define FILEPATH_MAX 4098
 
-String Platform::GetAbsoluteDirectory()
+const char* Platform::GetAbsoluteDirectory()
 {
     char buffer[FILEPATH_MAX] = {};
 	GetCurrentDir(buffer, FILEPATH_MAX);
 
     int length = strlen(buffer) + 1;
-    char* pathStr = new char[length];
-    memcpy(pathStr, buffer, length * sizeof(char));
-	String path(pathStr);
-    delete[] pathStr;
+    char* pathStr = new char[length] { '\0' };
+    strcpy(pathStr, buffer);
 
-    return path;
+    return pathStr;
 }
 
-void Platform::SetAbsoluteDirectory(const String& Path)
+void Platform::SetAbsoluteDirectory(const char* Path)
 {
-	SetCurrentDirectoryA(*Path);
+	SetCurrentDirectoryA(Path);
 }

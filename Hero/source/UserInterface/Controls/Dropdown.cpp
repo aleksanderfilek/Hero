@@ -20,7 +20,7 @@ private:
 	DropdownItemStyle style;
 
 public:
-	DropdownItem(DropdownList* Owner, int Index, const String& Option, const DropdownItemStyle& Style);
+	DropdownItem(DropdownList* Owner, int Index, const char* Option, const DropdownItemStyle& Style);
 };
 
 class DropdownList : public Widget
@@ -29,7 +29,7 @@ private:
 	Dropdown* owner = nullptr;
 
 public:
-	DropdownList(Dropdown* Owner, const Array<String>& Options);
+	DropdownList(Dropdown* Owner, const Array<const char*>& Options);
 	~DropdownList();
 
 	void SetOption(int Index);
@@ -61,7 +61,7 @@ class Label* Dropdown::GetLabel() const
 	return label;
 }
 
-void Dropdown::AddOption(const String& Option)
+void Dropdown::AddOption(const char* Option)
 {
 	options.Add(Option);
 
@@ -95,7 +95,7 @@ void Dropdown::SetOption(int Index)
 	OnOptionChanged.Broadcast(this, Index);
 }
 
-int Dropdown::GetCurrentOption(String& Option)
+int Dropdown::GetCurrentOption(const char*& Option)
 {
 	if (selectedOption >= 0)
 	{
@@ -161,7 +161,7 @@ DropdownItemStyle Dropdown::GetDropdownItemStyle() const
 	return dropdownItemStyle;
 }
 
-DropdownItem::DropdownItem(DropdownList* Owner, int Index, const String& Option, const DropdownItemStyle& Style)
+DropdownItem::DropdownItem(DropdownList* Owner, int Index, const char* Option, const DropdownItemStyle& Style)
 	:owner(Owner), index(Index), style(Style)
 {
 	image = new Image();
@@ -205,7 +205,7 @@ void DropdownItem::ReactToHoverExit(Control* Control)
 	image->SetColor(style.BackgroundColor);
 }
 
-DropdownList::DropdownList(Dropdown* Owner, const Array<String>& Options)
+DropdownList::DropdownList(Dropdown* Owner, const Array<const char*>& Options)
 	:owner(Owner)
 {
 	VerticalStack* stack = new VerticalStack();

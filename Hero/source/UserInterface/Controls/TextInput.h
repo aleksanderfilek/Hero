@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Canvas.h"
-#include "../../GenericTypes/String.h"
 #include "../../ThirdParty/SDL2/SDL.h"
 
-EVENT_DISPATCHER(TextInputFinished, const String&)
+EVENT_DISPATCHER(TextInputFinished, const char*)
 
 class HERO_API TextInput : public Canvas
 {
@@ -12,7 +11,7 @@ private:
 	class Image* cursor = nullptr;
 	class Image* background = nullptr;
 	class Label* label = nullptr;
-	String text;
+	char* text = nullptr;
 	bool inputEnabled = false;
 	void OnInputText(const void* Event);
 
@@ -21,11 +20,12 @@ private:
 	void OnCancel(class Control* context);
 public:
 	TextInput();
+	~TextInput();
 
 	TextInputFinished OnTextInputFinished;
 
-	String GetText() const { return text; }
-	void SetText(const String& Text);
+	const char* GetText() const { return text; }
+	void SetText(const char* Text);
 
 	class Image* GetCursorImage() const;
 	class Image* GetBackgroundImage() const;

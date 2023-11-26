@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include <iostream>
 
 struct HERO_API Int4
@@ -11,7 +10,7 @@ struct HERO_API Int4
     constexpr Int4() : X(0), Y(0), Z(0), W(0) {}
     constexpr Int4(int X, int Y, int Z, int W) : X(X), Y(Y), Z(Z), W(W) {}
     Int4(const Int4& Other);
-    Int4(const String& Str);
+    Int4(const char* Str);
 
     constexpr static inline Int4 Zero()     { return Int4(0, 0, 0, 0); }
     constexpr static inline Int4 One()      { return Int4(1, 1, 1, 1); }

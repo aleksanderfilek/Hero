@@ -2,7 +2,7 @@
 
 #include "../Definitions.h"
 #include "ResourceHandle.h"
-#include "../GenericTypes/String.h"
+#include <string>
 
 class HERO_API Font : public ResourceHandle
 {
@@ -14,6 +14,6 @@ public:
     Font(struct stbtt_fontinfo* Info, uint8_t* Buffer);
     ~Font();
 
-    class Texture* CreateTexture(const String& Text, uint32_t Height);
-    int GetTextWidth(const String& Text, uint32_t Height) const;
+    class Texture* CreateTexture(const char* Text, uint32_t Height);
+    int GetTextWidth(const char* Text, uint32_t Height) const;
 };

@@ -29,7 +29,7 @@ public:
 		loaders.Add(key, loader);
 	}
 
-	class ResourceHandle* Add(StringId Id, const String& Path, bool IsAbsolutePath = false);
+	class ResourceHandle* Add(StringId Id, const char* Path, bool IsAbsolutePath = false);
 	void Add(const StringId& Id, class ResourceHandle* Resource, const StringId& ResourceId);
 	void Remove(StringId Id);
 	void Clear();
@@ -51,6 +51,6 @@ public:
 		converters.Add(key, converter);
 	}
 
-	bool Convert(const String& Path, bool IsAbsolutePath = false);
+	bool Convert(const char* Path, bool IsAbsolutePath = false);
 	void RegisterEngineResourceConverters();
 };

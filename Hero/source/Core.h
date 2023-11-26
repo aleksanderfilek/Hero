@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Definitions.h"
-#include "GenericTypes/String.h"
 #include "Subsystems/SubsystemManager.h"
+#include <string>
 
 enum class CoreState
 {
@@ -16,7 +16,7 @@ class HERO_API Core
 private:
     static Core* instance;
     
-    String startupDirectory;
+    const char* startupDirectory;
 
     CoreState state;
 
@@ -31,5 +31,5 @@ public:
     void Stop();
     void AddSubsystem(class Subsystem* Subsystem);
 
-    const String& GetStartupDirectory() const { return startupDirectory; }
+    const char* GetStartupDirectory() const { return startupDirectory; }
 };

@@ -30,7 +30,6 @@
     <ClInclude Include="source\Core.h" />
     <ClInclude Include="source\Definitions.h" />
     <ClInclude Include="source\GenericTypes\Event.h" />
-    <ClInclude Include="source\GenericTypes\String.h" />
     <ClInclude Include="source\GenericTypes\StringId.h" />
     <ClInclude Include="source\Graphics\Color.h" />
     <ClInclude Include="source\Graphics\RenderTarget.h" />
@@ -192,6 +191,7 @@
     <ClInclude Include="source\UserInterface\Controls\HorizontalStack.h" />
     <ClInclude Include="source\UserInterface\Controls\Image.h" />
     <ClInclude Include="source\UserInterface\Controls\Label.h" />
+    <ClInclude Include="source\UserInterface\Controls\MenuList.h" />
     <ClInclude Include="source\UserInterface\Controls\Switcher.h" />
     <ClInclude Include="source\UserInterface\Controls\TextInput.h" />
     <ClInclude Include="source\UserInterface\Controls\VerticalStack.h" />
@@ -204,7 +204,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Core.cpp" />
-    <ClCompile Include="source\GenericTypes\String.cpp" />
     <ClCompile Include="source\GenericTypes\StringId.cpp" />
     <ClCompile Include="source\Graphics\Color.cpp" />
     <ClCompile Include="source\Graphics\RenderTarget.cpp" />
@@ -260,6 +259,7 @@
     <ClCompile Include="source\UserInterface\Controls\HorizontalStack.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Image.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Label.cpp" />
+    <ClCompile Include="source\UserInterface\Controls\MenuList.cpp" />
     <ClCompile Include="source\UserInterface\Controls\Switcher.cpp" />
     <ClCompile Include="source\UserInterface\Controls\TextInput.cpp" />
     <ClCompile Include="source\UserInterface\Controls\VerticalStack.cpp" />

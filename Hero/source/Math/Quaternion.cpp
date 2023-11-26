@@ -41,9 +41,9 @@ Quaternion::Quaternion(float angle, const Float3& aXis)
     Z = sinf(angle * 0.5f) * aXis.Z;
 }
 
-Quaternion::Quaternion(const String& Str)
+Quaternion::Quaternion(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%f,%f,%f,%f}", &W, &X, &Y, &Z);
+    sscanf(Str, "{%f,%f,%f,%f}", &W, &X, &Y, &Z);
 }
 
 Float3 Quaternion::GetForwardVector() const

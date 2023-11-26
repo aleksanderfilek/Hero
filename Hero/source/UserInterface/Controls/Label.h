@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Image.h"
+#include <string>
+#include <array>
 
 enum class TextAlligment
 {
@@ -20,13 +22,13 @@ struct LabelStyle
     class Font* Font = nullptr;
     TextAlligment Alligment = TextAlligment::LEFT;
     uint32_t Size = 24;
-    Color Color;
+    Color Color; 
 };
 
 class HERO_API Label : public Image
 {
 private:
-    String text;
+    char* text = nullptr;
     Int2 textureSize;
     Int2 texturePosition;
     TextAlligment alligment = TextAlligment::LEFT_TOP;
@@ -41,8 +43,8 @@ public:
     void SetAlligment(TextAlligment Alligment);
     void SetFont(class Font* Font);
     class Font* GetFont() const { return font; }
-    void SetText(const String& Text);
-    String GetText() const { return text; }
+    void SetText(const char* Text);
+    const char* GetText() const { return text; }
     void SetTextSize(uint32_t Size);
     uint32_t GeTextSize() const { return textSize; }
     void Apply();
@@ -51,6 +53,6 @@ public:
     virtual void _InternalUpdateTransforms() override;
 
 public:
-    void SetLabelStyle(LabelStyle& Style);
+    void SetLabelStyle(const LabelStyle& Style);
     LabelStyle GetLabelStyle() const;
 };

@@ -37,15 +37,15 @@ void ResourceSubsystem::Shutdown()
     Clear();
 }
 
-ResourceHandle* ResourceSubsystem::Add(StringId Id, const String& Path, bool IsAbsolutePath)
+ResourceHandle* ResourceSubsystem::Add(StringId Id, const char* Path, bool IsAbsolutePath)
 {
-    String absolutePath = Path;
+    const char* absolutePath = Path;
     if(!IsAbsolutePath)
     {
         absolutePath = Path::Combine(Core::Get().GetStartupDirectory(), Path);
     }
 
-    std::ifstream file(*absolutePath, std::ios::binary);
+    std::ifstream file(absolutePath, std::ios::binary);
     if (!file.is_open())
     {   
         std::cout << "Could not load resource, path: " << absolutePath << std::endl;
@@ -123,19 +123,19 @@ void ResourceSubsystem::RegisterEngineResourceLoaders()
     RegisterResourceLoader<MeshLoader>();
 }
 
-bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
+bool ResourceSubsystem::Convert(const char* Path, bool IsAbsolutePath)
 {
-    std::string path = *Path;
-    String extension(path.substr(path.find_last_of(".") + 1).c_str());
+    std::string path = Path;
+    std::string extension = path.substr(path.find_last_of(".") + 1);
 
     IResourceConverter* converter = nullptr;
     for(auto& converterPair: converters)
     {
         bool found = false;
 
-        Array<String> extensions;
+        Array<const char*> extensions;
         converterPair.second->GetAcceptableExtensions(extensions);
-        for(const String& ext: extensions)
+        for(const char* ext: extensions)
         {
             if(ext == extension)
             {
@@ -156,7 +156,7 @@ bool ResourceSubsystem::Convert(const String& Path, bool IsAbsolutePath)
         return false;
     }
 
-    String absolutePath = Path;
+    const char* absolutePath = Path;
     if(!IsAbsolutePath)
     {
         absolutePath = Path::Combine(Core::Get().GetStartupDirectory(), Path);

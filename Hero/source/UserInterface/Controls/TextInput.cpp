@@ -31,6 +31,11 @@ TextInput::TextInput()
 	OnLeftClick.AddEvent(this, &TextInput::OnClick);
 }
 
+TextInput::~TextInput()
+{
+	free(text);
+}
+
 void TextInput::OnInputText(const void* Event)
 {
 	bool render = false;
@@ -38,20 +43,27 @@ void TextInput::OnInputText(const void* Event)
 
 	if (event->type == SDL_KEYDOWN)
 	{
+		int strlength = strlen(text);
 		//Handle backspace
-		if (event->key.keysym.sym == SDLK_BACKSPACE && text.Length() > 0)
+		if (event->key.keysym.sym == SDLK_BACKSPACE && strlength > 0)
 		{
 			//lop off character
-			if (text.Length() > 0)
+			if (strlength > 0)
 			{
-				text.PopBack();
+				if (text)
+				{
+					free(text);
+				}
+
+				text = (char*)malloc(strlength * sizeof(char));
+				text[strlength - 1] = '\0';
 			}
 			render = true;
 		}
 		//Handle copy
 		else if (event->key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
 		{
-			SDL_SetClipboardText(*text);
+			SDL_SetClipboardText(text);
 		}
 		//Handle paste
 		else if (event->key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
@@ -76,8 +88,8 @@ void TextInput::OnInputText(const void* Event)
 
 	if (render)
 	{
-		label->SetText(*text);
-		cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0 });
+		label->SetText(text);
+		cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0});
 		label->Apply();
 	}
 }
@@ -92,14 +104,14 @@ void TextInput::OnClick(class Control* Control)
 	inputEnabled = true;
 	SDL_StartTextInput();
 	cursor->SetVisibility(VisibilityState::VISIBLE);
-	cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0 });
+	cursor->SetPosition({ label->GetFont()->GetTextWidth(label->GetText(), label->GeTextSize()), 0});
 
 	GetUserInterface()->GetWindow()->OnWindowEventCustom.AddEvent(this, &TextInput::OnInputText);
 }
 
-void TextInput::SetText(const String& Text)
+void TextInput::SetText(const char* Text)
 {
-	text = Text;
+	text = _strdup(Text);
 	label->SetText(text);
 	label->Apply();
 }

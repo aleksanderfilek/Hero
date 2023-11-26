@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include <iostream>
 
 struct HERO_API Float3
@@ -11,7 +10,7 @@ struct HERO_API Float3
     constexpr Float3() : X(0.0f), Y(0.0f), Z(0.0f) {}
     constexpr Float3(float X, float Y, float Z) : X(X), Y(Y), Z(Z) {}
     Float3(const Float3& Other);
-    Float3(const String& Str);
+    Float3(const char* Str);
 
     constexpr static inline Float3 Zero()     { return Float3(0.0f, 0.0f, 0.0f); }
     constexpr static inline Float3 One()      { return Float3(1.0f, 1.0f, 1.0f); }

@@ -14,7 +14,7 @@ Core::Core()
 
 Core::~Core()
 {
-
+    delete[] startupDirectory;
 }
 
 void Core::Start()

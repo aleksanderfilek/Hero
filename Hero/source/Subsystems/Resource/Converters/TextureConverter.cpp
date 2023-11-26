@@ -9,21 +9,21 @@
 #include <sstream>
 #include <string>
 
-void TextureConverter::GetAcceptableExtensions(Array<String>& Extensions)
+void TextureConverter::GetAcceptableExtensions(Array<const char*>& Extensions)
 {
     Extensions.SetOffsetSize(5);
     Extensions.Add("png");
-    Extensions.Add("jpeg");
-    Extensions.Add("jpg");
-    Extensions.Add("bmp");
-    Extensions.Add("tga");
+    //Extensions.Add("jpeg");
+    //Extensions.Add("jpg");
+    //Extensions.Add("bmp");
+    //Extensions.Add("tga");
 }
 
-void TextureConverter::Convert(const String& FilePath)
+void TextureConverter::Convert(const char* FilePath)
 {
     int width, height, nrChannels;
 	uint32_t dataLength = 0;
-	uint8_t* data = stbi_load(*FilePath, &width, &height, &nrChannels, 0);
+	uint8_t* data = stbi_load(FilePath, &width, &height, &nrChannels, 0);
 	uint8_t* encoded = QOI::Encode(data, (uint32_t)width, (uint32_t)height, (uint8_t)nrChannels, dataLength);
 
 	stbi_image_free(data);
@@ -64,7 +64,7 @@ void TextureConverter::Convert(const String& FilePath)
 	delete[] encoded;
 
 	std::stringstream outputPath;
-    std::string path = *FilePath;
+    std::string path = FilePath;
 	outputPath << path.substr(0, path.find(".") + 1);
 	outputPath << "he";
 	std::ofstream output(outputPath.str(), std::ios::binary);

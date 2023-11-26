@@ -6,6 +6,11 @@
 
 Label::~Label()
 {
+    if (text)
+    {
+        free(text);
+    }
+
     if (texture)
     {
         delete texture;
@@ -28,9 +33,9 @@ void Label::SetFont(Font* Font)
 }
 
 
-void Label::SetText(const String& Text)
+void Label::SetText(const char* Text)
 {
-    text = Text;
+    text = _strdup(Text);
 }
 
 void Label::SetTextSize(uint32_t Size)
@@ -51,7 +56,7 @@ void Label::Apply()
         texture = nullptr;
     }
 
-    if (text.IsEmpty())
+    if (text == nullptr || strlen(text) == 0)
     {
         return;
     }
@@ -146,7 +151,7 @@ void Label::Draw(class ISpriteRenderer* SpriteRenderer)
         textureSize, textureRect, color);
 }
 
-void Label::SetLabelStyle(LabelStyle& Style)
+void Label::SetLabelStyle(const LabelStyle& Style)
 {
     font = Style.Font;
     alligment = Style.Alligment;

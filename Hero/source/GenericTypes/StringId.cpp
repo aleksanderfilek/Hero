@@ -1,7 +1,5 @@
 #include "StringId.h"
 
-Map<uint32_t, const char*> StringId::data;
-
 uint32_t HashCrc32(const char* str)
 {
 	uint32_t crc = 0xFFFFFFFF;
@@ -22,10 +20,7 @@ uint32_t HashCrc32(const char* str)
 
 StringId::StringId()
 {
-    if(data.Size() == 0)
-    {
-        data.Add(0, {"None"});
-    }
+	id = 0;
 }
 
 StringId::StringId(uint32_t Id) : StringId()
@@ -43,26 +38,20 @@ StringId::StringId(const char* Str) : StringId()
     Insert(Str);
 }
 
-StringId::StringId(const String& Str) : StringId()
-{
-    Insert(*const_cast<String&>(Str));
-}
-
 void StringId::Insert(const char* Str)
 {
     id = HashCrc32(Str);
-    data.Add(id, _strdup(Str));
 }
 
-StringId::operator String()
-{
-    if(data.Contains(id))
-    {
-        return data[id];
-    }
-
-    return StringId::None();
-}
+//StringId::operator String()
+//{
+//    if(data.Contains(id))
+//    {
+//        return data[id];
+//    }
+//
+//    return StringId::None();
+//}
 
 bool StringId::operator==(const StringId& Other) const
 {

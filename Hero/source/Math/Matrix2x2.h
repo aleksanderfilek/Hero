@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include <iostream>
 #include "Float2.h"
 
@@ -20,8 +19,6 @@ struct HERO_API Matrix2x2
         return { Float2(1.0f,0.0f),
                 Float2(0.0f,1.0f) };
     }
-
-    Matrix2x2(const String& Str);
 
     float Determinant() const;
     Matrix2x2 Tansponed() const;

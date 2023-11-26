@@ -11,9 +11,9 @@ Float4::Float4(const Float4& Other)
     W = Other.W;
 }
 
-Float4::Float4(const String& Str)
+Float4::Float4(const char* Str)
 {
-    sscanf(*const_cast<String&>(Str), "{%f,%f,%f,%f}", &X, &Y, &Z, &W);
+    sscanf(Str, "{%f,%f,%f,%f}", &X, &Y, &Z, &W);
 }
 
 float Float4::Length() const

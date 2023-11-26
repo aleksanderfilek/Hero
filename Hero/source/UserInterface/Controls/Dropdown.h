@@ -4,6 +4,7 @@
 #include "../../Graphics/Color.h"
 #include "../../Math/Float4.h"
 #include "../../Math/Int4.h"
+#include <string>
 
 EVENT_DISPATCHER(OptionChangedEvent, class Control*, int);
 
@@ -38,7 +39,7 @@ private:
 	class Image* image = nullptr;
 	class Label* label = nullptr;
 
-	Array<String> options;
+	Array<const char*> options;
 	int selectedOption = -1;
 
 public:
@@ -47,10 +48,10 @@ public:
 	class Image* GetBackgroundImage() const;
 	class Label* GetLabel() const;
 
-	void AddOption(const String& Option);
+	void AddOption(const char* Option);
 	void ClearOptions();
 	void SetOption(int Index);
-	int GetCurrentOption(String& Option);
+	int GetCurrentOption(const char*& Option);
 
 private:
 	bool opened = false;

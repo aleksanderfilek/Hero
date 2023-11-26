@@ -4,7 +4,6 @@
 #include "../../../ThirdParty/GL/Gl.h"
 #include "../../../Containers/Array.h"
 #include "../../../Containers/Map.h"
-#include "../../../GenericTypes/String.h"
 
 ResourceHandle *ShaderLoader::Load(const uint8_t *Data, class ResourceSubsystem *Subsystem)
 {
@@ -21,7 +20,7 @@ ResourceHandle *ShaderLoader::Load(const uint8_t *Data, class ResourceSubsystem 
         GL_TESS_EVALUATION_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER };
     uint32_t shaders[5];
 
-    Array<String> uniformVec;
+    Array<const char*> uniformVec;
     uniformNumber = ByteOperations::ReadUint32(Data, &index);
     for (int i = 0; i < uniformNumber; i++)
     {
@@ -31,12 +30,12 @@ ResourceHandle *ShaderLoader::Load(const uint8_t *Data, class ResourceSubsystem 
         content[size] = '\0';
         ByteOperations::ReadPtr(Data, &index, (uint8_t*)content, size);
 
-        uniformVec.Add(String(content));
+        uniformVec.Add(content);
 
         delete[] content;
     }
 
-    Array<String> textureUniformVec;
+    Array<const char*> textureUniformVec;
     textureUniformNumber = ByteOperations::ReadUint32(Data, &index);
     for (int i = 0; i < textureUniformNumber; i++)
     {
@@ -46,7 +45,7 @@ ResourceHandle *ShaderLoader::Load(const uint8_t *Data, class ResourceSubsystem 
         content[size] = '\0';
         ByteOperations::ReadPtr(Data, &index, (uint8_t*)content, size);
 
-        textureUniformVec.Add(String(content));
+        textureUniformVec.Add(content);
 
         delete[] content;
     }
@@ -108,7 +107,7 @@ ResourceHandle *ShaderLoader::Load(const uint8_t *Data, class ResourceSubsystem 
     Map<StringId, uint32_t> uniforms;
     for (auto uniform : uniformVec)
     {
-        uint32_t loc = glGetUniformLocation(program, *uniform);
+        uint32_t loc = glGetUniformLocation(program, uniform);
         uniforms.Add(StringId(uniform), loc);
     }
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Definitions.h"
-#include "../GenericTypes/String.h"
 #include "Float3.h"
 #include <iostream>
 
@@ -13,7 +12,7 @@ struct HERO_API Quaternion
     Quaternion(float RotX, float RotY, float RotZ);
     Quaternion(const Float3& Vector);
     Quaternion(float Angle, const Float3& Axis);
-    Quaternion(const String& Str);
+    Quaternion(const char* Str);
 
     Float3 GetForwardVector() const;
     Float3 GetRightVector() const;
