@@ -29,6 +29,9 @@ TextInput::TextInput()
 	Add(cursor);
 
 	OnLeftClick.AddEvent(this, &TextInput::OnClick);
+
+	text = (char*)malloc(sizeof(char));
+	text[0] = '\0';
 }
 
 TextInput::~TextInput()
@@ -50,13 +53,16 @@ void TextInput::OnInputText(const void* Event)
 			//lop off character
 			if (strlength > 0)
 			{
+				char* newText = (char*)malloc(strlength * sizeof(char));
+				newText[strlength - 1] = '\0';
+				std::memcpy(newText, text, strlength - 1);
+
 				if (text)
 				{
 					free(text);
 				}
 
-				text = (char*)malloc(strlength * sizeof(char));
-				text[strlength - 1] = '\0';
+				text = newText;
 			}
 			render = true;
 		}
@@ -81,7 +87,14 @@ void TextInput::OnInputText(const void* Event)
 	{
 		if (!(SDL_GetModState() & KMOD_CTRL && (event->text.text[0] == 'c' || event->text.text[0] == 'C' || event->text.text[0] == 'v' || event->text.text[0] == 'V')))
 		{
-			text += event->text.text[0];
+			int length = strlen(text);
+			int newLength = length + 2;
+			char* newText = (char*)malloc(newLength * sizeof(char));
+			std::memcpy(newText, text, length);
+			newText[length] = event->text.text[0];
+			newText[newLength - 1] = '\0';
+			free(text);
+			text = newText;
 			render = true;
 		}
 	}
@@ -111,6 +124,10 @@ void TextInput::OnClick(class Control* Control)
 
 void TextInput::SetText(const char* Text)
 {
+	if (text)
+	{
+		free(text);
+	}
 	text = _strdup(Text);
 	label->SetText(text);
 	label->Apply();
