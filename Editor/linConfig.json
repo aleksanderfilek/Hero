@@ -1,0 +1,26 @@
+{
+    "Name" : "Editor",
+    "Type": "Executable",
+    "OutputDir": "bin",
+    "Compiler" : "g++",
+    "LibsDir" : [
+        "lib"
+    ],
+    "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
+        "-lm",
+        "-lhero"
+    ],
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO="
+    ]
+}

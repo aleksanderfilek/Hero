@@ -1,2 +1,10 @@
-.builder/*
-x64/*
+*.out
+*.o
+**/obj
+**/bin
+!Example/bin
+!Tools/Builder/bin
+**/.builder
+*.csv
+*.temp
+**/tmp
