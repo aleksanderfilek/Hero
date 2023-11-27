@@ -1,0 +1,25 @@
+{
+    "Name" : "libhero.so",
+    "Type": "SharedLibrary",
+    "OutputDir": "lib",
+    "Compiler" : "g++",
+    "LibsDir" : [
+        "bin"
+    ],
+    "Libs" : [
+        "-lSDL2main", 
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lSDL2_mixer",
+        "-lSOIL",
+        "-lGLEW",
+        "-lGL",
+        "-lGLU",
+        "-lm"
+    ],
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO="
+    ]
+}

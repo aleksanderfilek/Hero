@@ -1,0 +1,24 @@
+{
+    "Name" : "libhero.dll",
+    "Extension": "cpp",
+    "Type": "SharedLibrary",
+    "OutputDir": "Hero/lib",
+    "Compiler" : "g++",
+    "LibsDir" : [
+        "Hero/lib"
+    ],
+    "Libs" : [
+        "-lSDL2", 
+        "-lSDL2_ttf",
+        "-lopengl32",
+        "-lglu32",
+        "-lm",
+        "-lcomdlg32",
+        "-lole32"
+    ],
+    "CompilerDefines" : [
+        "DEBUG",
+        "HERO_DEBUG",
+        "HERO=__declspec(dllexport)"
+    ]
+}

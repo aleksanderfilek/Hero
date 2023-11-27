@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Engine/inc/Core/**",
+                "${workspaceFolder}/Engine/inc/Animation/**",
+                "${workspaceFolder}/Engine/inc/Components/**",
+                "${workspaceFolder}/Engine/inc/Graphics/**",
+                "${workspaceFolder}/Engine/inc/Physics/**",
+                "${workspaceFolder}/Engine/inc/Systems/**",
+                "${workspaceFolder}/Engine/inc/UserInterface/**",
+                "${workspaceFolder}/Engine/inc/Utility/**",
+                "${workspaceFolder}/Editor/inc/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
