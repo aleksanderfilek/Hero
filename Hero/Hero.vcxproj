@@ -84,7 +84,6 @@
     <ClInclude Include="source\Subsystems\Resource\Loaders\TextureLoader.h" />
     <ClInclude Include="source\Subsystems\Resource\ResourceSubsystem.h" />
     <ClInclude Include="source\Subsystems\State\State.h" />
-    <ClInclude Include="source\Subsystems\State\StateObject.h" />
     <ClInclude Include="source\Subsystems\State\StateSubsystem.h" />
     <ClInclude Include="source\Subsystems\Subsystem.h" />
     <ClInclude Include="source\Subsystems\SubsystemManager.h" />
@@ -252,7 +251,6 @@
     <ClCompile Include="source\Subsystems\Resource\Loaders\TextureLoader.cpp" />
     <ClCompile Include="source\Subsystems\Resource\ResourceSubsystem.cpp" />
     <ClCompile Include="source\Subsystems\State\State.cpp" />
-    <ClCompile Include="source\Subsystems\State\StateObject.cpp" />
     <ClCompile Include="source\Subsystems\State\StateSubsystem.cpp" />
     <ClCompile Include="source\Subsystems\Subsystem.cpp" />
     <ClCompile Include="source\Subsystems\SubsystemManager.cpp" />

@@ -5,6 +5,8 @@
 #include "Timer.h"
 #include <cstdint>
 
+class HERO_API TimerArray : public Array<class Timer*>{};
+
 class HERO_API TimeSubsystem : public Subsystem
 {
 private:
@@ -31,7 +33,7 @@ public:
     float GetDeltaTime() const;
 
 private:
-    Array<class Timer*> timers;
+    TimerArray timers;
 
 public:
     template<class UserClass>

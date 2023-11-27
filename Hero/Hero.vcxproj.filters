@@ -195,9 +195,6 @@
     <ClInclude Include="source\Subsystems\State\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Subsystems\State\StateObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\Subsystems\State\StateSubsystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -693,9 +690,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Subsystems\State\State.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Subsystems\State\StateObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Subsystems\State\StateSubsystem.cpp">

@@ -8,13 +8,16 @@
 
 EVENT_DISPATCHER(SubsystemEvent, void*)
 
+class HERO_API SubsystemArray : public Array<class Subsystem*>{};
+class HERO_API SubsystemEventsMap : public Map<StringId, SubsystemEvent>{};
+
 class HERO_API SubsystemManager
 {
 private:
-    Array<class Subsystem*> subsystems;
-    Array<class Subsystem*> subsystemsToUpdate;
+    SubsystemArray subsystems;
+    SubsystemArray subsystemsToUpdate;
 
-    Map<StringId, SubsystemEvent> subsystemEventsMap;
+    SubsystemEventsMap subsystemEventsMap;
 
 public:
     void AddSubsystem(class Subsystem* Subsystem, bool Startup);

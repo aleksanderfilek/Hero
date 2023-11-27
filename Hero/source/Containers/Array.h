@@ -96,6 +96,10 @@ public:
         capacity = Other.length;
 
         data = (ElementType*)malloc(capacity * sizeof(ElementType));
+        if (!data)
+        {
+            return;
+        }
         std::memcpy(data, Other.data, capacity * sizeof(ElementType));
     }
 
@@ -116,6 +120,10 @@ public:
         capacity = Length;
 
         data = (ElementType*)malloc(capacity * sizeof(ElementType));
+        if (!data)
+        {
+            return;
+        }
         std::memcpy(data, Data, length * sizeof(ElementType));
     }
 
@@ -144,7 +152,10 @@ public:
             ElementType* oldData = data;
             capacity += offsetSize;
             data = (ElementType*)malloc(capacity * sizeof(ElementType));
-
+            if (!data)
+            {
+                return -1;
+            }
             if (oldData)
             {
                 std::memcpy(data, oldData, length * sizeof(ElementType));
