@@ -5,6 +5,7 @@
 /**
  * @brief Map is temporarly implemented on top of unorderedmap.
  */
+
 template<typename KeyType, typename ValueType>
 class HERO_API Map
 {

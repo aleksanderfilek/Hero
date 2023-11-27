@@ -5,14 +5,20 @@
 #include <algorithm>
 #include <cstdlib>
 
-template<typename ElementType>
-struct HERO_API ArrayIterator
+template<typename ElementType> struct ArrayIterator
 {
     using iterator_category = std::forward_iterator_tag;
-    using difference_type   = std::ptrdiff_t;
-    using value_type        = ElementType;
-    using pointer           = ElementType*;
-    using reference         = ElementType&;
+    using difference_type = std::ptrdiff_t;
+    using value_type = ElementType;
+    using pointer = ElementType*;
+    using reference = ElementType&;
+
+private:
+    pointer data;
+    int length = 0;
+    int index = 0;
+
+public:
 
     ArrayIterator(ElementType* Data, int Length, int Index) 
         : data(Data), length(Length), index(Index) {}
@@ -36,7 +42,7 @@ struct HERO_API ArrayIterator
     }
 
     friend bool operator== (const ArrayIterator& a, const ArrayIterator& b) { return a.index == b.index; }
-    friend bool operator!= (const ArrayIterator& a, const ArrayIterator& b) { return a.index != b.index; };
+    friend bool operator!= (const ArrayIterator& a, const ArrayIterator& b) { return a.index != b.index; }
 
     ArrayIterator operator-(int Value)
     {
@@ -45,10 +51,6 @@ struct HERO_API ArrayIterator
         return tmp;
     }
 
-    private:
-        ElementType* data = nullptr;
-        int length = 0;
-        int index = 0;
 };
 
 template<typename ElementType>
@@ -75,7 +77,7 @@ public:
      */
     Array(int Capacity, int OffsetSize = 1) : capacity(Capacity), offsetSize(OffsetSize)
     {
-        data = (ElementType*)calloc(Capacity, sizeof(ElementType));;
+        data = (ElementType*)calloc(Capacity, sizeof(ElementType));
     }
 
     /**
@@ -95,8 +97,6 @@ public:
 
         data = (ElementType*)malloc(capacity * sizeof(ElementType));
         std::memcpy(data, Other.data, capacity * sizeof(ElementType));
-        //std::copy(Other.begin(), Other.end() - 1, begin());
-        //std::memcpy(data, Other.data, length * sizeof(ElementType));
     }
 
     /**

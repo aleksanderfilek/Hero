@@ -6,7 +6,7 @@
 #include "../Containers/Map.h"
 #include <functional>
 
-uint32_t HashCrc32(const char* str);
+uint32_t HERO_API HashCrc32(const char* str);
 
 class HERO_API StringId
 {
@@ -14,8 +14,6 @@ private:
     uint32_t id = 0;
 
     void Insert(const char* Str);
-
-    static Map<uint32_t, const char*> data;
 
 public:
     StringId();
@@ -28,6 +26,7 @@ public:
     uint32_t operator *() const { return id; }
     //operator String();
     bool operator==(const StringId& Other) const;
+    bool operator!=(const StringId& Other) const;
     bool operator<(const StringId& Other) const;
 };
 

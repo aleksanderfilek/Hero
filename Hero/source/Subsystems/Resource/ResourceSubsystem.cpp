@@ -1,6 +1,6 @@
 #include "ResourceSubsystem.h"
 #include "../../Resources/ResourceHandle.h"
-#include "../../Utility/Path.h"
+#include "../../Utility/PathUtil.h"
 #include "../../Core.h"
 #include "Loaders/TextureLoader.h"
 #include "Loaders/ShaderLoader.h"
@@ -42,7 +42,7 @@ ResourceHandle* ResourceSubsystem::Add(StringId Id, const char* Path, bool IsAbs
     const char* absolutePath = Path;
     if(!IsAbsolutePath)
     {
-        absolutePath = Path::Combine(Core::Get().GetStartupDirectory(), Path);
+        absolutePath = PathUtil::Combine(Core::Get().GetStartupDirectory(), Path);
     }
 
     std::ifstream file(absolutePath, std::ios::binary);
@@ -159,7 +159,7 @@ bool ResourceSubsystem::Convert(const char* Path, bool IsAbsolutePath)
     const char* absolutePath = Path;
     if(!IsAbsolutePath)
     {
-        absolutePath = Path::Combine(Core::Get().GetStartupDirectory(), Path);
+        absolutePath = PathUtil::Combine(Core::Get().GetStartupDirectory(), Path);
     }
 
     converter->Convert(absolutePath);

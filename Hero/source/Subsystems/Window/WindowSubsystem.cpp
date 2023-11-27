@@ -6,8 +6,14 @@
 #include "../../Core.h"
 #include "../../Resources/Mesh.h"
 #include "../../Resources/Shader.h"
+#include <cstring>
 
 WindowSubsystem* WindowSubsystem::instance = nullptr;
+
+bool WindowConfiguration::operator==(const WindowConfiguration& Other) const
+{
+    return strcmp(Title, Other.Title) == 0;
+}
 
 WindowSubsystem::WindowSubsystem(const StringId& Id, const WindowConfiguration& WindowConfig)
 {

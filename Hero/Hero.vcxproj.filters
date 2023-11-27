@@ -534,7 +534,7 @@
     <ClInclude Include="source\Utility\ByteOperations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Utility\Path.h">
+    <ClInclude Include="source\Utility\PathUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Utility\Platform.h">
@@ -559,6 +559,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\UserInterface\Controls\MenuList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Algorithms\Pathfinding\PathfindingManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Algorithms\Pathfinding\PathNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Algorithms\Pathfinding\Path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Algorithms\Pathfinding\SquarePathfindingStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Algorithms\Pathfinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -731,7 +746,7 @@
     <ClCompile Include="source\Utility\ByteOperations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utility\Path.cpp">
+    <ClCompile Include="source\Utility\PathUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Utility\Platform.cpp">
@@ -759,6 +774,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\UserInterface\Controls\MenuList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Algorithms\Pathfinding\PathfindingManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Algorithms\Pathfinding\Path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Algorithms\Pathfinding\PathfindingStrategy.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Algorithms\Pathfinding\SquarePathfindingStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

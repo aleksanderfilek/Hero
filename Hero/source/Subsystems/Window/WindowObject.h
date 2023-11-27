@@ -29,7 +29,11 @@ class WindowRenderTarget
 public:
     StringId Id;
     class RenderTarget* RenderTarget = nullptr;
+
+    bool operator!=(const WindowRenderTarget& Other) const;
 };
+
+class HERO_API WindowTargetArray : public Array<WindowRenderTarget>{};
 
 class HERO_API WindowObject
 {
@@ -87,7 +91,7 @@ public:
 
 private:
     class RenderTarget* combinedRenderTarget = nullptr;
-    Array<WindowRenderTarget> renderTargets;
+    WindowTargetArray renderTargets;
 
 public:
     WindowRenderTarget* CreateWindowRenderTarget(const StringId& Id);

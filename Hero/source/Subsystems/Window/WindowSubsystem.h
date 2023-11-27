@@ -14,7 +14,12 @@ struct WindowConfiguration
     Int2 MinimumSize;
     Color BackgroundColor;
     uint32_t Flags = 0;
+
+    bool operator==(const WindowConfiguration & Other) const;
 };
+
+class HERO_API WindowConfigurationQueue : public Array<std::pair<StringId, WindowConfiguration>> {};
+class HERO_API WindowObjectArray : public Array<class WindowObject*> {};
 
 class HERO_API WindowSubsystem : public Subsystem
 {
@@ -34,8 +39,8 @@ public:
     virtual void Update() override;
 
 private:
-    Array<std::pair<StringId, WindowConfiguration>> windowsConfigurationsToCreate;
-    Array<class WindowObject*> windowObjects;
+    WindowConfigurationQueue windowsConfigurationsToCreate;
+    WindowObjectArray windowObjects;
     class WindowObject* currentWidnow = nullptr;
 
     void ReactToWindowFocusGained(class WindowObject* Window);

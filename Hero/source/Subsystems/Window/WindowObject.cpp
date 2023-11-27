@@ -8,6 +8,11 @@
 #include "../../Resources/Mesh.h"
 #include "../../Resources/Shader.h"
 
+bool WindowRenderTarget::operator!=(const WindowRenderTarget& Other) const 
+{
+    return Id != Other.Id;
+}
+
 WindowObject::WindowObject(const StringId& Id, const WindowConfiguration& WindowConfig, WindowSubsystem* WindowSubsystem)
     : id(Id), configuration(WindowConfig), windowSubsystem(WindowSubsystem)
 {
@@ -200,7 +205,7 @@ void WindowObject::RemoveWindowRenderTarget(const StringId& Id)
 
 void WindowObject::SetWindowRenderTargetOrder(const Array<StringId>& OrderIds)
 {
-    Array<WindowRenderTarget> orderedRenderTargets;
+    WindowTargetArray orderedRenderTargets;
     for(const StringId& id: OrderIds)
     {
         const WindowRenderTarget* foundRenderTarget = nullptr;

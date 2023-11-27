@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Algorithms\Pathfinding.h" />
+    <ClInclude Include="source\Algorithms\Pathfinding\Path.h" />
+    <ClInclude Include="source\Algorithms\Pathfinding\PathfindingManager.h" />
+    <ClInclude Include="source\Algorithms\Pathfinding\PathNode.h" />
+    <ClInclude Include="source\Algorithms\Pathfinding\SquarePathfindingStrategy.h" />
     <ClInclude Include="source\Containers\Array.h" />
     <ClInclude Include="source\Containers\DynamicQuadTree.h" />
     <ClInclude Include="source\Containers\List.h" />
@@ -198,11 +203,15 @@
     <ClInclude Include="source\UserInterface\UserInterface.h" />
     <ClInclude Include="source\UserInterface\Widget.h" />
     <ClInclude Include="source\Utility\ByteOperations.h" />
-    <ClInclude Include="source\Utility\Path.h" />
+    <ClInclude Include="source\Utility\PathUtil.h" />
     <ClInclude Include="source\Utility\Platform.h" />
     <ClInclude Include="source\Utility\QOI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Algorithms\Pathfinding\Path.cpp" />
+    <ClCompile Include="source\Algorithms\Pathfinding\PathfindingManager.cpp" />
+    <ClCompile Include="source\Algorithms\Pathfinding\PathfindingStrategy.h" />
+    <ClCompile Include="source\Algorithms\Pathfinding\SquarePathfindingStrategy.cpp" />
     <ClCompile Include="source\Core.cpp" />
     <ClCompile Include="source\GenericTypes\StringId.cpp" />
     <ClCompile Include="source\Graphics\Color.cpp" />
@@ -266,7 +275,7 @@
     <ClCompile Include="source\UserInterface\UserInterface.cpp" />
     <ClCompile Include="source\UserInterface\Widget.cpp" />
     <ClCompile Include="source\Utility\ByteOperations.cpp" />
-    <ClCompile Include="source\Utility\Path.cpp" />
+    <ClCompile Include="source\Utility\PathUtil.cpp" />
     <ClCompile Include="source\Utility\Platform.cpp" />
     <ClCompile Include="source\Utility\QOI.cpp" />
   </ItemGroup>

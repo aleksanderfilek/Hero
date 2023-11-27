@@ -3,6 +3,53 @@
 #include "Array.h"
 
 template<typename ElementType>
+struct SetIterator
+{
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = ElementType;
+    using pointer = ElementType*;
+    using reference = ElementType&;
+
+    SetIterator(ElementType* Data, int Length, int Index)
+        : data(Data), length(Length), index(Index) {}
+
+    reference operator*() const { return data[index]; }
+    pointer operator->() { return &data[index]; }
+
+    // Prefix increment.
+    SetIterator& operator++()
+    {
+        index++;
+        return *this;
+    }
+
+    // Postfix increment.
+    SetIterator operator++(int)
+    {
+        ArrayIterator tmp(data, length, index);
+        index++;
+        return tmp;
+    }
+
+    friend bool operator== (const SetIterator& a, const SetIterator& b) { return a.index == b.index; };
+    friend bool operator!= (const SetIterator& a, const SetIterator& b) { return a.index != b.index; };
+
+    SetIterator operator-(int Value)
+    {
+        ArrayIterator tmp = *this;
+        tmp.index - 1;
+        return tmp;
+    }
+
+private:
+    ElementType* data = nullptr;
+    int length = 0;
+    int index = 0;
+};
+
+
+template<typename ElementType>
 class Set
 {
 private:
@@ -65,6 +112,11 @@ public:
         data.Remove(Value);
     }
 
+    bool Contains(const ElementType& Value)
+    {
+        return data.Contains(Value);
+    }
+
     /**
      * @brief Get number of elements in set.
      * 
@@ -74,4 +126,7 @@ public:
     {
         return data.Length();
     }
+
+    SetIterator<ElementType> begin() const { return SetIterator<ElementType>(data.Data(), data.Length(), 0); }
+    SetIterator<ElementType> end() const { return SetIterator<ElementType>(data.Data(), data.Length(), data.Length()); }
 };

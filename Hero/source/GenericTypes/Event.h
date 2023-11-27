@@ -18,7 +18,7 @@ template <class UserClass, typename... ParamTypes>
 class Delegate : public IDelegate<ParamTypes...>
 {
 public:
-	UserClass* object;
+	UserClass* object = nullptr;
 	void (UserClass::* methodPtr)(ParamTypes... params);
 
 	virtual void Call(ParamTypes... params) override
