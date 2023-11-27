@@ -1,6 +1,8 @@
 #include "Control.h"
 #include "../../Math/Intersections.h"
 #include "../Widget.h"
+#include "../UserInterface.h"
+#include "../../Math/Math.h"
 
 void Control::_InternalSetUserInterface(class UserInterface* UserInterface)
 {
@@ -40,7 +42,7 @@ void Control::SetPosition(const Int2& Position)
 {
     position = Position;
 
-    if(parent)
+    if (parent)
     {
         _InternalUpdateTransforms();
     }
@@ -55,7 +57,7 @@ void Control::SetSize(const Int2& Size)
 {
     size = Size;
     
-    if(parent)
+    if (parent)
     {
         _InternalUpdateTransforms();
     }
@@ -106,6 +108,36 @@ void Control::SetPivot(const Float2& Pivot)
     }
 }
 
+void Control::SetMinScale(float Scale)
+{
+    minScale = Scale;
+
+    if (parent)
+    {
+        _InternalUpdateTransforms();
+    }
+}
+
+float Control::GetMinScale() const
+{
+    return minScale;
+}
+
+void Control::SetMaxScale(float Scale)
+{
+    maxScale = Scale;
+
+    if (parent)
+    {
+        _InternalUpdateTransforms();
+    }
+}
+
+float Control::GetMaxScale() const
+{
+    return maxScale;
+}
+
 Int2 Control::GetAbsolutePosition() const
 {
     return absolutePosition;
@@ -154,6 +186,10 @@ void Control::_InternalUpdateTransforms()
         parentSize = parent->GetAbsoluteSize();
     }
 
+    Float2 windowScale = (userInterface)?userInterface->GetScale():Float2::One();
+    float unclampedScale = max(windowScale.X, windowScale.Y);
+    float clampedScale = Clamp(unclampedScale, minScale, maxScale);
+
     switch(horizontalAlligment)
     {
         case HorizontalAlligment::LEFT:
@@ -162,14 +198,14 @@ void Control::_InternalUpdateTransforms()
         {
             int PivotPoint = position.X + pivot.X * size.X;
 
-            absolutePosition.X = anchor.X * parentSize.X + PivotPoint;
-            absoluteSize.X = size.X;
+            absolutePosition.X = anchor.X * parentSize.X + PivotPoint * clampedScale;
+            absoluteSize.X = size.X * clampedScale;
             }  break;
         case HorizontalAlligment::STRETCH:
-            absolutePosition.X = position.X;
-            absoluteSize.X = parentSize.X - size.X - position.X;
+            absolutePosition.X = position.X * clampedScale;
+            absoluteSize.X = parentSize.X - (size.X + position.X) * clampedScale;
             break;
-     }
+    }
 
     switch(verticalAlligment)
     {
@@ -179,12 +215,12 @@ void Control::_InternalUpdateTransforms()
         {
             int PivotPoint = position.Y + pivot.Y * size.Y;
 
-            absolutePosition.Y = anchor.Y * parentSize.Y + PivotPoint;
-            absoluteSize.Y = size.Y;
+            absolutePosition.Y = anchor.Y * parentSize.Y + PivotPoint * clampedScale;
+            absoluteSize.Y = size.Y * clampedScale;
             }  break;
         case VerticalAlligment::STRETCH:
             absolutePosition.Y = position.Y;
-            absoluteSize.Y = parentSize.Y - size.Y - position.Y;
+            absoluteSize.Y = parentSize.Y - (size.Y + position.Y) * clampedScale;
             break;
     }
 

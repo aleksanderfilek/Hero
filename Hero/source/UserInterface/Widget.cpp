@@ -28,6 +28,7 @@ bool Widget::_InternalUpdateButtonClicks(MouseCode Code)
 void Widget::_InternalResize(const Int2& Size)
 {
     canvas.SetSize(Size);
+    canvas._InternalUpdateTransforms();
 }
 
 void Widget::AddControlToUpdate(Control* Control)

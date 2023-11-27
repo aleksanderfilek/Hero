@@ -11,12 +11,15 @@ class HERO_API UserInterface
 {
 private:
     class WindowObject* window = nullptr;
+    Int2 referenceSize;
 
 public:
-    UserInterface(class WindowObject* Window);
+    UserInterface(class WindowObject* Window, Int2 ReferenceSize);
     ~UserInterface();
 
     class WindowObject* GetWindow() const { return window; }
+    Int2 GetReferenceSize() const { return referenceSize; }
+    Float2 GetScale() const;
 
     void Update(float DeltaTime);
 

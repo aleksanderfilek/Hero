@@ -10,8 +10,8 @@
 #include "../Containers/Map.h"
 #include "../Graphics/SpriteRenderer/IntermediateSpriteRenderer.h"
 
-UserInterface::UserInterface(class WindowObject* Window)
-    : window(Window)
+UserInterface::UserInterface(class WindowObject* Window, Int2 ReferenceSize)
+    : window(Window), referenceSize(ReferenceSize)
 {
      windowSize = window->GetConfiguration().Size;
 
@@ -34,6 +34,12 @@ UserInterface::~UserInterface()
      }
 
      delete spriteRenderer;
+}
+
+Float2 UserInterface::GetScale() const
+{
+    Int2 size = window->GetConfiguration().Size;
+    return { (float)size.X / (float)referenceSize.X, (float)size.Y / (float)referenceSize.Y };
 }
 
 void UserInterface::Update(float DeltaTime)

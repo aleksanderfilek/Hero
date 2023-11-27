@@ -20,6 +20,11 @@ WindowObject::WindowObject(const StringId& Id, const WindowConfiguration& Window
 
     windowId = SDL_GetWindowID(sdlWindow);
 
+    if (configuration.MinimumSize != Int2::Zero())
+    {
+        SDL_SetWindowMinimumSize(sdlWindow, configuration.MinimumSize.X, configuration.MinimumSize.Y);
+    }
+
     glContext = SDL_GL_CreateContext(sdlWindow);
 
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

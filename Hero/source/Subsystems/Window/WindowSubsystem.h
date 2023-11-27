@@ -11,6 +11,7 @@ struct WindowConfiguration
 {
     const char* Title;
     Int2 Size;
+    Int2 MinimumSize;
     Color BackgroundColor;
     uint32_t Flags = 0;
 };

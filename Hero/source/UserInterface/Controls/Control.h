@@ -42,9 +42,11 @@ private:
     HorizontalAlligment horizontalAlligment = HorizontalAlligment::LEFT;
     VerticalAlligment verticalAlligment = VerticalAlligment::TOP;
     Float2 pivot;
+    float minScale = 1.0f;
+    float maxScale = 1.0f;
 
     Int2 absolutePosition;
-    Int2 absoluteSize;    
+    Int2 absoluteSize;
 
 public:
     virtual ~Control(){}
@@ -65,6 +67,10 @@ public:
     void SetVerticalAlligment(VerticalAlligment Alligment);
     VerticalAlligment GetVerticalAlligment() const;
     void SetPivot(const Float2& Pivot);
+    void SetMinScale(float Scale);
+    float GetMinScale() const;
+    void SetMaxScale(float Scale);
+    float GetMaxScale() const;
 
     Int2 GetAbsolutePosition() const;
     Int2 GetAbsoluteSize() const;
