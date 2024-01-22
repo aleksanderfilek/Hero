@@ -573,6 +573,9 @@
     <ClInclude Include="source\Algorithms\Pathfinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\Math\Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Core.cpp">
@@ -780,6 +783,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Algorithms\Pathfinding\SquarePathfindingStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Math\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

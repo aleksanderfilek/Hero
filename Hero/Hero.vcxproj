@@ -55,6 +55,7 @@
     <ClInclude Include="source\Math\Matrix3x3.h" />
     <ClInclude Include="source\Math\Matrix4x4.h" />
     <ClInclude Include="source\Math\Quaternion.h" />
+    <ClInclude Include="source\Math\Rect.h" />
     <ClInclude Include="source\Plugins\Plugin.h" />
     <ClInclude Include="source\Resources\Font.h" />
     <ClInclude Include="source\Resources\Material.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="source\Math\Matrix3x3.cpp" />
     <ClCompile Include="source\Math\Matrix4x4.cpp" />
     <ClCompile Include="source\Math\Quaternion.cpp" />
+    <ClCompile Include="source\Math\Rect.cpp" />
     <ClCompile Include="source\Resources\Font.cpp" />
     <ClCompile Include="source\Resources\Material.cpp" />
     <ClCompile Include="source\Resources\Mesh.cpp" />
